@@ -12,7 +12,7 @@ import { CreateQuizComponent } from "./pages/Quizzes/CreateQuiz/create-quiz/crea
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Navbar, Home, CreateQuizComponent],
+  imports: [RouterOutlet , Navbar],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

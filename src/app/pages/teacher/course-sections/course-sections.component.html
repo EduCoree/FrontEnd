@@ -1,0 +1,270 @@
+<!-- صفحة إنشاء السيكشنز - Step 2: Curriculum -->
+<div class="bg-surface text-on-surface min-h-screen font-body">
+
+  <!-- السايدبار -->
+  <aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container flex flex-col z-50">
+    <div class="px-6 pt-8 mb-8">
+      <div class="text-lg font-black text-primary uppercase tracking-tight cursor-pointer"
+        (click)="goToDashboard()">EduCore</div>
+      <div class="text-xs font-medium text-on-surface-variant uppercase tracking-widest">Course Builder</div>
+    </div>
+    <nav class="flex flex-col gap-2 py-6">
+      <a (click)="goBack()"
+        class="flex items-center gap-3 text-on-surface-variant/60 hover:text-primary pl-8 py-3 hover:translate-x-1 transition-transform cursor-pointer">
+        <span class="material-symbols-outlined">info</span>
+        <span class="font-medium text-sm uppercase tracking-wider">Course Info</span>
+      </a>
+      <!-- Active -->
+      <a class="flex items-center gap-3 bg-white text-primary rounded-l-full ml-4 pl-4 py-3 shadow-sm">
+        <span class="material-symbols-outlined">account_tree</span>
+        <span class="font-medium text-sm uppercase tracking-wider">Curriculum</span>
+      </a>
+      <a class="flex items-center gap-3 text-on-surface-variant/40 pl-8 py-3 cursor-not-allowed">
+        <span class="material-symbols-outlined">video_library</span>
+        <span class="font-medium text-sm uppercase tracking-wider">Media</span>
+      </a>
+      <a class="flex items-center gap-3 text-on-surface-variant/40 pl-8 py-3 cursor-not-allowed">
+        <span class="material-symbols-outlined">payments</span>
+        <span class="font-medium text-sm uppercase tracking-wider">Pricing</span>
+      </a>
+    </nav>
+    <div class="absolute bottom-10 left-0 w-full px-6">
+      <button (click)="goToDashboard()"
+        class="w-full bg-primary-container text-on-primary-container py-3 rounded-full font-bold mb-6 hover:scale-95 transition-all text-sm">
+        Back to Dashboard
+      </button>
+    </div>
+  </aside>
+
+  <!-- المحتوى الرئيسي -->
+  <main class="pl-64 pt-0 pb-24 min-h-screen">
+
+    <!-- الهيدر -->
+    <header class="fixed top-0 left-64 right-0 z-40 bg-surface/70 backdrop-blur-xl">
+      <div class="flex justify-between items-center h-16 px-8">
+        <div class="text-xl font-bold text-primary tracking-tight">Sage Academy</div>
+        <nav class="hidden md:flex items-center gap-8 text-sm">
+          <a (click)="goToDashboard()" class="text-on-surface-variant/70 hover:text-primary transition-colors cursor-pointer">Dashboard</a>
+          <a class="text-primary font-bold border-b-2 border-primary pb-1">Curriculum</a>
+        </nav>
+        <div class="flex items-center gap-4">
+          <button (click)="goNext()"
+            class="bg-primary text-on-primary px-6 py-2 rounded-full font-medium hover:opacity-90 transition-all text-sm">
+            Publish Course
+          </button>
+          <button class="p-2 hover:bg-surface-container rounded-full transition-all">
+            <span class="material-symbols-outlined">notifications</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto p-10 pt-24 flex gap-10">
+
+      <!-- المحتوى الرئيسي -->
+      <div class="flex-1 space-y-8">
+
+        <!-- العنوان + زرار إضافة -->
+        <div class="flex justify-between items-end mb-4">
+          <div>
+            <h1 class="text-4xl font-extrabold tracking-tight text-on-surface">Curriculum Builder</h1>
+            <p class="text-on-surface-variant mt-2">Design the learning journey for your students.</p>
+          </div>
+        </div>
+
+        <!-- فورم إضافة سيكشن -->
+        <form [formGroup]="sectionForm" (ngSubmit)="addSection()"
+          class="flex gap-3 bg-surface-container-low p-4 rounded-xl border border-outline-variant/10">
+          <input type="text" formControlName="title"
+            placeholder="New section title e.g. Fundamentals of Design..."
+            class="flex-1 px-5 py-3 bg-white rounded-full border-none focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"/>
+          <button type="submit" [disabled]="isSaving()"
+            class="flex items-center gap-2 bg-primary text-on-primary px-8 py-3 rounded-full font-bold hover:opacity-90 transition-all shadow-lg disabled:opacity-50 text-sm">
+            <span class="material-symbols-outlined">add_circle</span>
+            Add Section
+          </button>
+        </form>
+
+        <!-- Loading -->
+        <div *ngIf="isLoading()" class="flex justify-center py-20">
+          <span class="material-symbols-outlined text-primary text-4xl animate-spin">progress_activity</span>
+        </div>
+
+        <!-- السيكشنز -->
+        <div *ngIf="!isLoading()" class="space-y-6">
+
+          <div *ngFor="let section of sections(); let i = index"
+            class="bg-surface-container-low rounded-xl p-8 space-y-4">
+
+            <!-- هيدر السيكشن -->
+            <div class="flex items-center justify-between group">
+              <div class="flex items-center gap-4">
+                <span class="material-symbols-outlined text-on-surface-variant/40 cursor-grab">drag_indicator</span>
+
+                <!-- عرض الاسم -->
+                <div *ngIf="editingSection?.id !== section.id" class="flex items-center gap-3">
+                  <h3 class="text-xl font-bold flex items-center gap-3">
+                    <span class="bg-primary-container text-on-primary-container w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold">
+                      {{ (i + 1).toString().padStart(2, '0') }}
+                    </span>
+                    {{ section.title }}
+                  </h3>
+                </div>
+
+                <!-- فورم التعديل -->
+                <div *ngIf="editingSection?.id === section.id" class="flex items-center gap-3">
+                  <form [formGroup]="editForm" (ngSubmit)="saveEdit()" class="flex gap-2">
+                    <input type="text" formControlName="title"
+                      class="px-4 py-2 bg-white rounded-full border-none focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"/>
+                    <button type="submit"
+                      class="px-4 py-2 bg-primary text-on-primary rounded-full text-xs font-bold">
+                      Save
+                    </button>
+                    <button type="button" (click)="cancelEdit()"
+                      class="px-4 py-2 bg-surface-container-high text-on-surface-variant rounded-full text-xs font-bold">
+                      Cancel
+                    </button>
+                  </form>
+                </div>
+
+              </div>
+
+              <!-- أزرار الـ Actions -->
+              <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <!-- Reorder -->
+                <button (click)="moveUp(i)" [disabled]="i === 0"
+                  class="p-2 hover:bg-surface-container-high rounded-full disabled:opacity-30 transition-colors">
+                  <span class="material-symbols-outlined text-sm">arrow_upward</span>
+                </button>
+                <button (click)="moveDown(i)" [disabled]="i === sections().length - 1"
+                  class="p-2 hover:bg-surface-container-high rounded-full disabled:opacity-30 transition-colors">
+                  <span class="material-symbols-outlined text-sm">arrow_downward</span>
+                </button>
+                <!-- Edit -->
+                <button (click)="startEdit(section)"
+                  class="p-2 hover:bg-surface-container-high rounded-full transition-colors">
+                  <span class="material-symbols-outlined text-sm">edit</span>
+                </button>
+                <!-- Delete -->
+                <button (click)="deleteSection(section.id)"
+                  class="p-2 hover:bg-error-container/20 rounded-full transition-colors">
+                  <span class="material-symbols-outlined text-sm text-error">delete</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- الليسونز -->
+            <div class="space-y-3 pl-12">
+              <div *ngFor="let lesson of section.lessons"
+                class="bg-white rounded-lg p-5 flex items-center justify-between shadow-sm group hover:translate-x-1 transition-all">
+                <div class="flex items-center gap-4">
+                  <span class="material-symbols-outlined text-on-surface-variant/30 cursor-grab">drag_handle</span>
+                  <div class="p-2 rounded-lg"
+                    [class]="lesson.type === 'Video' ? 'bg-secondary-container/50 text-secondary' : lesson.type === 'Pdf' ? 'bg-tertiary-container/50 text-tertiary' : 'bg-primary-container/50 text-primary'">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">
+                      {{ lesson.type === 'Video' ? 'play_circle' : lesson.type === 'Pdf' ? 'description' : 'live_tv' }}
+                    </span>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-sm">{{ lesson.title }}</h4>
+                    <p class="text-xs text-on-surface-variant uppercase tracking-widest mt-0.5">{{ lesson.type }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- زرار إضافة ليسون - Placeholder -->
+              <button class="w-full py-4 border-2 border-dashed border-outline-variant/30 rounded-lg text-on-surface-variant/60 hover:border-primary/40 hover:text-primary transition-all flex items-center justify-center gap-2 font-medium text-sm">
+                <span class="material-symbols-outlined">add</span>
+                Add Lesson — Coming Soon
+              </button>
+
+            </div>
+          </div>
+
+          <!-- لو مفيش سيكشنز -->
+          <div *ngIf="sections().length === 0"
+            class="bg-surface-container border-2 border-dashed border-outline-variant/20 p-16 rounded-xl flex flex-col items-center justify-center text-center gap-4">
+            <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm">
+              <span class="material-symbols-outlined text-2xl text-primary">library_add</span>
+            </div>
+            <div class="max-w-xs space-y-1">
+              <h3 class="text-base font-bold">Structure your journey</h3>
+              <p class="text-xs text-on-surface-variant">Add sections to map out the learning experience.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- السايدبار الأيمن -->
+      <div class="w-80 space-y-6">
+        <div class="bg-surface-container rounded-xl p-8 sticky top-24">
+          <h2 class="text-sm font-black uppercase tracking-widest text-on-surface-variant mb-6">
+            Structure Overview
+          </h2>
+          <div class="space-y-6">
+            <div class="flex items-center justify-between">
+              <span class="text-on-surface-variant text-sm font-medium">Total Sections</span>
+              <span class="text-xl font-bold text-primary">{{ sections().length }}</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-on-surface-variant text-sm font-medium">Total Lessons</span>
+              <span class="text-xl font-bold text-primary">
+{{ getTotalLessons() }}              </span>
+            </div>
+            <div class="pt-6 border-t border-outline-variant/20">
+              <div class="flex justify-between items-center mb-2">
+                <span class="text-xs font-black uppercase tracking-widest text-on-surface-variant">
+                  Curriculum Health
+                </span>
+                <span class="text-xs font-bold text-primary">
+                        {{ getTotalLessons() }}        
+                            </span>
+              </div>
+              <div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-primary to-primary-fixed transition-all duration-700"
+                  [style.width]="sections().length > 0 ? '70%' : '0%'"></div>
+              </div>
+              <p class="text-xs text-on-surface-variant/60 mt-3 leading-relaxed italic">
+                "A healthy curriculum balances video depth with practical assessments."
+              </p>
+            </div>
+            <div class="mt-4">
+              <div class="bg-secondary-container rounded-lg p-6 relative overflow-hidden">
+                <span class="material-symbols-outlined absolute -right-2 -bottom-2 text-6xl text-secondary/10 rotate-12">tips_and_updates</span>
+                <h4 class="text-sm font-bold text-on-secondary-container mb-2">Teacher's Note</h4>
+                <p class="text-xs text-on-secondary-container/80 leading-relaxed">
+                  Add a final "Certification Project" to increase completion value.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- الفوتر -->
+  <footer class="fixed bottom-0 w-full bg-surface-container-low/90 backdrop-blur-xl z-50">
+    <div class="max-w-7xl mx-auto px-8 h-20 flex justify-between items-center">
+      <button (click)="goBack()"
+        class="flex items-center gap-2 text-on-surface-variant font-bold hover:text-primary transition-colors px-6 py-2 rounded-full hover:bg-surface-container-high">
+        <span class="material-symbols-outlined">arrow_back</span>
+        Back
+      </button>
+      <div class="flex gap-4">
+        <button (click)="goToDashboard()"
+          class="text-primary font-bold px-6 py-2">
+          Save Draft
+        </button>
+        <button (click)="goNext()"
+          class="bg-primary text-on-primary px-10 py-3 rounded-full font-bold flex items-center gap-3 hover:opacity-90 transition-all shadow-lg text-sm">
+          Next Step (Media Content)
+          <span class="material-symbols-outlined">arrow_forward</span>
+        </button>
+      </div>
+    </div>
+  </footer>
+
+</div>

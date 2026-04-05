@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [ "./src/**/*.{html,ts}" , "./node_modules/flowbite/**/*.js"],
+  content: ['./src/**/*.{html,ts}', './node_modules/flowbite/**/*.js'],
   theme: {
     extend: {},
     colors: {
@@ -53,7 +53,49 @@ module.exports = {
               "primary-fixed-dim": "#97d3bf"
             },
     
+    extend: {
+      colors: {
+        'brand-highlight': '#7DB8A5',
+        'primary-dim': '#205d4d',
+        primary: '#2e6858',
+        'primary-container': '#7db8a5',
+        'primary-fixed': '#b2efda',
+        'primary-fixed-dim': '#a4e1cc',
+        'on-primary': '#ffffff',
+        'on-primary-container': '#04493b',
+        surface: '#f8fafa',
+        'surface-container': '#eceeee',
+        'surface-container-low': '#f2f4f4',
+        'surface-container-high': '#e6e8e9',
+        'surface-container-highest': '#e1e3e3',
+        'surface-container-lowest': '#ffffff',
+        'surface-dim': '#d4dbda',
+        'surface-variant': '#dde4e3',
+        'on-surface': '#191c1d',
+        'on-surface-variant': '#404945',
+        outline: '#707975',
+        'outline-variant': '#bfc9c4',
+        error: '#ba1a1a',
+        'error-container': '#ffdad6',
+        'on-error': '#ffffff',
+        secondary: '#226a58',
+        'secondary-container': '#aaf1da',
+        'on-secondary-container': '#29705e',
+        tertiary: '#894e47',
+        'tertiary-container': '#e29a91',
+        'on-tertiary-container': '#65312b',
+      },
+      fontFamily: {
+        headline: ['Manrope', 'Plus Jakarta Sans', 'sans-serif'],
+        body: ['Manrope', 'Inter', 'sans-serif'],
+      },
+      borderRadius: {
+        DEFAULT: '1rem',
+        lg: '2rem',
+        xl: '3rem',
+        full: '9999px',
+      },
+    },
   },
-  plugins: [ require('flowbite/plugin')],
-}
-
+  plugins: [require('flowbite/plugin')],
+};
