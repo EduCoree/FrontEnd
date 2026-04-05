@@ -1,0 +1,242 @@
+<!-- صفحة تعديل الكورس والسيكشنز -->
+<div class="bg-background font-body text-on-background min-h-screen pb-24">
+  <!-- الهيدر -->
+  <header class="w-full top-0 sticky z-40 bg-surface">
+    <div class="flex justify-between items-center px-8 py-4">
+      <div class="flex items-center gap-3 cursor-pointer" (click)="goBack()">
+        <span class="material-symbols-outlined text-primary">arrow_back</span>
+        <h1 class="font-headline text-xl font-bold tracking-tight text-primary">Edit Course</h1>
+      </div>
+    </div>
+  </header>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading()" class="flex justify-center py-20">
+    <span class="material-symbols-outlined text-primary text-4xl animate-spin"
+      >progress_activity</span
+    >
+  </div>
+
+  <main *ngIf="!isLoading()" class="px-6 py-6 max-w-lg mx-auto space-y-8">
+    <!-- رسالة النجاح -->
+    <div
+      *ngIf="successMessage()"
+      class="bg-primary-fixed text-on-primary-container p-3 rounded-lg text-sm text-center font-semibold"
+    >
+      ✓ {{ successMessage() }}
+    </div>
+
+    <!-- ======== قسم صورة الغلاف ======== -->
+    <div
+      class="bg-surface-container-lowest rounded-xl p-5 shadow-[0_8px_32px_rgba(125,184,165,0.06)]"
+    >
+      <h2 class="font-headline font-bold text-lg text-on-surface mb-4">Cover Image</h2>
+
+      <div class="aspect-video rounded-lg overflow-hidden bg-surface-container-high mb-4">
+        <img *ngIf="coverPreview()" [src]="coverPreview()" class="w-full h-full object-cover" />
+        <div *ngIf="!coverPreview()" class="w-full h-full flex items-center justify-center">
+          <span class="material-symbols-outlined text-outline text-5xl">image</span>
+        </div>
+      </div>
+
+      <div class="flex gap-3">
+        <label class="flex-1 cursor-pointer">
+          <input type="file" accept="image/*" class="hidden" (change)="onFileSelected($event)" />
+          <div
+            class="w-full py-3 bg-surface-container-high text-primary font-bold rounded-lg text-sm text-center"
+          >
+            Choose Image
+          </div>
+        </label>
+        <button
+          (click)="uploadCover()"
+          [disabled]="!selectedFile"
+          class="flex-1 py-3 btn-gradient text-white font-bold rounded-lg text-sm disabled:opacity-50"
+        >
+          Upload
+        </button>
+      </div>
+    </div>
+
+    <!-- ======== قسم التعديل الأساسي ======== -->
+    <div
+      class="bg-surface-container-lowest rounded-xl p-5 shadow-[0_8px_32px_rgba(125,184,165,0.06)]"
+    >
+      <h2 class="font-headline font-bold text-lg text-on-surface mb-4">Course Details</h2>
+
+      <form [formGroup]="courseForm" (ngSubmit)="saveChanges()" class="space-y-5">
+        <div class="space-y-2">
+          <label class="text-sm font-semibold text-on-surface-variant">Title</label>
+          <input
+            type="text"
+            formControlName="title"
+            class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 text-on-background focus:ring-2 focus:ring-primary/20 outline-none"
+          />
+        </div>
+
+        <div class="space-y-2">
+          <label class="text-sm font-semibold text-on-surface-variant">Description</label>
+          <textarea
+            formControlName="description"
+            rows="4"
+            class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 text-on-background focus:ring-2 focus:ring-primary/20 outline-none resize-none"
+          ></textarea>
+        </div>
+
+        <div class="space-y-2">
+          <label class="text-sm font-semibold text-on-surface-variant">Level</label>
+          <div class="flex gap-3">
+            <label *ngFor="let level of levels" class="flex-1 cursor-pointer">
+              <input type="radio" formControlName="level" [value]="level" class="hidden peer" />
+              <div
+                class="text-center py-2 rounded-lg bg-surface-container-low text-on-surface-variant border-2 border-transparent peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:text-primary transition-all text-sm font-medium"
+              >
+                {{ level }}
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          [disabled]="isSaving()"
+          class="w-full btn-gradient text-white font-bold py-3 rounded-lg active:scale-95 transition-transform disabled:opacity-50"
+        >
+          {{ isSaving() ? 'Saving...' : 'Save Changes' }}
+        </button>
+      </form>
+    </div>
+
+    <!-- ======== قسم التسعير ======== -->
+    <div
+      class="bg-surface-container-lowest rounded-xl p-5 shadow-[0_8px_32px_rgba(125,184,165,0.06)]"
+    >
+      <h2 class="font-headline font-bold text-lg text-on-surface mb-4">Pricing</h2>
+
+      <form [formGroup]="pricingForm" (ngSubmit)="savePricing()" class="space-y-5">
+        <div class="flex gap-3">
+          <label *ngFor="let type of pricingTypes" class="flex-1 cursor-pointer">
+            <input type="radio" formControlName="pricingType" [value]="type" class="hidden peer" />
+            <div
+              class="text-center py-2 rounded-lg bg-surface-container-low text-on-surface-variant border-2 border-transparent peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:text-primary transition-all text-sm font-medium"
+            >
+              {{ type }}
+            </div>
+          </label>
+        </div>
+
+        <div *ngIf="pricingForm.get('pricingType')?.value === 'Paid'" class="space-y-2">
+          <label class="text-sm font-semibold text-on-surface-variant">Price ($)</label>
+          <input
+            type="number"
+            formControlName="price"
+            class="w-full bg-surface-container-low border-none rounded-lg py-3 px-4 text-on-background focus:ring-2 focus:ring-primary/20 outline-none"
+          />
+        </div>
+
+        <button
+          type="submit"
+          class="w-full bg-surface-container-high text-primary font-bold py-3 rounded-lg active:scale-95 transition-transform"
+        >
+          Update Pricing
+        </button>
+      </form>
+    </div>
+
+    <!-- ======== قسم السيكشنز ======== -->
+    <div
+      class="bg-surface-container-lowest rounded-xl p-5 shadow-[0_8px_32px_rgba(125,184,165,0.06)]"
+    >
+      <div class="flex justify-between items-center mb-6">
+        <div>
+          <span class="text-sm font-semibold text-primary">Structure Manager</span>
+          <h2 class="font-headline text-2xl font-extrabold tracking-tight mt-1">Course Content</h2>
+        </div>
+      </div>
+
+      <!-- فورم إضافة سيكشن -->
+      <form [formGroup]="sectionForm" (ngSubmit)="addSection()" class="flex gap-3 mb-6">
+        <input
+          type="text"
+          formControlName="title"
+          placeholder="New section title..."
+          class="flex-1 bg-surface-container-low border-none rounded-lg py-3 px-4 text-on-background focus:ring-2 focus:ring-primary/20 outline-none text-sm"
+        />
+        <button
+          type="submit"
+          class="btn-gradient text-white font-bold px-5 py-3 rounded-lg text-sm flex items-center gap-1 active:scale-95 transition-transform"
+        >
+          <span class="material-symbols-outlined text-sm">add</span>
+          Add
+        </button>
+      </form>
+
+      <!-- قائمة السيكشنز -->
+      <div class="flex flex-col gap-6">
+        <div *ngFor="let section of sections()" class="bg-surface-container-low rounded-xl p-1">
+          <div class="bg-white rounded-xl p-5 shadow-[0_8px_32px_rgba(125,184,165,0.06)]">
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-outline cursor-grab"
+                  >drag_indicator</span
+                >
+                <div>
+                  <h3 class="font-headline font-bold text-on-surface">{{ section.title }}</h3>
+                  <p class="text-xs text-outline font-medium">
+                    {{ section.lessons?.length || 0 }} Lessons
+                  </p>
+                </div>
+              </div>
+              <button
+                (click)="deleteSection(section.id)"
+                class="p-2 rounded-full hover:bg-error-container/20 text-error transition-colors"
+              >
+                <span class="material-symbols-outlined text-lg">delete</span>
+              </button>
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <div
+                *ngFor="let lesson of section.lessons"
+                class="flex items-center gap-3 p-3 bg-surface-container-low rounded-lg"
+              >
+                <span class="material-symbols-outlined text-outline text-sm">drag_handle</span>
+                <div
+                  class="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-primary shadow-sm"
+                >
+                  <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">
+                    {{
+                      lesson.type === 'Video'
+                        ? 'play_circle'
+                        : lesson.type === 'Pdf'
+                          ? 'description'
+                          : 'live_tv'
+                    }}
+                  </span>
+                </div>
+                <div class="flex-1">
+                  <p class="text-sm font-bold text-on-surface">{{ lesson.title }}</p>
+                  <p class="text-xs text-outline uppercase tracking-wider">{{ lesson.type }}</p>
+                </div>
+              </div>
+            </div>
+
+            <button
+              class="mt-4 w-full py-3 border-2 border-dashed border-outline-variant/30 rounded-lg text-outline text-sm font-bold flex items-center justify-center gap-2 hover:bg-surface-container transition-colors"
+            >
+              <span class="material-symbols-outlined text-sm">add_circle</span>
+              Add Lesson
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- لو مفيش سيكشنز -->
+      <div *ngIf="sections().length === 0" class="text-center py-10 text-outline">
+        <span class="material-symbols-outlined text-4xl mb-2 block">list_alt</span>
+        <p class="text-sm font-medium">No sections yet. Add your first section above!</p>
+      </div>
+    </div>
+  </main>
+</div>
+س
