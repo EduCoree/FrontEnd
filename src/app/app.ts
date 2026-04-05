@@ -4,6 +4,11 @@ import { RouterOutlet } from '@angular/router';
 import { FlowbiteService } from './core/services/flowbite/flowbite';
 import { initFlowbite } from 'flowbite';
 import { Home } from './pages/home/home';
+import { CreateQuizComponent } from "./pages/Quizzes/CreateQuiz/create-quiz/create-quiz";
+
+
+
+
 
 @Component({
   selector: 'app-root',

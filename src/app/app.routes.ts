@@ -1,5 +1,13 @@
 // import { CenterEdit } from './pages/centers/center-edit/center-edit/center-edit';
 import { Routes } from '@angular/router';
+import { CreateQuizComponent } from './pages/Quizzes/CreateQuiz/create-quiz/create-quiz';
+
+export const routes: Routes = [
+    {
+        path: 'teacher/courses/:courseId/quizzes',
+         loadComponent: () =>CreateQuizComponent
+  },
+  
 import { authGuard } from './core/guards/auth guards/auth.guard';
 
 export const routes: Routes = [
