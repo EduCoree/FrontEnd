@@ -9,3 +9,90 @@
 .btn-gradient {
     background: linear-gradient(135deg, #2e6858 0%, #7db8a5 100%);
 }
+
+
+
+
+@import "tailwindcss";
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  background-color: #f8fafa;
+  color: #191c1d;
+}
+
+h1, h2, h3, h4, h5, h6,
+.font-headline {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 500,
+    'GRAD' 0,
+    'opsz' 24;
+}
+
+.glass-nav {
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+.editorial-shadow {
+  box-shadow: 0 8px 32px rgba(125, 184, 165, 0.12);
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes bounceSlow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-bounce-slow {
+  animation: bounceSlow 3s ease-in-out infinite;
+}
+
+.bg-surface { background-color: #f8fafa; }
+.bg-surface-container-low { background-color: #f2f4f4; }
+.bg-surface-container-lowest { background-color: #ffffff; }
+.bg-surface-container { background-color: #eceeee; }
+.bg-surface-container-high { background-color: #e6e8e9; }
+
+.text-on-surface { color: #191c1d; }
+.text-on-surface-variant { color: #404945; }
+
+.text-primary { color: #2e6858; }
+.bg-primary { background-color: #2e6858; }
+
+.text-primary-container { color: #7db8a5; }
+.bg-primary-container { background-color: #7db8a5; }
+
+.text-secondary { color: #226a58; }
+.bg-secondary-container { background-color: #aaf1da; }
+
+.text-outline { color: #707975; }
+.border-outline-variant { border-color: #bfc9c4; }
+
+.bg-primary-fixed { background-color: #b2efda; }
+.text-on-primary-fixed-variant { color: #105041; }
+
+.text-on-primary-container { color: #04493b; }
