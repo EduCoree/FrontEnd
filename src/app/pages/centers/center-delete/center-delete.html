@@ -1,0 +1,81 @@
+
+
+
+@if (loading()) {
+  <div class="flex items-center justify-center min-h-screen">
+    <div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+  </div>
+}
+
+@if (!loading()) {
+  <div class="min-h-screen flex items-center justify-center px-4">
+    <div class="bg-white rounded-3xl p-10 w-full max-w-md border border-outline-variant/20 shadow-sm">
+
+      <!-- Icon -->
+      <div class="flex justify-center mb-6">
+        <div class="w-16 h-16 rounded-full bg-error-container flex items-center justify-center">
+          <span class="material-symbols-outlined text-error text-3xl">delete_forever</span>
+        </div>
+      </div>
+
+      <!-- Title -->
+      <h2 class="text-2xl font-extrabold text-on-surface text-center mb-2">
+        Delete Center
+      </h2>
+      <p class="text-on-surface-variant text-sm text-center mb-6">
+        This action is permanent and cannot be reversed.
+        All associated training data will be lost.
+      </p>
+
+      <!-- Center Info -->
+      <div class="bg-error-container/20 border border-error/20 rounded-xl px-4 py-3 mb-8 flex items-start gap-3">
+        <span class="material-symbols-outlined text-error text-lg mt-0.5">warning</span>
+        <div>
+          <p class="text-sm font-semibold text-on-surface">Center Detail</p>
+          <p class="text-sm text-on-surface-variant">
+            "<span class="font-medium text-on-surface">{{ centerName() }}</span>"
+            will be permanently deleted.
+          </p>
+        </div>
+      </div>
+
+      <!-- Error -->
+      @if (error()) {
+        <div class="mb-4 px-4 py-3 rounded-xl bg-error-container text-on-error-container text-sm flex items-center gap-2">
+          <span class="material-symbols-outlined text-lg">error</span>
+          {{ error() }}
+        </div>
+      }
+
+      <!-- Actions -->
+      <div class="flex flex-col gap-3">
+        <button
+          (click)="confirmDelete()"
+          [disabled]="deleting()"
+          class="w-full bg-error text-on-error py-4 rounded-xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform disabled:opacity-60">
+          @if (deleting()) {
+            <div class="w-4 h-4 border-2 border-on-error border-t-transparent rounded-full animate-spin"></div>
+            Deleting...
+          } @else {
+            <span class="material-symbols-outlined text-lg">delete</span>
+            Delete Center
+          }
+        </button>
+
+        <button
+          (click)="cancel()"
+          [disabled]="deleting()"
+          class="w-full bg-surface-container text-on-surface py-4 rounded-xl font-bold hover:bg-surface-container-high transition-colors">
+          Keep Center
+        </button>
+      </div>
+
+      <!-- Footer Note -->
+      <p class="text-[11px] text-on-surface-variant text-center mt-6">
+        Access level: <span class="font-bold text-on-surface">System Admin</span>.
+        All deletions are logged in the security audit log.
+      </p>
+
+    </div>
+  </div>
+}
