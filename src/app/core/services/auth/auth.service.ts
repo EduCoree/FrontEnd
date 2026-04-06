@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { AuthResponse, LoginRequest, RegisterRequest } from '../../model/auth/auth.model';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,9 @@ import { AuthResponse, LoginRequest, RegisterRequest } from '../../model/auth/au
 export class AuthService {
 
   // api link
-  private baseUrl = 'https://localhost:7275/api/Authentication';
-
+  // private baseUrl = 'https://localhost:7275/api/Authentication';
+// private baseUrl = `${environment.apiUrl}/Authentication`;
+private baseUrl = `${environment.apiUrl}/api/Authentication`;
   constructor(private http: HttpClient, private router: Router) {}
 
   // login
@@ -30,11 +32,13 @@ export class AuthService {
   }
 
   // save user data to localStorage
-  private saveUser(res: AuthResponse): void {
-    localStorage.setItem('token', res.token);
-    localStorage.setItem('name', res.name);
-    localStorage.setItem('email', res.email);
-  }
+ private saveUser(res: AuthResponse): void {
+  localStorage.setItem('token', res.token);
+  localStorage.setItem('name', res.name);
+  localStorage.setItem('email', res.email);
+  const payload = JSON.parse(atob(res.token.split('.')[1]));
+  localStorage.setItem('centerId', payload.centerId);
+}
 
   // logout
   logout(): void {

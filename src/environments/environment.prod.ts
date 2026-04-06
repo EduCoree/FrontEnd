@@ -1,5 +1,4 @@
-
 export const environment = {
-  production: false,
+  production: true,
   apiUrl: 'https://edu-coree.runasp.net'
 };
