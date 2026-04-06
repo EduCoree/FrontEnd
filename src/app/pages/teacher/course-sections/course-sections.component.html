@@ -2,62 +2,90 @@
 <div class="bg-surface text-on-surface min-h-screen font-body">
 
   <!-- السايدبار -->
-  <aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container flex flex-col z-50">
-    <div class="px-6 pt-8 mb-8">
-      <div class="text-lg font-black text-primary uppercase tracking-tight cursor-pointer"
-        (click)="goToDashboard()">EduCore</div>
-      <div class="text-xs font-medium text-on-surface-variant uppercase tracking-widest">Course Builder</div>
-    </div>
-    <nav class="flex flex-col gap-2 py-6">
-      <a (click)="goBack()"
-        class="flex items-center gap-3 text-on-surface-variant/60 hover:text-primary pl-8 py-3 hover:translate-x-1 transition-transform cursor-pointer">
-        <span class="material-symbols-outlined">info</span>
-        <span class="font-medium text-sm uppercase tracking-wider">Course Info</span>
-      </a>
-      <!-- Active -->
-      <a class="flex items-center gap-3 bg-white text-primary rounded-l-full ml-4 pl-4 py-3 shadow-sm">
-        <span class="material-symbols-outlined">account_tree</span>
-        <span class="font-medium text-sm uppercase tracking-wider">Curriculum</span>
-      </a>
-      <a class="flex items-center gap-3 text-on-surface-variant/40 pl-8 py-3 cursor-not-allowed">
-        <span class="material-symbols-outlined">video_library</span>
-        <span class="font-medium text-sm uppercase tracking-wider">Media</span>
-      </a>
-      <a class="flex items-center gap-3 text-on-surface-variant/40 pl-8 py-3 cursor-not-allowed">
-        <span class="material-symbols-outlined">payments</span>
-        <span class="font-medium text-sm uppercase tracking-wider">Pricing</span>
-      </a>
-    </nav>
-    <div class="absolute bottom-10 left-0 w-full px-6">
-      <button (click)="goToDashboard()"
-        class="w-full bg-primary-container text-on-primary-container py-3 rounded-full font-bold mb-6 hover:scale-95 transition-all text-sm">
-        Back to Dashboard
-      </button>
-    </div>
-  </aside>
+  <aside class="fixed left-0 top-0 h-full p-6 flex flex-col gap-8 bg-surface-container w-72 z-50">
+  <div class="flex flex-col gap-1 px-4">
+    <span class="text-lg font-black text-primary cursor-pointer" (click)="goToDashboard()">
+      EduCore
+    </span>
+    <span class="uppercase tracking-widest text-xs font-bold text-on-surface-variant">
+      Course Builder
+    </span>
+  </div>
+  <nav class="flex flex-col gap-2 mt-4">
+    <!-- Done -->
+    <a (click)="goBack()"
+      class="flex items-center gap-4 text-on-surface-variant/60 px-6 py-3 rounded-full hover:translate-x-1 transition-transform cursor-pointer">
+      <span class="material-symbols-outlined">info</span>
+      <span class="uppercase tracking-widest text-xs font-bold">Course Info</span>
+    </a>
+    <!-- Active -->
+    <a class="flex items-center gap-4 bg-white text-primary rounded-full px-6 py-3 shadow-sm">
+      <span class="material-symbols-outlined">menu_book</span>
+      <span class="uppercase tracking-widest text-xs font-bold">Curriculum</span>
+    </a>
+    <!-- Locked -->
+    <a class="flex items-center gap-4 text-on-surface-variant/40 px-6 py-3 rounded-full cursor-not-allowed">
+      <span class="material-symbols-outlined">video_library</span>
+      <span class="uppercase tracking-widest text-xs font-bold">Media</span>
+    </a>
+    <a class="flex items-center gap-4 text-on-surface-variant/40 px-6 py-3 rounded-full cursor-not-allowed">
+      <span class="material-symbols-outlined">payments</span>
+      <span class="uppercase tracking-widest text-xs font-bold">Pricing</span>
+    </a>
+  </nav>
+</aside>
 
   <!-- المحتوى الرئيسي -->
   <main class="pl-64 pt-0 pb-24 min-h-screen">
 
     <!-- الهيدر -->
-    <header class="fixed top-0 left-64 right-0 z-40 bg-surface/70 backdrop-blur-xl">
-      <div class="flex justify-between items-center h-16 px-8">
-        <div class="text-xl font-bold text-primary tracking-tight">Sage Academy</div>
-        <nav class="hidden md:flex items-center gap-8 text-sm">
-          <a (click)="goToDashboard()" class="text-on-surface-variant/70 hover:text-primary transition-colors cursor-pointer">Dashboard</a>
-          <a class="text-primary font-bold border-b-2 border-primary pb-1">Curriculum</a>
-        </nav>
-        <div class="flex items-center gap-4">
-          <button (click)="goNext()"
-            class="bg-primary text-on-primary px-6 py-2 rounded-full font-medium hover:opacity-90 transition-all text-sm">
-            Publish Course
-          </button>
-          <button class="p-2 hover:bg-surface-container rounded-full transition-all">
-            <span class="material-symbols-outlined">notifications</span>
-          </button>
-        </div>
+    <header
+  class="flex justify-between items-center w-full px-8 py-3 bg-surface/90 backdrop-blur-xl sticky top-0 z-40 border-b border-outline-variant/10"
+>
+  <div class="flex items-center gap-8">
+    <!-- <h1 class="text-lg font-bold tracking-tight text-primary">Create New Course</h1> -->
+    <!-- Step Indicator -->
+    <nav
+      class="hidden lg:flex items-center gap-1 bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant/10"
+    >
+      <!-- Step 1 - Done -->
+      <div class="flex items-center gap-2 px-3 py-1 text-on-surface-variant/40">
+        <span class="text-xs font-bold">01</span>
+        <span class="text-xs font-bold uppercase tracking-wider">Course Info</span>
       </div>
-    </header>
+      <div class="w-3 h-px bg-outline-variant/30"></div>
+      <!-- Step 2 - Active -->
+      <div class="flex items-center gap-2 px-3 py-1 bg-primary text-white rounded-full shadow-sm">
+        <span class="text-xs font-bold">02</span>
+        <span class="text-xs font-bold uppercase tracking-wider">Curriculum</span>
+      </div>
+      <div class="w-3 h-px bg-outline-variant/30"></div>
+      <div class="flex items-center gap-2 px-3 py-1 text-on-surface-variant/40">
+        <span class="text-xs font-bold">03</span>
+        <span class="text-xs font-bold uppercase tracking-wider">Media</span>
+      </div>
+      <div class="w-3 h-px bg-outline-variant/30"></div>
+      <div class="flex items-center gap-2 px-3 py-1 text-on-surface-variant/40">
+        <span class="text-xs font-bold">04</span>
+        <span class="text-xs font-bold uppercase tracking-wider">Pricing</span>
+      </div>
+    </nav>
+  </div>
+  <div class="flex items-center gap-3">
+    <button
+      (click)="goToDashboard()"
+      class="px-5 py-1.5 rounded-full border border-outline-variant text-on-surface text-sm font-semibold hover:bg-surface-container transition-colors"
+    >
+      Cancel
+    </button>
+    <button
+      (click)="goNext()"
+      class="px-7 py-1.5 rounded-full bg-primary text-white text-sm font-bold hover:opacity-90 transition-all"
+    >
+      Save Draft
+    </button>
+  </div>
+</header>
 
     <div class="max-w-7xl mx-auto p-10 pt-24 flex gap-10">
 
@@ -246,25 +274,36 @@
   </main>
 
   <!-- الفوتر -->
-  <footer class="fixed bottom-0 w-full bg-surface-container-low/90 backdrop-blur-xl z-50">
-    <div class="max-w-7xl mx-auto px-8 h-20 flex justify-between items-center">
-      <button (click)="goBack()"
-        class="flex items-center gap-2 text-on-surface-variant font-bold hover:text-primary transition-colors px-6 py-2 rounded-full hover:bg-surface-container-high">
-        <span class="material-symbols-outlined">arrow_back</span>
-        Back
-      </button>
-      <div class="flex gap-4">
-        <button (click)="goToDashboard()"
-          class="text-primary font-bold px-6 py-2">
-          Save Draft
-        </button>
-        <button (click)="goNext()"
-          class="bg-primary text-on-primary px-10 py-3 rounded-full font-bold flex items-center gap-3 hover:opacity-90 transition-all shadow-lg text-sm">
-          Next Step (Media Content)
-          <span class="material-symbols-outlined">arrow_forward</span>
-        </button>
+  <footer class="fixed bottom-6 right-8 left-[calc(16rem+2rem)] z-40">
+  <div
+    class="bg-white shadow-2xl rounded-full px-8 py-4 flex items-center justify-between border border-primary/10"
+  >
+    <div class="flex items-center gap-3">
+      <div class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></div>
+      <div class="flex flex-col">
+        <span class="text-xs font-bold text-on-surface">Ready</span>
+        <span class="text-xs font-medium text-on-surface-variant">Step 2 of 4</span>
       </div>
     </div>
-  </footer>
+    <div class="flex items-center gap-4">
+      <button
+        type="button"
+        (click)="goBack()"
+        class="px-6 py-2 rounded-full text-on-surface-variant text-sm font-bold hover:text-on-surface transition-colors"
+      >
+        Back
+      </button>
+      <div class="w-px h-6 bg-outline-variant/20"></div>
+      <button
+        type="button"
+        (click)="goNext()"
+        class="px-10 py-3 bg-primary text-white rounded-full text-sm font-extrabold flex items-center gap-3 hover:opacity-95 transition-all shadow-xl"
+      >
+        Next: Media Content
+        <span class="material-symbols-outlined text-lg">arrow_forward</span>
+      </button>
+    </div>
+  </div>
+</footer>
 
 </div>

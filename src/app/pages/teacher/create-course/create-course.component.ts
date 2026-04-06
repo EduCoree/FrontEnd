@@ -3,6 +3,8 @@ import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CourseService } from '../../../core/services/courses/course.service';
+import { CategoryService } from '../../../core/services/category.service';
+import { Category } from '../../../core/models/category.model';
 //import { CategoryDto } from '../../../core/model/courses/course.model';
 
 @Component({
@@ -26,9 +28,8 @@ export class CreateCourseComponent implements OnInit {
   isUploadingCover = false;
   coverUploadSuccess = false;
   courseIdAfterCreate: number | null = null;
-  //categories: CategoryDto[] = [];
-
-  constructor(private fb: FormBuilder, private courseService: CourseService, private router: Router) {
+categories: Category[] = [];
+  constructor(private fb: FormBuilder, private courseService: CourseService, private categoryService: CategoryService,private router: Router) {
     this.courseForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
@@ -40,18 +41,18 @@ export class CreateCourseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // بنتأكد إننا في البراوزر مش على الـ server
     if (isPlatformBrowser(this.platformId)) {
-      // this.loadCategories();
+      this.loadCategories();
     }
   }
-
-  // loadCategories(): void {
-  //   this.courseService.getCategories().subscribe({
-  //     next: (res) => this.categories = res,
-  //     error: () => console.error('Failed to load categories')
-  //   });
-  // }
+loadCategories(): void {
+  // const centerId = Number(localStorage.getItem('centerId'));
+  const centerId = 11;
+  this.categoryService.getAll(centerId).subscribe({
+    next: (res) => this.categories = res,
+    error: () => console.error('Failed to load categories')
+  });
+}
 
   onFileSelected(event: any): void {
     this.selectedFile = event.target.files[0];
