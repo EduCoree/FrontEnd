@@ -31,7 +31,6 @@
             {{ avatarInitials }}
           </div>
         }
-
         @if (profile()) {
           <h2 class="font-headline font-bold text-xl text-[#191C1D]">{{ profile()!.name }}</h2>
           <p class="text-sm text-[#404945] mt-1">{{ profile()!.email }}</p>
@@ -43,9 +42,7 @@
           @if (profile()!.bio) {
             <p class="mt-4 text-sm text-[#404945] leading-relaxed">{{ profile()!.bio }}</p>
           }
-          <p class="mt-5 text-xs text-[#707975]">
-            Member since {{ profile()!.createdAt | date:'MMM yyyy' }}
-          </p>
+          <p class="mt-5 text-xs text-[#707975]">Member since {{ profile()!.createdAt | date:'MMM yyyy' }}</p>
         }
       </div>
 
@@ -57,20 +54,17 @@
           <button (click)="activeTab.set('info')"
             class="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold transition-all"
             [class]="activeTab() === 'info' ? 'text-[#2E6858] border-b-2 border-[#2E6858] bg-[#F2F4F4]' : 'text-[#707975] hover:text-[#2E6858] hover:bg-[#F8FAFA]'">
-            <span class="material-symbols-outlined text-[18px]">edit</span>
-            Edit Info
+            <span class="material-symbols-outlined text-[18px]">edit</span>Edit Info
           </button>
           <button (click)="activeTab.set('avatar')"
             class="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold transition-all"
             [class]="activeTab() === 'avatar' ? 'text-[#2E6858] border-b-2 border-[#2E6858] bg-[#F2F4F4]' : 'text-[#707975] hover:text-[#2E6858] hover:bg-[#F8FAFA]'">
-            <span class="material-symbols-outlined text-[18px]">photo_camera</span>
-            Avatar
+            <span class="material-symbols-outlined text-[18px]">photo_camera</span>Avatar
           </button>
           <button (click)="activeTab.set('password')"
             class="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold transition-all"
             [class]="activeTab() === 'password' ? 'text-[#2E6858] border-b-2 border-[#2E6858] bg-[#F2F4F4]' : 'text-[#707975] hover:text-[#2E6858] hover:bg-[#F8FAFA]'">
-            <span class="material-symbols-outlined text-[18px]">lock</span>
-            Password
+            <span class="material-symbols-outlined text-[18px]">lock</span>Password
           </button>
         </div>
 
@@ -91,7 +85,6 @@
                     <p class="mt-1 text-xs text-[#BA1A1A]">Name must be at least 2 characters.</p>
                   }
                 </div>
-
                 <div>
                   <label class="block text-sm font-semibold text-[#191C1D] mb-2">Phone Number</label>
                   <div class="flex items-center gap-3 px-4 py-3 bg-[#F2F4F4] rounded-xl border border-transparent focus-within:border-[#2E6858] focus-within:bg-white transition-all">
@@ -100,7 +93,6 @@
                       class="bg-transparent border-none focus:ring-0 flex-1 text-sm text-[#191C1D] placeholder-[#707975]" />
                   </div>
                 </div>
-
                 <div>
                   <label class="block text-sm font-semibold text-[#191C1D] mb-2">Email <span class="text-[#707975] font-normal">(read-only)</span></label>
                   <div class="flex items-center gap-3 px-4 py-3 bg-[#ECEEEE] rounded-xl border border-[#E1E3E3]">
@@ -108,7 +100,6 @@
                     <span class="text-sm text-[#707975]">{{ profile()?.email }}</span>
                   </div>
                 </div>
-
                 <div class="md:col-span-2">
                   <label class="block text-sm font-semibold text-[#191C1D] mb-2">Bio</label>
                   <div class="px-4 py-3 bg-[#F2F4F4] rounded-xl border border-transparent focus-within:border-[#2E6858] focus-within:bg-white transition-all">
@@ -117,64 +108,61 @@
                   </div>
                 </div>
               </div>
-
               <div class="flex justify-end pt-2">
                 <button type="submit" [disabled]="infoForm.invalid || loading()"
                   class="px-8 py-3 bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] text-white font-bold rounded-xl shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-all hover:shadow-lg active:scale-95">
-                  <span class="material-symbols-outlined text-[18px]" [class.animate-spin]="loading()">
-                    {{ loading() ? 'progress_activity' : 'save' }}
-                  </span>
+                  <span class="material-symbols-outlined text-[18px]" [class.animate-spin]="loading()">{{ loading() ? 'progress_activity' : 'save' }}</span>
                   Save Changes
                 </button>
               </div>
             </form>
           }
 
-          <!-- Tab: Avatar -->
+          <!-- Tab: Avatar Picker -->
           @if (activeTab() === 'avatar') {
-            <form [formGroup]="avatarForm" (ngSubmit)="saveAvatar()" class="space-y-6">
-              <div class="flex flex-col items-center gap-6 py-4">
-                <div class="relative">
-                  @if (avatarForm.get('avatarUrl')?.value && avatarForm.get('avatarUrl')?.valid) {
-                    <img [src]="avatarForm.get('avatarUrl')?.value"
-                      class="w-32 h-32 rounded-full object-cover ring-4 ring-[#B2EFDA]" alt="Preview" />
-                  } @else {
-                    <div class="w-32 h-32 rounded-full bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] flex items-center justify-center text-white text-3xl font-extrabold font-headline ring-4 ring-[#B2EFDA]">
-                      {{ avatarInitials }}
-                    </div>
-                  }
-                  <div class="absolute bottom-1 right-1 w-8 h-8 bg-[#2E6858] rounded-full flex items-center justify-center">
-                    <span class="material-symbols-outlined text-white text-[16px]">photo_camera</span>
-                  </div>
-                </div>
+            <div class="space-y-6">
 
-                <p class="text-sm text-[#404945] text-center max-w-sm">
-                  Paste a direct image URL below. The preview updates automatically once the URL is valid.
-                </p>
-
-                <div class="w-full max-w-md">
-                  <label class="block text-sm font-semibold text-[#191C1D] mb-2">Image URL</label>
-                  <div class="flex items-center gap-3 px-4 py-3 bg-[#F2F4F4] rounded-xl border border-transparent focus-within:border-[#2E6858] focus-within:bg-white transition-all">
-                    <span class="material-symbols-outlined text-[#707975] text-[18px]">link</span>
-                    <input formControlName="avatarUrl" type="url" placeholder="https://example.com/photo.jpg"
-                      class="bg-transparent border-none focus:ring-0 flex-1 text-sm text-[#191C1D] placeholder-[#707975]" />
+              <!-- Preview -->
+              <div class="flex flex-col items-center gap-3 py-2">
+                @if (selectedAvatar()) {
+                  <img [src]="selectedAvatar()!" class="w-24 h-24 rounded-full object-cover ring-4 ring-[#2E6858] shadow-lg transition-all" />
+                } @else if (profile()?.avatarUrl) {
+                  <img [src]="profile()!.avatarUrl!" class="w-24 h-24 rounded-full object-cover ring-4 ring-[#B2EFDA] shadow-lg" />
+                } @else {
+                  <div class="w-24 h-24 rounded-full bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] flex items-center justify-center text-white text-2xl font-extrabold font-headline ring-4 ring-[#B2EFDA]">
+                    {{ avatarInitials }}
                   </div>
-                  @if (avatarForm.get('avatarUrl')?.invalid && avatarForm.get('avatarUrl')?.touched) {
-                    <p class="mt-1 text-xs text-[#BA1A1A]">Please enter a valid https:// URL.</p>
+                }
+                <p class="text-sm text-[#707975]">{{ selectedAvatar() ? 'New avatar selected — click Apply to save' : 'Pick an avatar from the collection below' }}</p>
+              </div>
+
+              <!-- Grid -->
+              <div>
+                <p class="text-sm font-semibold text-[#191C1D] mb-4">Avatar Collection</p>
+                <div class="grid grid-cols-5 sm:grid-cols-8 gap-3">
+                  @for (avatar of avatarOptions; track avatar) {
+                    <button type="button" (click)="selectAvatar(avatar)"
+                      class="relative rounded-full overflow-hidden transition-all duration-200 hover:scale-110 focus:outline-none"
+                      [class]="selectedAvatar() === avatar ? 'ring-4 ring-[#2E6858] ring-offset-2 scale-110' : 'ring-2 ring-transparent hover:ring-[#7DB8A5] ring-offset-1'">
+                      <img [src]="avatar" class="w-12 h-12 object-cover rounded-full" />
+                      @if (selectedAvatar() === avatar) {
+                        <div class="absolute inset-0 bg-[#2E6858]/30 rounded-full flex items-center justify-center">
+                          <span class="material-symbols-outlined text-white text-[18px]" style="font-variation-settings:'FILL' 1">check_circle</span>
+                        </div>
+                      }
+                    </button>
                   }
                 </div>
               </div>
 
-              <div class="flex justify-end">
-                <button type="submit" [disabled]="avatarForm.invalid || loading()"
+              <div class="flex justify-end pt-2">
+                <button type="button" (click)="saveAvatar()" [disabled]="!selectedAvatar() || loading()"
                   class="px-8 py-3 bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] text-white font-bold rounded-xl shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-all hover:shadow-lg active:scale-95">
-                  <span class="material-symbols-outlined text-[18px]" [class.animate-spin]="loading()">
-                    {{ loading() ? 'progress_activity' : 'upload' }}
-                  </span>
-                  Update Avatar
+                  <span class="material-symbols-outlined text-[18px]" [class.animate-spin]="loading()">{{ loading() ? 'progress_activity' : 'check' }}</span>
+                  Apply Avatar
                 </button>
               </div>
-            </form>
+            </div>
           }
 
           <!-- Tab: Password -->
@@ -188,7 +176,6 @@
                     class="bg-transparent border-none focus:ring-0 flex-1 text-sm text-[#191C1D] placeholder-[#707975]" />
                 </div>
               </div>
-
               <div>
                 <label class="block text-sm font-semibold text-[#191C1D] mb-2">New Password</label>
                 <div class="flex items-center gap-3 px-4 py-3 bg-[#F2F4F4] rounded-xl border border-transparent focus-within:border-[#2E6858] focus-within:bg-white transition-all">
@@ -200,7 +187,6 @@
                   <p class="mt-1 text-xs text-[#BA1A1A]">Password must be at least 8 characters.</p>
                 }
               </div>
-
               <div>
                 <label class="block text-sm font-semibold text-[#191C1D] mb-2">Confirm New Password</label>
                 <div class="flex items-center gap-3 px-4 py-3 bg-[#F2F4F4] rounded-xl border border-transparent focus-within:border-[#2E6858] focus-within:bg-white transition-all">
@@ -212,20 +198,14 @@
                   <p class="mt-1 text-xs text-[#BA1A1A]">Passwords do not match.</p>
                 }
               </div>
-
               <div class="bg-[#F2F4F4] rounded-xl p-4 flex gap-3">
                 <span class="material-symbols-outlined text-[#2E6858] text-[20px] shrink-0">info</span>
-                <p class="text-xs text-[#404945] leading-relaxed">
-                  Strong passwords include uppercase letters, numbers, and special characters. Minimum 8 characters required.
-                </p>
+                <p class="text-xs text-[#404945] leading-relaxed">Strong passwords include uppercase letters, numbers, and special characters. Minimum 8 characters required.</p>
               </div>
-
               <div class="flex justify-end">
                 <button type="submit" [disabled]="passwordForm.invalid || loading()"
                   class="px-8 py-3 bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] text-white font-bold rounded-xl shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-all hover:shadow-lg active:scale-95">
-                  <span class="material-symbols-outlined text-[18px]" [class.animate-spin]="loading()">
-                    {{ loading() ? 'progress_activity' : 'key' }}
-                  </span>
+                  <span class="material-symbols-outlined text-[18px]" [class.animate-spin]="loading()">{{ loading() ? 'progress_activity' : 'key' }}</span>
                   Change Password
                 </button>
               </div>
