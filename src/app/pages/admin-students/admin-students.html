@@ -1,0 +1,131 @@
+<!-- src/app/pages/admin-students/admin-students.html -->
+<div class="min-h-screen bg-[#F8FAFA] pt-28 pb-20 px-4 md:px-8">
+  <div class="max-w-7xl mx-auto">
+
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="font-headline text-3xl font-extrabold text-[#191C1D] tracking-tight">Students</h1>
+      <p class="text-[#404945] mt-1">Browse and manage all student accounts.</p>
+    </div>
+
+    <!-- Toast -->
+    @if (successMsg()) {
+      <div class="mb-6 flex items-center gap-3 px-5 py-4 bg-[#AAF1DA]/40 border border-[#226A58]/20 rounded-xl text-[#226A58] font-semibold text-sm">
+        <span class="material-symbols-outlined text-[20px]">check_circle</span>{{ successMsg() }}
+      </div>
+    }
+    @if (errorMsg()) {
+      <div class="mb-6 flex items-center gap-3 px-5 py-4 bg-[#FFDAD6]/40 border border-[#BA1A1A]/20 rounded-xl text-[#BA1A1A] font-semibold text-sm">
+        <span class="material-symbols-outlined text-[20px]">error</span>{{ errorMsg() }}
+      </div>
+    }
+
+    <!-- Filters Row -->
+    <div class="flex flex-col md:flex-row gap-4 mb-6">
+      <div class="flex items-center gap-3 px-4 py-3 bg-white rounded-xl border border-[#E1E3E3] shadow-sm flex-1 max-w-md">
+        <span class="material-symbols-outlined text-[#707975] text-[18px]">search</span>
+        <input (input)="onSearch($event)" type="text" placeholder="Search by name or email..."
+          class="bg-transparent border-none focus:ring-0 flex-1 text-sm text-[#191C1D] placeholder-[#707975]" />
+      </div>
+      <div class="flex gap-2">
+        <button (click)="setFilter(undefined)"
+          class="px-4 py-2 rounded-xl text-sm font-semibold transition-all"
+          [class]="filterActive() === undefined ? 'bg-[#2E6858] text-white' : 'bg-white border border-[#E1E3E3] text-[#404945] hover:bg-[#F2F4F4]'">
+          All
+        </button>
+        <button (click)="setFilter(true)"
+          class="px-4 py-2 rounded-xl text-sm font-semibold transition-all"
+          [class]="filterActive() === true ? 'bg-[#226A58] text-white' : 'bg-white border border-[#E1E3E3] text-[#404945] hover:bg-[#F2F4F4]'">
+          Active
+        </button>
+        <button (click)="setFilter(false)"
+          class="px-4 py-2 rounded-xl text-sm font-semibold transition-all"
+          [class]="filterActive() === false ? 'bg-[#BA1A1A] text-white' : 'bg-white border border-[#E1E3E3] text-[#404945] hover:bg-[#F2F4F4]'">
+          Inactive
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    @if (loading()) {
+      <div class="flex justify-center py-20">
+        <span class="material-symbols-outlined text-[#7DB8A5] text-5xl animate-spin">progress_activity</span>
+      </div>
+    }
+
+    <!-- Table -->
+    @if (!loading()) {
+      <div class="bg-white rounded-2xl shadow-[0_8px_32px_rgba(125,184,165,0.10)] overflow-hidden">
+        <table class="w-full text-sm">
+          <thead class="bg-[#F2F4F4] border-b border-[#E1E3E3]">
+            <tr>
+              <th class="text-left px-6 py-4 font-semibold text-[#404945]">Student</th>
+              <th class="text-left px-6 py-4 font-semibold text-[#404945] hidden md:table-cell">Email</th>
+              <th class="text-left px-6 py-4 font-semibold text-[#404945] hidden lg:table-cell">Enrollments</th>
+              <th class="text-left px-6 py-4 font-semibold text-[#404945]">Status</th>
+              <th class="text-left px-6 py-4 font-semibold text-[#404945]">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-[#F2F4F4]">
+            @for (student of students(); track student.id) {
+              <tr class="hover:bg-[#F8FAFA] transition-colors">
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-3">
+                    @if (student.avatarUrl) {
+                      <img [src]="student.avatarUrl" class="w-10 h-10 rounded-full object-cover" />
+                    } @else {
+                      <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] flex items-center justify-center text-white text-xs font-bold">
+                        {{ avatarInitials(student.name) }}
+                      </div>
+                    }
+                    <div>
+                      <p class="font-semibold text-[#191C1D]">{{ student.name }}</p>
+                      <p class="text-xs text-[#707975]">&#64;{{ student.userName }}</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 text-[#404945] hidden md:table-cell">{{ student.email }}</td>
+                <td class="px-6 py-4 hidden lg:table-cell">
+                  <span class="px-2 py-1 bg-[#F2F4F4] rounded-lg text-[#404945] font-medium text-xs">
+                    {{ student.enrollmentCount }} enrolled
+                  </span>
+                </td>
+                <td class="px-6 py-4">
+                  <span class="px-3 py-1 rounded-full text-xs font-bold"
+                    [class]="student.isActive ? 'bg-[#AAF1DA]/40 text-[#226A58]' : 'bg-[#FFDAD6]/40 text-[#BA1A1A]'">
+                    {{ student.isActive ? 'Active' : 'Inactive' }}
+                  </span>
+                </td>
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-2">
+                    <a [routerLink]="['/admin/students', student.id]"
+                      class="p-2 rounded-lg bg-[#F2F4F4] text-[#2E6858] hover:bg-[#2E6858] hover:text-white transition-all">
+                      <span class="material-symbols-outlined text-[16px]">visibility</span>
+                    </a>
+                    <button (click)="toggleActive(student)"
+                      class="p-2 rounded-lg transition-all"
+                      [class]="student.isActive
+                        ? 'bg-[#FFDAD6]/40 text-[#BA1A1A] hover:bg-[#BA1A1A] hover:text-white'
+                        : 'bg-[#AAF1DA]/40 text-[#226A58] hover:bg-[#226A58] hover:text-white'">
+                      <span class="material-symbols-outlined text-[16px]">
+                        {{ student.isActive ? 'person_off' : 'person_check' }}
+                      </span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+            @empty {
+              <tr>
+                <td colspan="5" class="px-6 py-20 text-center text-[#707975]">
+                  <span class="material-symbols-outlined text-5xl block mb-3 text-[#BFC9C4]">group</span>
+                  No students found.
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</div>
