@@ -12,9 +12,9 @@ import { environment } from '../../../../environments/environment';
 export class AuthService {
 
   // api link
-  // private baseUrl = 'https://localhost:7275/api/Authentication';
-// private baseUrl = `${environment.apiUrl}/Authentication`;
-private baseUrl = `${environment.apiUrl}/api/Authentication`;
+  private baseUrl = `${environment.apiUrl}/api/Authentication`;
+
+
   constructor(private http: HttpClient, private router: Router) {}
 
   // login

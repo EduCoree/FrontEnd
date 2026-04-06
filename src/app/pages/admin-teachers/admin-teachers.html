@@ -1,0 +1,203 @@
+<!-- src/app/pages/admin-teachers/admin-teachers.html -->
+<div class="min-h-screen bg-[#F8FAFA] pt-28 pb-20 px-4 md:px-8">
+  <div class="max-w-7xl mx-auto">
+
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+      <div>
+        <h1 class="font-headline text-3xl font-extrabold text-[#191C1D] tracking-tight">Teachers</h1>
+        <p class="text-[#404945] mt-1">Manage all teacher accounts.</p>
+      </div>
+      <button (click)="openCreate()"
+        class="flex items-center gap-2 px-6 py-3 bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] text-white font-bold rounded-xl shadow-md hover:shadow-lg active:scale-95 transition-all">
+        <span class="material-symbols-outlined text-[18px]">person_add</span>
+        Add Teacher
+      </button>
+    </div>
+
+    <!-- Toast -->
+    @if (successMsg()) {
+      <div class="mb-6 flex items-center gap-3 px-5 py-4 bg-[#AAF1DA]/40 border border-[#226A58]/20 rounded-xl text-[#226A58] font-semibold text-sm">
+        <span class="material-symbols-outlined text-[20px]">check_circle</span>{{ successMsg() }}
+      </div>
+    }
+    @if (errorMsg()) {
+      <div class="mb-6 flex items-center gap-3 px-5 py-4 bg-[#FFDAD6]/40 border border-[#BA1A1A]/20 rounded-xl text-[#BA1A1A] font-semibold text-sm">
+        <span class="material-symbols-outlined text-[20px]">error</span>{{ errorMsg() }}
+      </div>
+    }
+
+    <!-- Search -->
+    <div class="flex items-center gap-3 px-4 py-3 bg-white rounded-xl border border-[#E1E3E3] shadow-sm mb-6 max-w-md">
+      <span class="material-symbols-outlined text-[#707975] text-[18px]">search</span>
+      <input (input)="onSearch($event)" type="text" placeholder="Search by name or email..."
+        class="bg-transparent border-none focus:ring-0 flex-1 text-sm text-[#191C1D] placeholder-[#707975]" />
+    </div>
+
+    <!-- Loading -->
+    @if (loading()) {
+      <div class="flex justify-center py-20">
+        <span class="material-symbols-outlined text-[#7DB8A5] text-5xl animate-spin">progress_activity</span>
+      </div>
+    }
+
+    <!-- Table -->
+    @if (!loading()) {
+      <div class="bg-white rounded-2xl shadow-[0_8px_32px_rgba(125,184,165,0.10)] overflow-hidden">
+        <table class="w-full text-sm">
+          <thead class="bg-[#F2F4F4] border-b border-[#E1E3E3]">
+            <tr>
+              <th class="text-left px-6 py-4 font-semibold text-[#404945]">Teacher</th>
+              <th class="text-left px-6 py-4 font-semibold text-[#404945] hidden md:table-cell">Email</th>
+              <th class="text-left px-6 py-4 font-semibold text-[#404945] hidden lg:table-cell">Courses</th>
+              <th class="text-left px-6 py-4 font-semibold text-[#404945]">Status</th>
+              <th class="text-left px-6 py-4 font-semibold text-[#404945]">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-[#F2F4F4]">
+            @for (teacher of teachers(); track teacher.id) {
+              <tr class="hover:bg-[#F8FAFA] transition-colors">
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-3">
+                    @if (teacher.avatarUrl) {
+                      <img [src]="teacher.avatarUrl" class="w-10 h-10 rounded-full object-cover" />
+                    } @else {
+                      <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] flex items-center justify-center text-white text-xs font-bold">
+                        {{ avatarInitials(teacher.name) }}
+                      </div>
+                    }
+                    <div>
+                      <p class="font-semibold text-[#191C1D]">{{ teacher.name }}</p>
+                      <p class="text-xs text-[#707975]">&#64;{{ teacher.userName }}</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 text-[#404945] hidden md:table-cell">{{ teacher.email }}</td>
+                <td class="px-6 py-4 hidden lg:table-cell">
+                  <span class="px-2 py-1 bg-[#F2F4F4] rounded-lg text-[#404945] font-medium text-xs">
+                    {{ teacher.courseCount }} courses
+                  </span>
+                </td>
+                <td class="px-6 py-4">
+                  <span class="px-3 py-1 rounded-full text-xs font-bold"
+                    [class]="teacher.isActive ? 'bg-[#AAF1DA]/40 text-[#226A58]' : 'bg-[#FFDAD6]/40 text-[#BA1A1A]'">
+                    {{ teacher.isActive ? 'Active' : 'Inactive' }}
+                  </span>
+                </td>
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-2">
+                    <button (click)="openEdit(teacher)"
+                      class="p-2 rounded-lg bg-[#F2F4F4] text-[#2E6858] hover:bg-[#2E6858] hover:text-white transition-all">
+                      <span class="material-symbols-outlined text-[16px]">edit</span>
+                    </button>
+                    <button (click)="toggleActive(teacher)"
+                      class="p-2 rounded-lg transition-all"
+                      [class]="teacher.isActive
+                        ? 'bg-[#FFDAD6]/40 text-[#BA1A1A] hover:bg-[#BA1A1A] hover:text-white'
+                        : 'bg-[#AAF1DA]/40 text-[#226A58] hover:bg-[#226A58] hover:text-white'">
+                      <span class="material-symbols-outlined text-[16px]">
+                        {{ teacher.isActive ? 'person_off' : 'person_check' }}
+                      </span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+            @empty {
+              <tr>
+                <td colspan="5" class="px-6 py-20 text-center text-[#707975]">
+                  <span class="material-symbols-outlined text-5xl block mb-3 text-[#BFC9C4]">school</span>
+                  No teachers found.
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Create Modal -->
+@if (showCreateModal()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-8">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="font-headline text-xl font-bold text-[#191C1D]">Add New Teacher</h2>
+        <button (click)="showCreateModal.set(false)" class="p-2 rounded-lg hover:bg-[#F2F4F4] transition-colors">
+          <span class="material-symbols-outlined text-[#707975]">close</span>
+        </button>
+      </div>
+      <form [formGroup]="createForm" (ngSubmit)="submitCreate()" class="space-y-4">
+        @for (field of [
+          {key:'name', label:'Full Name', type:'text', icon:'badge'},
+          {key:'userName', label:'Username', type:'text', icon:'alternate_email'},
+          {key:'email', label:'Email', type:'email', icon:'mail'},
+          {key:'phoneNumber', label:'Phone', type:'tel', icon:'phone'},
+          {key:'tempPassword', label:'Temp Password', type:'password', icon:'lock'}
+        ]; track field.key) {
+          <div>
+            <label class="block text-sm font-semibold text-[#191C1D] mb-1">{{ field.label }}</label>
+            <div class="flex items-center gap-3 px-4 py-3 bg-[#F2F4F4] rounded-xl border border-transparent focus-within:border-[#2E6858] focus-within:bg-white transition-all">
+              <span class="material-symbols-outlined text-[#707975] text-[18px]">{{ field.icon }}</span>
+              <input [formControlName]="field.key" [type]="field.type"
+                class="bg-transparent border-none focus:ring-0 flex-1 text-sm text-[#191C1D] placeholder-[#707975]" />
+            </div>
+          </div>
+        }
+        <div class="flex justify-end gap-3 pt-2">
+          <button type="button" (click)="showCreateModal.set(false)"
+            class="px-6 py-2.5 rounded-xl border border-[#E1E3E3] text-[#404945] font-semibold hover:bg-[#F2F4F4] transition-colors">
+            Cancel
+          </button>
+          <button type="submit" [disabled]="createForm.invalid || loading()"
+            class="px-6 py-2.5 bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] text-white font-bold rounded-xl disabled:opacity-50 flex items-center gap-2">
+            <span class="material-symbols-outlined text-[16px]">person_add</span>
+            Create
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+
+<!-- Edit Modal -->
+@if (showEditModal()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-8">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="font-headline text-xl font-bold text-[#191C1D]">Edit Teacher</h2>
+        <button (click)="showEditModal.set(false)" class="p-2 rounded-lg hover:bg-[#F2F4F4] transition-colors">
+          <span class="material-symbols-outlined text-[#707975]">close</span>
+        </button>
+      </div>
+      <form [formGroup]="editForm" (ngSubmit)="submitEdit()" class="space-y-4">
+        @for (field of [
+          {key:'name', label:'Full Name', type:'text', icon:'badge'},
+          {key:'phoneNumber', label:'Phone', type:'tel', icon:'phone'},
+          {key:'bio', label:'Bio', type:'text', icon:'info'}
+        ]; track field.key) {
+          <div>
+            <label class="block text-sm font-semibold text-[#191C1D] mb-1">{{ field.label }}</label>
+            <div class="flex items-center gap-3 px-4 py-3 bg-[#F2F4F4] rounded-xl border border-transparent focus-within:border-[#2E6858] focus-within:bg-white transition-all">
+              <span class="material-symbols-outlined text-[#707975] text-[18px]">{{ field.icon }}</span>
+              <input [formControlName]="field.key" [type]="field.type"
+                class="bg-transparent border-none focus:ring-0 flex-1 text-sm text-[#191C1D]" />
+            </div>
+          </div>
+        }
+        <div class="flex justify-end gap-3 pt-2">
+          <button type="button" (click)="showEditModal.set(false)"
+            class="px-6 py-2.5 rounded-xl border border-[#E1E3E3] text-[#404945] font-semibold hover:bg-[#F2F4F4] transition-colors">
+            Cancel
+          </button>
+          <button type="submit" [disabled]="editForm.invalid || loading()"
+            class="px-6 py-2.5 bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] text-white font-bold rounded-xl disabled:opacity-50 flex items-center gap-2">
+            <span class="material-symbols-outlined text-[16px]">save</span>
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

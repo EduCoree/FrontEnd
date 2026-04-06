@@ -4,10 +4,11 @@ import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CenterService } from '../../../core/services/center.service';
+import { Sidebar } from "../../../shared/components/ui/sidebar/sidebar";
 
 @Component({
   selector: 'app-center-logo',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, Sidebar],
   templateUrl: './center-logo.html',
   styleUrl: './center-logo.css',
 })
