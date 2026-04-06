@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { AuthResponse, LoginRequest, RegisterRequest } from '../../model/auth/auth.model';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,8 @@ import { AuthResponse, LoginRequest, RegisterRequest } from '../../model/auth/au
 export class AuthService {
 
   // api link
-  private baseUrl = 'https://localhost:7275/api/Authentication';
+  private baseUrl = `${environment.apiUrl}/api/Authentication`;
+
 
   constructor(private http: HttpClient, private router: Router) {}
 
