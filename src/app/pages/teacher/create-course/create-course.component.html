@@ -1,35 +1,48 @@
 <!-- صفحة إنشاء كورس - Step 1: Basic Info -->
 <div class="bg-surface text-on-surface min-h-screen font-body">
-
   <!-- السايدبار -->
   <aside class="fixed left-0 top-0 h-full p-6 flex flex-col gap-8 bg-surface-container w-72 z-50">
     <div class="flex flex-col gap-1 px-4">
-      <span class="text-lg font-black text-primary cursor-pointer" (click)="goToDashboard()">EduCore</span>
-      <span class="uppercase tracking-widest text-xs font-bold text-on-surface-variant">Course Builder</span>
+      <span class="text-lg font-black text-primary cursor-pointer" (click)="goToDashboard()"
+        >EduCore</span
+      >
+      <span class="uppercase tracking-widest text-xs font-bold text-on-surface-variant"
+        >Course Builder</span
+      >
     </div>
     <nav class="flex flex-col gap-2 mt-4">
       <!-- Active -->
-      <a class="flex items-center gap-4 bg-white text-brand-highlight rounded-full px-6 py-3 shadow-sm">
+      <a
+        class="flex items-center gap-4 bg-white text-brand-highlight rounded-full px-6 py-3 shadow-sm"
+      >
         <span class="material-symbols-outlined">info</span>
         <span class="uppercase tracking-widest text-xs font-bold">Course Info</span>
       </a>
       <!-- Locked -->
-      <a class="flex items-center gap-4 text-on-surface-variant/40 px-6 py-3 rounded-full cursor-not-allowed">
+      <a
+        class="flex items-center gap-4 text-on-surface-variant/40 px-6 py-3 rounded-full cursor-not-allowed"
+      >
         <span class="material-symbols-outlined">menu_book</span>
         <span class="uppercase tracking-widest text-xs font-bold">Curriculum</span>
       </a>
-      <a class="flex items-center gap-4 text-on-surface-variant/40 px-6 py-3 rounded-full cursor-not-allowed">
+      <a
+        class="flex items-center gap-4 text-on-surface-variant/40 px-6 py-3 rounded-full cursor-not-allowed"
+      >
         <span class="material-symbols-outlined">video_library</span>
         <span class="uppercase tracking-widest text-xs font-bold">Media</span>
       </a>
-      <a class="flex items-center gap-4 text-on-surface-variant/40 px-6 py-3 rounded-full cursor-not-allowed">
+      <a
+        class="flex items-center gap-4 text-on-surface-variant/40 px-6 py-3 rounded-full cursor-not-allowed"
+      >
         <span class="material-symbols-outlined">payments</span>
         <span class="uppercase tracking-widest text-xs font-bold">Pricing</span>
       </a>
     </nav>
     <div class="mt-auto px-4">
-      <button (click)="goToDashboard()"
-        class="w-full bg-surface-container-high text-on-surface-variant rounded-full py-4 font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-all text-sm">
+      <button
+        (click)="goToDashboard()"
+        class="w-full bg-surface-container-high text-on-surface-variant rounded-full py-4 font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-all text-sm"
+      >
         <span class="material-symbols-outlined text-xl">arrow_back</span>
         Back to Dashboard
       </button>
@@ -38,14 +51,19 @@
 
   <!-- المحتوى الرئيسي -->
   <main class="ml-72 min-h-screen">
-
     <!-- الهيدر -->
-    <header class="flex justify-between items-center w-full px-8 py-3 bg-surface/90 backdrop-blur-xl sticky top-0 z-40 border-b border-outline-variant/10">
+    <header
+      class="flex justify-between items-center w-full px-8 py-3 bg-surface/90 backdrop-blur-xl sticky top-0 z-40 border-b border-outline-variant/10"
+    >
       <div class="flex items-center gap-8">
         <h1 class="text-lg font-bold tracking-tight text-brand-highlight">Create New Course</h1>
         <!-- Step Indicator -->
-        <nav class="hidden lg:flex items-center gap-1 bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant/10">
-          <div class="flex items-center gap-2 px-3 py-1 bg-brand-highlight text-white rounded-full shadow-sm">
+        <nav
+          class="hidden lg:flex items-center gap-1 bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant/10"
+        >
+          <div
+            class="flex items-center gap-2 px-3 py-1 bg-brand-highlight text-white rounded-full shadow-sm"
+          >
             <span class="text-xs font-bold">01</span>
             <span class="text-xs font-bold uppercase tracking-wider">Course Info</span>
           </div>
@@ -67,12 +85,17 @@
         </nav>
       </div>
       <div class="flex items-center gap-3">
-        <button (click)="goToDashboard()"
-          class="px-5 py-1.5 rounded-full border border-outline-variant text-on-surface text-sm font-semibold hover:bg-surface-container transition-colors">
+        <button
+          (click)="goToDashboard()"
+          class="px-5 py-1.5 rounded-full border border-outline-variant text-on-surface text-sm font-semibold hover:bg-surface-container transition-colors"
+        >
           Cancel
         </button>
-        <button (click)="onSubmit()" [disabled]="isLoading"
-          class="px-7 py-1.5 rounded-full bg-brand-highlight text-white text-sm font-bold hover:opacity-90 transition-all disabled:opacity-50">
+        <button
+          (click)="onSubmit()"
+          [disabled]="isLoading"
+          class="px-7 py-1.5 rounded-full bg-brand-highlight text-white text-sm font-bold hover:opacity-90 transition-all disabled:opacity-50"
+        >
           Save Draft
         </button>
       </div>
@@ -80,13 +103,16 @@
 
     <!-- الفورم -->
     <div class="p-8 max-w-[1400px] mx-auto grid grid-cols-12 gap-8">
-
-      <form [formGroup]="courseForm" (ngSubmit)="onSubmit()"
-        class="col-span-12 lg:col-span-8 space-y-10 pb-32">
-
+      <form
+        [formGroup]="courseForm"
+        (ngSubmit)="onSubmit()"
+        class="col-span-12 lg:col-span-8 space-y-10 pb-32"
+      >
         <!-- رسالة الخطأ -->
-        <div *ngIf="errorMessage"
-          class="bg-red-100 text-red-600 p-3 rounded-lg text-sm text-center">
+        <div
+          *ngIf="errorMessage"
+          class="bg-red-100 text-red-600 p-3 rounded-lg text-sm text-center"
+        >
           {{ errorMessage }}
         </div>
 
@@ -97,17 +123,22 @@
             <h2 class="text-2xl font-bold tracking-tight">Basic Info</h2>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
             <!-- Title -->
             <div class="col-span-2 space-y-1.5">
               <label class="uppercase tracking-widest text-xs font-bold text-on-surface-variant">
                 Course Title
               </label>
-              <input type="text" formControlName="title"
+              <input
+                type="text"
+                formControlName="title"
                 placeholder="e.g. Masterclass in Abstract Composition"
-                class="w-full px-5 py-3 bg-surface-container-high rounded-full border-none focus:ring-2 focus:ring-brand-highlight/20 transition-all text-base font-medium outline-none"/>
-              <span *ngIf="courseForm.get('title')?.invalid && courseForm.get('title')?.touched"
-                class="text-red-500 text-xs block px-2">Title is required</span>
+                class="w-full px-5 py-3 bg-surface-container-high rounded-full border-none focus:ring-2 focus:ring-brand-highlight/20 transition-all text-base font-medium outline-none"
+              />
+              <span
+                *ngIf="courseForm.get('title')?.invalid && courseForm.get('title')?.touched"
+                class="text-red-500 text-xs block px-2"
+                >Title is required</span
+              >
             </div>
 
             <!-- Category -->
@@ -148,8 +179,10 @@
               </label>
               <div class="flex gap-1.5">
                 <label *ngFor="let level of levels" class="flex-1 cursor-pointer">
-                  <input type="radio" formControlName="level" [value]="level" class="hidden peer"/>
-                  <div class="text-center py-3 bg-surface-container-high text-on-surface-variant rounded-full font-bold text-xs peer-checked:bg-brand-highlight peer-checked:text-white transition-all">
+                  <input type="radio" formControlName="level" [value]="level" class="hidden peer" />
+                  <div
+                    class="text-center py-3 bg-surface-container-high text-on-surface-variant rounded-full font-bold text-xs peer-checked:bg-brand-highlight peer-checked:text-white transition-all"
+                  >
                     {{ level }}
                   </div>
                 </label>
@@ -163,114 +196,185 @@
               </label>
               <div class="bg-surface-container-high rounded-xl p-4 min-h-[160px] flex flex-col">
                 <div class="flex gap-4 mb-3 border-b border-outline-variant/10 pb-3">
-                  <button type="button" class="material-symbols-outlined text-xl text-on-surface-variant hover:text-brand-highlight">format_bold</button>
-                  <button type="button" class="material-symbols-outlined text-xl text-on-surface-variant hover:text-brand-highlight">format_italic</button>
-                  <button type="button" class="material-symbols-outlined text-xl text-on-surface-variant hover:text-brand-highlight">format_list_bulleted</button>
+                  <button
+                    type="button"
+                    class="material-symbols-outlined text-xl text-on-surface-variant hover:text-brand-highlight"
+                  >
+                    format_bold
+                  </button>
+                  <button
+                    type="button"
+                    class="material-symbols-outlined text-xl text-on-surface-variant hover:text-brand-highlight"
+                  >
+                    format_italic
+                  </button>
+                  <button
+                    type="button"
+                    class="material-symbols-outlined text-xl text-on-surface-variant hover:text-brand-highlight"
+                  >
+                    format_list_bulleted
+                  </button>
                 </div>
-                <textarea formControlName="description" rows="5"
+                <textarea
+                  formControlName="description"
+                  rows="5"
                   placeholder="Describe the journey your students will take..."
-                  class="bg-transparent border-none focus:ring-0 w-full flex-grow resize-none text-on-surface text-sm leading-relaxed outline-none"></textarea>
+                  class="bg-transparent border-none focus:ring-0 w-full flex-grow resize-none text-on-surface text-sm leading-relaxed outline-none"
+                ></textarea>
               </div>
-              <span *ngIf="courseForm.get('description')?.invalid && courseForm.get('description')?.touched"
-                class="text-red-500 text-xs block px-2">Description is required</span>
+              <span
+                *ngIf="
+                  courseForm.get('description')?.invalid && courseForm.get('description')?.touched
+                "
+                class="text-red-500 text-xs block px-2"
+                >Description is required</span
+              >
             </div>
-
           </div>
         </section>
 
         <!-- Media + Pricing -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+          <!-- Media -->
+          <section class="space-y-4">
+            <div class="flex items-baseline gap-3">
+              <span class="text-3xl font-extrabold tracking-tighter text-brand-highlight/20"
+                >02</span
+              >
+              <h2 class="text-2xl font-bold tracking-tight">Media</h2>
+            </div>
 
-         <!-- Media -->
-<section class="space-y-4">
-  <div class="flex items-baseline gap-3">
-    <span class="text-3xl font-extrabold tracking-tighter text-brand-highlight/20">02</span>
-    <h2 class="text-2xl font-bold tracking-tight">Media</h2>
-  </div>
+            <div
+              class="w-full aspect-video bg-surface-container-high rounded-xl overflow-hidden relative border-2 border-dashed border-brand-highlight/30 hover:border-brand-highlight/60 transition-all"
+            >
+              <!-- Preview الصورة -->
+              <img
+                *ngIf="coverPreview"
+                [src]="coverPreview"
+                class="w-full h-full object-cover absolute inset-0"
+              />
 
-  <div class="w-full aspect-video bg-surface-container-high rounded-xl overflow-hidden relative border-2 border-dashed border-brand-highlight/30 hover:border-brand-highlight/60 transition-all">
+              <!-- Overlay -->
+              <label
+                class="absolute inset-0 flex flex-col items-center justify-center cursor-pointer"
+                [class]="
+                  coverPreview ? 'bg-black/40 opacity-0 hover:opacity-100 transition-opacity' : ''
+                "
+              >
+                <input
+                  type="file"
+                  accept="image/*"
+                  class="hidden"
+                  (change)="onFileSelected($event)"
+                />
+                <div class="flex flex-col items-center gap-2 p-4 text-center">
+                  <div
+                    class="w-14 h-14 bg-brand-highlight/10 rounded-full flex items-center justify-center text-brand-highlight"
+                  >
+                    <span class="material-symbols-outlined text-3xl">add_a_photo</span>
+                  </div>
+                  <p
+                    class="font-bold text-sm"
+                    [class]="coverPreview ? 'text-white' : 'text-on-surface'"
+                  >
+                    {{ coverPreview ? 'Change Cover' : 'Upload Cover (Optional)' }}
+                  </p>
+                  <p
+                    class="text-xs uppercase tracking-widest"
+                    [class]="coverPreview ? 'text-white/70' : 'text-on-surface-variant'"
+                  >
+                    JPG, PNG, WebP
+                  </p>
+                </div>
+              </label>
+            </div>
 
-    <!-- Preview الصورة -->
-    <img *ngIf="coverPreview" [src]="coverPreview"
-      class="w-full h-full object-cover absolute inset-0"/>
+            <!-- زرار الـ Upload -->
+            <button
+              *ngIf="selectedFile"
+              type="button"
+              (click)="uploadCover()"
+              [disabled]="isUploadingCover"
+              class="w-full py-3 bg-brand-highlight text-white rounded-full font-bold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-all disabled:opacity-50"
+            >
+              <span class="material-symbols-outlined text-sm">cloud_upload</span>
+              {{ isUploadingCover ? 'Uploading...' : 'Upload Cover Image' }}
+            </button>
 
-    <!-- Overlay -->
-    <label class="absolute inset-0 flex flex-col items-center justify-center cursor-pointer"
-      [class]="coverPreview ? 'bg-black/40 opacity-0 hover:opacity-100 transition-opacity' : ''">
-      <input type="file" accept="image/*" class="hidden" (change)="onFileSelected($event)"/>
-      <div class="flex flex-col items-center gap-2 p-4 text-center">
-        <div class="w-14 h-14 bg-brand-highlight/10 rounded-full flex items-center justify-center text-brand-highlight">
-          <span class="material-symbols-outlined text-3xl">add_a_photo</span>
-        </div>
-        <p class="font-bold text-sm" [class]="coverPreview ? 'text-white' : 'text-on-surface'">
-          {{ coverPreview ? 'Change Cover' : 'Upload Cover (Optional)' }}
-        </p>
-        <p class="text-xs uppercase tracking-widest" [class]="coverPreview ? 'text-white/70' : 'text-on-surface-variant'">
-          JPG, PNG, WebP
-        </p>
-      </div>
-    </label>
-
-  </div>
-
-  <!-- زرار الـ Upload -->
-  <button *ngIf="selectedFile" type="button" (click)="uploadCover()"
-    [disabled]="isUploadingCover"
-    class="w-full py-3 bg-brand-highlight text-white rounded-full font-bold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-all disabled:opacity-50">
-    <span class="material-symbols-outlined text-sm">cloud_upload</span>
-    {{ isUploadingCover ? 'Uploading...' : 'Upload Cover Image' }}
-  </button>
-
-  <!-- رسالة النجاح -->
-  <div *ngIf="coverUploadSuccess"
-    class="text-center text-sm font-semibold text-primary">
-    ✓ Cover uploaded successfully!
-  </div>
-
-</section>
+            <!-- رسالة النجاح -->
+            <div *ngIf="coverUploadSuccess" class="text-center text-sm font-semibold text-primary">
+              ✓ Cover uploaded successfully!
+            </div>
+          </section>
 
           <!-- Pricing -->
           <section class="space-y-4">
             <div class="flex items-baseline gap-3">
-              <span class="text-3xl font-extrabold tracking-tighter text-brand-highlight/20">03</span>
+              <span class="text-3xl font-extrabold tracking-tighter text-brand-highlight/20"
+                >03</span
+              >
               <h2 class="text-2xl font-bold tracking-tight">Pricing</h2>
             </div>
-            <div class="bg-surface-container-low p-6 rounded-xl space-y-5 border border-outline-variant/10 shadow-sm">
+            <div
+              class="bg-surface-container-low p-6 rounded-xl space-y-5 border border-outline-variant/10 shadow-sm"
+            >
               <div class="space-y-2">
-                <label class="uppercase tracking-widest text-xs font-bold text-on-surface-variant">Pricing Strategy</label>
+                <label class="uppercase tracking-widest text-xs font-bold text-on-surface-variant"
+                  >Pricing Strategy</label
+                >
                 <div class="flex gap-2">
                   <label *ngFor="let type of pricingTypes" class="flex-1 cursor-pointer">
-                    <input type="radio" formControlName="pricingType" [value]="type" class="hidden peer"/>
-                    <div class="text-center px-4 py-3 bg-white rounded-full border-2 border-transparent peer-checked:border-brand-highlight peer-checked:text-brand-highlight text-on-surface-variant text-xs font-bold transition-all">
+                    <input
+                      type="radio"
+                      formControlName="pricingType"
+                      [value]="type"
+                      class="hidden peer"
+                    />
+                    <div
+                      class="text-center px-4 py-3 bg-white rounded-full border-2 border-transparent peer-checked:border-brand-highlight peer-checked:text-brand-highlight text-on-surface-variant text-xs font-bold transition-all"
+                    >
                       {{ type }}
                     </div>
                   </label>
                 </div>
               </div>
               <div *ngIf="courseForm.get('pricingType')?.value === 'Paid'" class="space-y-2">
-                <label class="uppercase tracking-widest text-xs font-bold text-on-surface-variant">Price (USD)</label>
+                <label class="uppercase tracking-widest text-xs font-bold text-on-surface-variant"
+                  >Price (USD)</label
+                >
                 <div class="relative">
-                  <span class="absolute left-5 top-1/2 -translate-y-1/2 font-bold text-xl text-on-surface-variant">$</span>
-                  <input type="number" formControlName="price" placeholder="49.00"
-                    class="w-full pl-10 pr-5 py-3.5 bg-white rounded-full border-none focus:ring-2 focus:ring-brand-highlight/20 text-2xl font-extrabold text-brand-highlight outline-none"/>
+                  <span
+                    class="absolute left-5 top-1/2 -translate-y-1/2 font-bold text-xl text-on-surface-variant"
+                    >$</span
+                  >
+                  <input
+                    type="number"
+                    formControlName="price"
+                    placeholder="49.00"
+                    class="w-full pl-10 pr-5 py-3.5 bg-white rounded-full border-none focus:ring-2 focus:ring-brand-highlight/20 text-2xl font-extrabold text-brand-highlight outline-none"
+                  />
                 </div>
               </div>
             </div>
           </section>
-
         </div>
-
       </form>
 
       <!-- السايدبار الأيمن -->
       <div class="hidden lg:block lg:col-span-4">
         <div class="sticky top-24 flex flex-col gap-6">
-
           <!-- Course Health -->
-          <div class="bg-white p-6 rounded-2xl border border-brand-highlight/10 shadow-sm space-y-4">
+          <div
+            class="bg-white p-6 rounded-2xl border border-brand-highlight/10 shadow-sm space-y-4"
+          >
             <div class="flex items-center justify-between">
-              <h3 class="font-bold text-xs uppercase tracking-widest text-on-surface-variant">Course Health</h3>
-              <span class="text-xs font-bold text-brand-highlight bg-brand-highlight/10 px-2 py-0.5 rounded-full">Step 1/4</span>
+              <h3 class="font-bold text-xs uppercase tracking-widest text-on-surface-variant">
+                Course Health
+              </h3>
+              <span
+                class="text-xs font-bold text-brand-highlight bg-brand-highlight/10 px-2 py-0.5 rounded-full"
+                >Step 1/4</span
+              >
             </div>
             <div class="space-y-3">
               <div class="flex items-center justify-between text-xs font-bold">
@@ -278,38 +382,84 @@
                 <span class="text-brand-highlight">{{ getProgress() }}%</span>
               </div>
               <div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
-                <div class="h-full bg-brand-highlight rounded-full transition-all duration-700"
-                  [style.width]="getProgress() + '%'"></div>
+                <div
+                  class="h-full bg-brand-highlight rounded-full transition-all duration-700"
+                  [style.width]="getProgress() + '%'"
+                ></div>
               </div>
             </div>
             <div class="pt-2 space-y-2">
               <div class="flex items-center gap-2 text-xs">
-                <span class="material-symbols-outlined text-sm"
-                  [class]="courseForm.get('title')?.value ? 'text-brand-highlight' : 'text-outline-variant'"
-                  [attr.style]="courseForm.get('title')?.value ? 'font-variation-settings: FILL 1' : null">
+                <span
+                  class="material-symbols-outlined text-sm"
+                  [class]="
+                    courseForm.get('title')?.value ? 'text-brand-highlight' : 'text-outline-variant'
+                  "
+                  [attr.style]="
+                    courseForm.get('title')?.value ? 'font-variation-settings: FILL 1' : null
+                  "
+                >
                   {{ courseForm.get('title')?.value ? 'check_circle' : 'radio_button_unchecked' }}
                 </span>
-                <span [class]="courseForm.get('title')?.value ? 'line-through opacity-50 text-on-surface-variant' : 'text-on-surface font-semibold'">
+                <span
+                  [class]="
+                    courseForm.get('title')?.value
+                      ? 'line-through opacity-50 text-on-surface-variant'
+                      : 'text-on-surface font-semibold'
+                  "
+                >
                   Course Title
                 </span>
               </div>
               <div class="flex items-center gap-2 text-xs">
-                <span class="material-symbols-outlined text-sm"
-                  [class]="courseForm.get('categoryId')?.value ? 'text-brand-highlight' : 'text-outline-variant'"
-                  [attr.style]="courseForm.get('categoryId')?.value ? 'font-variation-settings: FILL 1' : null">
-                  {{ courseForm.get('categoryId')?.value ? 'check_circle' : 'radio_button_unchecked' }}
+                <span
+                  class="material-symbols-outlined text-sm"
+                  [class]="
+                    courseForm.get('categoryId')?.value
+                      ? 'text-brand-highlight'
+                      : 'text-outline-variant'
+                  "
+                  [attr.style]="
+                    courseForm.get('categoryId')?.value ? 'font-variation-settings: FILL 1' : null
+                  "
+                >
+                  {{
+                    courseForm.get('categoryId')?.value ? 'check_circle' : 'radio_button_unchecked'
+                  }}
                 </span>
-                <span [class]="courseForm.get('categoryId')?.value ? 'line-through opacity-50 text-on-surface-variant' : 'text-on-surface font-semibold'">
+                <span
+                  [class]="
+                    courseForm.get('categoryId')?.value
+                      ? 'line-through opacity-50 text-on-surface-variant'
+                      : 'text-on-surface font-semibold'
+                  "
+                >
                   Category
                 </span>
               </div>
               <div class="flex items-center gap-2 text-xs">
-                <span class="material-symbols-outlined text-sm"
-                  [class]="courseForm.get('description')?.value ? 'text-brand-highlight' : 'text-outline-variant'"
-                  [attr.style]="courseForm.get('description')?.value ? 'font-variation-settings: FILL 1' : null">
-                  {{ courseForm.get('description')?.value ? 'check_circle' : 'radio_button_unchecked' }}
+                <span
+                  class="material-symbols-outlined text-sm"
+                  [class]="
+                    courseForm.get('description')?.value
+                      ? 'text-brand-highlight'
+                      : 'text-outline-variant'
+                  "
+                  [attr.style]="
+                    courseForm.get('description')?.value ? 'font-variation-settings: FILL 1' : null
+                  "
+                >
+                  {{
+                    courseForm.get('description')?.value ? 'check_circle' : 'radio_button_unchecked'
+                  }}
                 </span>
-                <span [class]="courseForm.get('description')?.value ? 'line-through opacity-50 text-on-surface-variant' : 'text-on-surface font-semibold'">
+                <span
+                  [class]="
+                    courseForm.get('description')?.value
+                      ? 'line-through opacity-50 text-on-surface-variant'
+                      : 'text-on-surface font-semibold'
+                  "
+                >
                   Description
                 </span>
               </div>
@@ -317,7 +467,9 @@
           </div>
 
           <!-- Tips -->
-          <div class="bg-white p-6 rounded-2xl border border-outline-variant/10 shadow-sm space-y-4">
+          <div
+            class="bg-white p-6 rounded-2xl border border-outline-variant/10 shadow-sm space-y-4"
+          >
             <div class="flex items-center gap-2 text-brand-highlight">
               <span class="material-symbols-outlined">lightbulb</span>
               <h3 class="font-bold text-xs uppercase tracking-wider">Instructor Tips</h3>
@@ -325,17 +477,22 @@
             <div class="space-y-3">
               <div class="p-4 bg-brand-highlight/5 rounded-xl border border-brand-highlight/10">
                 <div class="flex items-start gap-3">
-                  <span class="material-symbols-outlined text-brand-highlight text-lg">edit_square</span>
+                  <span class="material-symbols-outlined text-brand-highlight text-lg"
+                    >edit_square</span
+                  >
                   <div>
                     <p class="text-xs font-bold text-primary mb-1">Captivating Titles</p>
                     <p class="text-xs text-on-surface-variant leading-relaxed">
-                      Use action-oriented verbs. "Mastering Light and Shadow" beats "Drawing Basics".
+                      Use action-oriented verbs. "Mastering Light and Shadow" beats "Drawing
+                      Basics".
                     </p>
                   </div>
                 </div>
               </div>
               <div class="p-4 bg-surface-container rounded-xl">
-                <p class="text-xs font-bold mb-2 text-on-surface uppercase tracking-wider flex items-center gap-2">
+                <p
+                  class="text-xs font-bold mb-2 text-on-surface uppercase tracking-wider flex items-center gap-2"
+                >
                   <span class="material-symbols-outlined text-sm">rule</span>
                   Constraints
                 </p>
@@ -356,15 +513,15 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
-
     </div>
 
     <!-- الفوتر -->
     <footer class="fixed bottom-6 right-8 left-[calc(18rem+2rem)] z-40">
-      <div class="bg-white shadow-2xl rounded-full px-8 py-4 flex items-center justify-between border border-brand-highlight/10">
+      <div
+        class="bg-white shadow-2xl rounded-full px-8 py-4 flex items-center justify-between border border-brand-highlight/10"
+      >
         <div class="flex items-center gap-3">
           <div class="w-2.5 h-2.5 rounded-full bg-brand-highlight animate-pulse"></div>
           <div class="flex flex-col">
@@ -375,24 +532,32 @@
           </div>
         </div>
         <div class="flex items-center gap-4">
-          <button type="button" (click)="goToDashboard()"
-            class="px-6 py-2 rounded-full text-on-surface-variant text-sm font-bold hover:text-on-surface transition-colors">
+          <button
+            type="button"
+            (click)="goToDashboard()"
+            class="px-6 py-2 rounded-full text-on-surface-variant text-sm font-bold hover:text-on-surface transition-colors"
+          >
             Cancel
           </button>
           <div class="w-px h-6 bg-outline-variant/20"></div>
-          <button type="button" (click)="onSubmit()" [disabled]="isLoading"
-            class="px-10 py-3 bg-brand-highlight text-white rounded-full text-sm font-extrabold flex items-center gap-3 hover:opacity-95 transition-all shadow-xl disabled:opacity-50">
+          <button
+            type="button"
+            (click)="onSubmit()"
+            [disabled]="isLoading"
+            class="px-10 py-3 bg-brand-highlight text-white rounded-full text-sm font-extrabold flex items-center gap-3 hover:opacity-95 transition-all shadow-xl disabled:opacity-50"
+          >
             Next: Build Curriculum
             <span class="material-symbols-outlined text-lg">arrow_forward</span>
           </button>
         </div>
       </div>
     </footer>
-
   </main>
 
   <!-- Floating Note -->
-  <div class="fixed bottom-6 left-80 w-64 p-5 rounded-2xl bg-brand-highlight text-white z-50 overflow-hidden shadow-2xl border border-white/10">
+  <div
+    class="fixed bottom-6 left-80 w-64 p-5 rounded-2xl bg-brand-highlight text-white z-50 overflow-hidden shadow-2xl border border-white/10"
+  >
     <span class="absolute -top-4 -left-2 text-6xl font-serif opacity-20">"</span>
     <p class="text-xs font-medium leading-relaxed relative z-10 italic">
       "Focus on what the student will be able to
@@ -400,5 +565,4 @@
       by the end of Section 1."
     </p>
   </div>
-
 </div>
