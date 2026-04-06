@@ -3,7 +3,7 @@ import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CourseService } from '../../../core/services/courses/course.service';
-import { CategoryDto } from '../../../core/model/courses/course.model';
+//import { CategoryDto } from '../../../core/model/courses/course.model';
 
 @Component({
   selector: 'app-create-course',
@@ -26,7 +26,7 @@ export class CreateCourseComponent implements OnInit {
   isUploadingCover = false;
   coverUploadSuccess = false;
   courseIdAfterCreate: number | null = null;
-  categories: CategoryDto[] = [];
+  //categories: CategoryDto[] = [];
 
   constructor(private fb: FormBuilder, private courseService: CourseService, private router: Router) {
     this.courseForm = this.fb.group({
