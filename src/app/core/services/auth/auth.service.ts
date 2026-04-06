@@ -32,11 +32,13 @@ export class AuthService {
   }
 
   // save user data to localStorage
-  private saveUser(res: AuthResponse): void {
-    localStorage.setItem('token', res.token);
-    localStorage.setItem('name', res.name);
-    localStorage.setItem('email', res.email);
-  }
+ private saveUser(res: AuthResponse): void {
+  localStorage.setItem('token', res.token);
+  localStorage.setItem('name', res.name);
+  localStorage.setItem('email', res.email);
+  const payload = JSON.parse(atob(res.token.split('.')[1]));
+  localStorage.setItem('centerId', payload.centerId);
+}
 
   // logout
   logout(): void {

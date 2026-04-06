@@ -111,15 +111,36 @@
             </div>
 
             <!-- Category -->
-            <div class="space-y-1.5">
-              <label class="uppercase tracking-widest text-xs font-bold text-on-surface-variant">
-                Category ID
-              </label>
-              <input type="number" formControlName="categoryId" placeholder="e.g. 3"
-                class="w-full px-5 py-3 bg-surface-container-high rounded-full border-none focus:ring-2 focus:ring-brand-highlight/20 transition-all text-sm font-medium outline-none"/>
-              <span *ngIf="courseForm.get('categoryId')?.invalid && courseForm.get('categoryId')?.touched"
-                class="text-red-500 text-xs block px-2">Category is required</span>
-            </div>
+<!-- Category -->
+<div class="space-y-1.5">
+  <label class="uppercase tracking-widest text-xs font-bold text-on-surface-variant">
+    Category
+  </label>
+
+  <!-- Loading -->
+  <div *ngIf="categories.length === 0"
+    class="w-full px-5 py-3 bg-surface-container-high rounded-full text-on-surface-variant text-sm font-medium flex items-center gap-2">
+    <span class="material-symbols-outlined text-sm animate-spin">progress_activity</span>
+    Loading categories...
+  </div>
+
+  <!-- Dropdown -->
+  <div *ngIf="categories.length > 0" class="relative">
+    <select formControlName="categoryId"
+      class="w-full px-5 py-3 bg-surface-container-high rounded-full border-none focus:ring-2 focus:ring-brand-highlight/20 transition-all text-sm font-medium outline-none appearance-none cursor-pointer">
+      <option value="" disabled selected>Select a category</option>
+      <option *ngFor="let cat of categories" [value]="cat.id">
+        {{ cat.name }}
+      </option>
+    </select>
+    <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">
+      expand_more
+    </span>
+  </div>
+
+  <span *ngIf="courseForm.get('categoryId')?.invalid && courseForm.get('categoryId')?.touched"
+    class="text-red-500 text-xs block px-2">Category is required</span>
+</div>
 
             <!-- Level -->
             <div class="space-y-1.5">
@@ -330,7 +351,7 @@
                   </li>
                   <li class="flex items-center gap-2">
                     <div class="w-1 h-1 rounded-full bg-outline-variant"></div>
-                    Category ID from your DB
+                    Select category from dropdown
                   </li>
                 </ul>
               </div>
