@@ -7,29 +7,30 @@ import {
   UpdateAvatarDto,
   ChangePasswordDto,
 } from '../models/user';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
   private http = inject(HttpClient);
-  private base = '/api/users';
+  private apiUrl = `${environment.apiUrl}/api/users`;
 
   getMe() {
-    return this.http.get<UserProfileModel>(`${this.base}/me`);
+    return this.http.get<UserProfileModel>(`${this.apiUrl}/me`);
   }
 
   updateProfile(dto: UpdateProfileDto) {
-    return this.http.put<UserProfileModel>(`${this.base}/me`, dto);
+    return this.http.put<UserProfileModel>(`${this.apiUrl}/me`, dto);
   }
 
   updateAvatar(dto: UpdateAvatarDto) {
-    return this.http.put<UserProfileModel>(`${this.base}/me/avatar`, dto);
+    return this.http.put<UserProfileModel>(`${this.apiUrl}/me/avatar`, dto);
   }
 
   changePassword(dto: ChangePasswordDto) {
-    return this.http.put<boolean>(`${this.base}/me/password`, dto);
+    return this.http.put<boolean>(`${this.apiUrl}/me/password`, dto);
   }
 
   getTeacherProfile(id: string) {
-    return this.http.get<TeacherProfileModel>(`${this.base}/teachers/${id}/profile`);
+    return this.http.get<TeacherProfileModel>(`${this.apiUrl}/teachers/${id}/profile`);
   }
 }

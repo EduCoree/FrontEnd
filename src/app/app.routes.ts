@@ -5,6 +5,9 @@ import { CreateQuizComponent } from './pages/Quizzes/CreateQuiz/create-quiz/crea
 import { authGuard } from './core/guards/auth guards/auth.guard';
 import { TeacherProfileComponent } from './pages/teacher-profile/teacher-profile';
 import { ProfileComponent } from './pages/profile/profile';
+import { AdminTeachersComponent } from './pages/admin-teachers/admin-teachers';
+import { AdminStudentsComponent } from './pages/admin-students/admin-students';
+import { AdminStudentDetailComponent } from './pages/admin-student-detail/admin-student-detail';
 
 export const routes: Routes = [
    
@@ -111,7 +114,21 @@ export const routes: Routes = [
     },
 
 //hala
-
+{
+  path: 'admin/teachers',
+  component: AdminTeachersComponent,
+  title: 'Teachers — Admin',
+},
+{
+  path: 'admin/students',
+  component: AdminStudentsComponent,
+  title: 'Students — Admin',
+},
+{
+  path: 'admin/students/:id',
+  component: AdminStudentDetailComponent,
+  title: 'Student Detail — Admin',
+},
 
 
 
