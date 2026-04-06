@@ -20,7 +20,7 @@ export class Sidebar {
     {
       label: 'Centers',
       icon: 'business',
-      route: '/centers',
+      route: '/centers/11',
       exact: true
     },
     {

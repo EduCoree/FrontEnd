@@ -1,3 +1,4 @@
+import { Categories } from './pages/centers/categories/categories';
 // import { CenterEdit } from './pages/centers/center-edit/center-edit/center-edit';
 import { Routes } from '@angular/router';
 import { CreateQuizComponent } from './pages/Quizzes/CreateQuiz/create-quiz/create-quiz';
@@ -134,7 +135,12 @@ export const routes: Routes = [
 
 
 
-
+{
+  path: 'centers/:centerId/categories',
+  loadComponent: () =>
+    import('./pages/centers/categories/categories')
+      .then(m => m.Categories)
+}
 
 
 
