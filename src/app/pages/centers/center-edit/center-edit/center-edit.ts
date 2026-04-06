@@ -5,9 +5,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CenterService } from '../../../../core/services/center.service';
+import { Categories } from "../../categories/categories";
+import { Sidebar } from "../../../../shared/components/ui/sidebar/sidebar";
 @Component({
   selector: 'app-center-edit',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, Categories, Sidebar],
   templateUrl: './center-edit.html',
   styleUrl: './center-edit.css',
 })
