@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CreateCourseDto, CreateSectionDto, ReorderItemDto, UpdateCourseDto, UpdatePricingDto, UpdateSectionDto } from '../../model/courses/course.model';
+import {
+  CreateCourseDto, CreateSectionDto, ReorderItemDto,
+  UpdateCourseDto, UpdatePricingDto, UpdateSectionDto,
+  CreateLessonDto, UpdateLessonDto, LessonResponse,
+  AddVideoLessonDto, AddPdfLessonDto,
+  VideoLessonResponse, PdfLessonResponse, ToggleFreePreviewDto
+} from '../../model/courses/course.model';
 import { environment } from '../../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -89,6 +95,44 @@ export class CourseService {
   // reorder lessons
   reorderLessons(courseId: number, sectionId: number, items: ReorderItemDto[]): Observable<any> {
     return this.http.put<any>(`${this.baseUrl}/${courseId}/sections/${sectionId}/lessons/reorder`, items);
+  }
+
+  // ─── Lesson CRUD ─────────────────────────────────────────────────────────
+
+  createLesson(courseId: number, dto: CreateLessonDto): Observable<LessonResponse> {
+    return this.http.post<LessonResponse>(`${this.baseUrl}/${courseId}/lessons`, dto);
+  }
+
+  updateLesson(courseId: number, lessonId: number, dto: UpdateLessonDto): Observable<LessonResponse> {
+    return this.http.put<LessonResponse>(`${this.baseUrl}/${courseId}/lessons/${lessonId}`, dto);
+  }
+
+  deleteLesson(courseId: number, lessonId: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${courseId}/lessons/${lessonId}`);
+  }
+
+  toggleFreePreview(courseId: number, lessonId: number, dto: ToggleFreePreviewDto): Observable<void> {
+    return this.http.put<void>(`${this.baseUrl}/${courseId}/lessons/${lessonId}/free-preview`, dto);
+  }
+
+  // ─── Video Attachment ────────────────────────────────────────────────────
+
+  addVideo(courseId: number, lessonId: number, dto: AddVideoLessonDto): Observable<VideoLessonResponse> {
+    return this.http.post<VideoLessonResponse>(`${this.baseUrl}/${courseId}/lessons/${lessonId}/video`, dto);
+  }
+
+  removeVideo(courseId: number, lessonId: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${courseId}/lessons/${lessonId}/video`);
+  }
+
+  // ─── PDF Attachment ──────────────────────────────────────────────────────
+
+  addPdf(courseId: number, lessonId: number, dto: AddPdfLessonDto): Observable<PdfLessonResponse> {
+    return this.http.post<PdfLessonResponse>(`${this.baseUrl}/${courseId}/lessons/${lessonId}/pdf`, dto);
+  }
+
+  removePdf(courseId: number, lessonId: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${courseId}/lessons/${lessonId}/pdf`);
   }
 
 }

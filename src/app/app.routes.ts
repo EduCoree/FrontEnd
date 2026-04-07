@@ -113,6 +113,26 @@ export const routes: Routes = [
       .then(m => m.CourseSectionsComponent)
     },
 
+// Content Delivery: Lesson Manager
+{
+  path: 'teacher/courses/:courseId/lessons/:lessonId',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./pages/teacher/lesson-manager/lesson-manager.component')
+      .then(m => m.LessonManagerComponent),
+  title: 'Lesson Manager — EduCore',
+},
+
+// Content Delivery: Media Page (wired)
+{
+  path: 'teacher/courses/:id/media',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./pages/lessons/course-media/course-media.component')
+      .then(m => m.CourseMediaComponent),
+  title: 'Course Media — EduCore',
+},
+
 //hala
 {
   path: 'admin/teachers',

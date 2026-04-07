@@ -34,7 +34,7 @@
     <!-- الهيدر -->
     <header class="flex justify-between items-center w-full px-8 py-3 bg-surface/90 backdrop-blur-xl sticky top-0 z-40 border-b border-outline-variant/10">
       <div class="flex items-center gap-8">
-        <h1 class="text-lg font-bold tracking-tight text-primary">Create New Course</h1>
+        <h1 class="text-lg font-bold tracking-tight text-primary">Course Media</h1>
         <nav class="hidden lg:flex items-center gap-1 bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant/10">
           <div class="flex items-center gap-2 px-3 py-1 text-on-surface-variant/40">
             <span class="text-xs font-bold">01</span>
@@ -59,13 +59,24 @@
         </nav>
       </div>
       <div class="flex items-center gap-3">
+        <!-- Toast -->
+        <div *ngIf="successMsg()" class="flex items-center gap-2 px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-xs font-bold animate-pulse">
+          <span class="material-symbols-outlined text-sm">check_circle</span>{{ successMsg() }}
+        </div>
+        <div *ngIf="errorMsg()" class="flex items-center gap-2 px-4 py-2 bg-error-container text-on-error-container rounded-full text-xs font-bold">
+          <span class="material-symbols-outlined text-sm">error</span>{{ errorMsg() }}
+        </div>
         <button (click)="goToDashboard()" class="px-5 py-1.5 rounded-full border border-outline-variant text-on-surface text-sm font-semibold hover:bg-surface-container transition-colors">Cancel</button>
-        <button class="px-7 py-1.5 rounded-full bg-primary text-white text-sm font-bold hover:opacity-90 transition-all">Save Draft</button>
       </div>
     </header>
 
+    <!-- Loading -->
+    <div *ngIf="isLoading()" class="flex justify-center py-32">
+      <span class="material-symbols-outlined text-primary text-4xl animate-spin">progress_activity</span>
+    </div>
+
     <!-- المحتوى -->
-    <div class="p-8 max-w-[1400px] mx-auto grid grid-cols-12 gap-8 pb-32">
+    <div *ngIf="!isLoading()" class="p-8 max-w-[1400px] mx-auto grid grid-cols-12 gap-8 pb-32">
 
       <div class="col-span-12 lg:col-span-8 space-y-10">
 
@@ -76,7 +87,10 @@
             <h2 class="text-2xl font-bold tracking-tight">Select Lesson</h2>
           </div>
           <div class="bg-surface-container p-4 rounded-xl space-y-3">
-            <p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Pending Media Lessons</p>
+            <p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">All Lessons</p>
+            <div *ngIf="lessons().length === 0" class="py-8 text-center text-on-surface-variant text-sm">
+              No lessons found. Add lessons in the Curriculum step first.
+            </div>
             <div class="flex flex-col gap-3">
               <button *ngFor="let lesson of lessons()"
                 (click)="selectLesson(lesson)"
@@ -102,23 +116,23 @@
         </section>
 
         <!-- Upload Media -->
-        <section class="space-y-4" *ngIf="selectedLesson()">
+        <section class="space-y-6" *ngIf="selectedLesson()">
           <div class="flex items-baseline gap-3">
             <span class="text-3xl font-extrabold tracking-tighter text-primary/20">02</span>
-            <h2 class="text-2xl font-bold tracking-tight">Upload Media</h2>
+            <h2 class="text-2xl font-bold tracking-tight">Manage Media</h2>
           </div>
 
           <!-- Note -->
           <div class="bg-secondary-container p-6 rounded-xl relative overflow-hidden">
             <span class="absolute -top-4 -right-4 text-9xl text-tertiary opacity-10 font-serif">"</span>
             <p class="text-on-secondary-container text-sm leading-relaxed relative z-10">
-              <strong>Note:</strong> Upload videos in 1080p MP4 format. PDFs should be under 25MB.
+              <strong>Note:</strong> Provide video URLs from YouTube, Vimeo, or self-hosted sources. PDFs should be accessible via a public URL.
             </p>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-            <!-- Video Card -->
+            <!-- ── Video Card ─────────────────────────────────────────────── -->
             <div class="bg-surface-container-low p-6 rounded-xl space-y-4">
               <div class="flex justify-between items-center">
                 <h3 class="font-bold text-lg flex items-center gap-2">
@@ -127,28 +141,45 @@
                 </h3>
                 <span class="bg-primary-container text-on-primary-container text-xs px-2 py-0.5 rounded-lg font-bold uppercase">Required</span>
               </div>
-              <label class="flex flex-col items-center justify-center border-2 border-dashed border-outline-variant rounded-xl p-8 bg-white hover:border-primary/60 hover:bg-primary-container/5 transition-all cursor-pointer">
-                <input type="file" accept="video/*" class="hidden" (change)="onVideoSelected($event)" />
-                <span class="material-symbols-outlined text-4xl text-outline mb-3">cloud_upload</span>
-                <p class="font-bold text-sm text-on-surface">Click or drag to upload</p>
-                <p class="text-xs text-on-surface-variant">MP4, MOV up to 2GB</p>
-              </label>
-              <div *ngIf="uploadingVideo()" class="bg-surface-container-highest rounded-xl p-4">
-                <div class="flex justify-between mb-2">
-                  <span class="text-xs font-bold truncate">{{ videoFileName() }}</span>
-                  <span class="text-xs font-bold text-primary">{{ videoProgress() }}%</span>
+
+              <!-- Existing Video -->
+              <div *ngIf="selectedLesson()?.hasVideo" class="flex items-center gap-3 bg-primary-container/20 rounded-xl p-3">
+                <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1">check_circle</span>
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-bold text-primary">Video attached</p>
+                  <p class="text-xs text-on-surface-variant truncate">{{ selectedLesson()?.videoUrl }}</p>
                 </div>
-                <div class="h-1.5 bg-surface-container-low rounded-full overflow-hidden">
-                  <div class="h-full bg-primary rounded-full transition-all" [style.width]="videoProgress() + '%'"></div>
+                <button (click)="removeVideo()" class="p-1 hover:text-error transition-colors" title="Remove video">
+                  <span class="material-symbols-outlined text-sm">delete</span>
+                </button>
+              </div>
+
+              <!-- Video Form -->
+              <form [formGroup]="videoForm" (ngSubmit)="saveVideo()" class="space-y-3">
+                <!-- Provider -->
+                <div class="grid grid-cols-3 gap-2">
+                  <button *ngFor="let p of videoProviders" type="button"
+                    (click)="videoForm.patchValue({ videoProvider: p.value })"
+                    class="py-2 rounded-lg border text-xs font-bold transition-all"
+                    [class]="videoForm.value.videoProvider === p.value
+                      ? 'border-primary bg-primary-container text-primary'
+                      : 'border-outline-variant text-on-surface-variant hover:border-primary/40'">
+                    {{ p.label }}
+                  </button>
                 </div>
-              </div>
-              <div *ngIf="videoUrl()" class="flex items-center gap-3 bg-primary-container/20 rounded-xl p-3">
-                <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-                <span class="text-sm font-bold text-primary">Video uploaded successfully</span>
-              </div>
+                <input formControlName="videoUrl" type="url"
+                  placeholder="Paste video URL..."
+                  class="w-full px-4 py-3 bg-white rounded-xl border border-outline-variant/20 focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium" />
+                <button type="submit" [disabled]="videoForm.invalid || isSavingVideo()"
+                  class="w-full py-2.5 rounded-xl bg-primary text-white text-sm font-bold hover:opacity-90 transition-all disabled:opacity-50 flex items-center justify-center gap-2">
+                  <span *ngIf="isSavingVideo()" class="material-symbols-outlined text-sm animate-spin">progress_activity</span>
+                  <span class="material-symbols-outlined text-sm">movie</span>
+                  {{ isSavingVideo() ? 'Saving...' : (selectedLesson()?.hasVideo ? 'Update Video' : 'Attach Video') }}
+                </button>
+              </form>
             </div>
 
-            <!-- PDF Card -->
+            <!-- ── PDF Card ──────────────────────────────────────────────── -->
             <div class="bg-surface-container-low p-6 rounded-xl space-y-4">
               <div class="flex justify-between items-center">
                 <h3 class="font-bold text-lg flex items-center gap-2">
@@ -157,6 +188,8 @@
                 </h3>
                 <span class="bg-surface-variant text-on-surface-variant text-xs px-2 py-0.5 rounded-lg font-bold uppercase">Optional</span>
               </div>
+
+              <!-- Existing PDFs -->
               <div class="space-y-3">
                 <div *ngFor="let pdf of pdfs()" class="bg-white rounded-xl p-3 flex items-center gap-3">
                   <div class="w-10 h-10 bg-secondary-container rounded-lg flex items-center justify-center">
@@ -164,18 +197,26 @@
                   </div>
                   <div class="flex-1 min-w-0">
                     <p class="text-xs font-bold truncate">{{ pdf.name }}</p>
-                    <p class="text-xs text-on-surface-variant uppercase tracking-widest">{{ pdf.size }} • Complete</p>
+                    <p class="text-xs text-on-surface-variant uppercase tracking-widest">{{ pdf.size }}</p>
                   </div>
                   <button (click)="removePdf(pdf)" class="p-1 hover:text-error transition-colors">
                     <span class="material-symbols-outlined text-lg">delete</span>
                   </button>
                 </div>
-                <label class="w-full py-4 border-2 border-dashed border-outline-variant rounded-xl flex items-center justify-center gap-2 text-on-surface-variant hover:text-primary hover:border-primary transition-all cursor-pointer">
-                  <input type="file" accept=".pdf" class="hidden" (change)="onPdfSelected($event)" />
-                  <span class="material-symbols-outlined">add_circle</span>
-                  <span class="text-xs font-bold uppercase tracking-widest">Add PDF</span>
-                </label>
               </div>
+
+              <!-- PDF Form -->
+              <form [formGroup]="pdfForm" (ngSubmit)="savePdf()" class="space-y-3">
+                <input formControlName="fileUrl" type="url"
+                  placeholder="Paste PDF URL..."
+                  class="w-full px-4 py-3 bg-white rounded-xl border border-outline-variant/20 focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium" />
+                <button type="submit" [disabled]="pdfForm.invalid || isSavingPdf()"
+                  class="w-full py-2.5 rounded-xl bg-surface-container-highest text-on-surface text-sm font-bold hover:bg-surface-variant transition-all disabled:opacity-50 flex items-center justify-center gap-2">
+                  <span *ngIf="isSavingPdf()" class="material-symbols-outlined text-sm animate-spin">progress_activity</span>
+                  <span class="material-symbols-outlined text-sm">add_circle</span>
+                  {{ isSavingPdf() ? 'Saving...' : (selectedLesson()?.hasPdf ? 'Update PDF' : 'Attach PDF') }}
+                </button>
+              </form>
             </div>
 
           </div>
@@ -226,19 +267,19 @@
                 <span class="material-symbols-outlined text-primary text-lg">videocam</span>
                 <div>
                   <p class="text-xs font-bold text-primary mb-1">Video Quality</p>
-                  <p class="text-xs text-on-surface-variant leading-relaxed">Record in 1080p with clear audio. Good lighting makes a huge difference.</p>
+                  <p class="text-xs text-on-surface-variant leading-relaxed">Use YouTube unlisted links or self-hosted CDN URLs for reliable streaming.</p>
                 </div>
               </div>
             </div>
             <div class="p-4 bg-surface-container rounded-xl">
               <p class="text-xs font-bold mb-2 text-on-surface uppercase tracking-wider flex items-center gap-2">
                 <span class="material-symbols-outlined text-sm">rule</span>
-                Constraints
+                Supported Providers
               </p>
               <ul class="text-xs text-on-surface-variant space-y-2">
-                <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-outline-variant"></div>Max video: 2GB</li>
-                <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-outline-variant"></div>Max PDF: 25MB</li>
-                <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-outline-variant"></div>Formats: MP4, MOV, PDF</li>
+                <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-outline-variant"></div>YouTube (youtube, youtu.be)</li>
+                <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-outline-variant"></div>Vimeo</li>
+                <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-outline-variant"></div>Self-hosted (.mp4)</li>
               </ul>
             </div>
           </div>
