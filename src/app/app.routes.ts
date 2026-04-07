@@ -1,3 +1,4 @@
+import { Categories } from './pages/centers/categories/categories';
 // import { CenterEdit } from './pages/centers/center-edit/center-edit/center-edit';
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth guards/auth.guard';
@@ -6,30 +7,97 @@ import { ProfileComponent } from './pages/profile/profile';
 import { get } from 'http';
 import { QuizComponent } from './pages/Quizzes/Get-Quizzez/get-quizzes/get-quizzes';
 import { QuizBuilderComponent } from './pages/Quizzes/quiz-builder/quiz-builder';
+import { CreateQuizComponent } from './pages/Quizzes/CreateQuiz/create-quiz/create-quiz';
+import{Home} from './pages/home/home';
 
+
+import { Routes } from '@angular/router';
+import { authGuard }  from './core/guards/auth-guard';
+import { guestGuard } from './core/guards/guest-guard';
+import { adminGuard } from './core/guards/admin-guard';
+ 
+// Auth pages
+import { LoginComponent }          from './pages/login/login';
+import { RegisterComponent }       from './pages/register/register';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password';
+import { ConfirmEmailComponent }   from './pages/confirm-email/confirm-email';
+ 
+// User pages
+import { ProfileComponent }        from './pages/profile/profile';
+import { TeacherProfileComponent } from './pages/teacher-profile/teacher-profile';
+ 
+// Admin pages
+import { AdminTeachersComponent }      from './pages/admin-teachers/admin-teachers';
+import { AdminStudentsComponent }      from './pages/admin-students/admin-students';
+import { AdminStudentDetailComponent } from './pages/admin-student-detail/admin-student-detail';
 export const routes: Routes = [
-   
+   // ── Public ────────────────────────────────────────────────────────────────
   {
     path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
-  },
-  {
-   path: 'home',
-   loadComponent: () =>
-     import('./pages/home/home').then(m => m.Home)
- },
-    {
-    path: 'profile',
-    component: ProfileComponent,
-    // canActivate: [authGuard],
-    title: 'My Profile — EduCore',
+    component: Home,
+    title: 'EduCore',
   },
   {
     path: 'teachers/:id',
     component: TeacherProfileComponent,
     title: 'Teacher Profile — EduCore',
   },
+ 
+  // ── Guest only (redirect to home if already logged in) ────────────────────
+  {
+    path: 'login',
+    component: LoginComponent,
+    canActivate: [guestGuard],
+    title: 'Sign In — EduCore',
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
+    canActivate: [guestGuard],
+    title: 'Sign Up — EduCore',
+  },
+  {
+    path: 'forgot-password',
+    component: ForgotPasswordComponent,
+    canActivate: [guestGuard],
+    title: 'Reset Password — EduCore',
+  },
+  {
+    path: 'confirm-email',
+    component: ConfirmEmailComponent,
+    title: 'Confirm Email — EduCore',
+  },
+ 
+  // ── Auth required ─────────────────────────────────────────────────────────
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [authGuard],
+    title: 'My Profile — EduCore',
+  },
+ 
+  // ── Admin only ────────────────────────────────────────────────────────────
+  {
+    path: 'admin/teachers',
+    component: AdminTeachersComponent,
+    canActivate: [adminGuard],
+    title: 'Teachers — Admin',
+  },
+  {
+    path: 'admin/students',
+    component: AdminStudentsComponent,
+    canActivate: [adminGuard],
+    title: 'Students — Admin',
+  },
+  {
+    path: 'admin/students/:id',
+    component: AdminStudentDetailComponent,
+    canActivate: [adminGuard],
+    title: 'Student Detail — Admin',
+  },
+ 
+
+    
   {
     path: 'centers/:id',
     loadComponent: () =>
@@ -70,6 +138,9 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/auth/register/register.component')
         .then(m => m.RegisterComponent)
+{
+        path: 'teacher/courses/:courseId/quizzes',
+         loadComponent: () =>CreateQuizComponent
   },
 {
   path: 'teacher/dashboard',
@@ -108,24 +179,6 @@ export const routes: Routes = [
       .then(m => m.CourseSectionsComponent)
     },
 
-//hala
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -133,7 +186,12 @@ export const routes: Routes = [
 
 
 
-
+{
+  path: 'centers/:centerId/categories',
+  loadComponent: () =>
+    import('./pages/centers/categories/categories')
+      .then(m => m.Categories)
+}
 
 
 

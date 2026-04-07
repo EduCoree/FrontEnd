@@ -8,7 +8,7 @@ import { Sidebar } from "../../../shared/components/ui/sidebar/sidebar";
 
 @Component({
   selector: 'app-center-delete',
-  imports: [CommonModule],
+  imports: [CommonModule, Sidebar],
   templateUrl: './center-delete.html',
   styleUrl: './center-delete.css',
 })

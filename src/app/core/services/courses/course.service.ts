@@ -1,13 +1,15 @@
-// سيرفس المسؤول عن التواصل مع API الخاص بالـ Courses
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CreateCourseDto, CreateSectionDto, ReorderItemDto, UpdateCourseDto, UpdatePricingDto, UpdateSectionDto } from '../../model/courses/course.model';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class CourseService {
 
-  private baseUrl = 'https://localhost:7275/api/teacher/courses';
+  // private baseUrl = 'https://localhost:7275/api/teacher/courses';
+  private baseUrl = `${environment.apiUrl}/api/teacher/courses`;
+//  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -88,4 +90,5 @@ export class CourseService {
   reorderLessons(courseId: number, sectionId: number, items: ReorderItemDto[]): Observable<any> {
     return this.http.put<any>(`${this.baseUrl}/${courseId}/sections/${sectionId}/lessons/reorder`, items);
   }
+
 }

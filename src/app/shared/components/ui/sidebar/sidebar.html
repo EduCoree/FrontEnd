@@ -1,9 +1,8 @@
-
 <aside [class.w-64]="isOpen()"
        [class.w-16]="!isOpen()"
-       class="hidden lg:flex flex-col h-screen fixed left-0 top-0 bg-surface-container-low border-r border-outline-variant/20 z-50 transition-all duration-300">
+       class="hidden lg:flex flex-col fixed left-0 top-20 h-[calc(100vh-5rem)] bg-surface-container-low border-r border-outline-variant/20 z-50 transition-all duration-300">
 
-  
+  <!-- Header -->
   <div class="flex items-center gap-3 p-4 border-b border-outline-variant/20"
        [class.justify-between]="isOpen()"
        [class.justify-center]="!isOpen()">
@@ -26,28 +25,36 @@
     </button>
   </div>
 
-
+  <!-- Nav -->
   <nav class="flex-1 p-3 space-y-1 overflow-y-auto">
     @for (item of navItems; track item.route) {
       <a [routerLink]="item.route"
-         routerLinkActive="bg-primary text-on-primary"
+         routerLinkActive #rla="routerLinkActive"
          [routerLinkActiveOptions]="{ exact: item.exact }"
-         class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors hover:bg-surface-container text-on-surface-variant group"
+         class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors group"
+         [class.bg-primary]="rla.isActive"
+         [class.text-on-primary]="rla.isActive"
+         [class.hover:bg-surface-container]="!rla.isActive"
+         [class.text-on-surface-variant]="!rla.isActive"
          [class.justify-center]="!isOpen()">
 
+       
         <span class="material-symbols-outlined text-xl flex-shrink-0"
-              [class.text-on-primary]="true">
+              [class.text-on-primary]="rla.isActive"
+              [class.text-primary]="!rla.isActive">
           {{ item.icon }}
         </span>
 
         @if (isOpen()) {
-          <span class="text-sm font-medium whitespace-nowrap">{{ item.label }}</span>
+          <span class="text-sm font-medium whitespace-nowrap">
+            {{ item.label }}
+          </span>
         }
       </a>
     }
   </nav>
 
-
+  <!-- Footer -->
   @if (isOpen()) {
     <div class="p-4 border-t border-outline-variant/20">
       <div class="flex items-center gap-3">
@@ -63,8 +70,8 @@
   }
 </aside>
 
-
+<!-- Content offset -->
 <div [class.ml-64]="isOpen()"
      [class.ml-16]="!isOpen()"
-     class="transition-all duration-300 lg:block hidden">
+     class="transition-all duration-300 lg:block hidden h-0">
 </div>

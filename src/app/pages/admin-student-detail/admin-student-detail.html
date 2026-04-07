@@ -1,0 +1,226 @@
+<!-- src/app/pages/admin-student-detail/admin-student-detail.html -->
+<div class="min-h-screen bg-[#F8FAFA] pt-28 pb-20 px-4 md:px-8">
+  <div class="max-w-5xl mx-auto">
+
+    @if (loading()) {
+      <div class="flex justify-center py-32">
+        <span class="material-symbols-outlined text-[#7DB8A5] text-5xl animate-spin">progress_activity</span>
+      </div>
+    }
+
+    @if (errorMsg() && !loading()) {
+      <div class="flex flex-col items-center justify-center py-32 gap-4">
+        <span class="material-symbols-outlined text-[#BA1A1A] text-5xl">error</span>
+        <p class="text-[#BA1A1A] font-semibold text-lg">{{ errorMsg() }}</p>
+      </div>
+    }
+
+    @if (student() && !loading()) {
+
+      @if (successMsg()) {
+        <div class="mb-6 flex items-center gap-3 px-5 py-4 bg-[#AAF1DA]/40 border border-[#226A58]/20 rounded-xl text-[#226A58] font-semibold text-sm">
+          <span class="material-symbols-outlined text-[20px]">check_circle</span>{{ successMsg() }}
+        </div>
+      }
+
+      <!-- Profile Card -->
+      <div class="bg-white rounded-2xl shadow-[0_8px_32px_rgba(125,184,165,0.12)] p-8 mb-8">
+        <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+          @if (student()!.avatarUrl) {
+            <img [src]="student()!.avatarUrl" class="w-24 h-24 rounded-2xl object-cover ring-4 ring-[#B2EFDA]" />
+          } @else {
+            <div class="w-24 h-24 rounded-2xl bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] flex items-center justify-center text-white text-2xl font-extrabold font-headline ring-4 ring-[#B2EFDA]">
+              {{ initials }}
+            </div>
+          }
+          <div class="flex-1 text-center md:text-left">
+            <h1 class="font-headline text-2xl font-extrabold text-[#191C1D]">{{ student()!.name }}</h1>
+            <p class="text-[#707975] text-sm mt-1">&#64;{{ student()!.userName }} · {{ student()!.email }}</p>
+            @if (student()!.bio) {
+              <p class="text-sm text-[#404945] mt-2">{{ student()!.bio }}</p>
+            }
+            <div class="flex flex-wrap justify-center md:justify-start gap-4 mt-4">
+              <span class="flex items-center gap-1 text-xs font-medium text-[#404945]">
+                <span class="material-symbols-outlined text-[15px]">menu_book</span>
+                {{ student()!.enrollments.length }} Enrollments
+              </span>
+              <span class="flex items-center gap-1 text-xs font-medium text-[#404945]">
+                <span class="material-symbols-outlined text-[15px]">payments</span>
+                {{ student()!.payments.length }} Payments
+              </span>
+              <span class="flex items-center gap-1 text-xs font-medium text-[#404945]">
+                <span class="material-symbols-outlined text-[15px]">calendar_month</span>
+                Joined {{ student()!.createdAt | date:'mediumDate' }}
+              </span>
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <button (click)="openEnrollModal()"
+              class="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] text-white font-bold rounded-xl text-sm shadow-md hover:shadow-lg active:scale-95 transition-all">
+              <span class="material-symbols-outlined text-[16px]">add</span>Enroll
+            </button>
+            <button (click)="toggleActive()"
+              class="flex items-center gap-2 px-5 py-2.5 font-bold rounded-xl text-sm transition-all"
+              [class]="student()!.isActive
+                ? 'bg-[#FFDAD6]/40 text-[#BA1A1A] hover:bg-[#BA1A1A] hover:text-white border border-[#BA1A1A]/20'
+                : 'bg-[#AAF1DA]/40 text-[#226A58] hover:bg-[#226A58] hover:text-white border border-[#226A58]/20'">
+              <span class="material-symbols-outlined text-[16px]">{{ student()!.isActive ? 'person_off' : 'person_check' }}</span>
+              {{ student()!.isActive ? 'Deactivate' : 'Activate' }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="bg-white rounded-2xl shadow-[0_8px_32px_rgba(125,184,165,0.10)] overflow-hidden">
+        <div class="flex border-b border-[#E1E3E3]">
+          @for (tab of [{key:'enrollments',label:'Enrollments',icon:'menu_book'},{key:'payments',label:'Payments',icon:'payments'},{key:'attendance',label:'Attendance',icon:'calendar_month'}]; track tab.key) {
+            <button (click)="setTab(tab.key)"
+              class="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold transition-all"
+              [class]="activeTab() === tab.key ? 'text-[#2E6858] border-b-2 border-[#2E6858] bg-[#F2F4F4]' : 'text-[#707975] hover:text-[#2E6858] hover:bg-[#F8FAFA]'">
+              <span class="material-symbols-outlined text-[18px]">{{ tab.icon }}</span>{{ tab.label }}
+            </button>
+          }
+        </div>
+
+        <div class="p-6">
+
+          <!-- Enrollments -->
+          @if (activeTab() === 'enrollments') {
+            <div class="space-y-3">
+              @for (e of student()!.enrollments; track e.id) {
+                <div class="flex items-center justify-between p-4 bg-[#F8FAFA] rounded-xl">
+                  <div>
+                    <p class="font-semibold text-[#191C1D] text-sm">{{ e.courseTitle }}</p>
+                    <p class="text-xs text-[#707975] mt-1">Enrolled {{ e.enrolledAt | date:'mediumDate' }}
+                      @if (e.expiresAt) { · Expires {{ e.expiresAt | date:'mediumDate' }} }
+                    </p>
+                  </div>
+                  <div class="flex gap-2">
+                    <span class="px-2 py-1 rounded-lg text-xs font-medium bg-[#F2F4F4] text-[#404945]">{{ e.type }}</span>
+                    <span class="px-2 py-1 rounded-lg text-xs font-bold"
+                      [class]="e.status === 'Active' ? 'bg-[#AAF1DA]/40 text-[#226A58]' : 'bg-[#FFDAD6]/40 text-[#BA1A1A]'">
+                      {{ e.status }}
+                    </span>
+                  </div>
+                </div>
+              }
+              @empty {
+                <p class="text-center text-[#707975] py-10">No enrollments yet.</p>
+              }
+            </div>
+          }
+
+          <!-- Payments -->
+          @if (activeTab() === 'payments') {
+            <div class="space-y-3">
+              @for (p of student()!.payments; track p.id) {
+                <div class="flex items-center justify-between p-4 bg-[#F8FAFA] rounded-xl">
+                  <div>
+                    <p class="font-semibold text-[#191C1D] text-sm">${{ p.amount }} {{ p.currency }}</p>
+                    <p class="text-xs text-[#707975] mt-1">{{ p.method }}
+                      @if (p.paidAt) { · {{ p.paidAt | date:'mediumDate' }} }
+                      @if (p.reference) { · Ref: {{ p.reference }} }
+                    </p>
+                  </div>
+                  <span class="px-3 py-1 rounded-full text-xs font-bold"
+                    [class]="p.status === 'Paid' ? 'bg-[#AAF1DA]/40 text-[#226A58]' : 'bg-[#FFDAD6]/40 text-[#BA1A1A]'">
+                    {{ p.status }}
+                  </span>
+                </div>
+              }
+              @empty {
+                <p class="text-center text-[#707975] py-10">No payments yet.</p>
+              }
+            </div>
+          }
+
+          <!-- Attendance -->
+          @if (activeTab() === 'attendance') {
+            <div class="space-y-3">
+              @for (a of student()!.attendance; track a.id) {
+                <div class="flex items-center gap-3 p-4 bg-[#F8FAFA] rounded-xl">
+                  <span class="material-symbols-outlined text-[#2E6858] text-[20px]">check_circle</span>
+                  <div>
+                    <p class="font-semibold text-[#191C1D] text-sm">{{ a.lessonTitle }}</p>
+                    <p class="text-xs text-[#707975] mt-1">{{ a.attendedAt | date:'medium' }}</p>
+                  </div>
+                </div>
+              }
+              @empty {
+                <p class="text-center text-[#707975] py-10">No attendance records yet.</p>
+              }
+            </div>
+          }
+
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Enroll Modal -->
+@if (showEnrollModal()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="font-headline text-xl font-bold text-[#191C1D]">Enroll in Course</h2>
+        <button (click)="showEnrollModal.set(false)" class="p-2 rounded-lg hover:bg-[#F2F4F4] transition-colors">
+          <span class="material-symbols-outlined text-[#707975]">close</span>
+        </button>
+      </div>
+      <form [formGroup]="enrollForm" (ngSubmit)="submitEnroll()" class="space-y-4">
+
+        <!-- Course Dropdown -->
+        <div>
+          <label class="block text-sm font-semibold text-[#191C1D] mb-1">Course</label>
+          <div class="flex items-center gap-3 px-4 py-3 bg-[#F2F4F4] rounded-xl border border-transparent focus-within:border-[#2E6858] focus-within:bg-white transition-all">
+            <span class="material-symbols-outlined text-[#707975] text-[18px]">menu_book</span>
+            <select formControlName="courseId" class="bg-transparent border-none focus:ring-0 flex-1 text-sm text-[#191C1D]">
+              <option value="">— Select a course —</option>
+              @for (course of courses(); track course.id) {
+                <option [value]="course.id" [disabled]="enrolledCourseIds.has(course.id)">
+                  {{ course.title }} — ${{ course.price }}
+                  {{ enrolledCourseIds.has(course.id) ? '(already enrolled)' : '' }}
+                </option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <!-- Type -->
+        <div>
+          <label class="block text-sm font-semibold text-[#191C1D] mb-1">Type</label>
+          <div class="flex items-center gap-3 px-4 py-3 bg-[#F2F4F4] rounded-xl border border-transparent focus-within:border-[#2E6858] focus-within:bg-white transition-all">
+            <span class="material-symbols-outlined text-[#707975] text-[18px]">category</span>
+            <select formControlName="type" class="bg-transparent border-none focus:ring-0 flex-1 text-sm text-[#191C1D]">
+              <option value="Paid">Paid</option>
+              <option value="Free">Free</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Expires At -->
+        <div>
+          <label class="block text-sm font-semibold text-[#191C1D] mb-1">Expires At <span class="text-[#707975] font-normal">(optional)</span></label>
+          <div class="flex items-center gap-3 px-4 py-3 bg-[#F2F4F4] rounded-xl border border-transparent focus-within:border-[#2E6858] focus-within:bg-white transition-all">
+            <span class="material-symbols-outlined text-[#707975] text-[18px]">event</span>
+            <input formControlName="expiresAt" type="date"
+              class="bg-transparent border-none focus:ring-0 flex-1 text-sm text-[#191C1D]" />
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-3 pt-2">
+          <button type="button" (click)="showEnrollModal.set(false)"
+            class="px-6 py-2.5 rounded-xl border border-[#E1E3E3] text-[#404945] font-semibold hover:bg-[#F2F4F4] transition-colors">
+            Cancel
+          </button>
+          <button type="submit" [disabled]="enrollForm.invalid"
+            class="px-6 py-2.5 bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] text-white font-bold rounded-xl disabled:opacity-50 flex items-center gap-2">
+            <span class="material-symbols-outlined text-[16px]">add</span>Enroll
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
