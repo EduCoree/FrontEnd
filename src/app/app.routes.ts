@@ -2,13 +2,7 @@ import { QuizHistory } from './pages/quiz-history/quiz-history';
 import { QuizResult } from './pages/quiz-result/quiz-result';
 import { Categories } from './pages/centers/categories/categories';
 // import { CenterEdit } from './pages/centers/center-edit/center-edit/center-edit';
-import { Routes } from '@angular/router';
-import { authGuard } from './core/guards/auth guards/auth.guard';
-import { TeacherProfileComponent } from './pages/teacher-profile/teacher-profile';
-import { ProfileComponent } from './pages/profile/profile';
-import { AdminTeachersComponent } from './pages/admin-teachers/admin-teachers';
-import { AdminStudentsComponent } from './pages/admin-students/admin-students';
-import { AdminStudentDetailComponent } from './pages/admin-student-detail/admin-student-detail';
+
 import { QuestionsList } from './pages/questions-list/questions-list';
 import { StudentQuizIntro } from './pages/student-quiz-intro/student-quiz-intro';
 import { ActiveQuiz } from './pages/active-quiz/active-quiz';
@@ -22,7 +16,6 @@ import{Home} from './pages/home/home';
 
 
 import { Routes } from '@angular/router';
-import { authGuard }  from './core/guards/auth-guard';
 import { guestGuard } from './core/guards/guest-guard';
 import { adminGuard } from './core/guards/admin-guard';
  
@@ -40,7 +33,7 @@ import { TeacherProfileComponent } from './pages/teacher-profile/teacher-profile
 import { AdminTeachersComponent }      from './pages/admin-teachers/admin-teachers';
 import { AdminStudentsComponent }      from './pages/admin-students/admin-students';
 import { AdminStudentDetailComponent } from './pages/admin-student-detail/admin-student-detail';
-import { AdminCoursesComponent } from './pages/admin-courses/admin-courses';
+import { authGuard } from './core/guards/auth-guard';
 export const routes: Routes = [
    // ── Public ────────────────────────────────────────────────────────────────
   {
@@ -147,15 +140,16 @@ export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () =>
-      import('./pages/auth/login/login.component')
+      import('./pages/login/login')
         .then(m => m.LoginComponent)
   },
   {
     path: 'register',
     loadComponent: () =>
-      import('./pages/auth/register/register.component')
+      import('./pages/register/register')
         .then(m => m.RegisterComponent)
-{
+  },
+  {
         path: 'teacher/courses/:courseId/quizzes',
          loadComponent: () =>CreateQuizComponent
   },
@@ -278,7 +272,7 @@ export const routes: Routes = [
 
 //tawfik
 
-{
+,{
   path: 'teacher/courses/:courseId/quizzes',
   component:QuizComponent
 },
