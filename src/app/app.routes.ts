@@ -1,3 +1,5 @@
+import { QuizHistory } from './pages/quiz-history/quiz-history';
+import { QuizResult } from './pages/quiz-result/quiz-result';
 import { Categories } from './pages/centers/categories/categories';
 // import { CenterEdit } from './pages/centers/center-edit/center-edit/center-edit';
 import { Routes } from '@angular/router';
@@ -8,6 +10,11 @@ import { ProfileComponent } from './pages/profile/profile';
 import { AdminTeachersComponent } from './pages/admin-teachers/admin-teachers';
 import { AdminStudentsComponent } from './pages/admin-students/admin-students';
 import { AdminStudentDetailComponent } from './pages/admin-student-detail/admin-student-detail';
+import { QuestionsList } from './pages/questions-list/questions-list';
+import { StudentQuizIntro } from './pages/student-quiz-intro/student-quiz-intro';
+import { ActiveQuiz } from './pages/active-quiz/active-quiz';
+import { AddQuestion } from './pages/add-question/add-question';
+import { QuizSubmission } from './pages/quiz-submission/quiz-submission';
 
 export const routes: Routes = [
    
@@ -157,16 +164,51 @@ export const routes: Routes = [
   loadComponent: () =>
     import('./pages/centers/categories/categories')
       .then(m => m.Categories)
+} ,
+
+
+
+
+
+{
+  path: 'questions',
+  component : QuestionsList,
+}
+,
+
+{
+  path: 'quiz/intro',
+  component : StudentQuizIntro,
 }
 
+,
 
+{
+  path: 'quiz/active',
+  component : ActiveQuiz,
+}
 
+,
 
+{
+  path: 'add/question',
+  component : AddQuestion,
+}
 
+,
 
-
-
-
+{
+  path: 'Quiz/submission',
+  component : QuizSubmission,
+},
+{
+  path: 'Quiz/results',
+  component : QuizResult,
+},
+{
+  path: 'Quiz/history',
+  component : QuizHistory,
+}
 
 
 
