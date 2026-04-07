@@ -103,7 +103,3 @@ export interface CourseFilterDto {
   level?: string;
   pricingType?: string;
 }
-// export interface CategoryDto {
-//   id: number;
-//   name: string;
-// }

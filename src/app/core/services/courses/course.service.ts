@@ -90,14 +90,5 @@ export class CourseService {
   reorderLessons(courseId: number, sectionId: number, items: ReorderItemDto[]): Observable<any> {
     return this.http.put<any>(`${this.baseUrl}/${courseId}/sections/${sectionId}/lessons/reorder`, items);
   }
-  // get categories
-// getCategories(): Observable<any> {
-//   // const centerId = localStorage.getItem('centerId');
-//   const centerId = 12;
-//   return this.http.get<any>(`${environment.apiUrl}/api/centers/${centerId}/categories`);
-// }
-// getAll(centerId: number): Observable<any> {
-//     return this.http.get<any>(`${this.apiUrl}/api/centers/${centerId}/Categories`);
-//   }
 
 }
