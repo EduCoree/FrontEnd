@@ -99,6 +99,12 @@ export const routes: Routes = [
     canActivate: [adminGuard],
     title: 'Student Detail — Admin',
   },
+   {
+    path: 'admin/courses',
+    component: AdminCoursesComponent,
+    canActivate: [adminGuard],
+    title: 'Courses — Admin',
+  },
  
 
     
