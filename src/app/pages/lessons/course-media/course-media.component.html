@@ -184,13 +184,12 @@
                 </div>
               </div>
 
-              <!-- If no video: upload / URL input area -->
+              <!-- If no video: placeholder with format hint -->
               <div *ngIf="!selectedLesson()?.hasVideo">
-                <!-- Drag area (visual, URL-based) -->
-                <div class="border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center py-8 gap-2 bg-gray-50">
+                <div class="border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center py-6 gap-1.5 bg-gray-50">
                   <span class="material-symbols-outlined text-gray-300 text-4xl">cloud_upload</span>
-                  <p class="text-sm font-semibold text-gray-500">Paste a video URL below</p>
-                  <p class="text-xs text-gray-400">YouTube, Vimeo, or direct MP4 link</p>
+                  <p class="text-sm font-semibold text-gray-500">Paste a YouTube URL to preview instantly</p>
+                  <p class="text-[11px] text-gray-400">Supports: watch?v=, youtu.be/, /embed/, /shorts/</p>
                 </div>
               </div>
 
@@ -209,11 +208,30 @@
                 </div>
               </div>
 
-              <!-- URL input -->
+              <!-- URL input + live preview -->
               <form [formGroup]="videoForm" (ngSubmit)="saveVideo()" class="space-y-3">
                 <input formControlName="videoUrl" type="url"
+                  (input)="onVideoUrlInput($event)"
                   placeholder="https://youtube.com/watch?v=..."
                   class="w-full px-4 py-2.5 bg-gray-50 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-teal-200 focus:border-teal-400 outline-none placeholder-gray-300 font-medium" />
+
+                <!-- Live YouTube Preview iframe -->
+                <div *ngIf="safePreviewUrl()" class="rounded-xl overflow-hidden border border-teal-100 bg-black shadow-sm">
+                  <div class="flex items-center gap-2 px-3 py-1.5 bg-teal-50 border-b border-teal-100">
+                    <span class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></span>
+                    <span class="text-[10px] font-bold text-teal-600 uppercase tracking-wider">Live Preview</span>
+                  </div>
+                  <div class="relative" style="padding-top: 56.25%">
+                    <iframe
+                      [src]="safePreviewUrl()"
+                      class="absolute inset-0 w-full h-full"
+                      frameborder="0"
+                      allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen>
+                    </iframe>
+                  </div>
+                </div>
+
                 <button type="submit" [disabled]="videoForm.invalid || isSavingVideo()"
                   class="w-full py-2.5 rounded-xl bg-teal-600 text-white text-sm font-bold hover:bg-teal-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2">
                   <span *ngIf="isSavingVideo()" class="material-symbols-outlined text-sm animate-spin">progress_activity</span>

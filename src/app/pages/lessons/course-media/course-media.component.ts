@@ -3,6 +3,7 @@ import { Component, OnInit, signal, computed } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import {
   SectionDto, LessonDto,
   AddVideoLessonDto, AddPdfLessonDto,
@@ -70,10 +71,35 @@ export class CourseMediaComponent implements OnInit {
 
   pdfs = signal<{ name: string; size: string; fileUrl: string }[]>([]);
 
-  /** Extract YouTube video ID from a URL */
+  /** Live YouTube preview — set when a valid ID is detected */
+  safePreviewUrl = signal<SafeResourceUrl | null>(null);
+
+  /**
+   * Extracts a YouTube video ID from any of these formats:
+   *   - https://www.youtube.com/watch?v=VIDEO_ID
+   *   - https://youtu.be/VIDEO_ID
+   *   - https://www.youtube.com/embed/VIDEO_ID
+   *   - https://www.youtube.com/shorts/VIDEO_ID
+   */
   getYouTubeId(url: string): string | null {
-    const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?/]+)/);
-    return m ? m[1] : null;
+    const regex = /(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|v\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+  }
+
+  /**
+   * Called on every (input) event on the video URL field.
+   * Extracts the YouTube ID and builds a safe iframe embed URL.
+   */
+  onVideoUrlInput(event: Event): void {
+    const url = (event.target as HTMLInputElement).value.trim();
+    const id = this.getYouTubeId(url);
+    if (id) {
+      const embedUrl = `https://www.youtube.com/embed/${id}?autoplay=0&rel=0`;
+      this.safePreviewUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl));
+    } else {
+      this.safePreviewUrl.set(null);
+    }
   }
 
   /** Return a thumbnail URL based on provider */
@@ -94,7 +120,8 @@ export class CourseMediaComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private courseService: CourseService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private sanitizer: DomSanitizer
   ) {
     this.videoForm = this.fb.group({
       videoUrl: ['', [Validators.required, Validators.maxLength(255)]],
@@ -146,6 +173,7 @@ export class CourseMediaComponent implements OnInit {
     this.successMsg.set('');
     this.errorMsg.set('');
     this.showPdfForm.set(false);
+    this.safePreviewUrl.set(null);   // clear live preview for new lesson
 
     // Pre-fill forms if content exists
     if (lesson.hasVideo) {
