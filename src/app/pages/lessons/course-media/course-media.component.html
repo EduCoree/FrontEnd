@@ -1,395 +1,390 @@
-<div class="bg-surface text-on-surface min-h-screen font-body">
+<div class="bg-[#f5f7fa] text-gray-900 min-h-screen font-sans">
 
-  <!-- السايدبار -->
-  <aside class="fixed left-0 top-0 h-full p-6 flex flex-col gap-8 bg-surface-container w-72 z-50">
-    <div class="flex flex-col gap-1 px-4">
-      <span class="text-lg font-black text-primary cursor-pointer" (click)="goToDashboard()">EduCore</span>
-      <span class="uppercase tracking-widest text-xs font-bold text-on-surface-variant">Course Builder</span>
+  <!-- ══ Sidebar ══════════════════════════════════════════════════════════════ -->
+  <aside class="fixed left-0 top-0 h-full p-6 flex flex-col gap-8 bg-white border-r border-gray-100 w-64 z-50">
+    <div class="px-2">
+      <span class="text-lg font-black text-teal-600 cursor-pointer" (click)="goToDashboard()">EduCore</span>
+      <p class="text-[10px] uppercase tracking-widest text-gray-400 font-bold mt-0.5">Course Builder</p>
     </div>
-    <nav class="flex flex-col gap-2 mt-4">
-      <a (click)="goBack()" class="flex items-center gap-4 text-on-surface-variant/60 px-6 py-3 rounded-full hover:translate-x-1 transition-transform cursor-pointer">
-        <span class="material-symbols-outlined">info</span>
-        <span class="uppercase tracking-widest text-xs font-bold">Course Info</span>
+
+    <nav class="flex flex-col gap-1">
+      <a (click)="goBack()" class="flex items-center gap-3 text-gray-400 px-4 py-2.5 rounded-xl hover:bg-gray-50 cursor-pointer text-sm font-medium transition-colors">
+        <span class="material-symbols-outlined text-[18px]">info</span> Course Info
       </a>
-      <a (click)="goBack()" class="flex items-center gap-4 text-on-surface-variant/60 px-6 py-3 rounded-full hover:translate-x-1 transition-transform cursor-pointer">
-        <span class="material-symbols-outlined">menu_book</span>
-        <span class="uppercase tracking-widest text-xs font-bold">Curriculum</span>
+      <a (click)="goBack()" class="flex items-center gap-3 text-gray-400 px-4 py-2.5 rounded-xl hover:bg-gray-50 cursor-pointer text-sm font-medium transition-colors">
+        <span class="material-symbols-outlined text-[18px]">menu_book</span> Curriculum
       </a>
-      <!-- Active -->
-      <a class="flex items-center gap-4 bg-white text-primary rounded-full px-6 py-3 shadow-sm">
-        <span class="material-symbols-outlined">video_library</span>
-        <span class="uppercase tracking-widest text-xs font-bold">Media</span>
+      <a class="flex items-center gap-3 bg-teal-50 text-teal-700 px-4 py-2.5 rounded-xl text-sm font-bold">
+        <span class="material-symbols-outlined text-[18px]">video_library</span> Media
       </a>
-      <!-- Locked -->
-      <a class="flex items-center gap-4 text-on-surface-variant/40 px-6 py-3 rounded-full cursor-not-allowed">
-        <span class="material-symbols-outlined">payments</span>
-        <span class="uppercase tracking-widest text-xs font-bold">Pricing</span>
+      <a class="flex items-center gap-3 text-gray-300 px-4 py-2.5 rounded-xl text-sm font-medium cursor-not-allowed">
+        <span class="material-symbols-outlined text-[18px]">payments</span> Pricing
       </a>
     </nav>
+
+    <!-- Progress tracker -->
+    <div class="mt-auto space-y-3">
+      <p class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Media Progress</p>
+      <div class="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+        <div class="h-full bg-teal-500 rounded-full transition-all duration-700" [style.width]="getMediaProgress() + '%'"></div>
+      </div>
+      <p class="text-xs text-gray-500">
+        <span class="font-bold text-teal-600">{{ completedVideosCount() }}</span> / {{ lessons().length }} lessons have video
+      </p>
+    </div>
   </aside>
 
-  <!-- المحتوى الرئيسي -->
-  <main class="ml-72 min-h-screen">
+  <!-- ══ Main ══════════════════════════════════════════════════════════════════ -->
+  <main class="ml-64 min-h-screen pb-28">
 
-    <!-- الهيدر -->
-    <header class="flex justify-between items-center w-full px-8 py-3 bg-surface/90 backdrop-blur-xl sticky top-0 z-40 border-b border-outline-variant/10">
-      <div class="flex items-center gap-8">
-        <h1 class="text-lg font-bold tracking-tight text-primary">Course Media</h1>
-        <nav class="hidden lg:flex items-center gap-1 bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant/10">
-          <div class="flex items-center gap-2 px-3 py-1 text-on-surface-variant/40">
-            <span class="text-xs font-bold">01</span>
-            <span class="text-xs font-bold uppercase tracking-wider">Course Info</span>
-          </div>
-          <div class="w-3 h-px bg-outline-variant/30"></div>
-          <div class="flex items-center gap-2 px-3 py-1 text-on-surface-variant/40">
-            <span class="text-xs font-bold">02</span>
-            <span class="text-xs font-bold uppercase tracking-wider">Curriculum</span>
-          </div>
-          <div class="w-3 h-px bg-outline-variant/30"></div>
-          <!-- Active -->
-          <div class="flex items-center gap-2 px-3 py-1 bg-primary text-white rounded-full shadow-sm">
-            <span class="text-xs font-bold">03</span>
-            <span class="text-xs font-bold uppercase tracking-wider">Media</span>
-          </div>
-          <div class="w-3 h-px bg-outline-variant/30"></div>
-          <div class="flex items-center gap-2 px-3 py-1 text-on-surface-variant/40">
-            <span class="text-xs font-bold">04</span>
-            <span class="text-xs font-bold uppercase tracking-wider">Pricing</span>
-          </div>
-        </nav>
+    <!-- Header -->
+    <header class="flex justify-between items-center px-8 py-3 bg-white border-b border-gray-100 sticky top-0 z-40">
+      <div class="flex items-center gap-6">
+        <h1 class="text-sm font-bold text-gray-700">Course Media</h1>
+        <!-- Step breadcrumb -->
+        <div class="flex items-center gap-2 text-xs text-gray-400">
+          <span>Course Info</span>
+          <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+          <span>Curriculum</span>
+          <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+          <span class="text-teal-600 font-bold">Media</span>
+          <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+          <span>Pricing</span>
+        </div>
       </div>
       <div class="flex items-center gap-3">
-        <!-- Toast -->
-        <div *ngIf="successMsg()" class="flex items-center gap-2 px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-xs font-bold animate-pulse">
-          <span class="material-symbols-outlined text-sm">check_circle</span>{{ successMsg() }}
+        <div *ngIf="successMsg()" class="flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 border border-green-200 rounded-lg text-xs font-bold">
+          <span class="material-symbols-outlined text-[14px]">check_circle</span>{{ successMsg() }}
         </div>
-        <div *ngIf="errorMsg()" class="flex items-center gap-2 px-4 py-2 bg-error-container text-on-error-container rounded-full text-xs font-bold">
-          <span class="material-symbols-outlined text-sm">error</span>{{ errorMsg() }}
+        <div *ngIf="errorMsg()" class="flex items-center gap-2 px-3 py-1.5 bg-red-50 text-red-600 border border-red-200 rounded-lg text-xs font-bold">
+          <span class="material-symbols-outlined text-[14px]">error</span>{{ errorMsg() }}
         </div>
-        <button (click)="goToDashboard()" class="px-5 py-1.5 rounded-full border border-outline-variant text-on-surface text-sm font-semibold hover:bg-surface-container transition-colors">Cancel</button>
+        <button (click)="goToDashboard()" class="px-4 py-1.5 text-xs font-semibold text-gray-500 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">Cancel</button>
       </div>
     </header>
 
     <!-- Loading -->
     <div *ngIf="isLoading()" class="flex justify-center py-32">
-      <span class="material-symbols-outlined text-primary text-4xl animate-spin">progress_activity</span>
+      <span class="material-symbols-outlined text-teal-500 text-4xl animate-spin">progress_activity</span>
     </div>
 
-    <!-- المحتوى -->
-    <div *ngIf="!isLoading()" class="p-8 max-w-[1400px] mx-auto grid grid-cols-12 gap-8 pb-32">
+    <div *ngIf="!isLoading()" class="p-8 max-w-5xl mx-auto space-y-6">
 
-      <div class="col-span-12 lg:col-span-8 space-y-10">
+      <!-- ── Lesson Selector ────────────────────────────────────────────── -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+          <h2 class="text-sm font-bold text-gray-700">Select a Lesson to Manage</h2>
+          <span class="text-xs text-gray-400">{{ completedVideosCount() }} / {{ lessons().length }} with video</span>
+        </div>
 
-        <!-- Lesson Selector -->
-        <section class="space-y-4">
-          <div class="flex items-center justify-between">
-            <div class="flex items-baseline gap-3">
-              <span class="text-3xl font-extrabold tracking-tighter text-primary/20">01</span>
-              <h2 class="text-2xl font-bold tracking-tight">Select Lesson</h2>
+        <div *ngIf="lessons().length === 0" class="py-10 text-center text-sm text-gray-400">
+          No lessons found. Add lessons in the Curriculum step first.
+        </div>
+
+        <div class="divide-y divide-gray-50">
+          <button *ngFor="let lesson of lessons()"
+            (click)="selectLesson(lesson)"
+            class="w-full text-left px-6 py-4 flex items-center gap-4 transition-colors"
+            [class]="selectedLesson()?.id === lesson.id ? 'bg-teal-50' : 'hover:bg-gray-50'">
+
+            <!-- Icon -->
+            <div class="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+              [class]="lesson.hasVideo ? 'bg-teal-100' : 'bg-gray-100'">
+              <span class="material-symbols-outlined text-[16px]"
+                [class]="lesson.hasVideo ? 'text-teal-600' : 'text-gray-400'"
+                style="font-variation-settings:'FILL' 1">play_circle</span>
             </div>
-            <!-- Summary pill -->
-            <div class="flex items-center gap-2 px-4 py-1.5 bg-surface-container-low rounded-full border border-outline-variant/10">
-              <span class="w-2 h-2 rounded-full bg-primary"></span>
-              <span class="text-xs font-bold text-primary">{{ completedVideosCount() }}</span>
-              <span class="text-xs text-on-surface-variant">/</span>
-              <span class="text-xs font-bold text-on-surface-variant">{{ lessons().length }}</span>
-              <span class="text-xs text-on-surface-variant">with video</span>
+
+            <!-- Title -->
+            <div class="flex-1 min-w-0">
+              <p class="text-[10px] font-bold text-teal-500 uppercase tracking-widest truncate">{{ lesson.sectionTitle }}</p>
+              <p class="text-sm font-semibold text-gray-800 truncate">{{ lesson.title }}</p>
             </div>
-          </div>
 
-          <div class="bg-surface-container p-4 rounded-2xl space-y-2">
-            <div *ngIf="lessons().length === 0" class="py-8 text-center text-on-surface-variant text-sm">
-              No lessons found. Add lessons in the Curriculum step first.
+            <!-- Status chips -->
+            <div class="flex items-center gap-2 shrink-0">
+              <span class="flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold"
+                [class]="lesson.hasVideo ? 'bg-teal-100 text-teal-700' : 'bg-red-50 text-red-400'">
+                <span class="material-symbols-outlined text-[11px]" style="font-variation-settings:'FILL' 1">
+                  {{ lesson.hasVideo ? 'check_circle' : 'cancel' }}
+                </span>
+                Video
+              </span>
+              <span class="flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold"
+                [class]="lesson.hasPdf ? 'bg-blue-50 text-blue-600' : 'bg-gray-100 text-gray-400'">
+                <span class="material-symbols-outlined text-[11px]" style="font-variation-settings:'FILL' 1">
+                  {{ lesson.hasPdf ? 'check_circle' : 'radio_button_unchecked' }}
+                </span>
+                PDF
+              </span>
+              <span *ngIf="selectedLesson()?.id === lesson.id"
+                class="material-symbols-outlined text-teal-500 text-[18px]">chevron_right</span>
             </div>
-            <div class="flex flex-col gap-2">
-              <button *ngFor="let lesson of lessons()"
-                (click)="selectLesson(lesson)"
-                class="w-full text-left px-4 py-3.5 rounded-xl transition-all border-2"
-                [class]="selectedLesson()?.id === lesson.id
-                  ? 'bg-white border-primary shadow-md'
-                  : 'bg-surface-container-low border-transparent hover:border-outline-variant/20 hover:bg-white'">
 
-                <div class="flex items-center gap-3">
+          </button>
+        </div>
+      </div>
 
-                  <!-- Left: lesson type icon -->
-                  <div class="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
-                    [class]="lesson.hasVideo ? 'bg-primary-container' : 'bg-surface-container-highest'">
-                    <span class="material-symbols-outlined text-sm"
-                      [class]="lesson.hasVideo ? 'text-primary' : 'text-on-surface-variant/40'"
-                      style="font-variation-settings: 'FILL' 1">
-                      {{ lesson.hasVideo ? 'play_circle' : 'play_circle' }}
-                    </span>
+      <!-- ── Media Management (shown when lesson selected) ─────────────── -->
+      <div *ngIf="selectedLesson()" class="space-y-5">
+
+        <!-- Tip bar -->
+        <div class="flex items-start gap-3 bg-blue-50 border border-blue-100 rounded-xl px-5 py-3.5 text-xs text-blue-700 leading-relaxed">
+          <span class="material-symbols-outlined text-blue-400 text-[16px] mt-0.5 shrink-0">info</span>
+          <span>
+            <strong>Note:</strong> Provide video URLs from YouTube, Vimeo, or self-hosted MP4. Ensure your PDF handouts are accessible via a public URL and under 25 MB for optimal student experience.
+          </span>
+        </div>
+
+        <!-- Cards row: Video + Study Material -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+          <!-- ── Video Lesson Card ──────────────────────────────────────── -->
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <!-- Card header -->
+            <div class="flex items-center justify-between px-5 py-4 border-b border-gray-50">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-teal-500 text-[18px]">videocam</span>
+                <span class="text-sm font-bold text-gray-800">Video Lesson</span>
+              </div>
+              <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-teal-100 text-teal-700">Required</span>
+            </div>
+
+            <div class="p-5 space-y-4">
+              <!-- If video already attached: show preview banner -->
+              <div *ngIf="selectedLesson()?.hasVideo" class="rounded-xl overflow-hidden border border-gray-100">
+                <!-- Thumbnail -->
+                <div class="relative bg-gray-900 aspect-video flex items-center justify-center">
+                  <img *ngIf="getVideoThumbnail(selectedLesson()!.videoUrl!, selectedLesson()!.videoProvider!)"
+                    [src]="getVideoThumbnail(selectedLesson()!.videoUrl!, selectedLesson()!.videoProvider!)"
+                    class="w-full h-full object-cover opacity-80" alt="Video thumbnail" />
+                  <div *ngIf="!getVideoThumbnail(selectedLesson()!.videoUrl!, selectedLesson()!.videoProvider!)"
+                    class="flex flex-col items-center gap-2 text-white/60">
+                    <span class="material-symbols-outlined text-4xl">video_file</span>
+                    <p class="text-xs">No preview available</p>
                   </div>
-
-                  <!-- Middle: title + section -->
-                  <div class="flex-1 min-w-0">
-                    <p class="text-[10px] font-bold text-primary/70 uppercase tracking-widest truncate">{{ lesson.sectionTitle }}</p>
-                    <h4 class="font-bold text-sm text-on-surface truncate">{{ lesson.title }}</h4>
+                  <!-- Play overlay -->
+                  <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
+                      <span class="material-symbols-outlined text-white text-2xl" style="font-variation-settings:'FILL' 1">play_arrow</span>
+                    </div>
                   </div>
-
-                  <!-- Right: Video + PDF status chips -->
-                  <div class="flex items-center gap-1.5 shrink-0">
-                    <!-- Video chip -->
-                    <span class="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold"
-                      [class]="lesson.hasVideo
-                        ? 'bg-primary/10 text-primary'
-                        : 'bg-error/10 text-error'">
-                      <span class="material-symbols-outlined text-[11px]"
-                        style="font-variation-settings: 'FILL' 1">
-                        {{ lesson.hasVideo ? 'check_circle' : 'cancel' }}
-                      </span>
-                      Video
-                    </span>
-                    <!-- PDF chip -->
-                    <span class="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold"
-                      [class]="lesson.hasPdf
-                        ? 'bg-tertiary/10 text-tertiary'
-                        : 'bg-surface-container-highest text-on-surface-variant/50'">
-                      <span class="material-symbols-outlined text-[11px]"
-                        style="font-variation-settings: 'FILL' 1">
-                        {{ lesson.hasPdf ? 'check_circle' : 'radio_button_unchecked' }}
-                      </span>
-                      PDF
-                    </span>
-                    <!-- Arrow if selected -->
-                    <span *ngIf="selectedLesson()?.id === lesson.id"
-                      class="material-symbols-outlined text-primary text-sm ml-1">chevron_right</span>
-                  </div>
-
+                  <!-- Provider badge -->
+                  <span class="absolute top-2 left-2 px-2 py-0.5 bg-black/50 backdrop-blur text-white text-[10px] font-bold rounded uppercase tracking-wider">
+                    {{ selectedLesson()?.videoProvider ?? 'video' }}
+                  </span>
                 </div>
-              </button>
-            </div>
-          </div>
-        </section>
-
-        <!-- Upload Media -->
-        <section class="space-y-6" *ngIf="selectedLesson()">
-          <div class="flex items-baseline gap-3">
-            <span class="text-3xl font-extrabold tracking-tighter text-primary/20">02</span>
-            <h2 class="text-2xl font-bold tracking-tight">Manage Media</h2>
-          </div>
-
-          <!-- Note -->
-          <div class="bg-secondary-container p-6 rounded-xl relative overflow-hidden">
-            <span class="absolute -top-4 -right-4 text-9xl text-tertiary opacity-10 font-serif">"</span>
-            <p class="text-on-secondary-container text-sm leading-relaxed relative z-10">
-              <strong>Note:</strong> Provide video URLs from YouTube, Vimeo, or self-hosted sources. PDFs should be accessible via a public URL.
-            </p>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-            <!-- ── Video Card ─────────────────────────────────────────────── -->
-            <div class="bg-surface-container-low p-6 rounded-xl space-y-4">
-              <div class="flex justify-between items-center">
-                <h3 class="font-bold text-lg flex items-center gap-2">
-                  <span class="material-symbols-outlined text-primary">movie</span>
-                  Video Lesson
-                </h3>
-                <span class="bg-primary-container text-on-primary-container text-xs px-2 py-0.5 rounded-lg font-bold uppercase">Required</span>
+                <!-- URL row -->
+                <div class="flex items-center gap-3 px-4 py-2.5 bg-gray-50">
+                  <span class="material-symbols-outlined text-teal-500 text-[14px]">link</span>
+                  <p class="text-xs text-gray-500 truncate flex-1">{{ selectedLesson()?.videoUrl }}</p>
+                  <button (click)="removeVideo()" class="flex items-center gap-1 text-[10px] font-bold text-red-400 hover:text-red-600 transition-colors shrink-0">
+                    <span class="material-symbols-outlined text-[13px]">delete</span> Remove
+                  </button>
+                </div>
               </div>
 
-              <!-- Existing Video -->
-              <div *ngIf="selectedLesson()?.hasVideo" class="flex items-center gap-3 bg-primary-container/20 rounded-xl p-3">
-                <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1">check_circle</span>
-                <div class="flex-1 min-w-0">
-                  <p class="text-sm font-bold text-primary">Video attached</p>
-                  <p class="text-xs text-on-surface-variant truncate">{{ selectedLesson()?.videoUrl }}</p>
+              <!-- If no video: upload / URL input area -->
+              <div *ngIf="!selectedLesson()?.hasVideo">
+                <!-- Drag area (visual, URL-based) -->
+                <div class="border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center py-8 gap-2 bg-gray-50">
+                  <span class="material-symbols-outlined text-gray-300 text-4xl">cloud_upload</span>
+                  <p class="text-sm font-semibold text-gray-500">Paste a video URL below</p>
+                  <p class="text-xs text-gray-400">YouTube, Vimeo, or direct MP4 link</p>
                 </div>
-                <button (click)="removeVideo()" class="p-1 hover:text-error transition-colors" title="Remove video">
-                  <span class="material-symbols-outlined text-sm">delete</span>
-                </button>
               </div>
 
-              <!-- Video Form -->
-              <form [formGroup]="videoForm" (ngSubmit)="saveVideo()" class="space-y-3">
-                <!-- Provider -->
-                <div class="grid grid-cols-3 gap-2">
+              <!-- Provider selector -->
+              <div>
+                <p class="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">Provider</p>
+                <div class="flex gap-2">
                   <button *ngFor="let p of videoProviders" type="button"
                     (click)="videoForm.patchValue({ videoProvider: p.value })"
-                    class="py-2 rounded-lg border text-xs font-bold transition-all"
+                    class="flex-1 py-1.5 rounded-lg border text-[11px] font-bold transition-all"
                     [class]="videoForm.value.videoProvider === p.value
-                      ? 'border-primary bg-primary-container text-primary'
-                      : 'border-outline-variant text-on-surface-variant hover:border-primary/40'">
+                      ? 'border-teal-500 bg-teal-50 text-teal-700'
+                      : 'border-gray-200 text-gray-400 hover:border-gray-300'">
                     {{ p.label }}
                   </button>
                 </div>
+              </div>
+
+              <!-- URL input -->
+              <form [formGroup]="videoForm" (ngSubmit)="saveVideo()" class="space-y-3">
                 <input formControlName="videoUrl" type="url"
-                  placeholder="Paste video URL..."
-                  class="w-full px-4 py-3 bg-white rounded-xl border border-outline-variant/20 focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium" />
+                  placeholder="https://youtube.com/watch?v=..."
+                  class="w-full px-4 py-2.5 bg-gray-50 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-teal-200 focus:border-teal-400 outline-none placeholder-gray-300 font-medium" />
                 <button type="submit" [disabled]="videoForm.invalid || isSavingVideo()"
-                  class="w-full py-2.5 rounded-xl bg-primary text-white text-sm font-bold hover:opacity-90 transition-all disabled:opacity-50 flex items-center justify-center gap-2">
+                  class="w-full py-2.5 rounded-xl bg-teal-600 text-white text-sm font-bold hover:bg-teal-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2">
                   <span *ngIf="isSavingVideo()" class="material-symbols-outlined text-sm animate-spin">progress_activity</span>
-                  <span class="material-symbols-outlined text-sm">movie</span>
-                  {{ isSavingVideo() ? 'Saving...' : (selectedLesson()?.hasVideo ? 'Update Video' : 'Attach Video') }}
+                  <span class="material-symbols-outlined text-[16px]">movie</span>
+                  {{ isSavingVideo() ? 'Saving...' : (selectedLesson()?.hasVideo ? 'Update Video URL' : 'Attach Video') }}
                 </button>
               </form>
             </div>
+          </div>
 
-            <!-- ── PDF Card ──────────────────────────────────────────────── -->
-            <div class="bg-surface-container-low p-6 rounded-xl space-y-4">
-              <div class="flex justify-between items-center">
-                <h3 class="font-bold text-lg flex items-center gap-2">
-                  <span class="material-symbols-outlined text-primary">description</span>
-                  Study Material
-                </h3>
-                <span class="bg-surface-variant text-on-surface-variant text-xs px-2 py-0.5 rounded-lg font-bold uppercase">Optional</span>
+          <!-- ── Study Material Card ────────────────────────────────────── -->
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <!-- Card header -->
+            <div class="flex items-center justify-between px-5 py-4 border-b border-gray-50">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-blue-400 text-[18px]">description</span>
+                <span class="text-sm font-bold text-gray-800">Study Material</span>
               </div>
+              <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-gray-100 text-gray-500">Optional</span>
+            </div>
+
+            <div class="p-5 space-y-3">
 
               <!-- Existing PDFs -->
-              <div class="space-y-3">
-                <div *ngFor="let pdf of pdfs()" class="bg-white rounded-xl p-3 flex items-center gap-3">
-                  <div class="w-10 h-10 bg-secondary-container rounded-lg flex items-center justify-center">
-                    <span class="material-symbols-outlined text-on-secondary-container">picture_as_pdf</span>
+              <div *ngIf="pdfs().length === 0 && !showPdfForm()" class="border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center py-8 gap-2 bg-gray-50">
+                <span class="material-symbols-outlined text-gray-300 text-4xl">picture_as_pdf</span>
+                <p class="text-sm font-semibold text-gray-400">No PDF attached yet</p>
+              </div>
+
+              <div class="space-y-2">
+                <div *ngFor="let pdf of pdfs()" class="flex items-center gap-3 bg-blue-50 border border-blue-100 rounded-xl px-4 py-3">
+                  <div class="w-9 h-9 bg-white border border-blue-100 rounded-lg flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-blue-400 text-[18px]" style="font-variation-settings:'FILL' 1">picture_as_pdf</span>
                   </div>
                   <div class="flex-1 min-w-0">
-                    <p class="text-xs font-bold truncate">{{ pdf.name }}</p>
-                    <p class="text-xs text-on-surface-variant uppercase tracking-widest">{{ pdf.size }}</p>
+                    <p class="text-xs font-bold text-gray-700 truncate">{{ pdf.name }}</p>
+                    <p class="text-[10px] text-blue-400 font-bold uppercase tracking-wider">{{ pdf.size }} • COMPLETE</p>
                   </div>
-                  <button (click)="removePdf(pdf)" class="p-1 hover:text-error transition-colors">
-                    <span class="material-symbols-outlined text-lg">delete</span>
+                  <button (click)="removePdf(pdf)" class="p-1 hover:text-red-500 text-gray-300 transition-colors">
+                    <span class="material-symbols-outlined text-[16px]">delete</span>
                   </button>
                 </div>
               </div>
 
-              <!-- PDF Form -->
-              <form [formGroup]="pdfForm" (ngSubmit)="savePdf()" class="space-y-3">
-                <input formControlName="fileUrl" type="url"
-                  placeholder="Paste PDF URL..."
-                  class="w-full px-4 py-3 bg-white rounded-xl border border-outline-variant/20 focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium" />
-                <button type="submit" [disabled]="pdfForm.invalid || isSavingPdf()"
-                  class="w-full py-2.5 rounded-xl bg-surface-container-highest text-on-surface text-sm font-bold hover:bg-surface-variant transition-all disabled:opacity-50 flex items-center justify-center gap-2">
-                  <span *ngIf="isSavingPdf()" class="material-symbols-outlined text-sm animate-spin">progress_activity</span>
-                  <span class="material-symbols-outlined text-sm">add_circle</span>
-                  {{ isSavingPdf() ? 'Saving...' : (selectedLesson()?.hasPdf ? 'Update PDF' : 'Attach PDF') }}
-                </button>
-              </form>
-            </div>
-
-          </div>
-        </section>
-
-      </div>
-
-      <!-- السايدبار الأيمن -->
-      <div class="hidden lg:block lg:col-span-4">
-        <div class="sticky top-24 flex flex-col gap-6 mb-24">
-          <!-- Media Health -->
-          <div class="bg-white p-6 rounded-2xl border border-primary/10 shadow-sm space-y-4">
-            <div class="flex items-center justify-between">
-              <h3 class="font-bold text-xs uppercase tracking-widest text-on-surface-variant">Media Health</h3>
-              <span class="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">Step 3/4</span>
-            </div>
-            <div class="space-y-3">
-              <div class="flex items-center justify-between text-xs font-bold">
-                <span class="text-on-surface-variant">Progress</span>
-                <span class="text-primary">{{ getMediaProgress() }}%</span>
+              <!-- PDF URL form -->
+              <div *ngIf="showPdfForm()">
+                <form [formGroup]="pdfForm" (ngSubmit)="savePdf()" class="space-y-3">
+                  <input formControlName="fileUrl" type="url"
+                    placeholder="https://example.com/notes.pdf"
+                    class="w-full px-4 py-2.5 bg-gray-50 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-blue-100 focus:border-blue-300 outline-none placeholder-gray-300 font-medium" />
+                  <input formControlName="fileSizeKb" type="number" min="1"
+                    placeholder="File size in KB (optional)"
+                    class="w-full px-4 py-2.5 bg-gray-50 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-blue-100 focus:border-blue-300 outline-none placeholder-gray-300 font-medium" />
+                  <div class="flex gap-2">
+                    <button type="button" (click)="showPdfForm.set(false)"
+                      class="flex-1 py-2 rounded-xl border border-gray-200 text-gray-500 text-sm font-semibold hover:bg-gray-50 transition-colors">
+                      Cancel
+                    </button>
+                    <button type="submit" [disabled]="pdfForm.invalid || isSavingPdf()"
+                      class="flex-1 py-2 rounded-xl bg-blue-500 text-white text-sm font-bold hover:bg-blue-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-1">
+                      <span *ngIf="isSavingPdf()" class="material-symbols-outlined text-sm animate-spin">progress_activity</span>
+                      {{ isSavingPdf() ? 'Saving...' : 'Attach PDF' }}
+                    </button>
+                  </div>
+                </form>
               </div>
-              <div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
-                <div class="h-full bg-primary rounded-full transition-all duration-700" [style.width]="getMediaProgress() + '%'"></div>
-              </div>
-            </div>
-            <!-- Per-lesson checklist -->
-            <div class="pt-2 space-y-1.5">
-              <div *ngFor="let lesson of lessons()"
-                class="flex items-center gap-2 px-2 py-1.5 rounded-lg transition-colors"
-                [class]="(lesson.hasVideo && lesson.hasPdf)
-                  ? 'bg-primary/5'
-                  : (!lesson.hasVideo ? 'bg-error/5' : '')">
 
-                <!-- Video status dot -->
-                <span class="material-symbols-outlined text-sm shrink-0"
-                  [class]="lesson.hasVideo ? 'text-primary' : 'text-error'"
-                  style="font-variation-settings: 'FILL' 1">
-                  {{ lesson.hasVideo ? 'check_circle' : 'cancel' }}
-                </span>
-
-                <!-- Lesson title -->
-                <span class="text-xs flex-1 truncate"
-                  [class]="(lesson.hasVideo && lesson.hasPdf) ? 'text-on-surface-variant line-through' : 'text-on-surface font-semibold'">
-                  {{ lesson.title }}
-                </span>
-
-                <!-- PDF chip -->
-                <span class="shrink-0 flex items-center gap-0.5 text-[10px] font-bold px-1.5 py-0.5 rounded-full"
-                  [class]="lesson.hasPdf
-                    ? 'bg-tertiary/10 text-tertiary'
-                    : 'bg-surface-container text-on-surface-variant/40'">
-                  <span class="material-symbols-outlined text-[10px]"
-                    style="font-variation-settings: 'FILL' 1">
-                    {{ lesson.hasPdf ? 'picture_as_pdf' : 'picture_as_pdf' }}
-                  </span>
-                </span>
-
-              </div>
-            </div>
-
-            <!-- Legend -->
-            <div class="pt-3 border-t border-outline-variant/10 flex items-center gap-4 text-[10px] text-on-surface-variant">
-              <span class="flex items-center gap-1">
-                <span class="material-symbols-outlined text-[11px] text-primary" style="font-variation-settings: 'FILL' 1">check_circle</span>
-                Video done
-              </span>
-              <span class="flex items-center gap-1">
-                <span class="material-symbols-outlined text-[11px] text-error" style="font-variation-settings: 'FILL' 1">cancel</span>
-                Missing video
-              </span>
-              <span class="flex items-center gap-1">
-                <span class="material-symbols-outlined text-[11px] text-tertiary" style="font-variation-settings: 'FILL' 1">picture_as_pdf</span>
-                PDF
-              </span>
+              <!-- Add PDF button -->
+              <button *ngIf="!showPdfForm()" (click)="showPdfForm.set(true)"
+                class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border-2 border-dashed border-gray-200 text-gray-400 text-sm font-semibold hover:border-blue-300 hover:text-blue-500 transition-all">
+                <span class="material-symbols-outlined text-[16px]">add_circle</span>
+                Add PDF URL
+              </button>
             </div>
           </div>
 
-          <!-- Tips -->
-          <div class="bg-white p-6 rounded-2xl border border-outline-variant/10 shadow-sm space-y-4">
-            <div class="flex items-center gap-2 text-primary">
-              <span class="material-symbols-outlined">lightbulb</span>
-              <h3 class="font-bold text-xs uppercase tracking-wider">Instructor Tips</h3>
+        </div>
+
+        <!-- ── Thumbnail & Content Preview ────────────────────────────── -->
+        <div *ngIf="selectedLesson()?.hasVideo" class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+          <div class="flex items-center justify-between px-6 py-4 border-b border-gray-50">
+            <h3 class="text-sm font-bold text-gray-800">Thumbnail &amp; Content Preview</h3>
+            <a *ngIf="selectedLesson()?.videoProvider === 'youtube'"
+              [href]="selectedLesson()?.videoUrl" target="_blank"
+              class="text-[11px] text-teal-600 font-bold hover:underline flex items-center gap-1">
+              <span class="material-symbols-outlined text-[13px]">open_in_new</span>
+              Open in YouTube
+            </a>
+          </div>
+
+          <div class="p-6 flex gap-6">
+            <!-- Preview thumbnail -->
+            <div class="w-64 shrink-0 rounded-xl overflow-hidden aspect-video relative bg-gray-900 shadow">
+              <img *ngIf="getVideoThumbnail(selectedLesson()!.videoUrl!, selectedLesson()!.videoProvider!)"
+                [src]="getVideoThumbnail(selectedLesson()!.videoUrl!, selectedLesson()!.videoProvider!)"
+                class="w-full h-full object-cover" alt="Video thumbnail" />
+              <div *ngIf="!getVideoThumbnail(selectedLesson()!.videoUrl!, selectedLesson()!.videoProvider!)"
+                class="absolute inset-0 flex items-center justify-center">
+                <span class="material-symbols-outlined text-white/30 text-5xl">video_file</span>
+              </div>
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div class="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center ring-2 ring-white/30">
+                  <span class="material-symbols-outlined text-white text-xl" style="font-variation-settings:'FILL' 1">play_arrow</span>
+                </div>
+              </div>
+              <span class="absolute bottom-2 right-2 text-[10px] font-bold px-2 py-0.5 bg-black/60 text-white rounded uppercase">
+                {{ selectedLesson()?.videoProvider }}
+              </span>
             </div>
-            <div class="p-4 bg-primary/5 rounded-xl border border-primary/10">
-              <div class="flex items-start gap-3">
-                <span class="material-symbols-outlined text-primary text-lg">videocam</span>
-                <div>
-                  <p class="text-xs font-bold text-primary mb-1">Video Quality</p>
-                  <p class="text-xs text-on-surface-variant leading-relaxed">Use YouTube unlisted links or self-hosted CDN URLs for reliable streaming.</p>
+
+            <!-- Meta details -->
+            <div class="flex flex-col gap-4 justify-center">
+              <!-- Source -->
+              <div>
+                <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Source</p>
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-teal-500 text-[15px]">link</span>
+                  <p class="text-sm font-semibold text-gray-700 max-w-xs truncate">{{ getVideoDomainLabel(selectedLesson()!.videoUrl!) }}</p>
+                </div>
+              </div>
+              <!-- Duration if available -->
+              <div *ngIf="selectedLesson()?.durationSeconds">
+                <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Duration</p>
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-teal-500 text-[15px]">schedule</span>
+                  <p class="text-sm font-semibold text-gray-700">
+                    {{ (selectedLesson()!.durationSeconds! / 60) | number:'1.0-0' }} mins
+                  </p>
+                </div>
+              </div>
+              <!-- Free preview -->
+              <div>
+                <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Status</p>
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full"
+                    [class]="selectedLesson()?.isFreePreview ? 'bg-green-400' : 'bg-gray-300'"></span>
+                  <p class="text-sm font-semibold"
+                    [class]="selectedLesson()?.isFreePreview ? 'text-green-600' : 'text-gray-400'">
+                    {{ selectedLesson()?.isFreePreview ? 'Free Preview Enabled' : 'Enrolled Students Only' }}
+                  </p>
                 </div>
               </div>
             </div>
-            <div class="p-4 bg-surface-container rounded-xl">
-              <p class="text-xs font-bold mb-2 text-on-surface uppercase tracking-wider flex items-center gap-2">
-                <span class="material-symbols-outlined text-sm">rule</span>
-                Supported Providers
-              </p>
-              <ul class="text-xs text-on-surface-variant space-y-2">
-                <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-outline-variant"></div>YouTube (youtube, youtu.be)</li>
-                <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-outline-variant"></div>Vimeo</li>
-                <li class="flex items-center gap-2"><div class="w-1 h-1 rounded-full bg-outline-variant"></div>Self-hosted (.mp4)</li>
-              </ul>
-            </div>
           </div>
         </div>
+
+      </div>
+
+      <!-- No lesson selected placeholder -->
+      <div *ngIf="!selectedLesson() && lessons().length > 0"
+        class="bg-white rounded-2xl border border-gray-100 shadow-sm py-16 text-center space-y-3">
+        <span class="material-symbols-outlined text-4xl text-gray-200">touch_app</span>
+        <p class="text-sm font-semibold text-gray-400">Select a lesson above to manage its media</p>
       </div>
 
     </div>
 
-    <!-- الفوتر -->
-    <footer class="fixed bottom-6 right-8 left-[calc(18rem+2rem)] z-40">
-      <div class="bg-white shadow-2xl rounded-full px-8 py-4 flex items-center justify-between border border-primary/10">
+    <!-- ── Footer nav ─────────────────────────────────────────────────────── -->
+    <footer class="fixed bottom-0 left-64 right-0 z-40 bg-white border-t border-gray-100">
+      <div class="max-w-5xl mx-auto px-8 py-4 flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <div class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></div>
-          <div class="flex flex-col">
-            <span class="text-xs font-bold text-on-surface">Ready</span>
-            <span class="text-xs font-medium text-on-surface-variant">Step 3 of 4</span>
-          </div>
+          <div class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></div>
+          <span class="text-xs font-semibold text-gray-500">Step 3 of 4 — Media</span>
         </div>
-        <div class="flex items-center gap-4">
-          <button type="button" (click)="goBack()" class="px-6 py-2 rounded-full text-on-surface-variant text-sm font-bold hover:text-on-surface transition-colors">Back</button>
-          <div class="w-px h-6 bg-outline-variant/20"></div>
-          <button type="button" (click)="goNext()"
-            class="px-10 py-3 bg-primary text-white rounded-full text-sm font-extrabold flex items-center gap-3 hover:opacity-95 transition-all shadow-xl">
+        <div class="flex items-center gap-3">
+          <button (click)="goBack()" class="px-5 py-2 rounded-xl text-sm font-semibold text-gray-500 border border-gray-200 hover:bg-gray-50 transition-colors">
+            ← Back
+          </button>
+          <button (click)="goNext()" class="px-8 py-2 rounded-xl bg-teal-600 text-white text-sm font-bold hover:bg-teal-700 transition-colors flex items-center gap-2">
             Next: Pricing
-            <span class="material-symbols-outlined text-lg">arrow_forward</span>
+            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
           </button>
         </div>
       </div>

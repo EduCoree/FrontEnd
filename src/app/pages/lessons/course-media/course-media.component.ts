@@ -17,6 +17,8 @@ interface LessonMediaState extends LessonDto {
   videoUrl?: string;
   videoProvider?: string;
   pdfUrl?: string;
+  durationSeconds?: number | null;
+  isFreePreview?: boolean;
 }
 
 @Component({
@@ -58,12 +60,35 @@ export class CourseMediaComponent implements OnInit {
     return this.lessons().filter(l => l.hasVideo).length;
   });
 
+  // UI state for the new design
+  showPdfForm = signal(false);
+
   videoProgress = signal(0);
   videoFileName = signal('');
   uploadingVideo = signal(false);
   videoUrl = signal('');
 
   pdfs = signal<{ name: string; size: string; fileUrl: string }[]>([]);
+
+  /** Extract YouTube video ID from a URL */
+  getYouTubeId(url: string): string | null {
+    const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?/]+)/);
+    return m ? m[1] : null;
+  }
+
+  /** Return a thumbnail URL based on provider */
+  getVideoThumbnail(url: string, provider: string): string | null {
+    if (provider === 'youtube') {
+      const id = this.getYouTubeId(url);
+      return id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : null;
+    }
+    return null;
+  }
+
+  /** Short domain label for display */
+  getVideoDomainLabel(url: string): string {
+    try { return new URL(url).hostname.replace('www.', ''); } catch { return url; }
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -104,6 +129,8 @@ export class CourseMediaComponent implements OnInit {
               videoUrl: (lesson as any).videoLesson?.videoUrl,
               videoProvider: (lesson as any).videoLesson?.videoProvider,
               pdfUrl: (lesson as any).pdfLesson?.fileUrl,
+              durationSeconds: (lesson as any).durationSeconds ?? null,
+              isFreePreview: (lesson as any).isFreePreview ?? false,
             });
           }
         }
@@ -118,6 +145,7 @@ export class CourseMediaComponent implements OnInit {
     this.selectedLesson.set(lesson);
     this.successMsg.set('');
     this.errorMsg.set('');
+    this.showPdfForm.set(false);
 
     // Pre-fill forms if content exists
     if (lesson.hasVideo) {
