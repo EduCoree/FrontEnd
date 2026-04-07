@@ -1,9 +1,11 @@
 // import { CenterEdit } from './pages/centers/center-edit/center-edit/center-edit';
 import { Routes } from '@angular/router';
-import { CreateQuizComponent } from './pages/Quizzes/CreateQuiz/create-quiz/create-quiz';
 import { authGuard } from './core/guards/auth guards/auth.guard';
 import { TeacherProfileComponent } from './pages/teacher-profile/teacher-profile';
 import { ProfileComponent } from './pages/profile/profile';
+import { get } from 'http';
+import { QuizComponent } from './pages/Quizzes/Get-Quizzez/get-quizzes/get-quizzes';
+import { QuizBuilderComponent } from './pages/Quizzes/quiz-builder/quiz-builder';
 
 export const routes: Routes = [
    
@@ -55,10 +57,7 @@ export const routes: Routes = [
     import('./pages/centers/center-logo/center-logo')
       .then(m => m.CenterLogo)
 },
-{
-        path: 'teacher/courses/:courseId/quizzes',
-         loadComponent: () =>CreateQuizComponent
-  },
+
   // Auth Routes
   {
     path: 'login',
@@ -169,7 +168,18 @@ export const routes: Routes = [
 
 //tawfik
 
-
+{
+  path: 'teacher/courses/:courseId/quizzes',
+  component:QuizComponent
+},
+{
+  path:'teacher/courses/:courseId/quizzes/:quizId/questions',
+  component: QuizBuilderComponent
+},
+{
+  path:'abc',
+  component:QuizBuilderComponent
+}
 
 
 
