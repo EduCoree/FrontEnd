@@ -54,6 +54,10 @@ export class CourseMediaComponent implements OnInit {
     return Math.round((done / all.length) * 100);
   });
 
+  completedVideosCount = computed(() => {
+    return this.lessons().filter(l => l.hasVideo).length;
+  });
+
   videoProgress = signal(0);
   videoFileName = signal('');
   uploadingVideo = signal(false);

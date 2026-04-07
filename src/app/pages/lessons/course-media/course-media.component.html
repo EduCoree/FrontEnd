@@ -82,34 +82,81 @@
 
         <!-- Lesson Selector -->
         <section class="space-y-4">
-          <div class="flex items-baseline gap-3">
-            <span class="text-3xl font-extrabold tracking-tighter text-primary/20">01</span>
-            <h2 class="text-2xl font-bold tracking-tight">Select Lesson</h2>
+          <div class="flex items-center justify-between">
+            <div class="flex items-baseline gap-3">
+              <span class="text-3xl font-extrabold tracking-tighter text-primary/20">01</span>
+              <h2 class="text-2xl font-bold tracking-tight">Select Lesson</h2>
+            </div>
+            <!-- Summary pill -->
+            <div class="flex items-center gap-2 px-4 py-1.5 bg-surface-container-low rounded-full border border-outline-variant/10">
+              <span class="w-2 h-2 rounded-full bg-primary"></span>
+              <span class="text-xs font-bold text-primary">{{ completedVideosCount() }}</span>
+              <span class="text-xs text-on-surface-variant">/</span>
+              <span class="text-xs font-bold text-on-surface-variant">{{ lessons().length }}</span>
+              <span class="text-xs text-on-surface-variant">with video</span>
+            </div>
           </div>
-          <div class="bg-surface-container p-4 rounded-xl space-y-3">
-            <p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">All Lessons</p>
+
+          <div class="bg-surface-container p-4 rounded-2xl space-y-2">
             <div *ngIf="lessons().length === 0" class="py-8 text-center text-on-surface-variant text-sm">
               No lessons found. Add lessons in the Curriculum step first.
             </div>
-            <div class="flex flex-col gap-3">
+            <div class="flex flex-col gap-2">
               <button *ngFor="let lesson of lessons()"
                 (click)="selectLesson(lesson)"
-                class="w-full text-left p-4 rounded-xl transition-all"
+                class="w-full text-left px-4 py-3.5 rounded-xl transition-all border-2"
                 [class]="selectedLesson()?.id === lesson.id
-                  ? 'bg-white border-l-4 border-primary shadow-sm'
-                  : 'bg-surface-container-low hover:bg-white'">
-                <div class="flex justify-between items-start mb-1">
-                  <span class="text-xs font-bold text-primary uppercase">{{ lesson.sectionTitle }}</span>
-                  <span class="material-symbols-outlined text-sm"
-                    [class]="lesson.hasVideo ? 'text-primary' : 'text-outline-variant'">
-                    {{ lesson.hasVideo ? 'check_circle' : 'pending' }}
-                  </span>
+                  ? 'bg-white border-primary shadow-md'
+                  : 'bg-surface-container-low border-transparent hover:border-outline-variant/20 hover:bg-white'">
+
+                <div class="flex items-center gap-3">
+
+                  <!-- Left: lesson type icon -->
+                  <div class="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+                    [class]="lesson.hasVideo ? 'bg-primary-container' : 'bg-surface-container-highest'">
+                    <span class="material-symbols-outlined text-sm"
+                      [class]="lesson.hasVideo ? 'text-primary' : 'text-on-surface-variant/40'"
+                      style="font-variation-settings: 'FILL' 1">
+                      {{ lesson.hasVideo ? 'play_circle' : 'play_circle' }}
+                    </span>
+                  </div>
+
+                  <!-- Middle: title + section -->
+                  <div class="flex-1 min-w-0">
+                    <p class="text-[10px] font-bold text-primary/70 uppercase tracking-widest truncate">{{ lesson.sectionTitle }}</p>
+                    <h4 class="font-bold text-sm text-on-surface truncate">{{ lesson.title }}</h4>
+                  </div>
+
+                  <!-- Right: Video + PDF status chips -->
+                  <div class="flex items-center gap-1.5 shrink-0">
+                    <!-- Video chip -->
+                    <span class="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold"
+                      [class]="lesson.hasVideo
+                        ? 'bg-primary/10 text-primary'
+                        : 'bg-error/10 text-error'">
+                      <span class="material-symbols-outlined text-[11px]"
+                        style="font-variation-settings: 'FILL' 1">
+                        {{ lesson.hasVideo ? 'check_circle' : 'cancel' }}
+                      </span>
+                      Video
+                    </span>
+                    <!-- PDF chip -->
+                    <span class="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold"
+                      [class]="lesson.hasPdf
+                        ? 'bg-tertiary/10 text-tertiary'
+                        : 'bg-surface-container-highest text-on-surface-variant/50'">
+                      <span class="material-symbols-outlined text-[11px]"
+                        style="font-variation-settings: 'FILL' 1">
+                        {{ lesson.hasPdf ? 'check_circle' : 'radio_button_unchecked' }}
+                      </span>
+                      PDF
+                    </span>
+                    <!-- Arrow if selected -->
+                    <span *ngIf="selectedLesson()?.id === lesson.id"
+                      class="material-symbols-outlined text-primary text-sm ml-1">chevron_right</span>
+                  </div>
+
                 </div>
-                <h4 class="font-bold text-sm text-on-surface">{{ lesson.title }}</h4>
-                <p class="text-xs text-on-surface-variant mt-1">
-                  {{ lesson.hasVideo ? 'Video attached' : 'Missing: Video' }}
-                  {{ !lesson.hasPdf ? ' · Missing: PDF' : '' }}
-                </p>
               </button>
             </div>
           </div>
@@ -242,17 +289,55 @@
                 <div class="h-full bg-primary rounded-full transition-all duration-700" [style.width]="getMediaProgress() + '%'"></div>
               </div>
             </div>
-            <div class="pt-2 space-y-2">
-              <div *ngFor="let lesson of lessons()" class="flex items-center gap-2 text-xs">
-                <span class="material-symbols-outlined text-sm"
-                  [class]="lesson.hasVideo ? 'text-primary' : 'text-outline-variant'"
-                  [attr.style]="lesson.hasVideo ? 'font-variation-settings: FILL 1' : null">
-                  {{ lesson.hasVideo ? 'check_circle' : 'radio_button_unchecked' }}
+            <!-- Per-lesson checklist -->
+            <div class="pt-2 space-y-1.5">
+              <div *ngFor="let lesson of lessons()"
+                class="flex items-center gap-2 px-2 py-1.5 rounded-lg transition-colors"
+                [class]="(lesson.hasVideo && lesson.hasPdf)
+                  ? 'bg-primary/5'
+                  : (!lesson.hasVideo ? 'bg-error/5' : '')">
+
+                <!-- Video status dot -->
+                <span class="material-symbols-outlined text-sm shrink-0"
+                  [class]="lesson.hasVideo ? 'text-primary' : 'text-error'"
+                  style="font-variation-settings: 'FILL' 1">
+                  {{ lesson.hasVideo ? 'check_circle' : 'cancel' }}
                 </span>
-                <span [class]="lesson.hasVideo ? 'line-through opacity-50 text-on-surface-variant' : 'text-on-surface font-semibold'">
+
+                <!-- Lesson title -->
+                <span class="text-xs flex-1 truncate"
+                  [class]="(lesson.hasVideo && lesson.hasPdf) ? 'text-on-surface-variant line-through' : 'text-on-surface font-semibold'">
                   {{ lesson.title }}
                 </span>
+
+                <!-- PDF chip -->
+                <span class="shrink-0 flex items-center gap-0.5 text-[10px] font-bold px-1.5 py-0.5 rounded-full"
+                  [class]="lesson.hasPdf
+                    ? 'bg-tertiary/10 text-tertiary'
+                    : 'bg-surface-container text-on-surface-variant/40'">
+                  <span class="material-symbols-outlined text-[10px]"
+                    style="font-variation-settings: 'FILL' 1">
+                    {{ lesson.hasPdf ? 'picture_as_pdf' : 'picture_as_pdf' }}
+                  </span>
+                </span>
+
               </div>
+            </div>
+
+            <!-- Legend -->
+            <div class="pt-3 border-t border-outline-variant/10 flex items-center gap-4 text-[10px] text-on-surface-variant">
+              <span class="flex items-center gap-1">
+                <span class="material-symbols-outlined text-[11px] text-primary" style="font-variation-settings: 'FILL' 1">check_circle</span>
+                Video done
+              </span>
+              <span class="flex items-center gap-1">
+                <span class="material-symbols-outlined text-[11px] text-error" style="font-variation-settings: 'FILL' 1">cancel</span>
+                Missing video
+              </span>
+              <span class="flex items-center gap-1">
+                <span class="material-symbols-outlined text-[11px] text-tertiary" style="font-variation-settings: 'FILL' 1">picture_as_pdf</span>
+                PDF
+              </span>
             </div>
           </div>
 
