@@ -1,0 +1,49 @@
+<!-- delete-question-modal.component.html -->
+<div class="fixed inset-0 z-50 flex items-center justify-center px-4">
+  <div class="absolute inset-0 bg-on-background/40 backdrop-blur-sm" (click)="cancel()"></div>
+  <div class="relative bg-white rounded-3xl p-10 w-full max-w-md border border-outline-variant/20 shadow-sm">
+
+    <div class="flex justify-center mb-6">
+      <div class="w-16 h-16 rounded-full bg-error-container flex items-center justify-center">
+        <span class="material-symbols-outlined text-error text-3xl">delete_forever</span>
+      </div>
+    </div>
+
+    <h2 class="text-2xl font-extrabold text-on-surface text-center mb-2">Delete Question</h2>
+    <p class="text-on-surface-variant text-sm text-center mb-6">
+      This action is permanent and cannot be reversed.
+    </p>
+
+    <div class="bg-error-container/20 border border-error/20 rounded-xl px-4 py-3 mb-8 flex items-start gap-3">
+      <span class="material-symbols-outlined text-error text-lg mt-0.5">warning</span>
+      <div>
+        <p class="text-sm font-semibold text-on-surface">Question</p>
+        <p class="text-sm text-on-surface-variant">
+          "<span class="font-medium text-on-surface">{{ questionText }}</span>"
+          will be permanently deleted.
+        </p>
+      </div>
+    </div>
+
+    <!-- Backend error message -->
+    <div *ngIf="deleteError"
+      class="mb-4 px-4 py-3 rounded-xl bg-error-container text-on-error-container text-sm flex items-center gap-2">
+      <span class="material-symbols-outlined text-lg">error</span>
+      {{ deleteError }}
+    </div>
+
+    <div class="flex flex-col gap-3">
+      <button (click)="confirm()" [disabled]="deleting"
+        class="w-full bg-error text-on-error py-4 rounded-xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform disabled:opacity-60">
+        <div *ngIf="deleting" class="w-4 h-4 border-2 border-on-error border-t-transparent rounded-full animate-spin"></div>
+        <span *ngIf="!deleting" class="material-symbols-outlined text-lg">delete</span>
+        {{ deleting ? 'Deleting...' : 'Delete Question' }}
+      </button>
+      <button (click)="cancel()" [disabled]="deleting"
+        class="w-full bg-surface-container text-on-surface py-4 rounded-xl font-bold hover:bg-surface-container-high transition-colors">
+        Keep Question
+      </button>
+    </div>
+
+  </div>
+</div>
