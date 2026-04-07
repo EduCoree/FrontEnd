@@ -2,9 +2,8 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { CourseSummaryDto } from '../../../core/model/courses/course.model';
-import { CourseService } from '../../../core/services/courses/course.service';
-
+import { CourseService } from '../../../core/services/course';
+import { CourseSummaryDto } from '../../../core/models/course';
 @Component({
   selector: 'app-teacher-dashboard',
   standalone: true,

@@ -3,8 +3,8 @@ import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ReorderItemDto, SectionDto } from '../../../core/model/courses/course.model';
-import { CourseService } from '../../../core/services/courses/course.service';
+import { ReorderItemDto, SectionDto } from '../../../core/models/course';
+import { CourseService } from '../../../core/services/course';
 
 @Component({
   selector: 'app-course-sections',

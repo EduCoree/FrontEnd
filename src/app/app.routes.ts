@@ -40,6 +40,7 @@ import { TeacherProfileComponent } from './pages/teacher-profile/teacher-profile
 import { AdminTeachersComponent }      from './pages/admin-teachers/admin-teachers';
 import { AdminStudentsComponent }      from './pages/admin-students/admin-students';
 import { AdminStudentDetailComponent } from './pages/admin-student-detail/admin-student-detail';
+import { AdminCoursesComponent } from './pages/admin-courses/admin-courses';
 export const routes: Routes = [
    // ── Public ────────────────────────────────────────────────────────────────
   {
@@ -104,6 +105,12 @@ export const routes: Routes = [
     component: AdminStudentDetailComponent,
     canActivate: [adminGuard],
     title: 'Student Detail — Admin',
+  },
+   {
+    path: 'admin/courses',
+    component: AdminCoursesComponent,
+    canActivate: [adminGuard],
+    title: 'Courses — Admin',
   },
  
 

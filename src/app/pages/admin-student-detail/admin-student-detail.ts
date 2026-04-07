@@ -1,15 +1,16 @@
-import { CourseService } from './../../core/services/courses/course.service';
+import { CourseService } from './../../core/services/course';
 import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AdminUserService } from '../../core/services/admin-user';
 import { StudentDetail } from '../../core/models/admin-user';
-import { CourseSummaryDto } from '../../core/model/courses/course.model';
-
+import { CourseSummaryDto } from '../../core/models/course';
+import { AdminSidebarComponent } from '../../layouts/admin-sidebar/admin-sidebar';
+import { AdminTopbarComponent } from '../../layouts/admin-topbar/admin-topbar';
 @Component({
   selector: 'app-admin-student-detail',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, AdminSidebarComponent, AdminTopbarComponent ],
   templateUrl: './admin-student-detail.html',
   styleUrl: './admin-student-detail.css',
 })
