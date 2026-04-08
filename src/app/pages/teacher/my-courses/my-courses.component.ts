@@ -1,5 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CourseService } from '../../../core/services/course';
 import { CourseSummaryDto } from '../../../core/models/course';
@@ -7,7 +7,7 @@ import { CourseSummaryDto } from '../../../core/models/course';
 @Component({
   selector: 'app-my-courses',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './my-courses.component.html',
   styleUrl: './my-courses.component.css'
 })

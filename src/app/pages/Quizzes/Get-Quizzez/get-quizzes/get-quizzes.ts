@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 
 import { QuizService } from '../../../../core/services/quiz.service';
 import { QuizDto } from '../../../../core/models/quiz';
@@ -12,7 +12,7 @@ import { Sidebar } from "../../../../shared/components/ui/sidebar/sidebar";
 @Component({
   selector: 'app-quiz',
   templateUrl: './get-quizzes.html',
-  imports: [CommonModule, CreateQuizComponent, FormsModule, CourseSidebar, Sidebar],
+  imports: [CommonModule, CreateQuizComponent, FormsModule, CourseSidebar, Sidebar, RouterLink],
 })
 export class QuizComponent implements OnInit {
   courseId!: number;

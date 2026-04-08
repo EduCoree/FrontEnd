@@ -34,6 +34,7 @@ import { AdminTeachersComponent }      from './pages/admin-teachers/admin-teache
 import { AdminStudentsComponent }      from './pages/admin-students/admin-students';
 import { AdminStudentDetailComponent } from './pages/admin-student-detail/admin-student-detail';
 import { authGuard } from './core/guards/auth-guard';
+import { AdminCoursesComponent } from './pages/admin-courses/admin-courses';
 export const routes: Routes = [
    // ── Public ────────────────────────────────────────────────────────────────
   {
@@ -150,7 +151,7 @@ export const routes: Routes = [
         .then(m => m.RegisterComponent)
   },
   {
-        path: 'teacher/courses/:courseId/quizzes',
+        path: 'teacher/courses/:courseId/quizzes/create',
          loadComponent: () =>CreateQuizComponent
   },
 {
@@ -229,7 +230,7 @@ export const routes: Routes = [
 ,
 
 {
-  path: 'add/question',
+  path: 'teacher/courses/:courseId/quizzes/:quizId/add-question',
   component : AddQuestion,
 }
 
@@ -277,7 +278,7 @@ export const routes: Routes = [
   component:QuizComponent
 },
 {
-  path:'teacher/courses/:courseId/quizzes/:quizId/questions',
+  path:'teacher/courses/:courseId/quizzes/:quizId/builder',
   component: QuizBuilderComponent
 },
 {
