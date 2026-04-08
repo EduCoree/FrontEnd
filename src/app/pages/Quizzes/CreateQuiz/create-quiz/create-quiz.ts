@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Quiz } from '../../../../core/services/quiz';
 import { CommonModule } from '@angular/common';
+import { QuizService } from '../../../../core/services/quiz.service';
 
 
 @Component({
@@ -18,7 +18,7 @@ export class CreateQuizComponent implements OnInit {
   quizForm!: FormGroup;
   isLoading = false;
   errorMessage = '';
-  constructor(private fb: FormBuilder, private quizService: Quiz) {}
+  constructor(private fb: FormBuilder, private quizService: QuizService) {}
 
   ngOnInit(): void {
     this.quizForm = this.fb.group({

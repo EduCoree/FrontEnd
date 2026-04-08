@@ -7,8 +7,8 @@ import {
   LessonResponse, UpdateLessonDto,
   AddVideoLessonDto, AddPdfLessonDto,
   VideoLessonResponse, PdfLessonResponse
-} from '../../../core/model/courses/course.model';
-import { CourseService } from '../../../core/services/courses/course.service';
+} from '../../../core/models/course';
+import { CourseService } from '../../../core/services/course';
 
 @Component({
   selector: 'app-lesson-manager',

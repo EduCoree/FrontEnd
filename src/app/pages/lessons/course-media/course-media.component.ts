@@ -8,8 +8,8 @@ import {
   SectionDto, LessonDto,
   AddVideoLessonDto, AddPdfLessonDto,
   VideoLessonResponse, PdfLessonResponse
-} from '../../../core/model/courses/course.model';
-import { CourseService } from '../../../core/services/courses/course.service';
+} from '../../../core/models/course';
+import { CourseService } from '../../../core/services/course';
 
 interface LessonMediaState extends LessonDto {
   sectionTitle: string;

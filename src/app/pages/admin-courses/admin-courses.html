@@ -1,0 +1,201 @@
+<!-- src/app/pages/admin-courses/admin-courses.html -->
+<div class="flex min-h-screen bg-[#f8faf9] font-headline">
+  <app-admin-sidebar />
+
+  <main class="ml-64 flex-1 min-h-screen">
+    <app-admin-topbar placeholder="Search courses, teachers, or tags..." />
+
+    <section class="px-8 py-10 space-y-8 max-w-7xl mx-auto">
+
+      <!-- Header -->
+      <div class="mb-4">
+        <h2 class="text-4xl font-extrabold text-[#2d3433] tracking-tight mb-2">Course Management</h2>
+        <p class="text-[#596060] text-lg">Curating the curriculum of EduCore.</p>
+      </div>
+
+      <!-- Toast -->
+      @if (successMsg()) {
+        <div class="flex items-center gap-3 px-5 py-3 bg-[#b2efda]/50 border border-[#2e6959]/20 rounded-xl text-[#2e6959] font-bold text-sm">
+          <span class="material-symbols-outlined text-[18px]">check_circle</span>{{ successMsg() }}
+        </div>
+      }
+      @if (errorMsg()) {
+        <div class="flex items-center gap-3 px-5 py-3 bg-[#fa746f]/20 border border-[#a83836]/20 rounded-xl text-[#a83836] font-bold text-sm">
+          <span class="material-symbols-outlined text-[18px]">error</span>{{ errorMsg() }}
+        </div>
+      }
+
+      <!-- Stats -->
+      <div class="grid grid-cols-3 gap-6">
+        <div class="bg-[#eaefee] p-8 rounded-xl relative overflow-hidden group">
+          <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-8xl opacity-5 group-hover:scale-110 transition-transform duration-500">school</span>
+          <h4 class="uppercase tracking-widest text-[10px] font-bold text-[#596060] mb-4">Total Courses</h4>
+          <p class="text-3xl font-black text-[#2d3433]">{{ courses().length }}</p>
+        </div>
+        <div class="bg-[#eaefee] p-8 rounded-xl relative overflow-hidden group">
+          <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-8xl opacity-5 group-hover:scale-110 transition-transform duration-500">trending_up</span>
+          <h4 class="uppercase tracking-widest text-[10px] font-bold text-[#596060] mb-4">Published</h4>
+          <p class="text-3xl font-black text-[#2d3433]">{{ publishedCount }}</p>
+          <p class="text-xs text-emerald-600 font-bold mt-2">Live & active</p>
+        </div>
+        <div class="bg-[#eaefee] p-8 rounded-xl relative overflow-hidden group">
+          <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-8xl opacity-5 group-hover:scale-110 transition-transform duration-500">draft</span>
+          <h4 class="uppercase tracking-widest text-[10px] font-bold text-[#596060] mb-4">Drafts</h4>
+          <p class="text-3xl font-black text-[#2d3433]">{{ draftCount }}</p>
+          <p class="text-xs text-[#596060] font-medium mt-2">{{ archivedCount }} archived</p>
+        </div>
+      </div>
+
+      <!-- Filters Row -->
+      <div class="grid grid-cols-12 gap-4 items-center">
+        <div class="col-span-8 flex gap-3 overflow-x-auto pb-1">
+          @for (s of ['All','Published','Draft','Archived']; track s) {
+            <!-- <button (click)="setStatusFilter(s as any)"
+              class="px-6 py-2 rounded-full font-bold text-sm transition-all whitespace-nowrap"
+              [class]="statusFilter() === s
+                ? 'bg-[#2e6959] text-[#e4fff4] shadow-sm'
+                : 'bg-[#eaefee] text-[#596060] hover:bg-[#dde4e3]'">
+              {{ s }} Courses
+            </button> -->
+          }
+        </div>
+        <div class="col-span-4 relative">
+          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[#596060]">search</span>
+          <input (input)="onSearch($event)" type="text" placeholder="Search..."
+            class="w-full bg-[#eaefee] border-none rounded-full py-2.5 pl-12 pr-4 text-sm focus:ring-2 focus:ring-[#2e6959]/20 outline-none" />
+        </div>
+      </div>
+
+      <!-- Table -->
+      @if (loading()) {
+        <div class="flex justify-center py-20">
+          <span class="material-symbols-outlined text-[#2e6959] text-5xl animate-spin">progress_activity</span>
+        </div>
+      }
+
+      @if (!loading()) {
+        <div class="bg-[#eaefee] rounded-xl overflow-hidden shadow-sm">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-separate border-spacing-y-2 px-4 pb-4">
+              <thead>
+                <tr class="text-[#596060] uppercase tracking-widest text-[10px] font-bold">
+                  <th class="px-4 py-4">Course</th>
+                  <th class="px-4 py-4">Teacher</th>
+                  <th class="px-4 py-4">Category</th>
+                  <th class="px-4 py-4">Status</th>
+                  <th class="px-4 py-4">Price</th>
+                  <th class="px-4 py-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (course of courses(); track course.id) {
+                  <tr class="group bg-white rounded-xl hover:bg-[#f8faf9] transition-colors">
+                    <td class="px-4 py-5 rounded-l-xl">
+                      <div>
+                        <p class="font-bold text-[#2d3433] text-base">{{ course.title }}</p>
+                        <p class="text-xs text-[#596060]">{{ course.level }} · {{ course.totalStudents }} students</p>
+                      </div>
+                    </td>
+                    <td class="px-4 py-5">
+                      <span class="text-sm font-medium text-[#2d3433]">{{ course.teacherName }}</span>
+                    </td>
+                    <td class="px-4 py-5">
+                      <span class="px-3 py-1 bg-[#c9e7f7] text-[#395663] rounded-full text-xs font-semibold">
+                        {{ course.categoryName }}
+                      </span>
+                    </td>
+                    <td class="px-4 py-5">
+                      <div class="flex items-center gap-1.5" [class]="statusClass(course.status)">
+                        <span class="w-2 h-2 rounded-full" [class]="statusDot(course.status)"></span>
+                        <span class="text-xs font-bold uppercase tracking-tighter">{{ course.status }}</span>
+                      </div>
+                    </td>
+                    <td class="px-4 py-5 font-bold text-[#2d3433]">
+                      @if (course.pricingType === 'Free') { Free }
+                      @else { ${{ course.price }} }
+                    </td>
+                    <td class="px-4 py-5 text-right rounded-r-xl">
+                      <div class="flex justify-end gap-2">
+                        <button (click)="openPricing(course)"
+                          class="p-2 text-[#596060] hover:text-[#2e6959] hover:bg-[#b2efda]/30 rounded-full transition-all" title="Edit Pricing">
+                          <span class="material-symbols-outlined text-xl">payments</span>
+                        </button>
+                        @if (course.status === 'Published') {
+                          <button (click)="unpublish(course)"
+                            class="p-2 text-[#596060] hover:text-[#a83836] hover:bg-[#fa746f]/10 rounded-full transition-all" title="Unpublish">
+                            <span class="material-symbols-outlined text-xl">visibility_off</span>
+                          </button>
+                        } @else {
+                          <button (click)="publish(course)"
+                            class="p-2 text-[#596060] hover:text-[#2e6959] hover:bg-[#b2efda]/30 rounded-full transition-all" title="Publish">
+                            <span class="material-symbols-outlined text-xl">publish</span>
+                          </button>
+                        }
+                      </div>
+                    </td>
+                  </tr>
+                }
+                @empty {
+                  <tr>
+                    <td colspan="6" class="px-4 py-20 text-center text-[#596060]">
+                      <span class="material-symbols-outlined text-5xl block mb-3 text-[#acb3b2]">school</span>
+                      No courses found.
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <div class="px-8 py-4 bg-[#f1f4f3] flex justify-between items-center text-xs text-[#596060] font-medium border-t border-[#acb3b2]/10">
+            <!-- <span>{{ filteredCourses.length }} courses</span> -->
+          </div>
+        </div>
+      }
+
+    </section>
+  </main>
+</div>
+
+<!-- Pricing Modal -->
+@if (showPricingModal()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h2 class="text-xl font-bold text-[#2d3433] font-headline">Edit Pricing</h2>
+          <p class="text-xs text-[#596060] mt-1">{{ selectedCourse()?.title }}</p>
+        </div>
+        <button (click)="showPricingModal.set(false)" class="p-2 rounded-lg hover:bg-[#eaefee] transition-colors">
+          <span class="material-symbols-outlined text-[#596060]">close</span>
+        </button>
+      </div>
+      <form [formGroup]="pricingForm" (ngSubmit)="submitPricing()" class="space-y-4">
+        <div>
+          <label class="uppercase tracking-widest text-[10px] font-bold text-[#596060] block mb-1 px-1">Pricing Type</label>
+          <select formControlName="pricingType" class="w-full bg-[#eaefee] border-none rounded-xl py-3 px-4 text-sm outline-none focus:ring-1 focus:ring-[#2e6959]/40">
+            <option value="Paid">Paid</option>
+            <option value="Free">Free</option>
+          </select>
+        </div>
+        <div>
+          <label class="uppercase tracking-widest text-[10px] font-bold text-[#596060] block mb-1 px-1">Price ($)</label>
+          <input formControlName="price" type="number" min="0"
+            class="w-full bg-[#eaefee] border-none rounded-xl py-3 px-4 text-sm outline-none focus:ring-1 focus:ring-[#2e6959]/40" />
+        </div>
+        <div>
+          <label class="uppercase tracking-widest text-[10px] font-bold text-[#596060] block mb-1 px-1">Discounted Price <span class="normal-case font-normal">(optional)</span></label>
+          <input formControlName="discountedPrice" type="number" min="0"
+            class="w-full bg-[#eaefee] border-none rounded-xl py-3 px-4 text-sm outline-none focus:ring-1 focus:ring-[#2e6959]/40" />
+        </div>
+        <div class="flex justify-end gap-3 pt-2">
+          <button type="button" (click)="showPricingModal.set(false)"
+            class="px-6 py-2.5 rounded-full border border-[#acb3b2]/30 text-[#596060] font-semibold hover:bg-[#eaefee] transition-colors text-sm">Cancel</button>
+          <button type="submit" [disabled]="pricingForm.invalid"
+            class="px-6 py-2.5 bg-[#2e6959] text-[#e4fff4] font-bold rounded-full disabled:opacity-50 text-sm hover:bg-[#205d4d] transition-colors">
+            Update Pricing
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
