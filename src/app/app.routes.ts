@@ -33,6 +33,7 @@ import { TeacherProfileComponent } from './pages/teacher-profile/teacher-profile
 import { AdminTeachersComponent }      from './pages/admin-teachers/admin-teachers';
 import { AdminStudentsComponent }      from './pages/admin-students/admin-students';
 import { AdminStudentDetailComponent } from './pages/admin-student-detail/admin-student-detail';
+import { AdminCoursesComponent } from './pages/admin-courses/admin-courses';
 import { authGuard } from './core/guards/auth-guard';
 import { AdminCoursesComponent } from './pages/admin-courses/admin-courses';
 export const routes: Routes = [
@@ -190,6 +191,59 @@ export const routes: Routes = [
     import('./pages/teacher/course-sections/course-sections.component')
       .then(m => m.CourseSectionsComponent)
     },
+
+// Content Delivery: Lesson Manager
+{
+  path: 'teacher/courses/:courseId/lessons/:lessonId',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./pages/teacher/lesson-manager/lesson-manager.component')
+      .then(m => m.LessonManagerComponent),
+  title: 'Lesson Manager — EduCore',
+},
+
+// Content Delivery: Media Page (wired)
+{
+  path: 'teacher/courses/:id/media',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./pages/lessons/course-media/course-media.component')
+      .then(m => m.CourseMediaComponent),
+  title: 'Course Media — EduCore',
+},
+
+//hala
+{
+  path: 'admin/teachers',
+  component: AdminTeachersComponent,
+  title: 'Teachers — Admin',
+},
+{
+  path: 'admin/students',
+  component: AdminStudentsComponent,
+  title: 'Students — Admin',
+},
+{
+  path: 'admin/students/:id',
+  component: AdminStudentDetailComponent,
+  title: 'Student Detail — Admin',
+},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

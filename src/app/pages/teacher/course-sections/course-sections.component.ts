@@ -3,7 +3,7 @@ import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ReorderItemDto, SectionDto } from '../../../core/models/course';
+import { ReorderItemDto, SectionDto, CreateLessonDto } from '../../../core/models/course';
 import { CourseService } from '../../../core/services/course';
 
 @Component({
@@ -20,12 +20,15 @@ export class CourseSectionsComponent implements OnInit {
   isLoading = signal(true);
   isSaving = signal(false);
 
-  
   sectionForm: FormGroup;
-
-
   editingSection: SectionDto | null = null;
   editForm: FormGroup;
+
+  // ─── Lesson Add Modal ─────────────────────────────────────────────────────
+  showAddLessonModal = signal(false);
+  addLessonTargetSectionId = signal<number | null>(null);
+  isSavingLesson = signal(false);
+  lessonForm: FormGroup;
 
   constructor(
     private route: ActivatedRoute,
@@ -40,6 +43,12 @@ export class CourseSectionsComponent implements OnInit {
     this.editForm = this.fb.group({
       title: ['', Validators.required]
     });
+
+    this.lessonForm = this.fb.group({
+      title: ['', [Validators.required, Validators.maxLength(200)]],
+      durationSeconds: [null],
+      sortOrder: [null]
+    });
   }
 
   ngOnInit(): void {
@@ -47,7 +56,7 @@ export class CourseSectionsComponent implements OnInit {
     this.loadSections();
   }
 
-  // GET 
+  // GET
   loadSections(): void {
     this.isLoading.set(true);
     this.courseService.getSections(this.courseId).subscribe({
@@ -59,7 +68,7 @@ export class CourseSectionsComponent implements OnInit {
     });
   }
 
-  // POST - 
+  // POST - Section
   addSection(): void {
     if (this.sectionForm.invalid) return;
     this.isSaving.set(true);
@@ -73,13 +82,12 @@ export class CourseSectionsComponent implements OnInit {
     });
   }
 
-  // PUT - 
+  // PUT - Section edit
   startEdit(section: SectionDto): void {
     this.editingSection = section;
     this.editForm.patchValue({ title: section.title });
   }
 
-  // PUT - 
   saveEdit(): void {
     if (this.editForm.invalid || !this.editingSection) return;
     this.courseService.updateSection(
@@ -94,12 +102,11 @@ export class CourseSectionsComponent implements OnInit {
     });
   }
 
-  // cancel
   cancelEdit(): void {
     this.editingSection = null;
   }
 
-  // DELETE - 
+  // DELETE - Section
   deleteSection(sectionId: number): void {
     if (!confirm('Are you sure you want to delete this section?')) return;
     this.courseService.deleteSection(this.courseId, sectionId).subscribe({
@@ -107,7 +114,7 @@ export class CourseSectionsComponent implements OnInit {
     });
   }
 
-  // PUT - reorder 
+  // PUT - reorder
   moveUp(index: number): void {
     if (index === 0) return;
     const items = [...this.sections()];
@@ -131,9 +138,58 @@ export class CourseSectionsComponent implements OnInit {
     }));
     this.courseService.reorderSections(this.courseId, items).subscribe();
   }
-getTotalLessons(): number {
-  return this.sections().reduce((sum, s) => sum + (s.lessons?.length || 0), 0);
-}
+
+  getTotalLessons(): number {
+    return this.sections().reduce((sum, s) => sum + (s.lessons?.length || 0), 0);
+  }
+
+  // ─── Lesson Modal ─────────────────────────────────────────────────────────
+
+  openAddLesson(sectionId: number): void {
+    this.lessonForm.reset();
+    this.addLessonTargetSectionId.set(sectionId);
+    this.showAddLessonModal.set(true);
+  }
+
+  closeAddLesson(): void {
+    this.showAddLessonModal.set(false);
+    this.addLessonTargetSectionId.set(null);
+  }
+
+  submitAddLesson(): void {
+    if (this.lessonForm.invalid) return;
+    const sectionId = this.addLessonTargetSectionId();
+    if (!sectionId) return;
+
+    this.isSavingLesson.set(true);
+    const dto: CreateLessonDto = {
+      sectionId,
+      title: this.lessonForm.value.title,
+      durationSeconds: this.lessonForm.value.durationSeconds || undefined,
+      sortOrder: this.lessonForm.value.sortOrder || undefined,
+    };
+
+    this.courseService.createLesson(this.courseId, dto).subscribe({
+      next: () => {
+        this.isSavingLesson.set(false);
+        this.closeAddLesson();
+        this.loadSections();
+      },
+      error: () => { this.isSavingLesson.set(false); }
+    });
+  }
+
+  deleteLesson(lessonId: number): void {
+    if (!confirm('Delete this lesson?')) return;
+    this.courseService.deleteLesson(this.courseId, lessonId).subscribe({
+      next: () => this.loadSections()
+    });
+  }
+
+  openLessonManager(lessonId: number): void {
+    this.router.navigate(['/teacher/courses', this.courseId, 'lessons', lessonId]);
+  }
+
   // Navigation
   goBack(): void {
     this.router.navigate(['/teacher/courses/create']);

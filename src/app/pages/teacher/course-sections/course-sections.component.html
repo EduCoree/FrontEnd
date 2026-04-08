@@ -198,12 +198,25 @@
                     <p class="text-xs text-on-surface-variant uppercase tracking-widest mt-0.5">{{ lesson.type }}</p>
                   </div>
                 </div>
+                <!-- Lesson Actions -->
+                <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button (click)="openLessonManager(lesson.id)"
+                    class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-primary-container/40 text-primary text-xs font-bold hover:bg-primary-container transition-colors">
+                    <span class="material-symbols-outlined text-sm">edit</span>
+                    Manage
+                  </button>
+                  <button (click)="deleteLesson(lesson.id)"
+                    class="p-1.5 rounded-full hover:bg-error-container/30 transition-colors">
+                    <span class="material-symbols-outlined text-sm text-error">delete</span>
+                  </button>
+                </div>
               </div>
 
-              <!-- زرار إضافة ليسون - Placeholder -->
-              <button class="w-full py-4 border-2 border-dashed border-outline-variant/30 rounded-lg text-on-surface-variant/60 hover:border-primary/40 hover:text-primary transition-all flex items-center justify-center gap-2 font-medium text-sm">
+              <!-- Add Lesson Button -->
+              <button (click)="openAddLesson(section.id)"
+                class="w-full py-4 border-2 border-dashed border-outline-variant/30 rounded-lg text-on-surface-variant/60 hover:border-primary/40 hover:text-primary hover:bg-primary-container/5 transition-all flex items-center justify-center gap-2 font-medium text-sm">
                 <span class="material-symbols-outlined">add</span>
-                Add Lesson — Coming Soon
+                Add Lesson
               </button>
 
             </div>
@@ -305,5 +318,76 @@
     </div>
   </div>
 </footer>
+
+  <!-- ═══ Add Lesson Modal ════════════════════════════════════════════════════ -->
+  <div *ngIf="showAddLessonModal()"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+    (click)="closeAddLesson()">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md mx-4 p-8 relative"
+      (click)="$event.stopPropagation()">
+
+      <!-- Header -->
+      <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-primary-container rounded-xl flex items-center justify-center">
+            <span class="material-symbols-outlined text-primary">add_circle</span>
+          </div>
+          <div>
+            <h2 class="text-lg font-bold text-on-surface">Add Lesson</h2>
+            <p class="text-xs text-on-surface-variant">Fill in the lesson details below</p>
+          </div>
+        </div>
+        <button (click)="closeAddLesson()"
+          class="p-2 rounded-full hover:bg-surface-container transition-colors">
+          <span class="material-symbols-outlined text-on-surface-variant">close</span>
+        </button>
+      </div>
+
+      <!-- Form -->
+      <form [formGroup]="lessonForm" (ngSubmit)="submitAddLesson()" class="space-y-4">
+
+        <!-- Title -->
+        <div class="space-y-1.5">
+          <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Lesson Title *</label>
+          <input formControlName="title" type="text"
+            placeholder="e.g. Introduction to Variables"
+            class="w-full px-4 py-3 bg-surface-container-low rounded-xl border border-outline-variant/20 focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
+            [class.border-error]="lessonForm.get('title')?.invalid && lessonForm.get('title')?.touched" />
+          <p *ngIf="lessonForm.get('title')?.invalid && lessonForm.get('title')?.touched"
+            class="text-xs text-error">Title is required and must be under 200 characters.</p>
+        </div>
+
+        <!-- Duration -->
+        <div class="space-y-1.5">
+          <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Duration (seconds)</label>
+          <input formControlName="durationSeconds" type="number" min="0"
+            placeholder="e.g. 600 for 10 minutes"
+            class="w-full px-4 py-3 bg-surface-container-low rounded-xl border border-outline-variant/20 focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium" />
+        </div>
+
+        <!-- Sort Order -->
+        <div class="space-y-1.5">
+          <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Sort Order</label>
+          <input formControlName="sortOrder" type="number" min="1"
+            placeholder="Leave blank for auto"
+            class="w-full px-4 py-3 bg-surface-container-low rounded-xl border border-outline-variant/20 focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium" />
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center gap-3 pt-2">
+          <button type="button" (click)="closeAddLesson()"
+            class="flex-1 px-5 py-3 rounded-full border border-outline-variant text-on-surface text-sm font-semibold hover:bg-surface-container transition-colors">
+            Cancel
+          </button>
+          <button type="submit" [disabled]="lessonForm.invalid || isSavingLesson()"
+            class="flex-1 px-5 py-3 rounded-full bg-primary text-white text-sm font-bold hover:opacity-90 transition-all disabled:opacity-50 flex items-center justify-center gap-2">
+            <span *ngIf="isSavingLesson()" class="material-symbols-outlined text-sm animate-spin">progress_activity</span>
+            {{ isSavingLesson() ? 'Saving...' : 'Create Lesson' }}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
 
 </div>

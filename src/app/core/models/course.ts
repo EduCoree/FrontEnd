@@ -103,3 +103,59 @@ export interface CourseFilterDto {
   level?: string;
   pricingType?: string;
 }
+
+// ─── Content Delivery: Lesson DTOs ──────────────────────────────────────────
+
+export interface CreateLessonDto {
+  sectionId: number;
+  title: string;
+  durationSeconds?: number;
+  sortOrder?: number;
+}
+
+export interface UpdateLessonDto {
+  title?: string;
+  durationSeconds?: number;
+  sortOrder?: number;
+}
+
+export interface LessonResponse {
+  id: number;
+  sectionId: number;
+  title: string;
+  type: string;          // 'None' | 'Video' | 'Pdf'
+  sortOrder: number;
+  durationSeconds?: number;
+  isFreePreview: boolean;
+  createdAt: string;
+}
+
+export interface AddVideoLessonDto {
+  videoUrl: string;
+  videoProvider: string; // 'youtube' | 'vimeo' | 'self'
+  thumbnailUrl?: string;
+}
+
+export interface AddPdfLessonDto {
+  fileUrl: string;
+  fileSizeKb?: number;
+}
+
+export interface VideoLessonResponse {
+  id: number;
+  lessonId: number;
+  videoUrl: string;
+  videoProvider: string;
+  thumbnailUrl?: string;
+}
+
+export interface PdfLessonResponse {
+  id: number;
+  lessonId: number;
+  fileUrl: string;
+  fileSizeKb?: number;
+}
+
+export interface ToggleFreePreviewDto {
+  isFreePreview: boolean;
+}
