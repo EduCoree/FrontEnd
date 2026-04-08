@@ -86,7 +86,7 @@
           </div>
         </ng-container>
 
-        <button class="w-full py-6 border-2 border-dashed border-primary/30 rounded-xl flex items-center justify-center gap-3 text-primary font-bold hover:bg-primary/5 transition-colors group">
+        <button   [routerLink]="['/teacher/courses', courseId, 'quizzes', quizId,'add-question']" class="w-full py-6 border-2 border-dashed border-primary/30 rounded-xl flex items-center justify-center gap-3 text-primary font-bold hover:bg-primary/5 transition-colors group">
           <span class="material-symbols-outlined transition-transform group-hover:scale-125" data-icon="add_circle">add_circle</span>
           + Add Question
         </button>
@@ -147,10 +147,9 @@
             <div class="grid grid-cols-2 gap-4">
               <div class="space-y-1">
                 <label class="text-sm font-semibold text-on-surface-variant">Type</label>
-                <select [(ngModel)]="newQuestionType" class="w-full bg-surface-container-highest border-0 rounded-lg p-3 text-sm">
+                <select [(ngModel)]="newQuestionType" (ngModelChange)="onQuestionTypeChange($event)" class="w-full bg-surface-container-highest border-0 rounded-lg p-3 text-sm">
                   <option value="MCQ">Multiple Choice</option>
-                  <option value="TRUE_FALSE">True/False</option>
-                  <option value="OPEN_ENDED">Open Ended</option>
+                  <option value="TRUEFALSE">True/False</option>
                 </select>
               </div>
               <div class="space-y-1">
