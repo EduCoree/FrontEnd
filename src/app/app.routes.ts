@@ -35,7 +35,6 @@ import { AdminStudentsComponent }      from './pages/admin-students/admin-studen
 import { AdminStudentDetailComponent } from './pages/admin-student-detail/admin-student-detail';
 import { AdminCoursesComponent } from './pages/admin-courses/admin-courses';
 import { authGuard } from './core/guards/auth-guard';
-import { AdminCoursesComponent } from './pages/admin-courses/admin-courses';
 export const routes: Routes = [
    // ── Public ────────────────────────────────────────────────────────────────
   {
