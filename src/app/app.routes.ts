@@ -399,4 +399,34 @@ export const routes: Routes = [
 //       import('./pages/')
 //         .then(m => m.CategoriesComponent)
 //   }
+
+// Content Delivery: Teacher Live Sessions
+,{
+  path: 'teacher/courses/:courseId/sessions',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./pages/teacher/teacher-sessions/teacher-sessions.component')
+      .then(m => m.TeacherSessionsComponent),
+  title: 'Live Sessions — EduCore',
+},
+
+// Content Delivery: Student Session Agenda
+{
+  path: 'student/sessions',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./pages/student/student-agenda/student-agenda.component')
+      .then(m => m.StudentAgendaComponent),
+  title: 'My Schedule — EduCore',
+},
+
+// Content Delivery: Student Video Watch (Signed URL)
+{
+  path: 'student/courses/:courseId/lessons/:lessonId/watch',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./pages/student/video-watch/video-watch.component')
+      .then(m => m.StudentVideoWatchComponent),
+  title: 'Watch Lesson — EduCore',
+}
 ];

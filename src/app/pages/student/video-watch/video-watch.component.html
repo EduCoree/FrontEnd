@@ -1,0 +1,130 @@
+<!-- src/app/pages/student/video-watch/video-watch.component.html -->
+<!-- Branch: feature/student-sessions-video-flow -->
+
+<div class="bg-[#f5f7fa] text-gray-900 min-h-screen font-sans">
+
+  <!-- ── Header ──────────────────────────────────────────────────────────────── -->
+  <header class="flex items-center gap-4 px-8 py-4 bg-white border-b border-gray-100 sticky top-0 z-40">
+    <button onclick="history.back()" class="p-2 rounded-full hover:bg-gray-100 transition-colors">
+      <span class="material-symbols-outlined text-gray-500">arrow_back</span>
+    </button>
+    <div>
+      <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400">EduCore</p>
+      <h1 class="text-sm font-bold text-gray-800">Watch Lesson</h1>
+    </div>
+    <!-- Expiry badge -->
+    <div *ngIf="expiresAt() && !isExpired()"
+      class="ml-auto flex items-center gap-1.5 px-3 py-1 bg-amber-50 border border-amber-100 rounded-lg text-[10px] font-bold text-amber-600">
+      <span class="material-symbols-outlined text-[13px]">timer</span>
+      Access expires {{ expiresAt() | date:'shortTime' }}
+    </div>
+  </header>
+
+  <!-- ── Loading State ────────────────────────────────────────────────────────── -->
+  <div *ngIf="isLoading()" class="flex flex-col items-center justify-center py-32 gap-4">
+    <span class="material-symbols-outlined text-teal-500 text-4xl animate-spin">progress_activity</span>
+    <p class="text-sm text-gray-400 font-medium">Loading secure video...</p>
+  </div>
+
+  <!-- ── Error State ──────────────────────────────────────────────────────────── -->
+  <div *ngIf="!isLoading() && errorMsg()"
+    class="max-w-md mx-auto mt-20 bg-white rounded-2xl border-2 border-dashed border-gray-200 py-16 flex flex-col items-center justify-center text-center gap-4">
+    <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center">
+      <span class="material-symbols-outlined text-2xl text-red-400">lock</span>
+    </div>
+    <div class="space-y-1 px-6">
+      <h3 class="text-base font-bold text-gray-700">{{ errorMsg() }}</h3>
+      <p class="text-xs text-gray-400">Please check your enrollment status or try refreshing.</p>
+    </div>
+    <button onclick="history.back()"
+      class="mt-2 px-6 py-2.5 rounded-xl bg-gray-100 text-gray-600 text-sm font-bold hover:bg-gray-200 transition-colors">
+      Go Back
+    </button>
+  </div>
+
+  <!-- ── Expired State ────────────────────────────────────────────────────────── -->
+  <div *ngIf="!isLoading() && isExpired()"
+    class="max-w-md mx-auto mt-20 bg-white rounded-2xl border-2 border-dashed border-amber-200 py-16 flex flex-col items-center justify-center text-center gap-4">
+    <div class="w-16 h-16 bg-amber-50 rounded-full flex items-center justify-center">
+      <span class="material-symbols-outlined text-2xl text-amber-500">timer_off</span>
+    </div>
+    <div class="space-y-1 px-6">
+      <h3 class="text-base font-bold text-gray-700">Session Expired</h3>
+      <p class="text-xs text-gray-400">Please refresh the page to continue watching.</p>
+    </div>
+    <button (click)="refreshPage()"
+      class="mt-2 flex items-center gap-2 px-6 py-2.5 rounded-xl bg-teal-600 text-white text-sm font-bold hover:bg-teal-700 transition-colors">
+      <span class="material-symbols-outlined text-[16px]">refresh</span>
+      Refresh
+    </button>
+  </div>
+
+  <!-- ── Player (success state) ──────────────────────────────────────────────── -->
+  <div *ngIf="!isLoading() && signedUrl() && !isExpired() && !errorMsg()"
+    class="max-w-4xl mx-auto p-8 space-y-5">
+
+    <!-- ── YouTube / Vimeo iframe ─────────────────────────────────────────── -->
+    <div *ngIf="provider() === 'youtube' || provider() === 'vimeo'"
+      class="bg-black rounded-2xl overflow-hidden shadow-xl border border-gray-200">
+      <!-- Provider strip -->
+      <div class="flex items-center gap-2 px-4 py-2 bg-gray-900 border-b border-gray-800">
+        <span class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></span>
+        <span class="text-[10px] font-bold uppercase tracking-widest text-teal-400">
+          {{ provider() === 'youtube' ? 'YouTube' : 'Vimeo' }} — Secure View
+        </span>
+        <span class="ml-auto text-[10px] text-gray-500 font-medium">
+          <span class="material-symbols-outlined text-[12px] align-middle">lock</span>
+          Time-limited access
+        </span>
+      </div>
+      <!-- iframe -->
+      <div class="relative" style="padding-top: 56.25%">
+        <iframe
+          [src]="safeUrl()"
+          class="absolute inset-0 w-full h-full"
+          frameborder="0"
+          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+
+    <!-- ── Self-hosted HTML5 video ─────────────────────────────────────────── -->
+    <div *ngIf="provider() === 'self'"
+      class="bg-black rounded-2xl overflow-hidden shadow-xl border border-gray-200">
+      <div class="flex items-center gap-2 px-4 py-2 bg-gray-900 border-b border-gray-800">
+        <span class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></span>
+        <span class="text-[10px] font-bold uppercase tracking-widest text-teal-400">
+          Self-Hosted — Secure View
+        </span>
+        <span class="ml-auto text-[10px] text-gray-500 font-medium">
+          <span class="material-symbols-outlined text-[12px] align-middle">lock</span>
+          Time-limited access
+        </span>
+      </div>
+      <video controls
+        [src]="signedUrl()!"
+        class="w-full rounded-b-2xl">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <!-- Info card below player -->
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm px-6 py-4 flex items-center gap-4">
+      <div class="w-10 h-10 bg-teal-50 rounded-xl flex items-center justify-center shrink-0">
+        <span class="material-symbols-outlined text-teal-600 text-[18px]" style="font-variation-settings:'FILL' 1">verified_user</span>
+      </div>
+      <div>
+        <p class="text-sm font-bold text-gray-700">Secure Signed Access</p>
+        <p class="text-xs text-gray-400 mt-0.5">
+          This video is served via a time-limited signed URL. Your access is valid until
+          <strong class="text-gray-600">{{ expiresAt() | date:'shortTime' }}</strong>.
+          Refresh the page if it expires.
+        </p>
+      </div>
+    </div>
+
+  </div>
+  <!-- /player -->
+
+</div>
