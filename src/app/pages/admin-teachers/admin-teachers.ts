@@ -94,6 +94,8 @@ export class AdminTeachersComponent implements OnInit {
   get activeCount() { return this.teachers().filter(t => t.isActive).length; }
   get inactiveCount() { return this.teachers().filter(t => !t.isActive).length; }
 
+  get totalCourseCount(): number { return this.teachers().reduce((s, t) => s + t.courseCount, 0); }
+
   private flash(msg: string) { this.loading.set(false); this.errorMsg.set(''); this.successMsg.set(msg); setTimeout(() => this.successMsg.set(''), 3500); }
   private flashError(msg: string) { this.loading.set(false); this.successMsg.set(''); this.errorMsg.set(msg); setTimeout(() => this.errorMsg.set(''), 3500); }
 }

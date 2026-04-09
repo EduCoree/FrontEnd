@@ -7,12 +7,15 @@ export interface CourseSummaryDto {
   level: string;
   pricingType: string;
   price: number;
-  status: string;
+  //status: string;
   categoryName: string;
   teacherName: string;
   totalStudents: number;
   totalSections: number;
   totalLessons: number;
+  discountedPrice?: number | null;
+  status: 'Draft' | 'Published' | 'Archived';
+  
 }
 
 // details of a course
@@ -63,12 +66,14 @@ export interface UpdateCourseDto {
   description: string;
   categoryId: number;
   level: string;
+  
 }
 
 // updating the pricing
 export interface UpdatePricingDto {
   pricingType: string;
   price: number;
+  discountedPrice?: number | null;
 }
 
 // creating a new section
@@ -101,5 +106,21 @@ export interface CourseFilterDto {
   search?: string;
   categoryId?: number;
   level?: string;
+  pricingType?: string;
+}
+
+export interface PagedResult<T> {
+  items: T[];
+  totalCount: number;
+  pageNumber: number;
+  pageSize: number;
+  totalPages: number;
+}
+ 
+export interface CourseFilterDto {
+  search?: string;
+  categoryId?: number;
+  level?: string;
+  status?: string;
   pricingType?: string;
 }
