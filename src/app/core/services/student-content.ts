@@ -5,6 +5,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { SignedUrlResponse } from '../models/session';
 
@@ -22,8 +23,8 @@ export class StudentContentService {
    *  Backend enforces: enrollment check, expiry date, free-preview bypass.
    */
   getVideoSignedUrl(lessonId: number): Observable<SignedUrlResponse> {
-    return this.http.get<SignedUrlResponse>(
+    return this.http.get<any>(
       `${this.videoBase}/${lessonId}/signed-url`
-    );
+    ).pipe(map(res => res.data));
   }
 }

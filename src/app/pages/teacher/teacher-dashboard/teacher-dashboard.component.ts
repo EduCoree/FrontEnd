@@ -1,13 +1,20 @@
 
 import { Component, OnInit, signal } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { forkJoin, map } from 'rxjs';
 import { CourseService } from '../../../core/services/course';
 import { CourseSummaryDto } from '../../../core/models/course';
+import { LiveSessionService } from '../../../core/services/live-session';
+import { LiveSessionResponse } from '../../../core/models/session';
+
+interface DashboardSession extends LiveSessionResponse {
+  courseTitle?: string;
+}
 @Component({
   selector: 'app-teacher-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   templateUrl: './teacher-dashboard.component.html',
   styleUrl: './teacher-dashboard.component.css'
 })
@@ -21,12 +28,19 @@ export class TeacherDashboardComponent implements OnInit {
 
   // ا
   courses = signal<CourseSummaryDto[]>([]);
+  upcomingSessions = signal<DashboardSession[]>([]);
   isLoading = signal(true);
+  isLoadingSessions = signal(true);
+  showScheduleDropdown = signal(false);
 
   
   teacherName = signal('');
 
-  constructor(private courseService: CourseService, private router: Router) {}
+  constructor(
+    private courseService: CourseService, 
+    private liveSessionService: LiveSessionService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.teacherName.set(localStorage.getItem('name') || 'Teacher');
@@ -56,8 +70,42 @@ export class TeacherDashboardComponent implements OnInit {
         this.averageCourseRating.set(Math.round(avg * 10) / 10);
 
         this.isLoading.set(false);
+        this.loadUpcomingSessions(items);
       },
-      error: () => { this.isLoading.set(false); }
+      error: () => { 
+        this.isLoading.set(false); 
+        this.isLoadingSessions.set(false);
+      }
+    });
+  }
+
+  loadUpcomingSessions(courses: CourseSummaryDto[]): void {
+    if (courses.length === 0) {
+      this.isLoadingSessions.set(false);
+      return;
+    }
+    
+    // Top 5 active courses
+    const activeCourses = courses.slice(0, 5);
+    const requests = activeCourses.map(c => 
+      this.liveSessionService.getSessionsByCourse(c.id).pipe(
+        map(sessions => (sessions || []).map(s => ({ ...s, courseTitle: c.title })))
+      )
+    );
+
+    forkJoin(requests).subscribe({
+      next: (results) => {
+        const allSessions = results.flat();
+        const now = Date.now();
+        const upcoming = allSessions
+          .filter(s => new Date(s.scheduledAt).getTime() > now)
+          .sort((a, b) => new Date(a.scheduledAt).getTime() - new Date(b.scheduledAt).getTime())
+          .slice(0, 3);
+        
+        this.upcomingSessions.set(upcoming);
+        this.isLoadingSessions.set(false);
+      },
+      error: () => this.isLoadingSessions.set(false)
     });
   }
 
@@ -71,5 +119,13 @@ export class TeacherDashboardComponent implements OnInit {
 
   goToMyCourses(): void {
     this.router.navigate(['/teacher/courses']);
+  }
+
+  toggleScheduleDropdown(): void {
+    this.showScheduleDropdown.update(v => !v);
+  }
+
+  goToCourseSessions(courseId: number): void {
+    this.router.navigate(['/teacher/courses', courseId, 'sessions']);
   }
 }

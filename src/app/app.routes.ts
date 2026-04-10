@@ -429,4 +429,13 @@ export const routes: Routes = [
       .then(m => m.StudentVideoWatchComponent),
   title: 'Watch Lesson — EduCore',
 }
+  ,
+  {
+    path: 'student/courses/:courseId/lessons/:lessonId/player',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/student/lesson-player/lesson-player.component')
+        .then(m => m.LessonPlayerComponent),
+    title: 'Lesson Player — EduCore',
+  }
 ];
