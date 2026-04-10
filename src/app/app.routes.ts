@@ -194,12 +194,20 @@ export const routes: Routes = [
 // Content Delivery: Lesson Manager
 {
   path: 'teacher/courses/:courseId/lessons/:lessonId',
-  canActivate: [authGuard],
-  loadComponent: () =>
-    import('./pages/teacher/lesson-manager/lesson-manager.component')
-      .then(m => m.LessonManagerComponent),
-  title: 'Lesson Manager — EduCore',
-},
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/student/student-progress/student-progress.component')
+        .then(m => m.StudentProgressComponent),
+    title: 'My Progress — EduCore',
+  },
+  {
+    path: 'student/certificates',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/student/my-certificates/my-certificates.component')
+        .then(m => m.MyCertificatesComponent),
+    title: 'My Certificates — EduCore',
+  },
 
 // Content Delivery: Media Page (wired)
 {
