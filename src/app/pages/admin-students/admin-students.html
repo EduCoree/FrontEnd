@@ -1,131 +1,152 @@
 <!-- src/app/pages/admin-students/admin-students.html -->
-<div class="min-h-screen bg-[#F8FAFA] pt-28 pb-20 px-4 md:px-8">
-  <div class="max-w-7xl mx-auto">
+<div class="flex min-h-screen bg-[#f8faf9] font-headline">
+  <app-admin-sidebar />
 
-    <!-- Header -->
-    <div class="mb-8">
-      <h1 class="font-headline text-3xl font-extrabold text-[#191C1D] tracking-tight">Students</h1>
-      <p class="text-[#404945] mt-1">Browse and manage all student accounts.</p>
-    </div>
+  <main class="ml-12 flex-1 min-h-screen flex flex-col">
+    <!-- <app-admin-topbar placeholder="Search students by name or email..." /> -->
 
-    <!-- Toast -->
-    @if (successMsg()) {
-      <div class="mb-6 flex items-center gap-3 px-5 py-4 bg-[#AAF1DA]/40 border border-[#226A58]/20 rounded-xl text-[#226A58] font-semibold text-sm">
-        <span class="material-symbols-outlined text-[20px]">check_circle</span>{{ successMsg() }}
-      </div>
-    }
-    @if (errorMsg()) {
-      <div class="mb-6 flex items-center gap-3 px-5 py-4 bg-[#FFDAD6]/40 border border-[#BA1A1A]/20 rounded-xl text-[#BA1A1A] font-semibold text-sm">
-        <span class="material-symbols-outlined text-[20px]">error</span>{{ errorMsg() }}
-      </div>
-    }
+    <div class="p-8 space-y-8">
 
-    <!-- Filters Row -->
-    <div class="flex flex-col md:flex-row gap-4 mb-6">
-      <div class="flex items-center gap-3 px-4 py-3 bg-white rounded-xl border border-[#E1E3E3] shadow-sm flex-1 max-w-md">
-        <span class="material-symbols-outlined text-[#707975] text-[18px]">search</span>
-        <input (input)="onSearch($event)" type="text" placeholder="Search by name or email..."
-          class="bg-transparent border-none focus:ring-0 flex-1 text-sm text-[#191C1D] placeholder-[#707975]" />
+      <!-- Header -->
+      <div class="flex justify-between items-end">
+        <div>
+          <h3 class="text-3xl font-extrabold tracking-tight text-[#2d3433] mb-2">Student Registry</h3>
+          <p class="text-[#596060] font-medium">Manage academic records and enrollment statuses.</p>
+        </div>
       </div>
-      <div class="flex gap-2">
-        <button (click)="setFilter(undefined)"
-          class="px-4 py-2 rounded-xl text-sm font-semibold transition-all"
-          [class]="filterActive() === undefined ? 'bg-[#2E6858] text-white' : 'bg-white border border-[#E1E3E3] text-[#404945] hover:bg-[#F2F4F4]'">
-          All
-        </button>
-        <button (click)="setFilter(true)"
-          class="px-4 py-2 rounded-xl text-sm font-semibold transition-all"
-          [class]="filterActive() === true ? 'bg-[#226A58] text-white' : 'bg-white border border-[#E1E3E3] text-[#404945] hover:bg-[#F2F4F4]'">
-          Active
-        </button>
-        <button (click)="setFilter(false)"
-          class="px-4 py-2 rounded-xl text-sm font-semibold transition-all"
-          [class]="filterActive() === false ? 'bg-[#BA1A1A] text-white' : 'bg-white border border-[#E1E3E3] text-[#404945] hover:bg-[#F2F4F4]'">
-          Inactive
-        </button>
-      </div>
-    </div>
 
-    <!-- Loading -->
-    @if (loading()) {
-      <div class="flex justify-center py-20">
-        <span class="material-symbols-outlined text-[#7DB8A5] text-5xl animate-spin">progress_activity</span>
-      </div>
-    }
+      <!-- Toast -->
+      @if (successMsg()) {
+        <div class="flex items-center gap-3 px-5 py-3 bg-[#b2efda]/50 border border-[#2e6959]/20 rounded-xl text-[#2e6959] font-bold text-sm">
+          <span class="material-symbols-outlined text-[18px]">check_circle</span>{{ successMsg() }}
+        </div>
+      }
+      @if (errorMsg()) {
+        <div class="flex items-center gap-3 px-5 py-3 bg-[#fa746f]/20 border border-[#a83836]/20 rounded-xl text-[#a83836] font-bold text-sm">
+          <span class="material-symbols-outlined text-[18px]">error</span>{{ errorMsg() }}
+        </div>
+      }
 
-    <!-- Table -->
-    @if (!loading()) {
-      <div class="bg-white rounded-2xl shadow-[0_8px_32px_rgba(125,184,165,0.10)] overflow-hidden">
-        <table class="w-full text-sm">
-          <thead class="bg-[#F2F4F4] border-b border-[#E1E3E3]">
-            <tr>
-              <th class="text-left px-6 py-4 font-semibold text-[#404945]">Student</th>
-              <th class="text-left px-6 py-4 font-semibold text-[#404945] hidden md:table-cell">Email</th>
-              <th class="text-left px-6 py-4 font-semibold text-[#404945] hidden lg:table-cell">Enrollments</th>
-              <th class="text-left px-6 py-4 font-semibold text-[#404945]">Status</th>
-              <th class="text-left px-6 py-4 font-semibold text-[#404945]">Actions</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-[#F2F4F4]">
-            @for (student of students(); track student.id) {
-              <tr class="hover:bg-[#F8FAFA] transition-colors">
-                <td class="px-6 py-4">
-                  <div class="flex items-center gap-3">
-                    @if (student.avatarUrl) {
-                      <img [src]="student.avatarUrl" class="w-10 h-10 rounded-full object-cover" />
-                    } @else {
-                      <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] flex items-center justify-center text-white text-xs font-bold">
-                        {{ avatarInitials(student.name) }}
+      <!-- Stats + Filters Bento -->
+      <div class="grid grid-cols-4 gap-4">
+        <div class="bg-[#eaefee] rounded-xl p-6 flex items-center gap-4">
+          <div class="w-12 h-12 rounded-full bg-[#b2efda] flex items-center justify-center text-[#2e6959]">
+            <span class="material-symbols-outlined">group</span>
+          </div>
+          <div>
+            <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">Total Students</p>
+            <p class="text-2xl font-black text-[#2d3433]">{{ students().length }}</p>
+          </div>
+        </div>
+        <div class="bg-[#eaefee] rounded-xl p-6 flex items-center gap-4">
+          <div class="w-12 h-12 rounded-full bg-[#c9e7f7] flex items-center justify-center text-[#466370]">
+            <span class="material-symbols-outlined">check_circle</span>
+          </div>
+          <div>
+            <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">Active</p>
+            <p class="text-2xl font-black text-[#2d3433]">{{ activeCount }}</p>
+          </div>
+        </div>
+        <div class="col-span-2 bg-[#eaefee] rounded-xl p-4 flex items-center gap-3">
+          <div class="relative flex-1">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[#596060] text-[18px]">search</span>
+            <input (input)="onSearch($event)" type="text" placeholder="Search..."
+              class="w-full bg-white border-none rounded-full py-2.5 pl-11 pr-4 text-sm focus:ring-2 focus:ring-[#2e6959]/20 outline-none" />
+          </div>
+          <div class="flex gap-2">
+            <button (click)="setFilter(undefined)"
+              class="px-4 py-2 rounded-full text-xs font-bold transition-all"
+              [class]="filterActive() === undefined ? 'bg-[#2e6959] text-[#e4fff4]' : 'bg-white text-[#596060] hover:bg-[#eaefee]'">All</button>
+            <button (click)="setFilter(true)"
+              class="px-4 py-2 rounded-full text-xs font-bold transition-all"
+              [class]="filterActive() === true ? 'bg-[#2e6959] text-[#e4fff4]' : 'bg-white text-[#596060] hover:bg-[#eaefee]'">Active</button>
+            <button (click)="setFilter(false)"
+              class="px-4 py-2 rounded-full text-xs font-bold transition-all"
+              [class]="filterActive() === false ? 'bg-[#a83836] text-white' : 'bg-white text-[#596060] hover:bg-[#eaefee]'">Inactive</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      @if (loading()) {
+        <div class="flex justify-center py-20">
+          <span class="material-symbols-outlined text-[#2e6959] text-5xl animate-spin">progress_activity</span>
+        </div>
+      }
+
+      @if (!loading()) {
+        <div class="bg-[#eaefee] rounded-xl overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full border-collapse">
+              <thead>
+                <tr class="bg-[#e4e9e8]">
+                  <th class="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-[#596060] text-left">Student</th>
+                  <th class="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-[#596060] text-left hidden md:table-cell">Email</th>
+                  <th class="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-[#596060] text-left">Status</th>
+                  <th class="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-[#596060] text-left hidden lg:table-cell">Enrollments</th>
+                  <th class="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-[#596060] text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-[#acb3b2]/10">
+                @for (student of students(); track student.id) {
+                  <tr class="hover:bg-[#f1f4f3] transition-colors group">
+                    <td class="px-8 py-5">
+                      <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-[#2e6959] flex items-center justify-center text-[#e4fff4] text-xs font-bold shrink-0">
+                          {{ initials(student.name) }}
+                        </div>
+                        <div>
+                          <p class="font-bold text-[#2d3433] leading-tight">{{ student.name }}</p>
+                          <p class="text-[10px] text-[#596060] font-bold uppercase tracking-tighter">&#64;{{ student.userName }}</p>
+                        </div>
                       </div>
-                    }
-                    <div>
-                      <p class="font-semibold text-[#191C1D]">{{ student.name }}</p>
-                      <p class="text-xs text-[#707975]">&#64;{{ student.userName }}</p>
-                    </div>
-                  </div>
-                </td>
-                <td class="px-6 py-4 text-[#404945] hidden md:table-cell">{{ student.email }}</td>
-                <td class="px-6 py-4 hidden lg:table-cell">
-                  <span class="px-2 py-1 bg-[#F2F4F4] rounded-lg text-[#404945] font-medium text-xs">
-                    {{ student.enrollmentCount }} enrolled
-                  </span>
-                </td>
-                <td class="px-6 py-4">
-                  <span class="px-3 py-1 rounded-full text-xs font-bold"
-                    [class]="student.isActive ? 'bg-[#AAF1DA]/40 text-[#226A58]' : 'bg-[#FFDAD6]/40 text-[#BA1A1A]'">
-                    {{ student.isActive ? 'Active' : 'Inactive' }}
-                  </span>
-                </td>
-                <td class="px-6 py-4">
-                  <div class="flex items-center gap-2">
-                    <a [routerLink]="['/admin/students', student.id]"
-                      class="p-2 rounded-lg bg-[#F2F4F4] text-[#2E6858] hover:bg-[#2E6858] hover:text-white transition-all">
-                      <span class="material-symbols-outlined text-[16px]">visibility</span>
-                    </a>
-                    <button (click)="toggleActive(student)"
-                      class="p-2 rounded-lg transition-all"
-                      [class]="student.isActive
-                        ? 'bg-[#FFDAD6]/40 text-[#BA1A1A] hover:bg-[#BA1A1A] hover:text-white'
-                        : 'bg-[#AAF1DA]/40 text-[#226A58] hover:bg-[#226A58] hover:text-white'">
-                      <span class="material-symbols-outlined text-[16px]">
-                        {{ student.isActive ? 'person_off' : 'person_check' }}
+                    </td>
+                    <td class="px-8 py-5 text-sm text-[#596060] hidden md:table-cell">{{ student.email }}</td>
+                    <td class="px-8 py-5">
+                      <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest"
+                        [class]="student.isActive ? 'bg-[#b2efda] text-[#1f5b4c]' : 'bg-[#dde4e3] text-[#596060]'">
+                        {{ student.isActive ? 'Active' : 'Inactive' }}
                       </span>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            }
-            @empty {
-              <tr>
-                <td colspan="5" class="px-6 py-20 text-center text-[#707975]">
-                  <span class="material-symbols-outlined text-5xl block mb-3 text-[#BFC9C4]">group</span>
-                  No students found.
-                </td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      </div>
-    }
-  </div>
+                    </td>
+                    <td class="px-8 py-5 hidden lg:table-cell">
+                      <div class="flex items-center gap-2">
+                        <span class="text-lg font-black text-[#2d3433]">{{ student.enrollmentCount }}</span>
+                        <span class="text-[10px] font-bold text-[#596060] uppercase">Enrolled</span>
+                      </div>
+                    </td>
+                    <td class="px-8 py-5 text-right">
+                      <div class="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <a [routerLink]="['/admin/students', student.id]"
+                          class="px-4 py-2 rounded-full text-xs font-bold bg-white text-[#2e6959] border border-[#2e6959]/10 hover:bg-[#2e6959] hover:text-[#e4fff4] transition-all">
+                          View Profile
+                        </a>
+                        <button (click)="toggleActive(student)"
+                          class="p-2 rounded-full transition-colors"
+                          [class]="student.isActive ? 'text-[#a83836] hover:bg-[#fa746f]/20' : 'text-[#2e6959] hover:bg-[#b2efda]'"
+                          [title]="student.isActive ? 'Deactivate' : 'Activate'">
+                          <span class="material-symbols-outlined">{{ student.isActive ? 'block' : 'check_circle' }}</span>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+                @empty {
+                  <tr>
+                    <td colspan="5" class="px-8 py-20 text-center text-[#596060]">
+                      <span class="material-symbols-outlined text-5xl block mb-3 text-[#acb3b2]">group</span>
+                      No students found.
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <div class="p-6 bg-[#f1f4f3] flex justify-between items-center border-t border-[#acb3b2]/10">
+            <span class="text-xs text-[#596060] font-medium">{{ students().length }} students</span>
+          </div>
+        </div>
+      }
+
+    </div>
+  </main>
 </div>

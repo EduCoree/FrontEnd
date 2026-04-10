@@ -1,0 +1,197 @@
+<app-course-sidebar></app-course-sidebar>
+
+<div class="flex-1 p-8 md:py-12 ps-32 space-y-12 max-w-7xl mx-auto">
+  <div *ngIf="loading" class="flex items-center justify-center h-64">
+    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+  </div>
+
+  <div *ngIf="error" class="bg-error-container text-error p-4 rounded-lg">
+    {{ error }}
+  </div>
+
+  <ng-container *ngIf="quiz && !loading">
+    <div class="space-y-2">
+      <span class="text-label-md font-label uppercase tracking-widest text-primary opacity-80">Course Module {{ quiz.courseId }}</span>
+      <h2 class="text-4xl md:text-4xl font-bold font-headline text-on-background tracking-tight max-w-4xl">
+        {{ quiz.title }}
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 xl:grid-cols-12 gap-28 items-start">
+      <div class="xl:col-span-8 space-y-8">
+        <ng-container *ngFor="let question of quiz.questions; let i = index">
+          <div class="group relative bg-surface-container-lowest py-8 px-12 rounded-xl shadow-[0_8px_32px_rgba(125,184,165,0.12)] border border-outline-variant/10">
+            <div class="flex justify-between items-start mb-6">
+              <div class="flex gap-4 items-center">
+                <span class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold font-headline">{{ i + 1 }}</span>
+                <div class="flex gap-2">
+                  <span class="bg-primary-fixed-dim text-on-primary-container px-3 py-1 rounded-full text-xs font-semibold font-label">{{ getQuestionTypeLabel(question.type) }}</span>
+                  <ng-container *ngIf="!isEditing(question.id)">
+                    <span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-semibold font-label">{{ question.points }} Points</span>
+                  </ng-container>
+                  <ng-container *ngIf="isEditing(question.id)">
+                    <input type="number" [value]="editingQuestion!.points" (input)="updateQuestionPoints(+$any($event.target).value)" class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-xs font-semibold font-label w-16 text-center border-0"/>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <ng-container *ngIf="!isEditing(question.id)">
+                  <button (click)="startEditing(question)" class="p-2 hover:bg-surface-container-low rounded-lg transition-colors text-primary">
+                    <span class="material-symbols-outlined" data-icon="edit">edit</span>
+                  </button>
+                </ng-container>
+                <ng-container *ngIf="isEditing(question.id)">
+                  <button (click)="saveEditing()" [disabled]="saving" class="p-2 hover:bg-primary/20 rounded-lg transition-colors text-primary disabled:opacity-50">
+                    <span *ngIf="!saving" class="material-symbols-outlined" data-icon="check">check</span>
+                    <span *ngIf="saving" class="animate-spin material-symbols-outlined" data-icon="progress_activity">progress_activity</span>
+                  </button>
+                  <button (click)="cancelEditing()" [disabled]="saving" class="p-2 hover:bg-error-container/20 rounded-lg transition-colors text-error disabled:opacity-50">
+                    <span class="material-symbols-outlined" data-icon="close">close</span>
+                  </button>
+                </ng-container>
+                <button *ngIf="!isEditing(question.id)" (click)="openDeleteModal(question)" class="p-2 hover:bg-error-container/20 rounded-lg transition-colors text-error">
+                  <span class="material-symbols-outlined" data-icon="delete">delete</span>
+                </button>
+              </div>
+            </div>
+
+            <ng-container *ngIf="!isEditing(question.id)">
+              <h3 class="text-xl font-semibold mb-8 text-on-background leading-relaxed">
+                {{ question.text }}
+              </h3>
+              <div class="space-y-4">
+                <ng-container *ngFor="let option of question.answerOptions">
+                  <div [class]="option.isCorrect ? 'flex items-center gap-4 p-4 rounded-lg bg-primary/10 border border-primary/20' : 'flex items-center gap-4 p-4 rounded-lg bg-surface-container-low border border-transparent hover:border-outline-variant/20 transition-all'">
+                    <span *ngIf="option.isCorrect" class="material-symbols-outlined text-primary" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                    <div *ngIf="!option.isCorrect" class="w-6 h-6 rounded-full border-2 border-outline-variant"></div>
+                    <span [class]="option.isCorrect ? 'flex-1 font-medium' : 'flex-1'">{{ option.text }}</span>
+                  </div>
+                </ng-container>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="isEditing(question.id)">
+              <textarea [value]="editingQuestion!.text" (input)="updateQuestionText($any($event.target).value)" class="w-full text-xl font-semibold mb-8 text-on-background leading-relaxed bg-surface-container-high border-0 rounded-lg p-4 focus:ring-2 focus:ring-primary-fixed-dim resize-none" rows="2"></textarea>
+              <div class="space-y-4">
+                <ng-container *ngFor="let option of editingQuestion!.options; let optIdx = index">
+                  <div [class]="option.isCorrect ? 'flex items-center gap-4 p-4 rounded-lg bg-primary/10 border border-primary/20' : 'flex items-center gap-4 p-4 rounded-lg bg-surface-container-low border border-transparent hover:border-outline-variant/20 transition-all'">
+                    <button (click)="toggleCorrectOption(optIdx)" class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors" [class.border-primary]="option.isCorrect" [class.border-outline-variant]="!option.isCorrect" [class.bg-primary]="option.isCorrect">
+                      <span *ngIf="option.isCorrect" class="material-symbols-outlined text-white text-sm" data-icon="check">check</span>
+                    </button>
+                    <input type="text" [value]="option.text" (input)="updateOptionText(optIdx, $any($event.target).value)" class="flex-1 bg-transparent border-0 p-2 focus:ring-0 focus:outline-none" [class.font-medium]="option.isCorrect"/>
+                  </div>
+                </ng-container>
+              </div>
+            </ng-container>
+          </div>
+        </ng-container>
+
+        <button   [routerLink]="['/teacher/courses', courseId, 'quizzes', quizId,'add-question']" class="w-full py-6 border-2 border-dashed border-primary/30 rounded-xl flex items-center justify-center gap-3 text-primary font-bold hover:bg-primary/5 transition-colors group">
+          <span class="material-symbols-outlined transition-transform group-hover:scale-125" data-icon="add_circle">add_circle</span>
+          + Add Question
+        </button>
+      </div>
+
+      <div class="xl:col-span-4 space-y-8 sticky top-32">
+        <div class="bg-surface-container-low p-8 rounded-2xl space-y-6">
+          <div class="flex justify-between items-center">
+            <h4 class="font-headline font-bold text-lg text-primary">Quiz Information</h4>
+            <button class="text-primary font-semibold text-sm hover:underline">Edit</button>
+          </div>
+          <div class="space-y-4">
+            <div>
+              <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant/60 block mb-1">Title</label>
+              <p class="font-normal text-on-surface leading-tight">{{ quiz.title }}</p>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant/60 block mb-1">Passing Score</label>
+                <p class="font-medium">{{ quiz.passScore }}%</p>
+              </div>
+              <div>
+                <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant/60 block mb-1">Total Points</label>
+                <p class="font-medium">{{ totalPoints }} Points</p>
+              </div>
+            </div>
+            <div>
+              <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant/60 block mb-1">Status</label>
+              <span class="inline-block bg-primary-fixed-dim text-on-primary-container px-4 py-1 rounded-full text-xs font-bold mt-1">Published</span>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant/60 block mb-1">Time Limit</label>
+                <p class="font-medium">{{ quiz.timeLimitMins }} mins</p>
+              </div>
+              <div>
+                <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant/60 block mb-1">Max Attempts</label>
+                <p class="font-medium">{{ quiz.maxAttempts }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-surface-container-lowest p-8 rounded-2xl shadow-[0_8px_32px_rgba(125,184,165,0.08)] space-y-6 border border-outline-variant/10">
+          <div class="flex items-center gap-3 text-primary mb-2">
+            <span class="material-symbols-outlined" data-icon="playlist_add">playlist_add</span>
+            <h4 class="font-headline font-bold text-lg">Quick Question Add</h4>
+          </div>
+          <div class="space-y-4">
+            <div *ngIf="addingQuestionError" class="px-4 py-3 rounded-xl bg-error-container text-error text-sm flex items-center gap-2">
+              <span class="material-symbols-outlined text-lg">error</span>
+              {{ addingQuestionError }}
+            </div>
+            <div class="space-y-1">
+              <label class="text-sm font-semibold text-on-surface-variant">Question Text</label>
+              <textarea [(ngModel)]="newQuestionText" class="w-full bg-surface-container-highest border-0 rounded-lg p-4 focus:ring-2 focus:ring-primary-fixed-dim resize-none" placeholder="Enter question description..." rows="3"></textarea>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div class="space-y-1">
+                <label class="text-sm font-semibold text-on-surface-variant">Type</label>
+                <select [(ngModel)]="newQuestionType" (ngModelChange)="onQuestionTypeChange($event)" class="w-full bg-surface-container-highest border-0 rounded-lg p-3 text-sm">
+                  <option value="MCQ">Multiple Choice</option>
+                  <option value="TRUEFALSE">True/False</option>
+                </select>
+              </div>
+              <div class="space-y-1">
+                <label class="text-sm font-semibold text-on-surface-variant">Points</label>
+                <input [(ngModel)]="newQuestionPoints" class="w-full bg-surface-container-highest border-0 rounded-lg p-3 text-sm" type="number"/>
+              </div>
+            </div>
+            <div class="space-y-3">
+              <label class="text-sm font-semibold text-on-surface-variant">Answer Options</label>
+              <ng-container *ngFor="let option of newQuestionOptions; let i = index">
+                <div class="flex items-center gap-2">
+                  <button (click)="setNewOptionCorrect(i)" class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors" [class.border-primary]="option.isCorrect" [class.border-outline-variant]="!option.isCorrect" [class.bg-primary]="option.isCorrect">
+                    <span *ngIf="option.isCorrect" class="material-symbols-outlined text-white text-sm" data-icon="check">check</span>
+                  </button>
+                  <input [(ngModel)]="option.text" class="flex-1 bg-surface-container-highest border-0 rounded-lg p-2 text-sm" placeholder="Option {{ i + 1 }}" type="text"/>
+                  <button (click)="removeNewOption(i)" [disabled]="newQuestionOptions.length <= 2" class="text-error/40 hover:text-error disabled:opacity-30"><span class="material-symbols-outlined" data-icon="close">close</span></button>
+                </div>
+              </ng-container>
+              <button type="button" (click)="addNewOption()" class="text-xs font-bold text-primary flex items-center gap-1 hover:opacity-80">
+                <span class="material-symbols-outlined text-sm" data-icon="add">add</span> Add Option
+              </button>
+            </div>
+            <button (click)="saveNewQuestion()" [disabled]="addingQuestion" class="w-full py-4 bg-gradient-to-br from-primary to-primary-container text-white rounded-lg font-bold shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-60">
+              <span *ngIf="!addingQuestion">Save Question</span>
+              <span *ngIf="addingQuestion" class="flex items-center justify-center gap-2">
+                <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                Saving...
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <app-delete-question-modal
+    *ngIf="questionToDelete"
+    [courseId]="courseId"
+    [quizId]="quizId"
+    [questionId]="questionToDelete.id"
+    [questionText]="questionToDelete.text"
+    (confirmed)="onDeleteConfirmed()"
+    (cancelled)="closeDeleteModal()">
+  </app-delete-question-modal>
+</div>

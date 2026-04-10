@@ -1,0 +1,121 @@
+<!-- src/app/layouts/admin-sidebar/admin-sidebar.html -->
+<aside
+  [class.w-64]="isOpen()"
+  [class.w-16]="!isOpen()"
+  class="h-screen fixed left-0 top-0 bg-[#eaefee] flex flex-col z-50 transition-all duration-300 overflow-hidden">
+
+  <!-- Header -->
+  <div
+    class="flex items-center gap-3 p-4 border-b border-emerald-800/10 pt-24"
+    [class.justify-between]="isOpen()"
+    [class.justify-center]="!isOpen()">
+
+    @if (isOpen()) {
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-[#2e6959] flex items-center justify-center flex-shrink-0">
+          <span class="material-symbols-outlined text-[#e4fff4] text-lg">school</span>
+        </div>
+        <div>
+          <p class="text-sm font-bold text-emerald-900">EduCore</p>
+          <p class="text-[10px] text-emerald-800/50 uppercase tracking-widest">Admin Portal</p>
+        </div>
+      </div>
+    }
+
+    <button
+      (click)="toggle()"
+      class="w-8 h-8 rounded-lg hover:bg-emerald-800/10 flex items-center justify-center transition-colors flex-shrink-0">
+      <span class="material-symbols-outlined text-emerald-800/60 text-lg">
+        {{ isOpen() ? 'chevron_left' : 'chevron_right' }}
+      </span>
+    </button>
+  </div>
+
+  <!-- Nav -->
+  <nav class="flex-1 p-3 space-y-1 overflow-y-auto">
+    @for (item of navItems; track item.route) {
+      
+        <a [routerLink]="item.route"
+        routerLinkActive #rla="routerLinkActive"
+        [routerLinkActiveOptions]="{ exact: item.exact }"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group"
+        [class.bg-[#2e6959]]="rla.isActive"
+        [class.text-[#e4fff4]]="rla.isActive"
+        [class.hover:bg-emerald-800/10]="!rla.isActive"
+        [class.text-emerald-800/60]="!rla.isActive"
+        [class.justify-center]="!isOpen()">
+
+        <span
+          class="material-symbols-outlined text-xl flex-shrink-0"
+          [class.text-[#e4fff4]]="rla.isActive"
+          [class.text-emerald-700]="!rla.isActive">
+          {{ item.icon }}
+        </span>
+
+        @if (isOpen()) {
+          <span class="uppercase tracking-widest text-[10px] font-bold whitespace-nowrap">
+            {{ item.label }}
+          </span>
+        }
+      </a>
+    }
+  </nav>
+
+  <!-- Footer -->
+  <div class="border-t border-emerald-800/10">
+
+    <!-- Logout -->
+    <div class="p-3 space-y-1">
+      
+        <a href="#"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-emerald-800/60 hover:bg-emerald-800/10 transition-colors"
+        [class.justify-center]="!isOpen()">
+        <span class="material-symbols-outlined text-xl flex-shrink-0 text-emerald-700">contact_support</span>
+        @if (isOpen()) {
+          <span class="uppercase tracking-widest text-[10px] font-bold whitespace-nowrap">Support</span>
+        }
+      </a>
+
+      <button
+        (click)="logout()"
+        class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-emerald-800/60 hover:bg-red-50 hover:text-red-700 transition-colors"
+        [class.justify-center]="!isOpen()">
+        <span class="material-symbols-outlined text-xl flex-shrink-0">logout</span>
+        @if (isOpen()) {
+          <span class="uppercase tracking-widest text-[10px] font-bold whitespace-nowrap">Logout</span>
+        }
+      </button>
+    </div>
+
+    <!-- User -->
+    @if (isOpen()) {
+      <div class="p-4 border-t border-emerald-800/10">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-[#2e6959] flex items-center justify-center text-[#e4fff4] text-xs font-bold flex-shrink-0">
+            {{ userInitials }}
+          </div>
+          <div class="overflow-hidden">
+            <p class="text-xs font-bold text-emerald-900 truncate">{{ userName }}</p>
+            <p class="text-[10px] text-emerald-800/50 uppercase tracking-widest">Administrator</p>
+            </div>
+        </div>
+      </div>
+    } @else {
+      <div class="p-3 flex justify-center border-t border-emerald-800/10">
+        <div
+          class="w-8 h-8 rounded-full bg-[#2e6959] flex items-center justify-center text-[#e4fff4] text-xs font-bold"
+          [title]="userName">
+          {{ userInitials }}
+        </div>
+      </div>
+    }
+  </div>
+
+</aside>
+
+<!-- Content offset -->
+<div
+  [class.ml-64]="isOpen()"
+  [class.ml-16]="!isOpen()"
+  class="transition-all duration-300 h-0">
+</div>

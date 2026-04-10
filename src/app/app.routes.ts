@@ -1,41 +1,119 @@
+import { QuizHistory } from './pages/quiz-history/quiz-history';
+import { QuizResult } from './pages/quiz-result/quiz-result';
 import { Categories } from './pages/centers/categories/categories';
 // import { CenterEdit } from './pages/centers/center-edit/center-edit/center-edit';
-import { Routes } from '@angular/router';
+
+import { QuestionsList } from './pages/questions-list/questions-list';
+import { StudentQuizIntro } from './pages/student-quiz-intro/student-quiz-intro';
+import { ActiveQuiz } from './pages/active-quiz/active-quiz';
+import { AddQuestion } from './pages/add-question/add-question';
+import { QuizSubmission } from './pages/quiz-submission/quiz-submission';
+import { get } from 'http';
+import { QuizComponent } from './pages/Quizzes/Get-Quizzez/get-quizzes/get-quizzes';
+import { QuizBuilderComponent } from './pages/Quizzes/quiz-builder/quiz-builder';
 import { CreateQuizComponent } from './pages/Quizzes/CreateQuiz/create-quiz/create-quiz';
-import { authGuard } from './core/guards/auth guards/auth.guard';
+import{Home} from './pages/home/home';
+
+
+import { Routes } from '@angular/router';
+import { guestGuard } from './core/guards/guest-guard';
+import { adminGuard } from './core/guards/admin-guard';
+ 
+// Auth pages
+import { LoginComponent }          from './pages/login/login';
+import { RegisterComponent }       from './pages/register/register';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password';
+import { ConfirmEmailComponent }   from './pages/confirm-email/confirm-email';
+ 
+// User pages
+import { ProfileComponent }        from './pages/profile/profile';
 import { TeacherProfileComponent } from './pages/teacher-profile/teacher-profile';
-import { ProfileComponent } from './pages/profile/profile';
-import { AdminTeachersComponent } from './pages/admin-teachers/admin-teachers';
-import { AdminStudentsComponent } from './pages/admin-students/admin-students';
+ 
+// Admin pages
+import { AdminTeachersComponent }      from './pages/admin-teachers/admin-teachers';
+import { AdminStudentsComponent }      from './pages/admin-students/admin-students';
 import { AdminStudentDetailComponent } from './pages/admin-student-detail/admin-student-detail';
 import { CourseDetailComponent } from './pages/Courses/course-detail/course-detail.component';
 import { CoursesListComponent } from './pages/Courses/courses-list/courses-list.component';
 import { StudentLayoutComponent } from './layouts/student-layout/student-layout.component';
 import { StudentDashboardComponent } from './pages/student/student-dashboard/student-dashboard.component';
 
+import { AdminCoursesComponent } from './pages/admin-courses/admin-courses';
+import { authGuard } from './core/guards/auth-guard';
 export const routes: Routes = [
-   
+   // ── Public ────────────────────────────────────────────────────────────────
   {
     path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
-  },
-  {
-   path: 'home',
-   loadComponent: () =>
-     import('./pages/home/home').then(m => m.Home)
- },
-    {
-    path: 'profile',
-    component: ProfileComponent,
-    // canActivate: [authGuard],
-    title: 'My Profile — EduCore',
+    component: Home,
+    title: 'EduCore',
   },
   {
     path: 'teachers/:id',
     component: TeacherProfileComponent,
     title: 'Teacher Profile — EduCore',
   },
+ 
+  // ── Guest only (redirect to home if already logged in) ────────────────────
+  {
+    path: 'login',
+    component: LoginComponent,
+    canActivate: [guestGuard],
+    title: 'Sign In — EduCore',
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
+    canActivate: [guestGuard],
+    title: 'Sign Up — EduCore',
+  },
+  {
+    path: 'forgot-password',
+    component: ForgotPasswordComponent,
+    canActivate: [guestGuard],
+    title: 'Reset Password — EduCore',
+  },
+  {
+    path: 'confirm-email',
+    component: ConfirmEmailComponent,
+    title: 'Confirm Email — EduCore',
+  },
+ 
+  // ── Auth required ─────────────────────────────────────────────────────────
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [authGuard],
+    title: 'My Profile — EduCore',
+  },
+ 
+  // ── Admin only ────────────────────────────────────────────────────────────
+  {
+    path: 'admin/teachers',
+    component: AdminTeachersComponent,
+    canActivate: [adminGuard],
+    title: 'Teachers — Admin',
+  },
+  {
+    path: 'admin/students',
+    component: AdminStudentsComponent,
+    canActivate: [adminGuard],
+    title: 'Students — Admin',
+  },
+  {
+    path: 'admin/students/:id',
+    component: AdminStudentDetailComponent,
+    canActivate: [adminGuard],
+    title: 'Student Detail — Admin',
+  },
+   {
+    path: 'admin/courses',
+    component: AdminCoursesComponent,
+    canActivate: [adminGuard],
+    title: 'Courses — Admin',
+  },
+ 
+
+    
   {
     path: 'centers/:id',
     loadComponent: () =>
@@ -63,22 +141,23 @@ export const routes: Routes = [
     import('./pages/centers/center-logo/center-logo')
       .then(m => m.CenterLogo)
 },
-{
-        path: 'teacher/courses/:courseId/quizzes',
-         loadComponent: () =>CreateQuizComponent
-  },
+
   // Auth Routes
   {
     path: 'login',
     loadComponent: () =>
-      import('./pages/auth/login/login.component')
+      import('./pages/login/login')
         .then(m => m.LoginComponent)
   },
   {
     path: 'register',
     loadComponent: () =>
-      import('./pages/auth/register/register.component')
+      import('./pages/register/register')
         .then(m => m.RegisterComponent)
+  },
+  {
+        path: 'teacher/courses/:courseId/quizzes/create',
+         loadComponent: () =>CreateQuizComponent
   },
 {
   path: 'teacher/dashboard',
@@ -117,6 +196,26 @@ export const routes: Routes = [
       .then(m => m.CourseSectionsComponent)
     },
 
+// Content Delivery: Lesson Manager
+{
+  path: 'teacher/courses/:courseId/lessons/:lessonId',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./pages/teacher/lesson-manager/lesson-manager.component')
+      .then(m => m.LessonManagerComponent),
+  title: 'Lesson Manager — EduCore',
+},
+
+// Content Delivery: Media Page (wired)
+{
+  path: 'teacher/courses/:id/media',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./pages/lessons/course-media/course-media.component')
+      .then(m => m.CourseMediaComponent),
+  title: 'Course Media — EduCore',
+},
+
 //hala
 {
   path: 'admin/teachers',
@@ -152,6 +251,7 @@ export const routes: Routes = [
 
 
 
+
 //menna
 
 
@@ -161,16 +261,51 @@ export const routes: Routes = [
   loadComponent: () =>
     import('./pages/centers/categories/categories')
       .then(m => m.Categories)
+} ,
+
+
+
+
+
+{
+  path: 'questions',
+  component : QuestionsList,
+}
+,
+
+{
+  path: 'quiz/intro',
+  component : StudentQuizIntro,
 }
 
+,
 
+{
+  path: 'quiz/active',
+  component : ActiveQuiz,
+}
 
+,
 
+{
+  path: 'teacher/courses/:courseId/quizzes/:quizId/add-question',
+  component : AddQuestion,
+}
 
+,
 
-
-
-
+{
+  path: 'Quiz/submission',
+  component : QuizSubmission,
+},
+{
+  path: 'Quiz/results',
+  component : QuizResult,
+},
+{
+  path: 'Quiz/history',
+  component : QuizHistory,
+}
 
 
 
@@ -204,7 +339,18 @@ export const routes: Routes = [
 
 //tawfik
 
-
+,{
+  path: 'teacher/courses/:courseId/quizzes',
+  component:QuizComponent
+},
+{
+  path:'teacher/courses/:courseId/quizzes/:quizId/builder',
+  component: QuizBuilderComponent
+},
+{
+  path:'abc',
+  component:QuizBuilderComponent
+}
 
 
 

@@ -2,10 +2,11 @@ import { Component, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+
 import { Category } from '../../../core/models/category.model';
-import { SectionDto, ReorderItemDto } from '../../../core/model/courses/course.model';
 import { CategoryService } from '../../../core/services/category.service';
-import { CourseService } from '../../../core/services/courses/course.service';
+import { ReorderItemDto, SectionDto } from '../../../core/models/course';
+import { CourseService } from '../../../core/services/course';
 
 @Component({
   selector: 'app-edit-course',

@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { PublicCourseService } from '../../../core/services/public-course.service';
-import { StudentEnrolledCourseDto } from '../../../core/model/courses/course.model';
+import { StudentEnrolledCourseDto } from '../../../core/models/course';
 
 @Component({
   selector: 'app-student-dashboard',

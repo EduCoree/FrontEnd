@@ -1,0 +1,293 @@
+<!-- src/app/pages/admin-courses/admin-courses.html -->
+<div class="flex min-h-screen bg-[#F8FAFA]">
+  <app-admin-sidebar />
+
+  <main class="ml-12 flex-1 min-h-screen md:pt-0 pt-16">
+
+    <!-- Top bar -->
+    <header class="sticky top-0 z-30 bg-[#F8FAFA]/80 backdrop-blur-xl border-b border-slate-200 flex items-center justify-between px-8 py-4">
+      <div class="relative w-full max-w-md">
+        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
+        <input (input)="onSearch($event)" type="text" placeholder="Search courses, teachers, or tags..."
+          class="w-full pl-12 pr-4 py-2.5 rounded-full bg-[#ECEEEE] border-none focus:ring-2 focus:ring-[#2E6858]/20 text-sm placeholder-slate-400" />
+      </div>
+    </header>
+
+    <div class="p-8 space-y-8">
+
+      <!-- Page header -->
+      <div>
+        <h2 class="text-4xl font-extrabold tracking-tight text-[#191C1D] font-headline mb-2">Course Management</h2>
+        <p class="text-slate-500">Review, publish, and manage pricing for all courses.</p>
+      </div>
+
+      <!-- Toasts -->
+      @if (successMsg()) {
+        <div class="flex items-center gap-3 px-5 py-3 bg-[#AAF1DA]/40 border border-[#226A58]/20 rounded-xl text-[#226A58] font-semibold text-sm">
+          <span class="material-symbols-outlined text-[18px]">check_circle</span>{{ successMsg() }}
+        </div>
+      }
+      @if (errorMsg()) {
+        <div class="flex items-center gap-3 px-5 py-3 bg-[#FFDAD6]/40 border border-[#BA1A1A]/20 rounded-xl text-[#BA1A1A] font-semibold text-sm">
+          <span class="material-symbols-outlined text-[18px]">error</span>{{ errorMsg() }}
+        </div>
+      }
+
+      <!-- Filter chips row -->
+      <div class="grid grid-cols-12 gap-6 items-center">
+        <div class="col-span-12 lg:col-span-8 flex gap-2 overflow-x-auto pb-1">
+          @for (s of [
+            {label:'All Courses', value:''},
+            {label:'Published',   value:'Published'},
+            {label:'Draft',       value:'Draft'},
+            {label:'Archived',    value:'Archived'}
+          ]; track s.value) {
+            <button (click)="setStatusFilter(s.value)"
+              class="px-5 py-2 rounded-full text-sm font-bold transition-all whitespace-nowrap"
+              [class]="statusFilter() === s.value
+                ? 'bg-[#2E6858] text-white shadow-sm'
+                : 'bg-[#F2F4F4] text-slate-500 hover:bg-[#E6E8E9]'">
+              {{ s.label }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Bento stats -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-[#F2F4F4] p-6 rounded-xl space-y-1 relative overflow-hidden group">
+          <span class="material-symbols-outlined absolute -right-3 -bottom-3 text-6xl opacity-5 group-hover:scale-110 transition-transform duration-500">school</span>
+          <p class="uppercase tracking-widest text-[10px] font-bold text-slate-400">Total Courses</p>
+          <h3 class="text-3xl font-extrabold text-[#191C1D]">{{ totalCount() }}</h3>
+        </div>
+        <div class="bg-[#AAF1DA]/30 p-6 rounded-xl space-y-1 relative overflow-hidden group">
+          <span class="material-symbols-outlined absolute -right-3 -bottom-3 text-6xl opacity-5 group-hover:scale-110 transition-transform duration-500">visibility</span>
+          <p class="uppercase tracking-widest text-[10px] font-bold text-[#226A58]">Published</p>
+          <h3 class="text-3xl font-extrabold text-[#226A58]">{{ publishedCount }}</h3>
+        </div>
+        <div class="bg-[#F2F4F4] p-6 rounded-xl space-y-1 relative overflow-hidden group">
+          <span class="material-symbols-outlined absolute -right-3 -bottom-3 text-6xl opacity-5 group-hover:scale-110 transition-transform duration-500">draft</span>
+          <p class="uppercase tracking-widest text-[10px] font-bold text-slate-400">Draft</p>
+          <h3 class="text-3xl font-extrabold text-[#404945]">{{ draftCount }}</h3>
+        </div>
+        <div class="bg-[#FFDAD6]/30 p-6 rounded-xl space-y-1 relative overflow-hidden group">
+          <span class="material-symbols-outlined absolute -right-3 -bottom-3 text-6xl opacity-5 group-hover:scale-110 transition-transform duration-500">archive</span>
+          <p class="uppercase tracking-widest text-[10px] font-bold text-[#BA1A1A]">Archived</p>
+          <h3 class="text-3xl font-extrabold text-[#BA1A1A]">{{ archivedCount }}</h3>
+        </div>
+      </div>
+
+      <!-- Course Table — matches mockup style exactly -->
+      <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-separate border-spacing-y-2 px-4 py-4">
+            <thead>
+              <tr class="text-slate-400">
+                <th class="px-4 py-3 text-[10px] font-black uppercase tracking-widest">Course Name</th>
+                <th class="px-4 py-3 text-[10px] font-black uppercase tracking-widest">Teacher</th>
+                <th class="px-4 py-3 text-[10px] font-black uppercase tracking-widest hidden md:table-cell">Category</th>
+                <th class="px-4 py-3 text-[10px] font-black uppercase tracking-widest">Status</th>
+                <th class="px-4 py-3 text-[10px] font-black uppercase tracking-widest">Pricing</th>
+                <th class="px-4 py-3 text-[10px] font-black uppercase tracking-widest hidden lg:table-cell">Students</th>
+                <th class="px-4 py-3 text-[10px] font-black uppercase tracking-widest text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @if (loading()) {
+                <tr>
+                  <td colspan="7" class="text-center py-20">
+                    <span class="material-symbols-outlined text-[#7DB8A5] text-5xl animate-spin">progress_activity</span>
+                  </td>
+                </tr>
+              }
+              @for (course of courses(); track course.id) {
+                <tr class="group bg-[#F8FAFA] hover:bg-white transition-colors rounded-xl">
+                  <!-- Course Name + Thumbnail -->
+                  <td class="px-4 py-5 rounded-l-xl">
+                    <div class="flex items-center gap-4">
+                      @if (course.coverImage) {
+                        <img [src]="course.coverImage" class="w-12 h-12 rounded-lg object-cover shrink-0 shadow-sm" />
+                      } @else {
+                        <div class="w-12 h-12 rounded-lg bg-[#ECEEEE] flex items-center justify-center shrink-0">
+                          <span class="material-symbols-outlined text-slate-300 text-[20px]">menu_book</span>
+                        </div>
+                      }
+                      <div>
+                        <p class="font-bold text-[#191C1D] text-sm leading-tight">{{ course.title }}</p>
+                        <p class="text-xs text-slate-400 mt-0.5">{{ course.level }}</p>
+                      </div>
+                    </div>
+                  </td>
+
+                  <!-- Teacher -->
+                  <td class="px-4 py-5">
+                    <div class="flex items-center gap-2">
+                      <div class="w-6 h-6 rounded-full bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] flex items-center justify-center text-white text-[10px] font-bold shrink-0">
+                        {{ course.teacherName[0] }}
+                      </div>
+                      <span class="text-sm font-medium text-[#191C1D]">{{ course.teacherName }}</span>
+                    </div>
+                  </td>
+
+                  <!-- Category -->
+                  <td class="px-4 py-5 hidden md:table-cell">
+                    <span class="px-3 py-1 bg-[#B2EFDA]/30 text-[#2E6858] rounded-full text-xs font-semibold">
+                      {{ course.categoryName }}
+                    </span>
+                  </td>
+
+                  <!-- Status -->
+                  <td class="px-4 py-5">
+                    <div class="flex items-center gap-1.5">
+                      <span class="w-2 h-2 rounded-full"
+                        [class]="course.status === 'Published' ? 'bg-[#226A58] animate-pulse'
+                               : course.status === 'Draft'     ? 'bg-slate-400'
+                               :                                  'bg-[#BA1A1A]'">
+                      </span>
+                      <span class="text-xs font-bold uppercase tracking-tight"
+                        [class]="course.status === 'Published' ? 'text-[#226A58]'
+                               : course.status === 'Draft'     ? 'text-slate-400'
+                               :                                  'text-[#BA1A1A]'">
+                        {{ course.status }}
+                      </span>
+                    </div>
+                  </td>
+
+                  <!-- Price -->
+                  <td class="px-4 py-5 font-bold text-[#191C1D] text-sm">
+                    @if (course.pricingType === 'Free') { Free } @else { ${{ course.price }} }
+                  </td>
+
+                  <!-- Students -->
+                  <td class="px-4 py-5 text-sm text-slate-500 hidden lg:table-cell">{{ course.totalStudents }}</td>
+
+                  <!-- Actions -->
+                  <td class="px-4 py-5 text-right rounded-r-xl">
+                    <div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button (click)="openPricing(course)"
+                        class="p-2 rounded-full text-slate-400 hover:text-[#2E6858] hover:bg-[#B2EFDA]/20 transition-all"
+                        title="Edit Pricing">
+                        <span class="material-symbols-outlined text-[20px]">payments</span>
+                      </button>
+                      <button (click)="togglePublish(course)"
+                        class="p-2 rounded-full transition-all"
+                        [class]="course.status === 'Published'
+                          ? 'text-slate-400 hover:text-[#BA1A1A] hover:bg-red-50'
+                          : 'text-slate-400 hover:text-[#226A58] hover:bg-[#AAF1DA]/20'"
+                        [title]="course.status === 'Published' ? 'Unpublish' : 'Publish'">
+                        <span class="material-symbols-outlined text-[20px]">
+                          {{ course.status === 'Published' ? 'visibility_off' : 'publish' }}
+                        </span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              }
+              @empty {
+                @if (!loading()) {
+                  <tr>
+                    <td colspan="7" class="text-center py-20 text-slate-400">
+                      <span class="material-symbols-outlined text-5xl block mb-3 text-slate-300">school</span>
+                      No courses found.
+                    </td>
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="px-8 py-4 bg-[#F8FAFA] border-t border-slate-100 flex justify-between items-center text-xs text-slate-400 font-medium">
+          <span>Showing page {{ currentPage() }} of {{ totalPages() }} — {{ totalCount() }} total</span>
+          <div class="flex gap-1">
+            <button (click)="load(currentPage() - 1)" [disabled]="currentPage() === 1"
+              class="w-8 h-8 flex items-center justify-center rounded-lg bg-white hover:bg-[#ECEEEE] disabled:opacity-30 transition-all shadow-sm">
+              <span class="material-symbols-outlined text-sm">chevron_left</span>
+            </button>
+            @for (p of pages(); track p) {
+              @if (p <= 5) {
+                <button (click)="load(p)"
+                  class="w-8 h-8 flex items-center justify-center rounded-lg font-bold transition-all"
+                  [class]="currentPage() === p
+                    ? 'bg-[#2E6858] text-white shadow-md'
+                    : 'bg-white hover:bg-[#ECEEEE] text-slate-500 shadow-sm'">
+                  {{ p }}
+                </button>
+              }
+            }
+            <button (click)="load(currentPage() + 1)" [disabled]="currentPage() === totalPages()"
+              class="w-8 h-8 flex items-center justify-center rounded-lg bg-white hover:bg-[#ECEEEE] disabled:opacity-30 transition-all shadow-sm">
+              <span class="material-symbols-outlined text-sm">chevron_right</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom stats bento (from mockup) -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        @for (stat of [
+          {icon:'trending_up', label:'Total Revenue',   value:'—',     note:'Connect billing API'},
+          {icon:'group',       label:'Active Students', value:'—',     note:'From enrollments'},
+          {icon:'auto_awesome',label:'Avg Rating',      value:'—',     note:'From reviews'}
+        ]; track stat.label) {
+          <div class="bg-white p-8 rounded-xl shadow-sm relative overflow-hidden group">
+            <span class="material-symbols-outlined absolute -right-3 -bottom-3 text-8xl opacity-5 group-hover:scale-110 transition-transform duration-500">{{ stat.icon }}</span>
+            <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4">{{ stat.label }}</h4>
+            <p class="text-3xl font-headline font-black text-[#191C1D]">{{ stat.value }}</p>
+            <p class="text-xs text-slate-400 font-medium mt-2">{{ stat.note }}</p>
+          </div>
+        }
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Pricing Modal -->
+@if (showPricingModal()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h2 class="font-headline text-xl font-bold text-[#191C1D]">Edit Pricing</h2>
+          <p class="text-xs text-slate-400 mt-1">{{ selectedCourse()?.title }}</p>
+        </div>
+        <button (click)="showPricingModal.set(false)" class="p-2 rounded-lg hover:bg-[#F2F4F4]">
+          <span class="material-symbols-outlined text-slate-400">close</span>
+        </button>
+      </div>
+      <form [formGroup]="pricingForm" (ngSubmit)="savePricing()" class="space-y-4">
+        @for (field of [
+          {key:'pricingType', label:'Pricing Type', type:'select', icon:'category'},
+          {key:'price', label:'Price ($)', type:'number', icon:'payments'},
+          {key:'discountedPrice', label:'Discounted Price (optional)', type:'number', icon:'sell'}
+        ]; track field.key) {
+          <div>
+            <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1.5">{{ field.label }}</label>
+            <div class="flex items-center gap-2 px-3 py-2.5 bg-[#F2F4F4] rounded-lg border border-transparent focus-within:border-[#2E6858] focus-within:bg-white transition-all">
+              <span class="material-symbols-outlined text-slate-400 text-[17px]">{{ field.icon }}</span>
+              @if (field.type === 'select') {
+                <select [formControlName]="field.key" class="bg-transparent border-none focus:ring-0 flex-1 text-sm text-[#191C1D]">
+                  <option value="Paid">Paid</option>
+                  <option value="Free">Free</option>
+                </select>
+              } @else {
+                <input [formControlName]="field.key" [type]="field.type" min="0" step="0.01"
+                  class="bg-transparent border-none focus:ring-0 flex-1 text-sm text-[#191C1D]" />
+              }
+            </div>
+          </div>
+        }
+        <div class="flex justify-end gap-3 pt-2">
+          <button type="button" (click)="showPricingModal.set(false)"
+            class="px-5 py-2.5 rounded-lg border border-slate-200 text-slate-500 font-semibold hover:bg-[#F2F4F4] text-sm">Cancel</button>
+          <button type="submit" [disabled]="pricingForm.invalid"
+            class="px-5 py-2.5 bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] text-white font-bold rounded-lg disabled:opacity-50 text-sm flex items-center gap-2">
+            <span class="material-symbols-outlined text-[15px]">save</span>Save
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

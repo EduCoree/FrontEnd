@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.prod';
-import { CourseFilterDto } from '../model/courses/course.model';
+import { CourseFilterDto } from '../models/course';
 
 @Injectable({ providedIn: 'root' })
 export class PublicCourseService {
