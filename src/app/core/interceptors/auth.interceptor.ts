@@ -8,8 +8,13 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   if (!isPlatformBrowser(platformId)) return next(req);
 
-  const token = localStorage.getItem('token');
+// Public endpoints 
+  const publicUrls = ['/api/courses', '/api/auth'];
+  const isPublic = publicUrls.some(url => req.url.includes(url));
+  if (isPublic) return next(req);
 
+  
+  const token = localStorage.getItem('token');
   if (token) {
     const cloned = req.clone({
       setHeaders: {

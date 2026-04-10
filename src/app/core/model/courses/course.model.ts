@@ -20,7 +20,7 @@ export interface CourseDetailDto {
   id: number;
   title: string;
   description: string;
-  coverImageUrl: string;
+  coverImage: string;
   level: string;
   pricingType: string;
   price: number;
@@ -43,8 +43,9 @@ export interface LessonDto {
   id: number;
   title: string;
   type: string;
-  order: number;
-  durationInMinutes: number;
+  sortOrder: number;
+  durationSeconds: number;   
+  isFreePreview: boolean;
 }
 
 // creating a new course
@@ -61,10 +62,9 @@ export interface CreateCourseDto {
 export interface UpdateCourseDto {
   title: string;
   description: string;
-  categoryId: number;
   level: string;
+  categoryId: number;
 }
-
 // updating the pricing
 export interface UpdatePricingDto {
   pricingType: string;
@@ -85,6 +85,8 @@ export interface UpdateSectionDto {
 export interface ReorderItemDto {
   id: number;
   order: number;
+  sectionId?: number;
+  sortOrder?: number;
 }
 
 // the Paged Result
@@ -102,4 +104,14 @@ export interface CourseFilterDto {
   categoryId?: number;
   level?: string;
   pricingType?: string;
+}
+export interface StudentEnrolledCourseDto {
+  courseId: number;
+  title: string;
+  coverImage: string | null;
+  teacherName: string;
+  enrolledAt: string;
+  totalLessons: number;
+  completedLessons: number;
+  progressPercentage: number;
 }

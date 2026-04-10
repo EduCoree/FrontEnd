@@ -25,7 +25,9 @@ export class CourseService {
   getCourseById(id: number): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/${id}`);
   }
-
+getMyCoursesWithEnrollment(): Observable<any> {
+  return this.http.get<any>(`${this.baseUrl}/my-courses`);
+}
   // create a new course
   createCourse(dto: CreateCourseDto): Observable<any> {
     return this.http.post<any>(this.baseUrl, dto);

@@ -2,76 +2,75 @@
 <div class="bg-background text-on-background min-h-screen font-body">
 
   <!-- الهيدر -->
-  <nav class="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-xl">
-    <div class="flex justify-between items-center w-full px-8 h-16">
+  <nav class="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-xl border-b border-surface-container">
+    <div class="flex justify-between items-center w-full px-8 h-20">
       <div class="flex items-center gap-8">
-        <span class="text-xl font-bold text-primary tracking-tight cursor-pointer"
+        <span class="text-2xl font-bold text-primary tracking-tight cursor-pointer"
           (click)="goToDashboard()">EduCore</span>
-        <div class="hidden md:flex items-center gap-6 text-sm font-semibold">
+        <div class="hidden md:flex items-center gap-8 text-sm font-medium">
           <a (click)="goToDashboard()"
             class="text-on-surface-variant hover:text-primary transition-colors cursor-pointer">
             Dashboard
           </a>
-          <a class="text-primary border-b-2 border-primary pb-1 cursor-pointer">Courses</a>
+          <a class="text-primary font-bold border-b-2 border-primary cursor-pointer">Courses</a>
         </div>
       </div>
       <div class="flex items-center gap-4">
-        <button class="p-2 hover:bg-surface-container/50 rounded-full transition-all">
+        <button class="p-2 rounded-full hover:bg-surface-container transition-colors">
           <span class="material-symbols-outlined text-primary">notifications</span>
         </button>
-        <button class="p-2 hover:bg-surface-container/50 rounded-full transition-all">
-          <span class="material-symbols-outlined text-primary">account_circle</span>
-        </button>
+        <div class="h-10 w-10 rounded-full bg-primary-container flex items-center justify-center border border-primary/20">
+          <span class="material-symbols-outlined text-primary">person</span>
+        </div>
       </div>
     </div>
-    <div class="bg-gradient-to-b from-surface-container to-transparent h-px"></div>
   </nav>
 
   <!-- السايدبار -->
-  <aside class="hidden lg:flex h-screen w-64 fixed left-0 top-0 pt-20 bg-surface-container flex-col gap-2 font-body text-sm font-medium">
-    <div class="px-6 mb-8">
-      <h2 class="text-lg font-extrabold text-primary">Instructor Portal</h2>
-      <p class="text-xs text-on-surface-variant">Managing Excellence</p>
+  <aside class="hidden md:flex h-[calc(100vh-80px)] w-64 fixed left-0 top-20 bg-surface-container flex-col p-6 gap-4 font-body text-sm font-medium">
+    <div class="mb-6 px-2">
+      <h2 class="text-lg font-black text-primary">EduCore</h2>
+      <p class="text-[10px] text-on-surface-variant normal-case tracking-normal">Teacher Portal</p>
     </div>
-    <nav class="flex flex-col gap-1">
+    <nav class="flex flex-col gap-2">
       <a (click)="goToDashboard()"
-        class="flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:translate-x-1 transition-transform hover:text-primary cursor-pointer">
+        class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface hover:translate-x-1 transition-transform rounded-full cursor-pointer">
         <span class="material-symbols-outlined">home</span>
         <span>Dashboard</span>
       </a>
-      <div class="bg-white text-primary rounded-l-full ml-4 shadow-sm flex items-center gap-3 px-6 py-3">
-        <span class="material-symbols-outlined">menu_book</span>
-        <span>Courses</span>
-      </div>
-      <a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:translate-x-1 transition-transform hover:text-primary cursor-pointer">
+      <a class="flex items-center gap-3 px-4 py-3 bg-white text-primary rounded-full shadow-sm">
+        <span class="material-symbols-outlined">school</span>
+        <span>My Courses</span>
+      </a>
+      <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface hover:translate-x-1 transition-transform rounded-full cursor-pointer">
         <span class="material-symbols-outlined">settings</span>
         <span>Settings</span>
       </a>
     </nav>
 
-    <!-- Teacher Name -->
-    <div class="mt-auto p-6">
-      <div class="bg-white p-4 rounded-lg flex items-center gap-3 shadow-sm">
-        <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center">
-          <span class="material-symbols-outlined text-primary">person</span>
+    <!-- Teacher Info -->
+    <div class="mt-auto bg-primary text-on-primary p-6 rounded-xl flex flex-col gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+          <span class="material-symbols-outlined text-white">person</span>
         </div>
         <div>
-          <p class="text-sm font-bold text-on-surface">{{ teacherName }}</p>
-          <p class="text-xs uppercase tracking-wider text-outline">Instructor</p>
+          <p class="text-sm font-bold text-white">{{ teacherName }}</p>
+          <p class="text-[10px] text-white/70 uppercase tracking-wider">Instructor</p>
         </div>
       </div>
     </div>
   </aside>
 
   <!-- المحتوى الرئيسي -->
-  <main class="lg:pl-64 pt-24 pb-12 px-8 min-h-screen">
-    <div class="max-w-7xl mx-auto">
+  <main class="md:ml-64 pt-20 pb-12 px-8 min-h-screen">
+    <div class="max-w-7xl mx-auto py-8">
 
       <!-- العنوان -->
       <header class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12">
         <div>
           <h1 class="text-4xl font-extrabold text-on-surface tracking-tight mb-2">My Courses</h1>
-          <p class="text-on-surface-variant max-w-md">
+          <p class="text-on-surface-variant text-lg max-w-md">
             Manage and curate your educational portfolio.
           </p>
         </div>
@@ -86,7 +85,7 @@
       <div *ngIf="!isLoading()" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
 
         <div *ngFor="let course of courses()"
-          class="group bg-white rounded-xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1 shadow-sm">
+          class="group bg-white rounded-xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1 shadow-sm border border-outline-variant/10">
 
           <!-- الصورة -->
           <div class="relative h-56 overflow-hidden bg-surface-container-high">
@@ -102,15 +101,15 @@
             <!-- Badge الحالة -->
             <div class="absolute top-4 left-4">
               <span *ngIf="course.status === 'Published'"
-                class="bg-primary/90 text-on-primary text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest backdrop-blur-md">
+                class="bg-primary text-on-primary text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest backdrop-blur-md shadow-sm">
                 Published
               </span>
               <span *ngIf="course.status === 'Draft'"
-                class="bg-outline/80 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest backdrop-blur-md">
+                class="bg-surface-dim text-on-surface-variant text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest backdrop-blur-md shadow-sm">
                 Draft
               </span>
               <span *ngIf="course.status === 'Archived'"
-                class="bg-tertiary/80 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest backdrop-blur-md">
+                class="bg-tertiary-container text-on-tertiary-container text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest backdrop-blur-md shadow-sm">
                 Archived
               </span>
             </div>
@@ -154,7 +153,7 @@
           <h3 class="text-xl font-bold text-on-surface-variant mb-2">No Courses Yet</h3>
           <p class="text-sm text-outline mb-6">Go to dashboard to create your first course!</p>
           <button (click)="goToDashboard()"
-            class="px-8 py-3 rounded-full bg-primary text-on-primary font-bold">
+            class="px-8 py-3 rounded-full bg-primary text-on-primary font-bold text-sm uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-105 transition-transform">
             Go to Dashboard
           </button>
         </div>
@@ -167,7 +166,7 @@
           (click)="changePage(i + 1)"
           [class]="currentPage === i + 1
             ? 'w-10 h-10 rounded-full bg-primary text-white font-bold text-sm'
-            : 'w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant font-bold text-sm'">
+            : 'w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant font-bold text-sm hover:bg-surface-container transition-colors'">
           {{ i + 1 }}
         </button>
       </div>

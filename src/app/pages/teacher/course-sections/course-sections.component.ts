@@ -127,9 +127,18 @@ export class CourseSectionsComponent implements OnInit {
   saveOrder(): void {
     const items: ReorderItemDto[] = this.sections().map((s, i) => ({
       id: s.id,
-      order: i + 1
+      sectionId: s.id,
+      order: i + 1,
+      sortOrder: i + 1
     }));
-    this.courseService.reorderSections(this.courseId, items).subscribe();
+    this.courseService.reorderSections(this.courseId, items).subscribe({
+      next: () => {
+        this.loadSections();
+      },
+      error: (err) => {
+        console.error('Failed to save section order', err);
+      }
+    });
   }
 getTotalLessons(): number {
   return this.sections().reduce((sum, s) => sum + (s.lessons?.length || 0), 0);

@@ -8,6 +8,10 @@ import { ProfileComponent } from './pages/profile/profile';
 import { AdminTeachersComponent } from './pages/admin-teachers/admin-teachers';
 import { AdminStudentsComponent } from './pages/admin-students/admin-students';
 import { AdminStudentDetailComponent } from './pages/admin-student-detail/admin-student-detail';
+import { CourseDetailComponent } from './pages/Courses/course-detail/course-detail.component';
+import { CoursesListComponent } from './pages/Courses/courses-list/courses-list.component';
+import { StudentLayoutComponent } from './layouts/student-layout/student-layout.component';
+import { StudentDashboardComponent } from './pages/student/student-dashboard/student-dashboard.component';
 
 export const routes: Routes = [
    
@@ -179,8 +183,16 @@ export const routes: Routes = [
 
 
 //samir
-
-
+,{ path: 'courses', component: CoursesListComponent },
+{ path: 'courses/:id', component: CourseDetailComponent },
+{
+  path: 'student',
+  component: StudentLayoutComponent,
+  children: [
+    { path: 'dashboard', component: StudentDashboardComponent },
+    { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+  ]
+},
 
 
 

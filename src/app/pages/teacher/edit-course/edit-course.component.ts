@@ -2,7 +2,9 @@ import { Component, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { SectionDto } from '../../../core/model/courses/course.model';
+import { Category } from '../../../core/models/category.model';
+import { SectionDto, ReorderItemDto } from '../../../core/model/courses/course.model';
+import { CategoryService } from '../../../core/services/category.service';
 import { CourseService } from '../../../core/services/courses/course.service';
 
 @Component({
@@ -18,6 +20,7 @@ export class EditCourseComponent implements OnInit {
   courseForm: FormGroup;
   pricingForm: FormGroup;
   sectionForm: FormGroup;
+  editForm: FormGroup;
 
   sections = signal<SectionDto[]>([]);
   isLoading = signal(true);
@@ -25,20 +28,25 @@ export class EditCourseComponent implements OnInit {
   successMessage = signal('');
   selectedFile: File | null = null;
   coverPreview = signal('');
+  courseStatus = signal('');
+  editingSection: SectionDto | null = null;
 
   levels = ['Beginner', 'Intermediate', 'Advanced'];
   pricingTypes = ['Free', 'Paid', 'Subscription'];
+  categories: Category[] = [];
+  courseCategoryName = '';
 
   constructor(
     private fb: FormBuilder,
     private courseService: CourseService,
+    private categoryService: CategoryService,
     private route: ActivatedRoute,
     private router: Router
   ) {
     this.courseForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
-      categoryId: ['', Validators.required],
+      categoryId: [null, Validators.required],
       level: ['Beginner', Validators.required],
     });
 
@@ -50,10 +58,15 @@ export class EditCourseComponent implements OnInit {
     this.sectionForm = this.fb.group({
       title: ['', Validators.required]
     });
+
+    this.editForm = this.fb.group({
+      title: ['', Validators.required]
+    });
   }
 
   ngOnInit(): void {
     this.courseId = Number(this.route.snapshot.paramMap.get('id'));
+    this.loadCategories();
     this.loadCourse();
     this.loadSections();
   }
@@ -62,10 +75,43 @@ export class EditCourseComponent implements OnInit {
     this.courseService.getCourseById(this.courseId).subscribe({
       next: (res: any) => {
         const course = res.data;
-        this.courseForm.patchValue(course);
+        this.courseCategoryName = course.categoryName || '';
+        this.courseForm.patchValue({
+          title: course.title,
+          description: course.description,
+          categoryId: course.categoryId ?? null,
+          level: course.level
+        });
+
+        if (!this.courseForm.get('categoryId')?.value && this.courseCategoryName) {
+          const matchedCategory = this.categories.find(c => c.name === this.courseCategoryName);
+          if (matchedCategory) {
+            this.courseForm.patchValue({ categoryId: matchedCategory.id });
+          }
+        }
+
         this.pricingForm.patchValue(course);
-        this.coverPreview.set(course.coverImage || '');
+        this.coverPreview.set(course.coverImageUrl || course.coverImage || '');
+        this.courseStatus.set(course.status);
         this.isLoading.set(false);
+      }
+    });
+  }
+
+  loadCategories(): void {
+    const centerId = 11;
+    this.categoryService.getAll(centerId).subscribe({
+      next: (res: Category[]) => {
+        this.categories = res;
+        if (!this.courseForm.get('categoryId')?.value && this.courseCategoryName) {
+          const matchedCategory = this.categories.find(c => c.name === this.courseCategoryName);
+          if (matchedCategory) {
+            this.courseForm.patchValue({ categoryId: matchedCategory.id });
+          }
+        }
+      },
+      error: () => {
+        console.error('Failed to load categories');
       }
     });
   }
@@ -88,6 +134,7 @@ export class EditCourseComponent implements OnInit {
       error: () => { this.isSaving.set(false); }
     });
   }
+
 
   onFileSelected(event: any): void {
     this.selectedFile = event.target.files[0];
@@ -127,6 +174,34 @@ export class EditCourseComponent implements OnInit {
     });
   }
 
+  // فتح فورم التعديل
+  startEdit(section: SectionDto): void {
+    this.editingSection = section;
+    this.editForm.patchValue({ title: section.title });
+  }
+
+  // حفظ التعديل
+ saveEdit(): void {
+  if (this.editForm.invalid || !this.editingSection) return;
+  this.courseService.updateSection(
+    this.courseId,
+    this.editingSection.id,
+    this.editForm.value
+  ).subscribe({
+    next: () => {
+      this.editingSection = null;
+      this.loadSections();
+      this.successMessage.set('Section updated successfully!');
+      setTimeout(() => this.successMessage.set(''), 3000);
+    }
+  });
+}
+
+  // إلغاء التعديل
+  cancelEdit(): void {
+    this.editingSection = null;
+  }
+
   deleteSection(sectionId: number): void {
     if (!confirm('Are you sure?')) return;
     this.courseService.deleteSection(this.courseId, sectionId).subscribe({
@@ -134,6 +209,62 @@ export class EditCourseComponent implements OnInit {
     });
   }
 
+  // تحريك السيكشن لفوق
+  moveUp(index: number): void {
+    if (index === 0) return;
+    const items = [...this.sections()];
+    [items[index - 1], items[index]] = [items[index], items[index - 1]];
+    this.sections.set(items);
+    this.saveOrder();
+  }
+
+  // تحريك السيكشن لتحت
+  moveDown(index: number): void {
+    if (index === this.sections().length - 1) return;
+    const items = [...this.sections()];
+    [items[index], items[index + 1]] = [items[index + 1], items[index]];
+    this.sections.set(items);
+    this.saveOrder();
+  }
+
+  // حفظ الترتيب
+ saveOrder(): void {
+  const items: ReorderItemDto[] = this.sections().map((s, i) => ({
+    id: s.id,
+    sectionId: s.id,
+    order: i + 1,
+    sortOrder: i + 1
+  }));
+  this.courseService.reorderSections(this.courseId, items).subscribe({
+    next: () => {
+      this.successMessage.set('Sections reordered!');
+      setTimeout(() => this.successMessage.set(''), 3000);
+      this.loadSections();
+    },
+    error: (err) => {
+      console.error('Failed to save section order', err);
+    }
+  });
+}
+publishCourse(): void {
+  this.courseService.publishCourse(this.courseId).subscribe({
+    next: () => {
+      this.courseStatus.set('Published');
+      this.successMessage.set('Course published successfully!');
+      setTimeout(() => this.successMessage.set(''), 3000);
+    }
+  });
+}
+
+unpublishCourse(): void {
+  this.courseService.unpublishCourse(this.courseId).subscribe({
+    next: () => {
+      this.courseStatus.set('Draft');
+      this.successMessage.set('Course unpublished!');
+      setTimeout(() => this.successMessage.set(''), 3000);
+    }
+  });
+}
   goBack(): void {
     this.router.navigate(['/teacher/courses']);
   }
