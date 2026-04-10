@@ -66,11 +66,7 @@ export interface UpdateCourseDto {
   title: string;
   description: string;
   level: string;
-<<<<<<< HEAD:src/app/core/model/courses/course.model.ts
   categoryId: number;
-=======
-  
->>>>>>> main:src/app/core/models/course.ts
 }
 // updating the pricing
 export interface UpdatePricingDto {
@@ -111,9 +107,10 @@ export interface CourseFilterDto {
   search?: string;
   categoryId?: number;
   level?: string;
+  status?: string;
   pricingType?: string;
 }
-<<<<<<< HEAD:src/app/core/model/courses/course.model.ts
+
 export interface StudentEnrolledCourseDto {
   courseId: number;
   title: string;
@@ -124,23 +121,7 @@ export interface StudentEnrolledCourseDto {
   completedLessons: number;
   progressPercentage: number;
 }
-=======
 
-export interface PagedResult<T> {
-  items: T[];
-  totalCount: number;
-  pageNumber: number;
-  pageSize: number;
-  totalPages: number;
-}
- 
-export interface CourseFilterDto {
-  search?: string;
-  categoryId?: number;
-  level?: string;
-  status?: string;
-  pricingType?: string;
-}
 // ─── Content Delivery: Lesson DTOs ──────────────────────────────────────────
 
 export interface CreateLessonDto {
@@ -196,4 +177,4 @@ export interface PdfLessonResponse {
 export interface ToggleFreePreviewDto {
   isFreePreview: boolean;
 }
->>>>>>> main:src/app/core/models/course.ts
+

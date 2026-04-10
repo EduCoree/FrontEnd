@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { CourseDetailDto } from '../../../core/model/courses/course.model';
+import { CourseDetailDto } from '../../../core/models/course';
 import { PublicCourseService } from '../../../core/services/public-course.service';
 
 @Component({

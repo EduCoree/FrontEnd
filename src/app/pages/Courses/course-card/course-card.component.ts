@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { CourseSummaryDto } from '../../../core/model/courses/course.model';
+import { CourseSummaryDto } from '../../../core/models/course';
 
 @Component({
   selector: 'app-course-card',

@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { PublicCourseService } from '../../core/services/public-course.service';
-import { CourseSummaryDto } from '../../core/model/courses/course.model';
+import { CourseSummaryDto } from '../../core/models/course';
 import { CourseCardComponent } from '../Courses/course-card/course-card.component';
 @Component({
   selector: 'app-home',
