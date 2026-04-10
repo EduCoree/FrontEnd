@@ -1,15 +1,17 @@
+
 import { OnInit } from '@angular/core';
 // src/app/layouts/navbar/navbar.ts
 
+
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive ,RouterModule } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth';
 import { UserService } from '../../../../core/services/user';
 import { UserProfileModel } from '../../../../core/models/user';
 @Component({
   selector: 'app-navbar',
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterLink, RouterLinkActive, RouterModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })

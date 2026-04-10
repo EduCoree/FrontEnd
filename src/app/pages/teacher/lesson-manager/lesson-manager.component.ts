@@ -4,9 +4,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import {
-  LessonResponse, UpdateLessonDto,
-  AddVideoLessonDto, AddPdfLessonDto,
-  VideoLessonResponse, PdfLessonResponse
+  LessonResponse,
+  UpdateLessonDto,
+  AddVideoLessonDto,
+  AddPdfLessonDto,
+  VideoLessonResponse,
+  PdfLessonResponse,
 } from '../../../core/models/course';
 import { CourseService } from '../../../core/services/course';
 

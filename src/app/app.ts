@@ -6,7 +6,7 @@ import { initFlowbite } from 'flowbite';
 import { Home } from './pages/home/home';
 import { CreateQuizComponent } from "./pages/Quizzes/CreateQuiz/create-quiz/create-quiz";
 import { filter } from 'rxjs';
-
+import { CommonModule } from '@angular/common';
 
 
 
