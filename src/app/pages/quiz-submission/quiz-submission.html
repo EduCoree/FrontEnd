@@ -1,24 +1,4 @@
 
-<div class="fixed inset-0 z-0 flex flex-col p-6 pointer-events-none opacity-40 ">
-<header class="flex items-center justify-between mb-8">
-<h1 class="font-headline font-bold text-xl text-primary">Advanced Algorithms</h1>
-<div class="px-4 py-2 bg-surface-container rounded-full text-on-surface-variant font-medium text-sm">
-                24:12 Remaining
-            </div>
-</header>
-<div class="space-y-6">
-<div class="p-6 bg-surface-container-lowest rounded-xl">
-<span class="text-primary font-bold text-sm tracking-widest uppercase mb-2 block">Question 10 of 10</span>
-<p class="text-lg font-headline font-semibold leading-relaxed">Describe the time complexity of a balanced binary search tree insertion.</p>
-</div>
-<div class="grid grid-cols-1 gap-4">
-<div class="p-4 bg-primary-container/20 border border-primary-container/30 rounded-lg text-primary font-medium">O(log n)</div>
-<div class="p-4 bg-surface-container-low rounded-lg text-on-surface-variant">O(n)</div>
-<div class="p-4 bg-surface-container-low rounded-lg text-on-surface-variant">O(n log n)</div>
-<div class="p-4 bg-surface-container-low rounded-lg text-on-surface-variant">O(1)</div>
-</div>
-</div>
-</div>
 <!-- Modal Overlay -->
 <div class="fixed inset-0 z-50 flex items-center justify-center p-6 bg-on-surface/30 backdrop-blur-sm">
 <!-- Modal Container -->
@@ -42,7 +22,7 @@
 <div class="bg-surface-container-low rounded-xl p-5 mb-8 flex items-center justify-between text-left">
 <div>
 <span class="text-[10px] font-bold uppercase tracking-widest text-primary mb-1 block">Completion Status</span>
-<span class="font-headline font-bold text-lg text-on-surface">10 of 10 questions answered</span>
+<span class="font-headline font-bold text-lg text-on-surface">{{answeredCount}} of {{TotalQuestions}} questions answered</span>
 </div>
 <div class="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
 <span class="material-symbols-outlined text-primary text-xl" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
@@ -50,12 +30,13 @@
 </div>
 <!-- Actions -->
 <div class="flex flex-col gap-3">
-<button class="w-full py-4 px-6 rounded-xl bg-gradient-to-br from-primary to-primary-container text-white font-headline font-bold shadow-[0_4px_12px_rgba(46,104,88,0.2)] active:scale-95 transition-transform">
-                        Submit Now
-                    </button>
-<button class="w-full py-4 px-6 rounded-xl bg-surface-container-high text-primary font-headline font-bold hover:bg-surface-container-highest transition-colors active:scale-95">
-                        Go Back
-                    </button>
+<button (click)="onConfirm()" [disabled]="submetting" class="w-full py-4 px-6 rounded-xl bg-gradient-to-br from-primary to-primary-container text-white font-headline font-bold shadow-[0_4px_12px_rgba(46,104,88,0.2)] active:scale-95 transition-transform">
+                        <span *ngIf="!submetting">Submit Now</span>
+    <span *ngIf="submetting">Submitting...</span>
+                    </button>
+<button (click)="onCancel()" [disabled]="submetting" class="w-full py-4 px-6 rounded-xl bg-surface-container-high text-primary font-headline font-bold hover:bg-surface-container-highest transition-colors active:scale-95">
+                        Go Back
+                    </button>
 </div>
 </div>
 <!-- Footer Decorative Element -->

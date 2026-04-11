@@ -22,9 +22,11 @@ export class AdminSidebarComponent {
   }
 
   navItems = [
+    { label: 'Dashboard', icon: 'dashboard', route: '/admin/dashboard', exact: false },
     { label: 'Courses',  icon: 'school',   route: '/admin/courses',  exact: false },
     { label: 'Teachers', icon: 'person_4',  route: '/admin/teachers', exact: false },
     { label: 'Students', icon: 'group',     route: '/admin/students', exact: false },
+    { label: 'Forum Reports', icon: 'flag', route: '/admin/forum/reports', exact: false },
   ];
 
   logout() {

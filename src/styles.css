@@ -96,3 +96,12 @@ h1, h2, h3, h4, h5, h6,
 .text-on-primary-fixed-variant { color: #105041; }
 
 .text-on-primary-container { color: #04493b; }
+
+
+[dir="rtl"] {
+  font-family: 'Tajawal', 'Cairo', sans-serif;
+}
+
+[dir="rtl"] .space-y-4 > * + * {
+  margin-top: 1rem;
+}

@@ -1,3 +1,4 @@
+import { StudentQuizIntro } from './../../pages/student-quiz-intro/student-quiz-intro';
 export enum QuestionType {
   MCQ = 'MCQ',
   TrueFalse = 'TrueFalse'
@@ -19,6 +20,21 @@ export interface QuizDto {
   passScore: number;
   maxAttempts: number;
   isRandomized: boolean;
+  questionsCount:number
+  totalPoints:number
+}
+
+export interface QuizSummaryDto
+{
+    id: number;
+    courseId:number;
+  title: string;
+  timeLimitMins?: number | null;
+  passScore: number;
+  maxAttempts: number;
+  questionCount:number
+  totalPoints:number,
+  attemptsLeft:number
 }
 
 
@@ -74,4 +90,71 @@ export interface CreateAnswerOptionDto {
 export interface UpdateAnswerOptionDto {
   text?: string;
   isCorrect?: boolean;
+}
+export interface QuizAttemptHistoryDto {
+  id: number;
+  quizId: number;
+  startedAt: string;
+  score: number;
+  passed: boolean;
+}
+
+export interface AttemptDto {
+  id: number;
+  quizId: number;
+  startedAt: string;
+}
+export interface StudentQuizDto
+{
+   id:number;
+   title:string;
+   timeLimitMins:number|null;
+   passScore:number;
+   questions:StudentQuestionDto[];
+}
+export interface StudentQuestionDto
+{
+  id:number;
+  text: string;
+  type: string;
+  points: number;
+  answerOptions:StudentAnswerOptionDto[];
+
+
+}
+export interface StudentAnswerOptionDto
+{
+  id:number;
+  text:string;
+}
+
+export interface QuestionReviewDto {
+  questionId: number;
+  questionText: string;
+  selectedAnswerText: string;
+  correctAnswerText: string;
+  isCorrect: boolean;
+  points: number;
+}
+
+export interface AttemptResultDto {
+  attemptId: number;
+  score: number;
+  passed: boolean;
+  submittedAt: string;
+  totalPoints: number;
+  earnedPoints: number;
+  review: QuestionReviewDto[];
+}
+export interface AttemptHistoryDto {
+  id: number;
+  quizId: number;
+  quizTitle: string;
+  courseTitle: string;
+  earnedPoints: number;
+  totalPoints: number;
+  score: number;
+  passed: boolean;
+  startedAt: string;
+  submittedAt?: string;
 }

@@ -40,6 +40,10 @@ import { StudentDashboardComponent } from './pages/student/student-dashboard/stu
 import { AdminCoursesComponent } from './pages/admin-courses/admin-courses';
 import { authGuard } from './core/guards/auth-guard';
 import { roleGuard } from './core/guards/role-guard';
+import { AdminCoursesComponent } from './pages/admin-courses/admin-courses';
+import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard';
+import { TeacherDashboardComponent } from './pages/teacher-dashboard/teacher-dashboard';
+import { StudentDashboardComponent } from './pages/student-dashboard/student-dashboard';
 export const routes: Routes = [
    // ── Public ────────────────────────────────────────────────────────────────
   {
@@ -111,8 +115,13 @@ export const routes: Routes = [
     canActivate: [adminGuard],
     title: 'Courses — Admin',
   },
+ //Dashboard !!!! do not add guard yet
+{ path: 'admin/dashboard', component: AdminDashboardComponent  },
  
-
+{ path: 'teacher/dashboard', component: TeacherDashboardComponent  },
+ 
+{ path: 'student/dashboard', component: StudentDashboardComponent },
+ 
     
   {
     path: 'centers/:id',
@@ -275,8 +284,13 @@ export const routes: Routes = [
 },
 
 
-
-
+{
+  path: 'courses/:courseId/reviews',
+  loadComponent: () =>
+    import('./pages/reviews/reviews')
+      .then(m => m.Reviews)
+}
+,
 
 {
   path: 'questions',
@@ -284,12 +298,12 @@ export const routes: Routes = [
 },
 
 {
-  path: 'quiz/intro',
+  path: 'quiz/intro/:quizId',
   component : StudentQuizIntro,
 },
 
 {
-  path: 'quiz/active',
+  path: 'quiz/:quizId/attempt/:attemptId',
   component : ActiveQuiz,
 },
 
@@ -302,8 +316,9 @@ export const routes: Routes = [
   path: 'Quiz/submission',
   component : QuizSubmission,
 },
+  
 {
-  path: 'Quiz/results',
+  path: 'Quiz/:quizId/result/:attemptId',
   component : QuizResult,
 },
 {
@@ -362,7 +377,7 @@ export const routes: Routes = [
 {
   path:'abc',
   component:QuizBuilderComponent
-}
+},
 
 
 
@@ -379,6 +394,32 @@ export const routes: Routes = [
 
 
 //badr
+
+// ── Forum ────────────────────────────────────────────────────────────────
+{
+  path: 'courses/:courseId/forum',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./pages/forum/forum-posts/forum-posts')
+      .then(m => m.ForumPostsComponent),
+  title: 'Forum — EduCore',
+},
+{
+  path: 'courses/:courseId/forum/:postId',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./pages/forum/forum-post-detail/forum-post-detail')
+      .then(m => m.ForumPostDetailComponent),
+  title: 'Post Detail — EduCore',
+},
+{
+  path: 'admin/forum/reports',
+  canActivate: [adminGuard],
+  loadComponent: () =>
+    import('./pages/forum/forum-admin-reports/forum-admin-reports')
+      .then(m => m.ForumAdminReportsComponent),
+  title: 'Forum Reports — Admin',
+},
 
 
 
