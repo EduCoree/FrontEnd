@@ -9,11 +9,11 @@ import { Router, RouterLink, RouterLinkActive ,RouterModule } from '@angular/rou
 import { AuthService } from '../../../../core/services/auth';
 import { UserService } from '../../../../core/services/user';
 import { LanguageService } from '../../../../core/services/language.service'; 
-
+import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-navbar',
-  imports: [CommonModule, RouterLink, RouterLinkActive, TranslateModule], 
-  imports: [CommonModule, RouterLink, RouterLinkActive, RouterModule],
+  
+  imports: [CommonModule, RouterLink, RouterLinkActive, RouterModule,TranslateModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })

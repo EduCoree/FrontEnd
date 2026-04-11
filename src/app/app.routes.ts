@@ -40,10 +40,8 @@ import { StudentDashboardComponent } from './pages/student/student-dashboard/stu
 import { AdminCoursesComponent } from './pages/admin-courses/admin-courses';
 import { authGuard } from './core/guards/auth-guard';
 import { roleGuard } from './core/guards/role-guard';
-import { AdminCoursesComponent } from './pages/admin-courses/admin-courses';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard';
 import { TeacherDashboardComponent } from './pages/teacher-dashboard/teacher-dashboard';
-import { StudentDashboardComponent } from './pages/student-dashboard/student-dashboard';
 export const routes: Routes = [
    // ── Public ────────────────────────────────────────────────────────────────
   {
@@ -118,7 +116,7 @@ export const routes: Routes = [
  //Dashboard !!!! do not add guard yet
 { path: 'admin/dashboard', component: AdminDashboardComponent  },
  
-{ path: 'teacher/dashboard', component: TeacherDashboardComponent  },
+{ path: 'teacher/dashboard/2', component: TeacherDashboardComponent  },
  
 { path: 'student/dashboard', component: StudentDashboardComponent },
  
