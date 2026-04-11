@@ -1,7 +1,11 @@
+
+import { OnInit } from '@angular/core';
+// src/app/layouts/navbar/navbar.ts
+
+
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core'; 
+import { Router, RouterLink, RouterLinkActive ,RouterModule } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth';
 import { UserService } from '../../../../core/services/user';
 import { LanguageService } from '../../../../core/services/language.service'; 
@@ -9,6 +13,7 @@ import { LanguageService } from '../../../../core/services/language.service';
 @Component({
   selector: 'app-navbar',
   imports: [CommonModule, RouterLink, RouterLinkActive, TranslateModule], 
+  imports: [CommonModule, RouterLink, RouterLinkActive, RouterModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })

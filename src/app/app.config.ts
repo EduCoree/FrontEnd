@@ -31,5 +31,8 @@ export const appConfig: ApplicationConfig = {
         }
       })
     )
+    provideRouter(routes, withHashLocation()),
+    // provideRouter(routes), provideClientHydration(withEventReplay()),
+    
   ]
 };

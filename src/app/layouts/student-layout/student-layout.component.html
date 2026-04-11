@@ -1,0 +1,111 @@
+<div class="bg-surface text-on-surface min-h-screen">
+
+  <!-- Sidebar -->
+  <aside class="hidden md:flex flex-col py-8 gap-2 bg-surface-container h-screen w-72 fixed left-0 top-0 z-40">
+
+    <!-- Logo -->
+    <div class="px-8 mb-10">
+      <h2 class="text-primary font-extrabold text-xl">EduCore</h2>
+      <p class="text-[10px] font-bold uppercase tracking-[0.1em] text-on-surface-variant mt-1">Student Portal</p>
+    </div>
+
+    <!-- Nav Links -->
+    <nav class="flex-1 space-y-1 px-4">
+      <a routerLink="/student/dashboard"
+        routerLinkActive="bg-surface-container-lowest text-primary shadow-sm"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex items-center gap-4 py-3 px-6 rounded-full text-on-surface-variant hover:text-primary transition-all">
+        <span class="material-symbols-outlined">dashboard</span>
+        <span class="font-bold uppercase tracking-[0.05em] text-xs">Dashboard</span>
+      </a>
+
+      <a routerLink="/student/my-courses"
+        routerLinkActive="bg-surface-container-lowest text-primary shadow-sm"
+        class="flex items-center gap-4 py-3 px-6 rounded-full text-on-surface-variant hover:text-primary transition-all">
+        <span class="material-symbols-outlined">menu_book</span>
+        <span class="font-bold uppercase tracking-[0.05em] text-xs">My Courses</span>
+      </a>
+
+      <a routerLink="/student/live-sessions"
+        routerLinkActive="bg-surface-container-lowest text-primary shadow-sm"
+        class="flex items-center gap-4 py-3 px-6 rounded-full text-on-surface-variant hover:text-primary transition-all">
+        <span class="material-symbols-outlined">podcasts</span>
+        <span class="font-bold uppercase tracking-[0.05em] text-xs">Live Sessions</span>
+      </a>
+
+      <a routerLink="/student/certificates"
+        routerLinkActive="bg-surface-container-lowest text-primary shadow-sm"
+        class="flex items-center gap-4 py-3 px-6 rounded-full text-on-surface-variant hover:text-primary transition-all">
+        <span class="material-symbols-outlined">verified</span>
+        <span class="font-bold uppercase tracking-[0.05em] text-xs">Certificates</span>
+      </a>
+
+      <a routerLink="/student/messages"
+        routerLinkActive="bg-surface-container-lowest text-primary shadow-sm"
+        class="flex items-center gap-4 py-3 px-6 rounded-full text-on-surface-variant hover:text-primary transition-all">
+        <span class="material-symbols-outlined">chat_bubble</span>
+        <span class="font-bold uppercase tracking-[0.05em] text-xs">Messages</span>
+      </a>
+    </nav>
+
+    <!-- Bottom Actions -->
+    <div class="px-4 mt-auto space-y-1">
+      <button routerLink="/courses"
+        class="w-full bg-primary text-on-primary py-4 rounded-full font-bold text-sm mb-4 hover:bg-primary-dim transition-all active:scale-95">
+        Continue Learning
+      </button>
+
+      <a routerLink="/student/settings"
+        class="flex items-center gap-4 py-3 px-6 rounded-full text-on-surface-variant hover:text-primary transition-all">
+        <span class="material-symbols-outlined">settings</span>
+        <span class="font-bold uppercase tracking-[0.05em] text-xs">Settings</span>
+      </a>
+
+      <a routerLink="/student/support"
+        class="flex items-center gap-4 py-3 px-6 rounded-full text-on-surface-variant hover:text-primary transition-all">
+        <span class="material-symbols-outlined">help</span>
+        <span class="font-bold uppercase tracking-[0.05em] text-xs">Support</span>
+      </a>
+
+      <button
+        class="w-full flex items-center gap-4 py-3 px-6 rounded-full text-error hover:bg-error/5 transition-all">
+        <span class="material-symbols-outlined">logout</span>
+        <span class="font-bold uppercase tracking-[0.05em] text-xs">Logout</span>
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- Mobile Bottom Nav -->
+  <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-surface/90 backdrop-blur-xl border-t border-outline-variant/10 px-6 py-3 flex justify-between items-center z-50">
+    <a routerLink="/student/dashboard" routerLinkActive="text-primary"
+      class="flex flex-col items-center gap-1 text-on-surface-variant">
+      <span class="material-symbols-outlined">dashboard</span>
+      <span class="text-[10px] font-bold uppercase">Dash</span>
+    </a>
+    <a routerLink="/student/my-courses" routerLinkActive="text-primary"
+      class="flex flex-col items-center gap-1 text-on-surface-variant">
+      <span class="material-symbols-outlined">menu_book</span>
+      <span class="text-[10px] font-bold uppercase">Learn</span>
+    </a>
+    <a routerLink="/student/live-sessions" routerLinkActive="text-primary"
+      class="flex flex-col items-center gap-1 text-on-surface-variant">
+      <span class="material-symbols-outlined">podcasts</span>
+      <span class="text-[10px] font-bold uppercase">Live</span>
+    </a>
+    <a routerLink="/student/certificates" routerLinkActive="text-primary"
+      class="flex flex-col items-center gap-1 text-on-surface-variant">
+      <span class="material-symbols-outlined">verified</span>
+      <span class="text-[10px] font-bold uppercase">Certs</span>
+    </a>
+    <a routerLink="/student/profile" routerLinkActive="text-primary"
+      class="flex flex-col items-center gap-1 text-on-surface-variant">
+      <span class="material-symbols-outlined">person</span>
+      <span class="text-[10px] font-bold uppercase">Profile</span>
+    </a>
+  </nav>
+
+  <!-- Page Content -->
+  <router-outlet />
+
+</div>

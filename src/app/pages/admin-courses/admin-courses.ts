@@ -1,14 +1,11 @@
-// src/app/pages/admin-courses/admin-courses.ts
 
-import { Component, OnInit, signal, inject } from '@angular/core';
+import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CourseService } from '../../core/services/course';
 import { AdminSidebarComponent } from '../../layouts/admin-sidebar/admin-sidebar';
 import { AdminTopbarComponent } from '../../layouts/admin-topbar/admin-topbar';
+import { AdminCourseService } from '../../core/services/admin-course';
 import { CourseSummaryDto, UpdatePricingDto } from '../../core/models/course';
-
-type StatusFilter = 'All' | 'Published' | 'Draft' | 'Archived';
 
 @Component({
   selector: 'app-admin-courses',
@@ -17,111 +14,120 @@ type StatusFilter = 'All' | 'Published' | 'Draft' | 'Archived';
   styleUrl: './admin-courses.css',
 })
 export class AdminCoursesComponent implements OnInit {
-  private courseService = inject(CourseService);
-  private fb            = inject(FormBuilder);
+  private service = inject(AdminCourseService);
+  private fb      = inject(FormBuilder);
 
-  courses           = signal<CourseSummaryDto[]>([]);
-  loading           = signal(false);
-  successMsg        = signal('');
-  errorMsg          = signal('');
-  statusFilter      = signal<StatusFilter>('All');
-  searchTerm        = signal('');
-  showPricingModal  = signal(false);
-  selectedCourse    = signal<CourseSummaryDto | null>(null);
+  // ── State signals ────────────────────────────────────────────────────────────
+  courses         = signal<CourseSummaryDto[]>([]);
+  loading         = signal(false);
+  successMsg      = signal('');
+  errorMsg        = signal('');
+  currentPage     = signal(1);
+  totalCount      = signal(0);
+  totalPages      = signal(1);
+  statusFilter    = signal('');
+  searchQuery     = signal('');
+  showPricingModal = signal(false);
+  selectedCourse  = signal<CourseSummaryDto | null>(null);
 
+  // ── Computed helpers ─────────────────────────────────────────────────────────
+  get publishedCount(): number { return this.courses().filter(c => c.status === 'Published').length; }
+  get draftCount():    number { return this.courses().filter(c => c.status === 'Draft').length; }
+  get archivedCount(): number { return this.courses().filter(c => c.status === 'Archived').length; }
+
+  pages = computed(() => Array.from({ length: this.totalPages() }, (_, i) => i + 1));
+
+  // ── Pricing form ─────────────────────────────────────────────────────────────
   pricingForm: FormGroup = this.fb.group({
     pricingType:     ['Paid', Validators.required],
     price:           [0, [Validators.required, Validators.min(0)]],
     discountedPrice: [null],
   });
 
-  ngOnInit() { this.load(); }
+  // ── Lifecycle ────────────────────────────────────────────────────────────────
+  ngOnInit() { this.load(1); }
 
-  load() {
+  // ── Data loading ─────────────────────────────────────────────────────────────
+  load(page: number = 1) {
     this.loading.set(true);
-    const filter = {
-      search: this.searchTerm() || undefined,
-      status: this.statusFilter() !== 'All' ? this.statusFilter() : undefined,
-    };
-    // this.courseService.getAll(filter).subscribe({
-    //   next: (res) => { this.courses.set(res.items); this.loading.set(false); },
-    //   error: () => this.flashError('Failed to load courses.'),
-    // });
+    this.service.getCourses(
+      page,
+      10,
+      this.searchQuery() || undefined,
+      this.statusFilter() || undefined,
+    ).subscribe({
+      next: (result) => {
+        this.courses.set(result.items);
+        this.totalCount.set(result.totalCount);
+        this.totalPages.set(result.totalPages);
+        this.currentPage.set(result.pageNumber);
+        this.loading.set(false);
+      },
+      error: () => this.flashError('Failed to load courses.'),
+    });
   }
 
+  // ── Search & filter ───────────────────────────────────────────────────────────
   onSearch(e: Event) {
-    this.searchTerm.set((e.target as HTMLInputElement).value);
-    this.load();
+    this.searchQuery.set((e.target as HTMLInputElement).value);
+    this.load(1);
   }
 
-  setStatusFilter(s: StatusFilter) {
-    this.statusFilter.set(s);
-    this.load();
+  setStatusFilter(status: string) {
+    this.statusFilter.set(status);
+    this.load(1);
   }
 
-  publish(course: CourseSummaryDto) {
-    this.courseService.publishCourse(course.id).subscribe({
+  // ── Publish / Unpublish ───────────────────────────────────────────────────────
+  togglePublish(course: CourseSummaryDto) {
+    const action = course.status === 'Published'
+      ? this.service.unpublishCourse(course.id)
+      : this.service.publishCourse(course.id);
+
+    action.subscribe({
       next: () => {
-        this.courses.update(list => list.map(c => c.id === course.id ? { ...c, status: 'Published' } : c));
-        this.flash('Course published.');
+        const newStatus = course.status === 'Published' ? 'Archived' : 'Published';
+        this.courses.update(list =>
+          list.map(c => c.id === course.id ? { ...c, status: newStatus } : c)
+        );
+        this.flash(`Course ${course.status === 'Published' ? 'unpublished' : 'published'} successfully.`);
       },
-      error: () => this.flashError('Failed to publish course.'),
+      error: () => this.flashError('Failed to update course status.'),
     });
   }
 
-  unpublish(course: CourseSummaryDto) {
-    this.courseService.unpublishCourse(course.id).subscribe({
-      next: () => {
-        this.courses.update(list => list.map(c => c.id === course.id ? { ...c, status: 'Archived' } : c));
-        this.flash('Course unpublished.');
-      },
-      error: () => this.flashError('Failed to unpublish course.'),
-    });
-  }
-
+  // ── Pricing modal ─────────────────────────────────────────────────────────────
   openPricing(course: CourseSummaryDto) {
     this.selectedCourse.set(course);
     this.pricingForm.patchValue({
       pricingType:     course.pricingType,
       price:           course.price,
-      discountedPrice: null,
+      discountedPrice: course.discountedPrice ?? null,
     });
     this.showPricingModal.set(true);
   }
 
-  submitPricing() {
+  savePricing() {
     if (this.pricingForm.invalid || !this.selectedCourse()) return;
+    this.loading.set(true);
     const dto: UpdatePricingDto = this.pricingForm.value;
-    this.courseService.updatePricing(this.selectedCourse()!.id, dto).subscribe({
+    this.service.updatePricing(this.selectedCourse()!.id, dto).subscribe({
       next: () => {
         this.courses.update(list =>
-          list.map(c => c.id === this.selectedCourse()!.id
-            ? { ...c, price: dto.price, pricingType: dto.pricingType }
-            : c)
+          list.map(c =>
+            c.id === this.selectedCourse()!.id
+              ? { ...c, pricingType: dto.pricingType, price: dto.price, discountedPrice: dto.discountedPrice }
+              : c
+          )
         );
         this.showPricingModal.set(false);
-        this.flash('Pricing updated.');
+        this.flash('Pricing updated successfully.');
       },
       error: () => this.flashError('Failed to update pricing.'),
     });
   }
 
-  get publishedCount() { return this.courses().filter(c => c.status === 'Published').length; }
-  get draftCount()     { return this.courses().filter(c => c.status === 'Draft').length; }
-  get archivedCount()  { return this.courses().filter(c => c.status === 'Archived').length; }
-
-  statusClass(status: string) {
-    if (status === 'Published') return 'text-emerald-600';
-    if (status === 'Draft')     return 'text-[#596060]/60';
-    return 'text-[#a83836]';
-  }
-
-  statusDot(status: string) {
-    if (status === 'Published') return 'bg-emerald-500 animate-pulse';
-    if (status === 'Draft')     return 'bg-[#acb3b2]';
-    return 'bg-[#a83836]';
-  }
-
+  // ── Toast helpers ─────────────────────────────────────────────────────────────
   private flash(msg: string) {
     this.loading.set(false);
     this.errorMsg.set('');
