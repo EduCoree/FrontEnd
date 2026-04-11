@@ -7,12 +7,15 @@ export interface CourseSummaryDto {
   level: string;
   pricingType: string;
   price: number;
-  status: string;
+  //status: string;
   categoryName: string;
   teacherName: string;
   totalStudents: number;
   totalSections: number;
   totalLessons: number;
+  discountedPrice?: number | null;
+  status: 'Draft' | 'Published' | 'Archived';
+  
 }
 
 // details of a course
@@ -20,7 +23,7 @@ export interface CourseDetailDto {
   id: number;
   title: string;
   description: string;
-  coverImageUrl: string;
+  coverImage: string;
   level: string;
   pricingType: string;
   price: number;
@@ -43,8 +46,9 @@ export interface LessonDto {
   id: number;
   title: string;
   type: string;
-  order: number;
-  durationInMinutes: number;
+  sortOrder: number;
+  durationSeconds: number;   
+  isFreePreview: boolean;
 }
 
 // creating a new course
@@ -61,14 +65,14 @@ export interface CreateCourseDto {
 export interface UpdateCourseDto {
   title: string;
   description: string;
-  categoryId: number;
   level: string;
+  categoryId: number;
 }
-
 // updating the pricing
 export interface UpdatePricingDto {
   pricingType: string;
   price: number;
+  discountedPrice?: number | null;
 }
 
 // creating a new section
@@ -85,6 +89,8 @@ export interface UpdateSectionDto {
 export interface ReorderItemDto {
   id: number;
   order: number;
+  sectionId?: number;
+  sortOrder?: number;
 }
 
 // the Paged Result
@@ -101,7 +107,19 @@ export interface CourseFilterDto {
   search?: string;
   categoryId?: number;
   level?: string;
+  status?: string;
   pricingType?: string;
+}
+
+export interface StudentEnrolledCourseDto {
+  courseId: number;
+  title: string;
+  coverImage: string | null;
+  teacherName: string;
+  enrolledAt: string;
+  totalLessons: number;
+  completedLessons: number;
+  progressPercentage: number;
 }
 
 // ─── Content Delivery: Lesson DTOs ──────────────────────────────────────────
@@ -159,3 +177,4 @@ export interface PdfLessonResponse {
 export interface ToggleFreePreviewDto {
   isFreePreview: boolean;
 }
+

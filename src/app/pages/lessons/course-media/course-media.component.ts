@@ -5,13 +5,16 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import {
-  SectionDto, LessonDto,
-  AddVideoLessonDto, AddPdfLessonDto,
-  VideoLessonResponse, PdfLessonResponse
+  SectionDto,
+  LessonDto,
+  AddVideoLessonDto,
+  AddPdfLessonDto,
+  VideoLessonResponse,
+  PdfLessonResponse,
 } from '../../../core/models/course';
 import { CourseService } from '../../../core/services/course';
 
-interface LessonMediaState extends LessonDto {
+interface LessonMediaState extends Omit<LessonDto, 'durationSeconds' | 'isFreePreview'> {
   sectionTitle: string;
   hasVideo: boolean;
   hasPdf: boolean;

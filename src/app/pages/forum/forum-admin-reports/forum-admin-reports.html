@@ -1,0 +1,202 @@
+<!-- Admin Forum Reports Page -->
+<div class="flex min-h-screen bg-[#F8FAFA]">
+  <app-admin-sidebar />
+
+  <main class="ml-12 flex-1 min-h-screen md:pt-0 pt-16">
+
+    <!-- Top bar -->
+    <header class="sticky top-0 z-30 bg-[#F8FAFA]/80 backdrop-blur-xl border-b border-slate-200 flex items-center justify-between px-8 py-4">
+      <div class="relative w-full max-w-md">
+        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
+        <input type="text" placeholder="Search reports..."
+          class="w-full pl-12 pr-4 py-2.5 rounded-full bg-[#ECEEEE] border-none focus:ring-2 focus:ring-[#2E6858]/20 text-sm placeholder-slate-400" />
+      </div>
+    </header>
+
+    <div class="p-8 space-y-8">
+
+      <!-- Page header -->
+      <div>
+        <h2 class="text-4xl font-extrabold tracking-tight text-[#191C1D] font-headline mb-2">Forum Reports</h2>
+        <p class="text-slate-500">Review reported posts and take appropriate action.</p>
+      </div>
+
+      <!-- Toasts -->
+      @if (successMsg()) {
+        <div class="flex items-center gap-3 px-5 py-3 bg-[#AAF1DA]/40 border border-[#226A58]/20 rounded-xl text-[#226A58] font-semibold text-sm">
+          <span class="material-symbols-outlined text-[18px]">check_circle</span>{{ successMsg() }}
+        </div>
+      }
+      @if (errorMsg()) {
+        <div class="flex items-center gap-3 px-5 py-3 bg-[#FFDAD6]/40 border border-[#BA1A1A]/20 rounded-xl text-[#BA1A1A] font-semibold text-sm">
+          <span class="material-symbols-outlined text-[18px]">error</span>{{ errorMsg() }}
+        </div>
+      }
+
+      <!-- Stats Row -->
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="bg-[#FFDAD6]/30 p-6 rounded-xl space-y-1 relative overflow-hidden group">
+          <span class="material-symbols-outlined absolute -right-3 -bottom-3 text-6xl opacity-5 group-hover:scale-110 transition-transform duration-500">flag</span>
+          <p class="uppercase tracking-widest text-[10px] font-bold text-[#BA1A1A]">Pending Reports</p>
+          <h3 class="text-3xl font-extrabold text-[#BA1A1A]">{{ reports().length }}</h3>
+        </div>
+        <div class="bg-[#F2F4F4] p-6 rounded-xl space-y-1 relative overflow-hidden group">
+          <span class="material-symbols-outlined absolute -right-3 -bottom-3 text-6xl opacity-5 group-hover:scale-110 transition-transform duration-500">shield</span>
+          <p class="uppercase tracking-widest text-[10px] font-bold text-slate-400">Moderation</p>
+          <h3 class="text-3xl font-extrabold text-[#191C1D]">Active</h3>
+        </div>
+      </div>
+
+      <!-- Reports Table -->
+      <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-separate border-spacing-y-2 px-4 py-4">
+            <thead>
+              <tr class="text-slate-400">
+                <th class="px-4 py-3 text-[10px] font-black uppercase tracking-widest">Post Title</th>
+                <th class="px-4 py-3 text-[10px] font-black uppercase tracking-widest">Reporter</th>
+                <th class="px-4 py-3 text-[10px] font-black uppercase tracking-widest hidden md:table-cell">Reason</th>
+                <th class="px-4 py-3 text-[10px] font-black uppercase tracking-widest hidden lg:table-cell">Date</th>
+                <th class="px-4 py-3 text-[10px] font-black uppercase tracking-widest text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @if (loading()) {
+                <tr>
+                  <td colspan="5" class="text-center py-20">
+                    <span class="material-symbols-outlined text-[#7DB8A5] text-5xl animate-spin">progress_activity</span>
+                  </td>
+                </tr>
+              }
+              @for (report of reports(); track report.id) {
+                <tr class="group bg-[#F8FAFA] hover:bg-white transition-colors rounded-xl">
+                  <!-- Post Title -->
+                  <td class="px-4 py-5 rounded-l-xl">
+                    <div class="flex items-center gap-3">
+                      <div class="w-9 h-9 rounded-lg bg-[#FFDAD6]/50 flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-[#BA1A1A] text-[18px]">flag</span>
+                      </div>
+                      <p class="font-bold text-[#191C1D] text-sm leading-tight line-clamp-2">{{ report.postTitle }}</p>
+                    </div>
+                  </td>
+
+                  <!-- Reporter -->
+                  <td class="px-4 py-5">
+                    <div class="flex items-center gap-2">
+                      <div class="w-6 h-6 rounded-full bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] flex items-center justify-center text-white text-[10px] font-bold shrink-0">
+                        {{ getInitial(report.reporterName) }}
+                      </div>
+                      <span class="text-sm font-medium text-[#191C1D]">{{ report.reporterName }}</span>
+                    </div>
+                  </td>
+
+                  <!-- Reason -->
+                  <td class="px-4 py-5 hidden md:table-cell">
+                    <p class="text-sm text-slate-500 line-clamp-2 max-w-xs">{{ report.reason }}</p>
+                  </td>
+
+                  <!-- Date -->
+                  <td class="px-4 py-5 text-sm text-slate-500 hidden lg:table-cell">
+                    {{ formatDate(report.createdAt) }}
+                  </td>
+
+                  <!-- Actions -->
+                  <td class="px-4 py-5 text-right rounded-r-xl">
+                    <div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button (click)="openDismissModal(report)"
+                        class="p-2 rounded-full text-slate-400 hover:text-[#2E6858] hover:bg-[#B2EFDA]/20 transition-all"
+                        title="Dismiss Report">
+                        <span class="material-symbols-outlined text-[20px]">check_circle</span>
+                      </button>
+                      <button (click)="openDeleteModal(report)"
+                        class="p-2 rounded-full text-slate-400 hover:text-[#BA1A1A] hover:bg-red-50 transition-all"
+                        title="Delete Post">
+                        <span class="material-symbols-outlined text-[20px]">delete_forever</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              }
+              @empty {
+                @if (!loading()) {
+                  <tr>
+                    <td colspan="5" class="text-center py-20 text-slate-400">
+                      <span class="material-symbols-outlined text-5xl block mb-3 text-slate-300">verified_user</span>
+                      No pending reports. The forum is clean!
+                    </td>
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- ═══ Dismiss Report Modal ═══ -->
+@if (showDismissModal()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
+    <div class="bg-white rounded-2xl p-8 w-full max-w-sm animate-[fadeIn_0.2s_ease-out]">
+
+      <div class="flex justify-center mb-4">
+        <div class="w-14 h-14 rounded-full bg-[#AAF1DA]/40 flex items-center justify-center">
+          <span class="material-symbols-outlined text-[#2E6858] text-2xl">check_circle</span>
+        </div>
+      </div>
+
+      <h3 class="text-xl font-bold text-[#191C1D] text-center mb-2">Dismiss Report</h3>
+      <p class="text-slate-500 text-sm text-center mb-6">
+        Dismiss the report for
+        <span class="font-semibold text-[#191C1D]">"{{ actionReport()?.postTitle }}"</span>?
+        The post will remain visible.
+      </p>
+
+      <div class="flex flex-col gap-3">
+        <button (click)="confirmDismiss()"
+          class="w-full bg-[#2E6858] text-white py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform">
+          <span class="material-symbols-outlined text-lg">check_circle</span>
+          Yes, Dismiss
+        </button>
+        <button (click)="closeModals()"
+          class="w-full bg-[#F2F4F4] text-[#191C1D] py-3.5 rounded-xl font-bold hover:bg-[#ECEEEE] transition-colors">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- ═══ Delete Post Modal ═══ -->
+@if (showDeleteModal()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
+    <div class="bg-white rounded-2xl p-8 w-full max-w-sm animate-[fadeIn_0.2s_ease-out]">
+
+      <div class="flex justify-center mb-4">
+        <div class="w-14 h-14 rounded-full bg-[#FFDAD6] flex items-center justify-center">
+          <span class="material-symbols-outlined text-[#BA1A1A] text-2xl">delete_forever</span>
+        </div>
+      </div>
+
+      <h3 class="text-xl font-bold text-[#191C1D] text-center mb-2">Delete Post</h3>
+      <p class="text-slate-500 text-sm text-center mb-6">
+        Delete <span class="font-semibold text-[#191C1D]">"{{ actionReport()?.postTitle }}"</span>?
+        This action cannot be undone.
+      </p>
+
+      <div class="flex flex-col gap-3">
+        <button (click)="confirmDeletePost()"
+          class="w-full bg-[#BA1A1A] text-white py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform">
+          <span class="material-symbols-outlined text-lg">delete</span>
+          Yes, Delete
+        </button>
+        <button (click)="closeModals()"
+          class="w-full bg-[#F2F4F4] text-[#191C1D] py-3.5 rounded-xl font-bold hover:bg-[#ECEEEE] transition-colors">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+}

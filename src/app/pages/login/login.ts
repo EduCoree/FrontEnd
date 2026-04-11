@@ -25,20 +25,29 @@ export class LoginComponent {
     password: ['', Validators.required],
   });
 
-  submit() {
-    if (this.form.invalid) return;
-    this.loading.set(true);
-    this.errorMsg.set('');
+ submit() {
+  if (this.form.invalid) return;
+  this.loading.set(true);
+  this.errorMsg.set('');
 
-    this.auth.login(this.form.value).subscribe({
-      next: (user) => {
-        this.auth.saveUser(user);
-        this.router.navigate(['/']);
-      },
-      error: () => {
-        this.errorMsg.set('Invalid email or password.');
-        this.loading.set(false);
-      },
-    });
+  this.auth.login(this.form.value).subscribe({
+next: (user) => {
+  this.auth.saveUser(user);
+
+  if (this.auth.hasRole('Teacher')) {
+    this.router.navigate(['/teacher/dashboard']);
+  } else if (this.auth.hasRole('Student')) {
+    this.router.navigate(['/student/dashboard']);
+  } else if (this.auth.hasRole('Admin')) {
+    this.router.navigate(['/admin/dashboard']);
+  } else {
+    this.router.navigate(['/']);
   }
+},
+    error: () => {
+      this.errorMsg.set('Invalid email or password.');
+      this.loading.set(false);
+    },
+  });
+}
 }

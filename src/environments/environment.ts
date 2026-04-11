@@ -1,7 +1,10 @@
 
+// export const environment = {
+//   production: false,
+//   apiUrl: 'https://edu-coree.runasp.net'
+// };
+
 export const environment = {
   production: false,
-  // apiUrl: 'https://edu-coree.runasp.net'
-  apiUrl: 'http://localhost:5051'
-
+  apiUrl: 'https://localhost:7275'
 };

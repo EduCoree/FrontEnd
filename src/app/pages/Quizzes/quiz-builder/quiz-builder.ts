@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { forkJoin, Observable } from 'rxjs';
 
@@ -10,6 +10,7 @@ import { QuizDetailsDto, QuestionDto, UpdateQuestionDto, UpdateAnswerOptionDto, 
 import { CenterDelete } from "../../centers/center-delete/center-delete";
 import { DeleteQuestionModalComponent } from "../delete-question/delete-question";
 
+
 interface EditingQuestion {
   question: QuestionDto;
   text: string;
@@ -19,7 +20,7 @@ interface EditingQuestion {
 @Component({
   selector: 'app-quiz-builder',
   standalone: true,
-  imports: [CommonModule, CourseSidebar, FormsModule, DeleteQuestionModalComponent],
+  imports: [CommonModule, CourseSidebar, FormsModule, DeleteQuestionModalComponent, RouterLink],
   templateUrl: './quiz-builder.html'
 })
 export class QuizBuilderComponent implements OnInit {
@@ -48,7 +49,9 @@ export class QuizBuilderComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private quizService: QuizService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router:Router
+
   ) {}
 
   ngOnInit(): void {
@@ -82,7 +85,6 @@ export class QuizBuilderComponent implements OnInit {
     const typeMap: Record<string, string> = {
       'MCQ': 'Multiple Choice',
       'TRUE_FALSE': 'True/False',
-      'OPEN_ENDED': 'Open Ended'
     };
     return typeMap[type] || type;
   }
@@ -237,7 +239,8 @@ export class QuizBuilderComponent implements OnInit {
     };
 
     this.quizService.addQuestion(this.courseId, this.quizId, questionDto).subscribe({
-      next: (res) => {
+      next: (res:ApiResponse<QuestionDto>) => {
+        console.log(res);
         const questionId = res.data.id;
         const optionCalls: Observable<ApiResponse<AnswerOptionDto>>[] = validOptions.map(opt => 
           this.quizService.addanswerOption(this.courseId, this.quizId, questionId, {
@@ -259,8 +262,6 @@ export class QuizBuilderComponent implements OnInit {
   } else {
     this.addingQuestionError = 'Failed to add answer options';
   }
-
-  console.log('Option error:', err); // 🔥 VERY IMPORTANT
   this.addingQuestion = false;
 }
         });
@@ -283,5 +284,34 @@ export class QuizBuilderComponent implements OnInit {
     ];
     this.addingQuestion = false;
     this.addingQuestionError = null;
+  }
+  onQuestionTypeChange(newtype:string):void
+   {
+      this.newQuestionType = newtype;
+
+  if (newtype === 'TRUEFALSE') {
+    // Set exactly 2 options for True/False
+    this.newQuestionOptions = [
+      { text: 'True', isCorrect: false },
+      { text: 'False', isCorrect: false }
+    ];
+  } else if (newtype === 'MCQ') {
+    // Reset to default empty options for MCQ
+    this.newQuestionOptions = [
+      { text: '', isCorrect: true },
+      { text: '', isCorrect: false }
+    ];
+   }
+  }
+  AddQuestion()
+  {
+     
+    this.router.navigate(
+  ['/teacher/courses', this.courseId, 'quizzes', this.quizId,'add-question'],
+  { queryParams: { name: this.quiz?.title } }
+    )
+  
+ 
+
   }
 }
