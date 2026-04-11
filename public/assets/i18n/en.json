@@ -1,0 +1,66 @@
+{
+  "nav": {
+    "home": "Home",
+    "courses": "Courses",
+    "centers": "Centers",
+    "liveSessions": "Live Sessions",
+    "login": "Login",
+    "signup": "Sign Up",
+    "search": "Search courses...",
+      "profile": "My Profile",
+  "logout": "Logout"
+  },
+  "center": {
+    "title": "Training Center",
+    "edit": "Edit",
+    "delete": "Delete",
+    "updateLogo": "Update Logo",
+    "active": "Active",
+    "locationContact": "Location & Contact",
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email",
+    "socialLinks": "Social Links",
+    "quickInfo": "Quick Info",
+    "centerId": "Center ID",
+    "created": "Created"
+  },
+  "categories": {
+    "title": "Categories",
+    "manage": "Manage categories for this training center",
+    "add": "Add Category",
+    "name": "Category Name",
+    "slug": "Slug Preview",
+    "slugAuto": "Auto-generated from the name",
+    "create": "Create Category",
+    "save": "Save Changes",
+    "rename": "Rename Category",
+    "deleteTitle": "Delete Category",
+    "deleteConfirm": "Are you sure you want to delete",
+    "noCategories": "No categories yet",
+    "total": "categories total"
+  },
+  "reviews": {
+    "title": "Reviews",
+    "writeReview": "Write Review",
+    "submitReview": "Submit Review",
+    "updateReview": "Update Review",
+    "yourRating": "Your Rating",
+    "comment": "Comment (optional)",
+    "deleteTitle": "Delete Review",
+    "deleteConfirm": "Are you sure you want to delete this review?",
+    "noReviews": "No reviews yet",
+    "overallRating": "Overall Rating",
+    "basedOn": "Based on",
+    "reviews": "reviews"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "save": "Save Changes",
+    "saving": "Saving...",
+    "deleting": "Deleting...",
+    "loading": "Loading...",
+    "error": "An error occurred"
+  }
+}

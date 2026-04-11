@@ -34,6 +34,7 @@ import { AdminTeachersComponent }      from './pages/admin-teachers/admin-teache
 import { AdminStudentsComponent }      from './pages/admin-students/admin-students';
 import { AdminStudentDetailComponent } from './pages/admin-student-detail/admin-student-detail';
 import { authGuard } from './core/guards/auth-guard';
+import { AdminCoursesComponent } from './pages/admin-courses/admin-courses';
 export const routes: Routes = [
    // ── Public ────────────────────────────────────────────────────────────────
   {
@@ -205,8 +206,13 @@ export const routes: Routes = [
 } ,
 
 
-
-
+{
+  path: 'courses/:courseId/reviews',
+  loadComponent: () =>
+    import('./pages/reviews/reviews')
+      .then(m => m.Reviews)
+}
+,
 
 {
   path: 'questions',

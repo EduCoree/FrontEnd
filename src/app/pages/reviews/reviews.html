@@ -1,0 +1,290 @@
+<div class="max-w-5xl mx-auto px-6 pt-8 pb-16">
+
+
+  <div class="flex items-center gap-3 mb-8">
+    <button class="w-9 h-9 rounded-xl hover:bg-surface-container flex items-center justify-center transition-colors">
+      <span class="material-symbols-outlined text-on-surface-variant">arrow_back</span>
+    </button>
+    <div class="flex items-center gap-2 text-sm text-on-surface-variant">
+      <span>Reviews</span>
+      <span>/</span>
+      <span class="font-semibold text-on-surface">Course #{{ courseId() }}</span>
+    </div>
+    <div class="ml-auto">
+      <span class="flex items-center gap-1.5 bg-primary-fixed-dim text-on-primary-container text-xs font-bold px-3 py-1.5 rounded-full">
+        <span class="material-symbols-outlined text-sm">verified</span>
+        TOP RATED COURSE
+      </span>
+    </div>
+  </div>
+
+  @if (loading()) {
+    <div class="flex justify-center py-20">
+      <div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+    </div>
+  }
+
+  @if (!loading()) {
+
+    @if (summary()) {
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+
+        <div class="bg-surface-container-lowest border border-outline-variant/20 rounded-2xl p-8 flex flex-col items-center justify-center text-center">
+          <p class="text-xs uppercase tracking-widest font-bold text-on-surface-variant mb-4">Overall Rating</p>
+          <p class="text-7xl font-extrabold text-primary leading-none mb-3">
+            {{ summary()!.averageRating.toFixed(1) }}
+          </p>
+          <div class="flex items-center gap-1 mb-3">
+            @for (star of getStars(); track star) {
+              <span class="material-symbols-outlined text-2xl"
+                    [style.color]="star <= summary()!.averageRating ? '#2e6858' : '#e0e0e0'"
+                    style="font-variation-settings: 'FILL' 1;">
+                star
+              </span>
+            }
+          </div>
+          <p class="text-sm text-on-surface-variant">
+            Based on {{ summary()!.totalReviews.toLocaleString() }} reviews
+          </p>
+        </div>
+
+        <div class="bg-surface-container-lowest border border-outline-variant/20 rounded-2xl p-8 flex flex-col justify-center gap-3">
+          @for (star of [5,4,3,2,1]; track star) {
+            <div class="flex items-center gap-3">
+              <span class="text-sm text-on-surface-variant w-12 flex-shrink-0">
+                {{ star }} star{{ star > 1 ? 's' : '' }}
+              </span>
+              <div class="flex-1 bg-surface-container rounded-full h-2.5 overflow-hidden">
+                <div class="h-2.5 bg-primary rounded-full transition-all duration-500"
+                     [style.width]="getDistributionPercent(star) + '%'">
+                </div>
+              </div>
+              <span class="text-sm font-semibold text-on-surface w-10 text-right">
+                {{ getDistributionPercent(star) }}%
+              </span>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+
+    
+      <div class="flex items-center bg-surface-container rounded-xl p-1 gap-1">
+        @for (tab of tabs; track tab.key) {
+          <button (click)="setSort(tab.key)"
+                  class="px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                  [class.bg-surface-container-lowest]="sortBy() === tab.key"
+                  [class.text-on-surface]="sortBy() === tab.key"
+                  [class.shadow-sm]="sortBy() === tab.key"
+                  [class.text-on-surface-variant]="sortBy() !== tab.key">
+            {{ tab.label }}
+          </button>
+        }
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 bg-surface-container rounded-xl px-4 py-2.5">
+          <span class="material-symbols-outlined text-on-surface-variant text-lg">search</span>
+          <input type="text" placeholder="Search reviews..."
+                 class="bg-transparent outline-none text-sm w-44 text-on-surface placeholder-on-surface-variant"
+                 (input)="searchQuery.set($any($event.target).value)" />
+        </div>
+
+        <button (click)="openCreateForm()"
+                class="flex items-center gap-2 bg-primary text-on-primary px-4 py-2.5 rounded-xl text-sm font-medium active:scale-95 transition-transform">
+          <span class="material-symbols-outlined text-lg">add</span>
+          Write Review
+        </button>
+      </div>
+    </div>
+
+    @if (filteredReviews.length === 0) {
+      <div class="flex flex-col items-center py-16 text-center">
+        <span class="material-symbols-outlined text-5xl text-on-surface-variant mb-3">rate_review</span>
+        <p class="text-on-surface font-semibold">No reviews yet</p>
+        <p class="text-on-surface-variant text-sm mt-1">Be the first to write a review</p>
+      </div>
+    }
+
+    <div class="space-y-4">
+      @for (review of filteredReviews; track review.id) {
+        <div class="bg-surface-container-lowest border border-outline-variant/20 rounded-2xl p-6">
+          <div class="flex items-start gap-4">
+
+            <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container text-xs font-bold flex-shrink-0">
+              {{ getInitials(review.studentId) }}
+            </div>
+
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between gap-2 mb-1">
+                <span class="text-sm font-semibold text-on-surface">
+                  Student {{ review.studentId.slice(0,8) }}...
+                </span>
+                <span class="text-xs text-on-surface-variant flex-shrink-0">
+                  {{ timeAgo(review.createdAt) }}
+                </span>
+              </div>
+
+          
+              <div class="flex items-center gap-0.5 mb-3">
+                @for (star of getStars(); track star) {
+                  <span class="material-symbols-outlined text-lg"
+                        [style.color]="star <= review.rating ? '#2e6858' : '#e0e0e0'"
+                        style="font-variation-settings: 'FILL' 1;">
+                    star
+                  </span>
+                }
+              </div>
+
+              @if (review.comment) {
+                <p class="text-sm text-on-surface-variant leading-relaxed italic">
+                  "{{ review.comment }}"
+                </p>
+              }
+
+              <div class="mt-3">
+                <span class="text-xs bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-medium">
+                  Course: #{{ review.courseId }}
+                </span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-1 flex-shrink-0">
+              <button (click)="openEditForm(review)"
+                      class="w-8 h-8 rounded-lg hover:bg-surface-container flex items-center justify-center transition-colors text-on-surface-variant hover:text-primary">
+                <span class="material-symbols-outlined text-lg">edit</span>
+              </button>
+              <button (click)="openDeleteModal(review)"
+                      class="w-8 h-8 rounded-lg hover:bg-error-container/20 flex items-center justify-center transition-colors text-on-surface-variant hover:text-error">
+                <span class="material-symbols-outlined text-lg">delete</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>
+
+
+@if (showForm()) {
+  <div class="fixed inset-0 z-50 flex">
+    <div class="flex-1 bg-black/30" (click)="closeForm()"></div>
+    <div class="w-full max-w-md bg-surface-container-lowest h-full shadow-xl flex flex-col">
+
+      <div class="flex items-center justify-between px-6 py-5 border-b border-outline-variant/20">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase"
+                  [class.bg-secondary-container]="!editingReview()"
+                  [class.text-on-secondary-container]="!editingReview()"
+                  [class.bg-amber-100]="!!editingReview()"
+                  [class.text-amber-800]="!!editingReview()">
+              {{ editingReview() ? 'PUT' : 'POST' }}
+            </span>
+            <code class="text-[10px] font-mono text-on-surface-variant">
+              /api/courses/{{ courseId() }}/reviews{{ editingReview() ? '/' + editingReview()!.id : '' }}
+            </code>
+          </div>
+          <h3 class="text-lg font-bold text-on-surface">
+            {{ editingReview() ? 'Edit Review' : 'Write a Review' }}
+          </h3>
+        </div>
+        <button (click)="closeForm()"
+                class="w-9 h-9 rounded-lg hover:bg-surface-container flex items-center justify-center">
+          <span class="material-symbols-outlined text-on-surface-variant">close</span>
+        </button>
+      </div>
+
+      <div class="flex-1 px-6 py-6 overflow-y-auto">
+
+        @if (formError()) {
+          <div class="mb-4 px-4 py-3 rounded-xl bg-error-container text-on-error-container text-sm flex items-center gap-2">
+            <span class="material-symbols-outlined text-lg">error</span>
+            {{ formError() }}
+          </div>
+        }
+
+        <form [formGroup]="form" (ngSubmit)="saveReview()" class="space-y-6">
+
+          <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold text-on-surface">Your Rating *</label>
+            <div class="flex items-center gap-1">
+       
+              @for (star of getStars(); track star) {
+                <button type="button"
+                        (click)="setRating(star)"
+                        (mouseenter)="hoveredStar.set(star)"
+                        (mouseleave)="hoveredStar.set(0)"
+                        class="transition-transform hover:scale-110">
+                  <span class="material-symbols-outlined text-4xl transition-colors"
+                        [style.color]="star <= (hoveredStar() || form.value.rating) ? '#2e6858' : '#e0e0e0'"
+                        style="font-variation-settings: 'FILL' 1;">
+                    star
+                  </span>
+                </button>
+              }
+            </div>
+            @if (form.value.rating > 0) {
+              <span class="text-xs text-primary font-medium">{{ form.value.rating }}/5 stars selected</span>
+            }
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label class="text-sm font-semibold text-on-surface">Comment (optional)</label>
+            <textarea formControlName="comment" rows="5"
+                      class="w-full bg-surface-container rounded-xl px-4 py-3 border border-outline-variant/20 outline-none text-sm resize-none focus:border-primary transition-colors"
+                      placeholder="Share your experience with this course..."></textarea>
+          </div>
+
+          <button type="submit" [disabled]="saving()"
+                  class="w-full bg-primary text-on-primary py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform disabled:opacity-60">
+            @if (saving()) {
+              <div class="w-4 h-4 border-2 border-on-primary border-t-transparent rounded-full animate-spin"></div>
+              Saving...
+            } @else {
+              <span class="material-symbols-outlined text-lg">{{ editingReview() ? 'save' : 'send' }}</span>
+              {{ editingReview() ? 'Update Review' : 'Submit Review' }}
+            }
+          </button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+}
+
+
+@if (showDeleteModal()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+    <div class="bg-surface-container-lowest rounded-2xl p-8 w-full max-w-sm border border-outline-variant/20">
+      <div class="flex justify-center mb-4">
+        <div class="w-14 h-14 rounded-full bg-error-container flex items-center justify-center">
+          <span class="material-symbols-outlined text-error text-2xl">delete_forever</span>
+        </div>
+      </div>
+      <h3 class="text-xl font-bold text-on-surface text-center mb-2">Delete Review</h3>
+      <p class="text-on-surface-variant text-sm text-center mb-6">
+        Are you sure you want to delete this review? This cannot be undone.
+      </p>
+      <div class="flex flex-col gap-3">
+        <button (click)="confirmDelete()" [disabled]="deleting()"
+                class="w-full bg-error text-on-error py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 disabled:opacity-60">
+          @if (deleting()) {
+            <div class="w-4 h-4 border-2 border-on-error border-t-transparent rounded-full animate-spin"></div>
+          } @else {
+            <span class="material-symbols-outlined text-lg">delete</span>
+          }
+          {{ deleting() ? 'Deleting...' : 'Yes, Delete' }}
+        </button>
+        <button (click)="closeDeleteModal()"
+                class="w-full bg-surface-container text-on-surface py-3.5 rounded-xl font-bold hover:bg-surface-container-high transition-colors">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+}
