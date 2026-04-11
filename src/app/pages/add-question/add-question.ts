@@ -1,6 +1,6 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { QuizService } from '../../core/services/quiz.service';
-import { AnswerOptionDto, ApiResponse, CreateQuestionDto, QuestionDto, QuizDetailsDto } from '../../core/models/quiz';
+import { AnswerOptionDto, ApiResponse, CreateQuestionDto, QuestionDto, QuizDetailsDto, QuizDto } from '../../core/models/quiz';
 import { forkJoin, Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -12,7 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './add-question.html',
   styleUrl: './add-question.css',
 })
-export class AddQuestion {
+export class AddQuestion implements OnInit {
 addingQuestion = false;
  addingQuestionError: string | null = null;
  newQuestionText = '';
@@ -24,17 +24,32 @@ addingQuestion = false;
   newQuestionType = 'MCQ';
     courseId!: number;
     quizId!: number;
-    quiz: QuizDetailsDto | null = null;
+    quiz: QuizDto | null = null;
     loading = true;
     error: string | null = null;
     saving = false;
+
+    quizName:string|null=null;
   
 constructor(private quizservice:QuizService,private cdr:ChangeDetectorRef,private route:ActivatedRoute,private router:Router)
 {
    this.courseId = Number(this.route.snapshot.paramMap.get('courseId'));
     this.quizId = Number(this.route.snapshot.paramMap.get('quizId'));
+    this.route.queryParamMap.subscribe(params => {
+   this.quizName = params.get('name');
+});
   
 }
+  ngOnInit(): void {
+     this.quizservice.getQuizById(this.courseId, this.quizId).subscribe(res => {
+    this.quiz = res.data;
+
+    // 3. Override with real value
+    this.quizName = this.quiz.title;
+    console.log(this.quiz.questionsCount);
+    this.cdr.detectChanges();
+  });
+  }
  addNewOption(): void {
      this.newQuestionOptions.push({ text: '', isCorrect: false });
    }
@@ -68,23 +83,7 @@ constructor(private quizservice:QuizService,private cdr:ChangeDetectorRef,privat
     ];
    }
   }
-    loadQuizQuestions(): void {
-    this.loading = true;
-    this.error = null;
-    this.quizservice.getQuizQuestions(this.courseId, this.quizId).subscribe({
-      next: (res) => {
-        this.quiz = res.data;
-        this.loading = false;
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        this.error = err.error?.message || err.message || 'Failed to load quiz questions';
-        this.loading = false;
-        this.cdr.detectChanges();
-      }
-    });
-  }
- 
+    
    saveNewQuestion(): void {
      this.addingQuestionError = null;
      if (!this.newQuestionText.trim()) {
