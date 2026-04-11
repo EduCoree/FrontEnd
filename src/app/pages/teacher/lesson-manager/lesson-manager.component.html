@@ -1,0 +1,320 @@
+<div class="bg-surface text-on-surface min-h-screen font-body">
+
+  <!-- ══ Sidebar ══════════════════════════════════════════════════════════════ -->
+  <aside class="fixed left-0 top-0 h-full p-6 flex flex-col gap-8 bg-surface-container w-72 z-50">
+    <div class="flex flex-col gap-1 px-4">
+      <span class="text-lg font-black text-primary cursor-pointer" (click)="goBack()">EduCore</span>
+      <span class="uppercase tracking-widest text-xs font-bold text-on-surface-variant">Course Builder</span>
+    </div>
+    <nav class="flex flex-col gap-2 mt-4">
+      <a (click)="goBack()" class="flex items-center gap-4 text-on-surface-variant/60 px-6 py-3 rounded-full hover:translate-x-1 transition-transform cursor-pointer">
+        <span class="material-symbols-outlined">menu_book</span>
+        <span class="uppercase tracking-widest text-xs font-bold">Curriculum</span>
+      </a>
+      <a class="flex items-center gap-4 bg-white text-primary rounded-full px-6 py-3 shadow-sm">
+        <span class="material-symbols-outlined">edit_note</span>
+        <span class="uppercase tracking-widest text-xs font-bold">Lesson Manager</span>
+      </a>
+      <a (click)="goToMedia()" class="flex items-center gap-4 text-on-surface-variant/60 px-6 py-3 rounded-full hover:translate-x-1 transition-transform cursor-pointer">
+        <span class="material-symbols-outlined">video_library</span>
+        <span class="uppercase tracking-widest text-xs font-bold">Media</span>
+      </a>
+    </nav>
+
+    <!-- Lesson Status Card -->
+    <div *ngIf="lesson()" class="mt-auto bg-white rounded-2xl p-5 border border-primary/10 shadow-sm space-y-4">
+      <p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Lesson Status</p>
+      <div class="space-y-2">
+        <div class="flex items-center gap-2 text-xs">
+          <span class="material-symbols-outlined text-sm" [class]="hasVideo() ? 'text-primary' : 'text-outline-variant'"
+            [style]="hasVideo() ? 'font-variation-settings: FILL 1' : null">
+            {{ hasVideo() ? 'check_circle' : 'radio_button_unchecked' }}
+          </span>
+          <span [class]="hasVideo() ? 'line-through text-on-surface-variant' : 'text-on-surface font-semibold'">Video</span>
+        </div>
+        <div class="flex items-center gap-2 text-xs">
+          <span class="material-symbols-outlined text-sm" [class]="hasPdf() ? 'text-primary' : 'text-outline-variant'"
+            [style]="hasPdf() ? 'font-variation-settings: FILL 1' : null">
+            {{ hasPdf() ? 'check_circle' : 'radio_button_unchecked' }}
+          </span>
+          <span [class]="hasPdf() ? 'line-through text-on-surface-variant' : 'text-on-surface font-semibold'">PDF Material</span>
+        </div>
+        <div class="flex items-center gap-2 text-xs" *ngIf="lesson()?.isFreePreview">
+          <span class="material-symbols-outlined text-sm text-secondary" style="font-variation-settings: 'FILL' 1">visibility</span>
+          <span class="text-secondary font-bold">Free Preview</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══ Main Content ══════════════════════════════════════════════════════════ -->
+  <main class="ml-72 min-h-screen pb-28">
+
+    <!-- Header -->
+    <header class="flex justify-between items-center w-full px-8 py-3 bg-surface/90 backdrop-blur-xl sticky top-0 z-40 border-b border-outline-variant/10">
+      <div class="flex items-center gap-4">
+        <button (click)="goBack()" class="p-2 rounded-full hover:bg-surface-container transition-colors">
+          <span class="material-symbols-outlined text-on-surface-variant">arrow_back</span>
+        </button>
+        <div>
+          <p class="text-xs text-on-surface-variant uppercase tracking-widest font-bold">Lesson Manager</p>
+          <h1 class="text-lg font-bold tracking-tight text-primary truncate max-w-xs">{{ lesson()?.title ?? '...' }}</h1>
+        </div>
+      </div>
+      <!-- Toast Messages -->
+      <div class="flex items-center gap-3">
+        <div *ngIf="successMsg()" class="flex items-center gap-2 px-4 py-2 bg-primary-container text-on-primary-container rounded-full text-xs font-bold animate-pulse">
+          <span class="material-symbols-outlined text-sm">check_circle</span>{{ successMsg() }}
+        </div>
+        <div *ngIf="errorMsg()" class="flex items-center gap-2 px-4 py-2 bg-error-container text-on-error-container rounded-full text-xs font-bold">
+          <span class="material-symbols-outlined text-sm">error</span>{{ errorMsg() }}
+        </div>
+      </div>
+    </header>
+
+    <!-- Loading -->
+    <div *ngIf="isLoading()" class="flex justify-center py-32">
+      <span class="material-symbols-outlined text-primary text-4xl animate-spin">progress_activity</span>
+    </div>
+
+    <div *ngIf="!isLoading() && lesson()" class="p-8 max-w-4xl mx-auto space-y-8">
+
+      <!-- ── Tab Bar ─────────────────────────────────────────────────────────── -->
+      <div class="flex gap-2 bg-surface-container-low p-1.5 rounded-2xl w-fit">
+        <button (click)="activeTab.set('info')"
+          class="px-6 py-2 rounded-xl text-sm font-bold transition-all"
+          [class]="activeTab() === 'info' ? 'bg-white shadow text-primary' : 'text-on-surface-variant hover:text-on-surface'">
+          <span class="material-symbols-outlined text-sm mr-1" style="vertical-align: middle">edit_note</span>
+          Info
+        </button>
+        <button (click)="activeTab.set('video')"
+          class="px-6 py-2 rounded-xl text-sm font-bold transition-all"
+          [class]="activeTab() === 'video' ? 'bg-white shadow text-primary' : 'text-on-surface-variant hover:text-on-surface'">
+          <span class="material-symbols-outlined text-sm mr-1" style="vertical-align: middle">movie</span>
+          Video
+          <span *ngIf="hasVideo()" class="ml-1 w-2 h-2 rounded-full bg-primary inline-block"></span>
+        </button>
+        <button (click)="activeTab.set('pdf')"
+          class="px-6 py-2 rounded-xl text-sm font-bold transition-all"
+          [class]="activeTab() === 'pdf' ? 'bg-white shadow text-primary' : 'text-on-surface-variant hover:text-on-surface'">
+          <span class="material-symbols-outlined text-sm mr-1" style="vertical-align: middle">description</span>
+          PDF
+          <span *ngIf="hasPdf()" class="ml-1 w-2 h-2 rounded-full bg-primary inline-block"></span>
+        </button>
+      </div>
+
+      <!-- ── Info Tab ─────────────────────────────────────────────────────────── -->
+      <form *ngIf="activeTab() === 'info'" [formGroup]="infoForm" (ngSubmit)="saveInfo()"
+        class="bg-white rounded-3xl p-8 border border-outline-variant/10 shadow-sm space-y-6">
+
+        <div class="flex items-center gap-3 mb-2">
+          <div class="w-10 h-10 bg-primary-container rounded-xl flex items-center justify-center">
+            <span class="material-symbols-outlined text-primary">edit_note</span>
+          </div>
+          <div>
+            <h2 class="text-lg font-bold">Lesson Information</h2>
+            <p class="text-xs text-on-surface-variant">Edit the metadata for this lesson</p>
+          </div>
+        </div>
+
+        <!-- Title -->
+        <div class="space-y-1.5">
+          <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Title *</label>
+          <input formControlName="title" type="text"
+            class="w-full px-4 py-3 bg-surface-container-low rounded-xl border border-outline-variant/20 focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium" />
+          <p *ngIf="infoForm.get('title')?.invalid && infoForm.get('title')?.touched"
+            class="text-xs text-error">Title is required (max 200 characters).</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <!-- Duration -->
+          <div class="space-y-1.5">
+            <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Duration (seconds)</label>
+            <input formControlName="durationSeconds" type="number" min="0"
+              placeholder="e.g. 600"
+              class="w-full px-4 py-3 bg-surface-container-low rounded-xl border border-outline-variant/20 focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium" />
+          </div>
+          <!-- Sort Order -->
+          <div class="space-y-1.5">
+            <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Sort Order</label>
+            <input formControlName="sortOrder" type="number" min="1"
+              class="w-full px-4 py-3 bg-surface-container-low rounded-xl border border-outline-variant/20 focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium" />
+          </div>
+        </div>
+
+        <!-- Free Preview Toggle -->
+        <div class="flex items-center justify-between p-4 bg-primary-container/10 border border-primary/10 rounded-xl">
+          <div>
+            <p class="text-sm font-bold text-on-surface">Free Preview</p>
+            <p class="text-xs text-on-surface-variant mt-0.5">Allow unenrolled students to view this lesson</p>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" formControlName="isFreePreview" class="sr-only peer" />
+            <div class="w-11 h-6 bg-outline-variant rounded-full peer
+              peer-checked:bg-primary
+              after:content-[''] after:absolute after:top-[2px] after:left-[2px]
+              after:bg-white after:rounded-full after:h-5 after:w-5
+              after:transition-all
+              peer-checked:after:translate-x-full"></div>
+          </label>
+        </div>
+
+        <button type="submit" [disabled]="infoForm.invalid || isSaving()"
+          class="w-full py-3.5 rounded-full bg-primary text-white font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50 flex items-center justify-center gap-2">
+          <span *ngIf="isSaving()" class="material-symbols-outlined text-sm animate-spin">progress_activity</span>
+          {{ isSaving() ? 'Saving...' : 'Save Changes' }}
+        </button>
+      </form>
+
+      <!-- ── Video Tab ─────────────────────────────────────────────────────────── -->
+      <div *ngIf="activeTab() === 'video'" class="space-y-6">
+
+        <!-- Existing Video Banner -->
+        <div *ngIf="hasVideo()" class="bg-primary-container/10 border border-primary/10 rounded-2xl p-5 flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-primary-container rounded-xl flex items-center justify-center">
+              <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1">play_circle</span>
+            </div>
+            <div>
+              <p class="text-sm font-bold text-on-surface">Video Attached</p>
+              <p class="text-xs text-on-surface-variant capitalize">{{ video()?.videoProvider }} • {{ video()?.videoUrl | slice:0:50 }}{{ (video()?.videoUrl?.length ?? 0) > 50 ? '...' : '' }}</p>
+            </div>
+          </div>
+          <button (click)="removeVideo()"
+            class="flex items-center gap-1.5 px-4 py-2 rounded-full bg-error-container/30 text-error text-xs font-bold hover:bg-error-container transition-colors">
+            <span class="material-symbols-outlined text-sm">delete</span>
+            Remove
+          </button>
+        </div>
+
+        <!-- Video Form -->
+        <form [formGroup]="videoForm" (ngSubmit)="saveVideo()"
+          class="bg-white rounded-3xl p-8 border border-outline-variant/10 shadow-sm space-y-6">
+
+          <div class="flex items-center gap-3 mb-2">
+            <div class="w-10 h-10 bg-secondary-container rounded-xl flex items-center justify-center">
+              <span class="material-symbols-outlined text-secondary">movie</span>
+            </div>
+            <div>
+              <h2 class="text-lg font-bold">{{ hasVideo() ? 'Replace Video' : 'Attach Video' }}</h2>
+              <p class="text-xs text-on-surface-variant">Link a video from YouTube, Vimeo, or your own server</p>
+            </div>
+          </div>
+
+          <!-- Provider Selector -->
+          <div class="space-y-1.5">
+            <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Video Provider *</label>
+            <div class="grid grid-cols-3 gap-3">
+              <button *ngFor="let p of videoProviders" type="button"
+                (click)="videoForm.patchValue({ videoProvider: p.value })"
+                class="py-3 rounded-xl border text-xs font-bold transition-all"
+                [class]="videoForm.value.videoProvider === p.value
+                  ? 'border-primary bg-primary-container text-primary shadow-sm'
+                  : 'border-outline-variant text-on-surface-variant hover:border-primary/40'">
+                {{ p.label }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Video URL -->
+          <div class="space-y-1.5">
+            <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Video URL *</label>
+            <input formControlName="videoUrl" type="url"
+              placeholder="e.g. https://youtube.com/watch?v=..."
+              class="w-full px-4 py-3 bg-surface-container-low rounded-xl border border-outline-variant/20 focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium" />
+            <p *ngIf="videoForm.get('videoUrl')?.invalid && videoForm.get('videoUrl')?.touched"
+              class="text-xs text-error">A valid video URL is required.</p>
+          </div>
+
+          <!-- Thumbnail (optional) -->
+          <div class="space-y-1.5">
+            <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Thumbnail URL <span class="normal-case text-on-surface-variant/60">(optional)</span></label>
+            <input formControlName="thumbnailUrl" type="url"
+              placeholder="Auto-generated for YouTube"
+              class="w-full px-4 py-3 bg-surface-container-low rounded-xl border border-outline-variant/20 focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium" />
+          </div>
+
+          <button type="submit" [disabled]="videoForm.invalid || isSaving()"
+            class="w-full py-3.5 rounded-full bg-secondary text-white font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50 flex items-center justify-center gap-2">
+            <span *ngIf="isSaving()" class="material-symbols-outlined text-sm animate-spin">progress_activity</span>
+            <span class="material-symbols-outlined text-sm">movie</span>
+            {{ isSaving() ? 'Saving...' : (hasVideo() ? 'Update Video' : 'Attach Video') }}
+          </button>
+        </form>
+      </div>
+
+      <!-- ── PDF Tab ─────────────────────────────────────────────────────────── -->
+      <div *ngIf="activeTab() === 'pdf'" class="space-y-6">
+
+        <!-- Existing PDF Banner -->
+        <div *ngIf="hasPdf()" class="bg-tertiary-container/10 border border-tertiary/20 rounded-2xl p-5 flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-tertiary-container rounded-xl flex items-center justify-center">
+              <span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1">picture_as_pdf</span>
+            </div>
+            <div>
+              <p class="text-sm font-bold text-on-surface">PDF Attached</p>
+              <p class="text-xs text-on-surface-variant">{{ pdf()?.fileUrl | slice:0:55 }}{{ (pdf()?.fileUrl?.length ?? 0) > 55 ? '...' : '' }}</p>
+            </div>
+          </div>
+          <button (click)="removePdf()"
+            class="flex items-center gap-1.5 px-4 py-2 rounded-full bg-error-container/30 text-error text-xs font-bold hover:bg-error-container transition-colors">
+            <span class="material-symbols-outlined text-sm">delete</span>
+            Remove
+          </button>
+        </div>
+
+        <!-- PDF Form -->
+        <form [formGroup]="pdfForm" (ngSubmit)="savePdf()"
+          class="bg-white rounded-3xl p-8 border border-outline-variant/10 shadow-sm space-y-6">
+
+          <div class="flex items-center gap-3 mb-2">
+            <div class="w-10 h-10 bg-tertiary-container rounded-xl flex items-center justify-center">
+              <span class="material-symbols-outlined text-tertiary">description</span>
+            </div>
+            <div>
+              <h2 class="text-lg font-bold">{{ hasPdf() ? 'Replace PDF' : 'Attach PDF' }}</h2>
+              <p class="text-xs text-on-surface-variant">Link study material in PDF format</p>
+            </div>
+          </div>
+
+          <!-- File URL -->
+          <div class="space-y-1.5">
+            <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">PDF URL *</label>
+            <input formControlName="fileUrl" type="url"
+              placeholder="e.g. https://storage.example.com/file.pdf"
+              class="w-full px-4 py-3 bg-surface-container-low rounded-xl border border-outline-variant/20 focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium" />
+            <p *ngIf="pdfForm.get('fileUrl')?.invalid && pdfForm.get('fileUrl')?.touched"
+              class="text-xs text-error">A valid PDF URL is required.</p>
+          </div>
+
+          <!-- File Size -->
+          <div class="space-y-1.5">
+            <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">File Size (KB) <span class="normal-case text-on-surface-variant/60">(optional)</span></label>
+            <input formControlName="fileSizeKb" type="number" min="1"
+              placeholder="e.g. 2048"
+              class="w-full px-4 py-3 bg-surface-container-low rounded-xl border border-outline-variant/20 focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium" />
+          </div>
+
+          <button type="submit" [disabled]="pdfForm.invalid || isSaving()"
+            class="w-full py-3.5 rounded-full bg-tertiary text-white font-bold text-sm hover:opacity-90 transition-all disabled:opacity-50 flex items-center justify-center gap-2">
+            <span *ngIf="isSaving()" class="material-symbols-outlined text-sm animate-spin">progress_activity</span>
+            <span class="material-symbols-outlined text-sm">description</span>
+            {{ isSaving() ? 'Saving...' : (hasPdf() ? 'Update PDF' : 'Attach PDF') }}
+          </button>
+        </form>
+      </div>
+
+    </div>
+
+    <!-- Not Found -->
+    <div *ngIf="!isLoading() && !lesson()" class="flex flex-col items-center justify-center py-32 gap-4">
+      <span class="material-symbols-outlined text-4xl text-outline">search_off</span>
+      <p class="text-on-surface-variant font-medium">Lesson not found. It may have been deleted.</p>
+      <button (click)="goBack()" class="px-6 py-2 rounded-full bg-primary text-white text-sm font-bold">
+        Back to Curriculum
+      </button>
+    </div>
+
+  </main>
+</div>

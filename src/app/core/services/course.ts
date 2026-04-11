@@ -1,17 +1,26 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CreateCourseDto, CreateSectionDto, ReorderItemDto, UpdateCourseDto, UpdatePricingDto, UpdateSectionDto } from '../models/course';
+
+import {
+  CreateCourseDto, CreateSectionDto, ReorderItemDto,
+  UpdateCourseDto, UpdatePricingDto, UpdateSectionDto,
+  CreateLessonDto, UpdateLessonDto, LessonResponse,
+  AddVideoLessonDto, AddPdfLessonDto,
+  VideoLessonResponse, PdfLessonResponse, ToggleFreePreviewDto
+} from '../models/course';
 import { environment } from '../../../environments/environment';
+
+
 
 @Injectable({ providedIn: 'root' })
 export class CourseService {
 
   // private baseUrl = 'https://localhost:7275/api/teacher/courses';
   private baseUrl = `${environment.apiUrl}/api/teacher/courses`;
-//  private apiUrl = environment.apiUrl;
+  //  private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // course list with pagination and filtering
   getMyCourses(page: number = 1, pageSize: number = 10): Observable<any> {
@@ -25,7 +34,9 @@ export class CourseService {
   getCourseById(id: number): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/${id}`);
   }
-
+getMyCoursesWithEnrollment(): Observable<any> {
+  return this.http.get<any>(`${this.baseUrl}/my-courses`);
+}
   // create a new course
   createCourse(dto: CreateCourseDto): Observable<any> {
     return this.http.post<any>(this.baseUrl, dto);
@@ -52,7 +63,7 @@ export class CourseService {
   updatePricing(id: number, dto: UpdatePricingDto): Observable<any> {
     return this.http.put<any>(`${this.baseUrl}/${id}/pricing`, dto);
   }
-// publish a course
+  // publish a course
   publishCourse(id: number): Observable<any> {
     return this.http.put<any>(`${this.baseUrl}/${id}/publish`, {});
   }
@@ -66,7 +77,7 @@ export class CourseService {
   getSections(courseId: number): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/${courseId}/sections`);
   }
-// add a new section
+  // add a new section
   addSection(courseId: number, dto: CreateSectionDto): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/${courseId}/sections`, dto);
   }
@@ -89,6 +100,44 @@ export class CourseService {
   // reorder lessons
   reorderLessons(courseId: number, sectionId: number, items: ReorderItemDto[]): Observable<any> {
     return this.http.put<any>(`${this.baseUrl}/${courseId}/sections/${sectionId}/lessons/reorder`, items);
+  }
+
+  // ─── Lesson CRUD ─────────────────────────────────────────────────────────
+
+  createLesson(courseId: number, dto: CreateLessonDto): Observable<LessonResponse> {
+    return this.http.post<LessonResponse>(`${this.baseUrl}/${courseId}/lessons`, dto);
+  }
+
+  updateLesson(courseId: number, lessonId: number, dto: UpdateLessonDto): Observable<LessonResponse> {
+    return this.http.put<LessonResponse>(`${this.baseUrl}/${courseId}/lessons/${lessonId}`, dto);
+  }
+
+  deleteLesson(courseId: number, lessonId: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${courseId}/lessons/${lessonId}`);
+  }
+
+  toggleFreePreview(courseId: number, lessonId: number, dto: ToggleFreePreviewDto): Observable<void> {
+    return this.http.put<void>(`${this.baseUrl}/${courseId}/lessons/${lessonId}/free-preview`, dto);
+  }
+
+  // ─── Video Attachment ────────────────────────────────────────────────────
+
+  addVideo(courseId: number, lessonId: number, dto: AddVideoLessonDto): Observable<VideoLessonResponse> {
+    return this.http.post<VideoLessonResponse>(`${this.baseUrl}/${courseId}/lessons/${lessonId}/video`, dto);
+  }
+
+  removeVideo(courseId: number, lessonId: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${courseId}/lessons/${lessonId}/video`);
+  }
+
+  // ─── PDF Attachment ──────────────────────────────────────────────────────
+
+  addPdf(courseId: number, lessonId: number, dto: AddPdfLessonDto): Observable<PdfLessonResponse> {
+    return this.http.post<PdfLessonResponse>(`${this.baseUrl}/${courseId}/lessons/${lessonId}/pdf`, dto);
+  }
+
+  removePdf(courseId: number, lessonId: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${courseId}/lessons/${lessonId}/pdf`);
   }
 
 }

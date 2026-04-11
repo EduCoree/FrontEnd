@@ -49,11 +49,13 @@ export class AdminStudentsComponent implements OnInit {
       next: () => { this.students.update(list => list.map(x => x.id === s.id ? { ...x, isActive: !x.isActive } : x)); this.flash(`Student ${s.isActive ? 'deactivated' : 'activated'}.`); },
       error: () => this.flashError('Failed to update status.'),
     });
+    
   }
 
   initials(name: string) { return name.split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase(); }
   get activeCount() { return this.students().filter(s => s.isActive).length; }
-
+  isOpen = signal(true);
+  toggle() { this.isOpen.update(v => !v); }
   private flash(msg: string) { this.loading.set(false); this.errorMsg.set(''); this.successMsg.set(msg); setTimeout(() => this.successMsg.set(''), 3500); }
   private flashError(msg: string) { this.loading.set(false); this.successMsg.set(''); this.errorMsg.set(msg); setTimeout(() => this.errorMsg.set(''), 3500); }
 }

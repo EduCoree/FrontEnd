@@ -1,0 +1,331 @@
+<!-- Forum Posts Page -->
+<div class="flex min-h-screen bg-surface font-body overflow-x-hidden">
+  
+  <app-sidebar class="z-50 shrink-0"></app-sidebar>
+  
+  <main class="flex-1 min-h-screen">
+    <!-- Top Header -->
+    <div class="max-w-5xl mx-auto px-6 pt-12 lg:pt-20 pb-12">
+
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-sm text-on-surface-variant mb-8">
+      <a routerLink="/" class="hover:text-primary transition-colors">Home</a>
+      <span class="material-symbols-outlined text-xs">chevron_right</span>
+      <span class="text-primary font-semibold">Forum</span>
+    </div>
+
+    <!-- Page Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-10">
+      <div>
+        <h1 class="text-4xl font-extrabold text-on-surface tracking-tight font-headline mb-2">
+          <span class="material-symbols-outlined text-primary text-3xl mr-2 align-middle">forum</span>
+          Discussion Forum
+        </h1>
+        <p class="text-on-surface-variant">Ask questions, share insights, and connect with classmates.</p>
+      </div>
+      @if (isLoggedIn()) {
+        <button (click)="openCreatePost()"
+          class="px-6 py-3 bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] text-white font-bold rounded-xl flex items-center gap-2 hover:shadow-lg hover:-translate-y-0.5 transition-all active:scale-95">
+          <span class="material-symbols-outlined text-lg">add</span>
+          New Post
+        </button>
+      }
+    </div>
+
+    <!-- Toasts -->
+    @if (successMsg()) {
+      <div class="flex items-center gap-3 px-5 py-3 bg-[#AAF1DA]/40 border border-[#226A58]/20 rounded-xl text-[#226A58] font-semibold text-sm mb-6 animate-[fadeIn_0.3s_ease-out]">
+        <span class="material-symbols-outlined text-[18px]">check_circle</span>{{ successMsg() }}
+      </div>
+    }
+    @if (errorMsg()) {
+      <div class="flex items-center gap-3 px-5 py-3 bg-[#FFDAD6]/40 border border-[#BA1A1A]/20 rounded-xl text-[#BA1A1A] font-semibold text-sm mb-6 animate-[fadeIn_0.3s_ease-out]">
+        <span class="material-symbols-outlined text-[18px]">error</span>{{ errorMsg() }}
+      </div>
+    }
+
+    <!-- Sort / Filter Bar -->
+    <div class="flex items-center justify-between mb-8">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-on-surface-variant text-lg">sort</span>
+        <select (change)="onSortChange($event)"
+          class="bg-surface-container-low px-4 py-2.5 rounded-xl border border-outline-variant/30 text-sm font-medium text-on-surface focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all cursor-pointer">
+          <option value="newest">Newest First</option>
+          <option value="most_upvoted">Most Upvoted</option>
+        </select>
+      </div>
+      <p class="text-xs text-on-surface-variant font-medium">
+        {{ posts().length }} {{ posts().length === 1 ? 'discussion' : 'discussions' }}
+      </p>
+    </div>
+
+    <!-- Loading -->
+    @if (loading()) {
+      <div class="flex flex-col items-center justify-center py-20">
+        <span class="material-symbols-outlined text-primary text-5xl animate-spin">progress_activity</span>
+        <p class="text-sm text-on-surface-variant mt-4 font-medium">Loading discussions...</p>
+      </div>
+    }
+
+    <!-- Post Cards -->
+    @if (!loading()) {
+      <div class="space-y-4">
+        @for (post of posts(); track post.id) {
+          <div class="group bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden border border-outline-variant/10 hover:border-primary/20">
+            <div class="p-6">
+              <div class="flex gap-4">
+
+                <!-- Upvote Column -->
+                <div class="flex flex-col items-center gap-1 pt-1">
+                  <button (click)="upvotePost(post); $event.stopPropagation()"
+                    [disabled]="post.hasUpvoted"
+                    class="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200"
+                    [class]="post.hasUpvoted
+                      ? 'bg-primary/10 text-primary cursor-default'
+                      : 'bg-surface-container-low text-on-surface-variant hover:bg-primary/10 hover:text-primary'">
+                    <span class="material-symbols-outlined text-xl">
+                      {{ post.hasUpvoted ? 'thumb_up' : 'thumb_up_off_alt' }}
+                    </span>
+                  </button>
+                  <span class="text-sm font-bold" [class]="post.hasUpvoted ? 'text-primary' : 'text-on-surface-variant'">
+                    {{ post.upvoteCount }}
+                  </span>
+                </div>
+
+                <!-- Content -->
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-start justify-between gap-4">
+                    <h3 (click)="goToPost(post.id)"
+                      class="text-lg font-bold text-on-surface leading-tight tracking-tight cursor-pointer hover:text-primary transition-colors line-clamp-2">
+                      {{ post.title }}
+                    </h3>
+
+                    <!-- Actions Dropdown -->
+                    @if (isOwner(post)) {
+                      <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                        <button (click)="openEditPost(post); $event.stopPropagation()"
+                          class="p-2 rounded-lg text-on-surface-variant hover:text-primary hover:bg-primary/10 transition-all"
+                          title="Edit">
+                          <span class="material-symbols-outlined text-[18px]">edit</span>
+                        </button>
+                        <button (click)="openDeleteModal(post); $event.stopPropagation()"
+                          class="p-2 rounded-lg text-on-surface-variant hover:text-error hover:bg-error-container/30 transition-all"
+                          title="Delete">
+                          <span class="material-symbols-outlined text-[18px]">delete</span>
+                        </button>
+                      </div>
+                    }
+                  </div>
+
+                  <!-- Body Preview -->
+                  <p (click)="goToPost(post.id)"
+                    class="text-sm text-on-surface-variant mt-2 line-clamp-2 cursor-pointer">
+                    {{ post.body }}
+                  </p>
+
+                  <!-- Meta Row -->
+                  <div class="flex items-center gap-4 mt-4 flex-wrap">
+                    <!-- Author -->
+                    <div class="flex items-center gap-2">
+                      <div class="w-6 h-6 rounded-full bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] flex items-center justify-center text-white text-[9px] font-bold shrink-0">
+                        {{ getInitial(post.studentName) }}
+                      </div>
+                      <span class="text-xs font-semibold text-on-surface">{{ post.studentName }}</span>
+                    </div>
+
+                    <span class="text-outline">·</span>
+
+                    <!-- Time -->
+                    <span class="text-xs text-on-surface-variant flex items-center gap-1">
+                      <span class="material-symbols-outlined text-[14px]">schedule</span>
+                      {{ timeAgo(post.createdAt) }}
+                    </span>
+
+                    <span class="text-outline">·</span>
+
+                    <!-- Replies -->
+                    <span (click)="goToPost(post.id)"
+                      class="text-xs text-on-surface-variant flex items-center gap-1 cursor-pointer hover:text-primary transition-colors">
+                      <span class="material-symbols-outlined text-[14px]">chat_bubble_outline</span>
+                      {{ post.replyCount }} {{ post.replyCount === 1 ? 'reply' : 'replies' }}
+                    </span>
+
+                    <!-- Report -->
+                    @if (isLoggedIn() && !isOwner(post)) {
+                      <button (click)="openReport(post.id); $event.stopPropagation()"
+                        class="ml-auto text-xs text-on-surface-variant hover:text-error flex items-center gap-1 transition-colors">
+                        <span class="material-symbols-outlined text-[14px]">flag</span>
+                        Report
+                      </button>
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Empty State -->
+        @if (posts().length === 0) {
+          <div class="flex flex-col items-center justify-center py-20 text-center">
+            <div class="w-20 h-20 rounded-2xl bg-surface-container-low flex items-center justify-center mb-6">
+              <span class="material-symbols-outlined text-outline text-4xl">forum</span>
+            </div>
+            <h3 class="text-xl font-bold text-on-surface mb-2">No discussions yet</h3>
+            <p class="text-sm text-on-surface-variant mb-6 max-w-sm">Be the first to start a conversation in this course forum.</p>
+            @if (isLoggedIn()) {
+              <button (click)="openCreatePost()"
+                class="px-6 py-3 bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] text-white font-bold rounded-xl flex items-center gap-2">
+                <span class="material-symbols-outlined text-lg">add</span>
+                Start a Discussion
+              </button>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+  </main>
+</div>
+
+<!-- ═══ Create / Edit Post Modal ═══ -->
+@if (showPostModal()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-8 animate-[fadeIn_0.2s_ease-out]">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h2 class="font-headline text-xl font-bold text-on-surface">
+            {{ editingPost() ? 'Edit Post' : 'Create New Post' }}
+          </h2>
+          <p class="text-xs text-on-surface-variant mt-1">Share your question or insight with the class</p>
+        </div>
+        <button (click)="showPostModal.set(false)" class="p-2 rounded-lg hover:bg-surface-container-low transition-colors">
+          <span class="material-symbols-outlined text-on-surface-variant">close</span>
+        </button>
+      </div>
+
+      <form [formGroup]="postForm" (ngSubmit)="savePost()" class="space-y-5">
+        <!-- Title -->
+        <div>
+          <label class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1.5">Title</label>
+          <div class="flex items-center gap-2 px-3 py-2.5 bg-surface-container-low rounded-lg border border-transparent focus-within:border-primary focus-within:bg-white transition-all">
+            <span class="material-symbols-outlined text-on-surface-variant text-[17px]">title</span>
+            <input formControlName="title" type="text" placeholder="What's on your mind?"
+              class="bg-transparent border-none focus:ring-0 flex-1 text-sm text-on-surface placeholder-outline" />
+          </div>
+          @if (postForm.get('title')?.touched && postForm.get('title')?.hasError('required')) {
+            <p class="text-xs text-error mt-1 font-medium">Title is required</p>
+          }
+          @if (postForm.get('title')?.hasError('maxlength')) {
+            <p class="text-xs text-error mt-1 font-medium">Maximum 200 characters</p>
+          }
+        </div>
+
+        <!-- Body -->
+        <div>
+          <label class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1.5">Body</label>
+          <div class="flex gap-2 px-3 py-2.5 bg-surface-container-low rounded-lg border border-transparent focus-within:border-primary focus-within:bg-white transition-all">
+            <span class="material-symbols-outlined text-on-surface-variant text-[17px] mt-0.5">description</span>
+            <textarea formControlName="body" rows="5" placeholder="Describe your question or share your thoughts..."
+              class="bg-transparent border-none focus:ring-0 flex-1 text-sm text-on-surface placeholder-outline resize-none"></textarea>
+          </div>
+          @if (postForm.get('body')?.touched && postForm.get('body')?.hasError('required')) {
+            <p class="text-xs text-error mt-1 font-medium">Body is required</p>
+          }
+        </div>
+
+        <!-- Actions -->
+        <div class="flex justify-end gap-3 pt-2">
+          <button type="button" (click)="showPostModal.set(false)"
+            class="px-5 py-2.5 rounded-lg border border-outline-variant text-on-surface-variant font-semibold hover:bg-surface-container-low text-sm transition-colors">
+            Cancel
+          </button>
+          <button type="submit" [disabled]="postForm.invalid"
+            class="px-5 py-2.5 bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] text-white font-bold rounded-lg disabled:opacity-50 text-sm flex items-center gap-2 transition-all hover:shadow-md">
+            <span class="material-symbols-outlined text-[15px]">{{ editingPost() ? 'save' : 'send' }}</span>
+            {{ editingPost() ? 'Save Changes' : 'Post' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+
+<!-- ═══ Report Modal ═══ -->
+@if (showReportModal()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 animate-[fadeIn_0.2s_ease-out]">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h2 class="font-headline text-xl font-bold text-on-surface">Report Post</h2>
+          <p class="text-xs text-on-surface-variant mt-1">Help us maintain a safe learning environment</p>
+        </div>
+        <button (click)="showReportModal.set(false)" class="p-2 rounded-lg hover:bg-surface-container-low transition-colors">
+          <span class="material-symbols-outlined text-on-surface-variant">close</span>
+        </button>
+      </div>
+
+      <form [formGroup]="reportForm" (ngSubmit)="submitReport()" class="space-y-5">
+        <div>
+          <label class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1.5">Reason</label>
+          <div class="flex gap-2 px-3 py-2.5 bg-surface-container-low rounded-lg border border-transparent focus-within:border-error focus-within:bg-white transition-all">
+            <span class="material-symbols-outlined text-on-surface-variant text-[17px] mt-0.5">report</span>
+            <textarea formControlName="reason" rows="3" placeholder="Describe why you're reporting this post..."
+              class="bg-transparent border-none focus:ring-0 flex-1 text-sm text-on-surface placeholder-outline resize-none"></textarea>
+          </div>
+          @if (reportForm.get('reason')?.touched && reportForm.get('reason')?.hasError('required')) {
+            <p class="text-xs text-error mt-1 font-medium">Reason is required</p>
+          }
+          @if (reportForm.get('reason')?.hasError('maxlength')) {
+            <p class="text-xs text-error mt-1 font-medium">Maximum 200 characters</p>
+          }
+        </div>
+
+        <div class="flex justify-end gap-3 pt-2">
+          <button type="button" (click)="showReportModal.set(false)"
+            class="px-5 py-2.5 rounded-lg border border-outline-variant text-on-surface-variant font-semibold hover:bg-surface-container-low text-sm transition-colors">
+            Cancel
+          </button>
+          <button type="submit" [disabled]="reportForm.invalid"
+            class="px-5 py-2.5 bg-error text-white font-bold rounded-lg disabled:opacity-50 text-sm flex items-center gap-2 transition-all hover:shadow-md">
+            <span class="material-symbols-outlined text-[15px]">flag</span>
+            Submit Report
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+
+<!-- ═══ Delete Post Modal ═══ -->
+@if (showDeleteModal()) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
+    <div class="bg-white rounded-2xl p-8 w-full max-w-sm animate-[fadeIn_0.2s_ease-out]">
+
+      <div class="flex justify-center mb-4">
+        <div class="w-14 h-14 rounded-full bg-error-container flex items-center justify-center">
+          <span class="material-symbols-outlined text-error text-2xl">delete_forever</span>
+        </div>
+      </div>
+
+      <h3 class="text-xl font-bold text-on-surface text-center mb-2">Delete Post</h3>
+      <p class="text-on-surface-variant text-sm text-center mb-6">
+        Are you sure you want to delete
+        <span class="font-semibold text-on-surface">"{{ deletingPost()?.title }}"</span>?
+        This action cannot be undone.
+      </p>
+
+      <div class="flex flex-col gap-3">
+        <button (click)="confirmDeletePost()"
+          class="w-full bg-error text-white py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform">
+          <span class="material-symbols-outlined text-lg">delete</span>
+          Yes, Delete
+        </button>
+        <button (click)="closeDeleteModal()"
+          class="w-full bg-surface-container-low text-on-surface py-3.5 rounded-xl font-bold hover:bg-surface-container transition-colors">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+}

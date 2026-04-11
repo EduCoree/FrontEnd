@@ -1,0 +1,58 @@
+<article 
+  class="group bg-surface-container-lowest rounded-2xl overflow-hidden transition-transform hover:-translate-y-2 duration-300 cursor-pointer"
+  [routerLink]="['/courses', course.id]">
+
+  <!-- Cover Image -->
+  <div class="relative h-48">
+    <img
+      class="w-full h-full object-cover"
+      [src]="course.coverImage || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600'"
+      [alt]="course.title"
+    />
+    <span class="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-lg text-[10px] font-bold text-primary uppercase">
+      {{ course.categoryName }}
+    </span>
+  </div>
+
+  <!-- Content -->
+  <div class="p-6">
+
+    <!-- Teacher -->
+    <div class="flex items-center gap-2 mb-4">
+      <span class="material-symbols-outlined text-sm text-on-surface-variant">person</span>
+      <span class="text-xs font-semibold text-on-surface-variant">{{ course.teacherName }}</span>
+    </div>
+
+    <!-- Title -->
+    <h3 class="font-headline font-bold text-lg mb-3 group-hover:text-primary transition-colors line-clamp-2">
+      {{ course.title }}
+    </h3>
+
+    <!-- Lessons + Students -->
+    <div class="flex items-center justify-between text-xs text-on-surface-variant mb-6">
+      <div class="flex items-center gap-1">
+        <span class="material-symbols-outlined text-[16px]">group</span>
+        <span>{{ course.totalStudents }} Students</span>
+      </div>
+      <div class="flex items-center gap-1">
+        <span class="material-symbols-outlined text-[16px]">menu_book</span>
+        <span>{{ course.totalLessons }} Lessons</span>
+      </div>
+    </div>
+
+    <!-- Price + Cart -->
+    <div class="flex items-center justify-between pt-4 border-t border-outline-variant/20">
+      <div class="flex items-baseline gap-2">
+        <span class="text-xl font-bold text-primary">
+          {{ course.pricingType === 'Free' ? 'Free' : '$' + course.price }}
+        </span>
+      </div>
+      <button 
+        class="p-2 bg-primary-container/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all"
+        (click)="$event.stopPropagation()">
+        <span class="material-symbols-outlined">shopping_cart</span>
+      </button>
+    </div>
+
+  </div>
+</article>
