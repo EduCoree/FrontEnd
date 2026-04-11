@@ -39,6 +39,7 @@ import { StudentDashboardComponent } from './pages/student/student-dashboard/stu
 
 import { AdminCoursesComponent } from './pages/admin-courses/admin-courses';
 import { authGuard } from './core/guards/auth-guard';
+import { AdminCoursesComponent } from './pages/admin-courses/admin-courses';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard';
 import { TeacherDashboardComponent } from './pages/teacher-dashboard/teacher-dashboard';
 import { StudentDashboardComponent } from './pages/student-dashboard/student-dashboard';
@@ -283,8 +284,13 @@ export const routes: Routes = [
 },
 
 
-
-
+{
+  path: 'courses/:courseId/reviews',
+  loadComponent: () =>
+    import('./pages/reviews/reviews')
+      .then(m => m.Reviews)
+}
+,
 
 {
   path: 'questions',

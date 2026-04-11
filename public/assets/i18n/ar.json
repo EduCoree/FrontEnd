@@ -1,0 +1,66 @@
+{
+  "nav": {
+    "home": "الرئيسية",
+    "courses": "الكورسات",
+    "centers": "المراكز",
+    "liveSessions": "الجلسات المباشرة",
+    "login": "تسجيل الدخول",
+    "signup": "إنشاء حساب",
+    "search": "ابحث عن كورس...",
+      "profile": "ملفي الشخصي",
+  "logout": "تسجيل الخروج"
+  },
+  "center": {
+    "title": "مركز تدريبي",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "updateLogo": "تحديث اللوجو",
+    "active": "نشط",
+    "locationContact": "الموقع والتواصل",
+    "address": "العنوان",
+    "phone": "الهاتف",
+    "email": "البريد الإلكتروني",
+    "socialLinks": "روابط التواصل",
+    "quickInfo": "معلومات سريعة",
+    "centerId": "رقم المركز",
+    "created": "تاريخ الإنشاء"
+  },
+  "categories": {
+    "title": "الفئات",
+    "manage": "إدارة فئات هذا المركز التدريبي",
+    "add": "إضافة فئة",
+    "name": "اسم الفئة",
+    "slug": "معرّف الرابط",
+    "slugAuto": "يتم توليده تلقائياً من الاسم",
+    "create": "إنشاء فئة",
+    "save": "حفظ التغييرات",
+    "rename": "تغيير اسم الفئة",
+    "deleteTitle": "حذف الفئة",
+    "deleteConfirm": "هل أنت متأكد من حذف",
+    "noCategories": "لا توجد فئات بعد",
+    "total": "فئات إجمالاً"
+  },
+  "reviews": {
+    "title": "التقييمات",
+    "writeReview": "كتابة تقييم",
+    "submitReview": "إرسال التقييم",
+    "updateReview": "تحديث التقييم",
+    "yourRating": "تقييمك",
+    "comment": "تعليق (اختياري)",
+    "deleteTitle": "حذف التقييم",
+    "deleteConfirm": "هل أنت متأكد من حذف هذا التقييم؟",
+    "noReviews": "لا توجد تقييمات بعد",
+    "overallRating": "التقييم العام",
+    "basedOn": "بناءً على",
+    "reviews": "تقييم"
+  },
+  "common": {
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "save": "حفظ التغييرات",
+    "saving": "جاري الحفظ...",
+    "deleting": "جاري الحذف...",
+    "loading": "جاري التحميل...",
+    "error": "حدث خطأ"
+  }
+}
