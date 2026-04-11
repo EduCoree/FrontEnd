@@ -8,6 +8,7 @@ import { StudentDetail } from '../../core/models/admin-user';
 import { CourseSummaryDto } from '../../core/models/course';
 import { AdminSidebarComponent } from '../../layouts/admin-sidebar/admin-sidebar';
 import { AdminTopbarComponent } from '../../layouts/admin-topbar/admin-topbar';
+import { AdminCourseService } from '../../core/services/admin-course';
 @Component({
   selector: 'app-admin-student-detail',
   imports: [CommonModule, ReactiveFormsModule, AdminSidebarComponent, AdminTopbarComponent ],
@@ -16,7 +17,7 @@ import { AdminTopbarComponent } from '../../layouts/admin-topbar/admin-topbar';
 })
 export class AdminStudentDetailComponent implements OnInit {
   private service = inject(AdminUserService);
-  private courseService = inject(CourseService);
+  private adminCourseService = inject(AdminCourseService);
   private route = inject(ActivatedRoute);
   private fb = inject(FormBuilder);
  
@@ -40,8 +41,8 @@ export class AdminStudentDetailComponent implements OnInit {
       next: (data) => { this.student.set(data); this.loading.set(false); },
       error: () => { this.errorMsg.set('Student not found.'); this.loading.set(false); },
     });
-    this.courseService.getMyCourses().subscribe({
-     next: (data) => this.courses.set(data.items), 
+      this.adminCourseService.getCourses(1, 200).subscribe({
+      next: (data) => this.courses.set(data.items),
     });
   }
  

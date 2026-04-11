@@ -8,11 +8,10 @@ import { StudentQuizIntro } from './pages/student-quiz-intro/student-quiz-intro'
 import { ActiveQuiz } from './pages/active-quiz/active-quiz';
 import { AddQuestion } from './pages/add-question/add-question';
 import { QuizSubmission } from './pages/quiz-submission/quiz-submission';
-import { get } from 'http';
 import { QuizComponent } from './pages/Quizzes/Get-Quizzez/get-quizzes/get-quizzes';
 import { QuizBuilderComponent } from './pages/Quizzes/quiz-builder/quiz-builder';
 import { CreateQuizComponent } from './pages/Quizzes/CreateQuiz/create-quiz/create-quiz';
-import{Home} from './pages/home/home';
+import { Home } from './pages/home/home';
 
 
 import { Routes } from '@angular/router';
@@ -33,8 +32,16 @@ import { TeacherProfileComponent } from './pages/teacher-profile/teacher-profile
 import { AdminTeachersComponent }      from './pages/admin-teachers/admin-teachers';
 import { AdminStudentsComponent }      from './pages/admin-students/admin-students';
 import { AdminStudentDetailComponent } from './pages/admin-student-detail/admin-student-detail';
+import { CourseDetailComponent } from './pages/Courses/course-detail/course-detail.component';
+import { CoursesListComponent } from './pages/Courses/courses-list/courses-list.component';
+import { StudentLayoutComponent } from './layouts/student-layout/student-layout.component';
+import { StudentDashboardComponent } from './pages/student/student-dashboard/student-dashboard.component';
+
 import { AdminCoursesComponent } from './pages/admin-courses/admin-courses';
 import { authGuard } from './core/guards/auth-guard';
+import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard';
+import { TeacherDashboardComponent } from './pages/teacher-dashboard/teacher-dashboard';
+import { StudentDashboardComponent } from './pages/student-dashboard/student-dashboard';
 export const routes: Routes = [
    // ── Public ────────────────────────────────────────────────────────────────
   {
@@ -106,8 +113,13 @@ export const routes: Routes = [
     canActivate: [adminGuard],
     title: 'Courses — Admin',
   },
+ //Dashboard !!!! do not add guard yet
+{ path: 'admin/dashboard', component: AdminDashboardComponent  },
  
-
+{ path: 'teacher/dashboard', component: TeacherDashboardComponent  },
+ 
+{ path: 'student/dashboard', component: StudentDashboardComponent },
+ 
     
   {
     path: 'centers/:id',
@@ -151,16 +163,18 @@ export const routes: Routes = [
         .then(m => m.RegisterComponent)
   },
   {
-        path: 'teacher/courses/:courseId/quizzes/create',
-         loadComponent: () =>CreateQuizComponent
+    path: 'teacher/courses/:courseId/quizzes/create',
+    loadComponent: () =>
+      import('./pages/Quizzes/CreateQuiz/create-quiz/create-quiz')
+        .then(m => m.CreateQuizComponent)
   },
-{
-  path: 'teacher/dashboard',
-  canActivate: [authGuard],
-  loadComponent: () =>
-    import('./pages/teacher/teacher-dashboard/teacher-dashboard.component')
-      .then(m => m.TeacherDashboardComponent)
-},
+  {
+    path: 'teacher/dashboard',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/teacher/teacher-dashboard/teacher-dashboard.component')
+        .then(m => m.TeacherDashboardComponent)
+  },
   // Teacher Routes
   {
     path: 'teacher/courses',
@@ -251,12 +265,22 @@ export const routes: Routes = [
 
 
 
+
+
+
+
+//menna
+
+
+
+
+
 {
   path: 'centers/:centerId/categories',
   loadComponent: () =>
     import('./pages/centers/categories/categories')
-      .then(m => m.Categories)
-} ,
+      .then(m => m.Categories),
+},
 
 
 
@@ -265,29 +289,22 @@ export const routes: Routes = [
 {
   path: 'questions',
   component : QuestionsList,
-}
-,
+},
 
 {
   path: 'quiz/intro',
   component : StudentQuizIntro,
-}
-
-,
+},
 
 {
   path: 'quiz/active',
   component : ActiveQuiz,
-}
-
-,
+},
 
 {
   path: 'teacher/courses/:courseId/quizzes/:quizId/add-question',
   component : AddQuestion,
-}
-
-,
+},
 
 {
   path: 'Quiz/submission',
@@ -300,7 +317,7 @@ export const routes: Routes = [
 {
   path: 'Quiz/history',
   component : QuizHistory,
-}
+},
 
 
 
@@ -313,8 +330,16 @@ export const routes: Routes = [
 
 
 //samir
-
-
+{ path: 'courses', component: CoursesListComponent },
+{ path: 'courses/:id', component: CourseDetailComponent },
+{
+  path: 'student',
+  component: StudentLayoutComponent,
+  children: [
+    { path: 'dashboard', component: StudentDashboardComponent },
+    { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+  ]
+},
 
 
 
@@ -326,9 +351,9 @@ export const routes: Routes = [
 
 //tawfik
 
-,{
+{
   path: 'teacher/courses/:courseId/quizzes',
-  component:QuizComponent
+  component: QuizComponent,
 },
 {
   path:'teacher/courses/:courseId/quizzes/:quizId/builder',

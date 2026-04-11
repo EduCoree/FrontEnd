@@ -1,0 +1,145 @@
+<div class="min-h-screen bg-[#f8faf9] font-headline">
+  <div class="max-w-6xl mx-auto p-8 space-y-8">
+
+    <!-- Header -->
+    <div>
+      <h3 class="text-3xl font-extrabold tracking-tight text-[#2d3433] mb-2">Teacher Dashboard</h3>
+      <p class="text-[#596060] font-medium">Your courses, students, and upcoming sessions.</p>
+    </div>
+
+    <!-- Loading -->
+    @if (loading()) {
+      <div class="flex justify-center py-20">
+        <span class="material-symbols-outlined text-[#2e6959] text-5xl animate-spin">progress_activity</span>
+      </div>
+    }
+
+    @if (!loading() && dashboard()) {
+
+      <!-- KPI Cards -->
+      <div class="grid grid-cols-4 gap-4">
+        <div class="bg-[#eaefee] rounded-xl p-6 flex items-center gap-4">
+          <div class="w-12 h-12 rounded-full bg-[#b2efda] flex items-center justify-center text-[#2e6959]">
+            <span class="material-symbols-outlined">menu_book</span>
+          </div>
+          <div>
+            <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">Total Courses</p>
+            <p class="text-2xl font-black text-[#2d3433]">{{ dashboard()!.totalCourses }}</p>
+          </div>
+        </div>
+
+        <div class="bg-[#eaefee] rounded-xl p-6 flex items-center gap-4">
+          <div class="w-12 h-12 rounded-full bg-[#c9e7f7] flex items-center justify-center text-[#466370]">
+            <span class="material-symbols-outlined">publish</span>
+          </div>
+          <div>
+            <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">Published</p>
+            <p class="text-2xl font-black text-[#2d3433]">{{ dashboard()!.publishedCourses }}</p>
+          </div>
+        </div>
+
+        <div class="bg-[#eaefee] rounded-xl p-6 flex items-center gap-4">
+          <div class="w-12 h-12 rounded-full bg-[#fde9c9] flex items-center justify-center text-[#8a6d3b]">
+            <span class="material-symbols-outlined">group</span>
+          </div>
+          <div>
+            <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">Enrolled Students</p>
+            <p class="text-2xl font-black text-[#2d3433]">{{ dashboard()!.totalEnrolledStudents }}</p>
+          </div>
+        </div>
+
+        <div class="bg-[#2e6959] rounded-xl p-6 flex items-center gap-4">
+          <div class="w-12 h-12 rounded-full bg-white/15 flex items-center justify-center text-[#b2efda]">
+            <span class="material-symbols-outlined">star</span>
+          </div>
+          <div>
+            <p class="uppercase tracking-widest text-[10px] font-bold text-[#b2efda]/70">Avg Rating</p>
+            <div class="flex items-center gap-2">
+              <p class="text-2xl font-black text-white">{{ dashboard()!.averageCourseRating }}</p>
+              <div class="flex gap-0.5">
+                @for (s of ratingStars(dashboard()!.averageCourseRating); track s) {
+                  <span class="material-symbols-outlined text-sm"
+                    [class]="s < dashboard()!.averageCourseRating ? 'text-[#fde9c9]' : 'text-white/30'">star</span>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content Row -->
+      <div class="grid grid-cols-2 gap-4">
+
+        <!-- Upcoming Sessions -->
+        <div class="bg-[#eaefee] rounded-xl overflow-hidden">
+          <div class="p-6 border-b border-[#acb3b2]/10">
+            <p class="text-sm font-extrabold text-[#2d3433]">Upcoming Sessions</p>
+            <p class="text-[10px] uppercase tracking-widest font-bold text-[#596060]">Your scheduled live sessions</p>
+          </div>
+          <div class="divide-y divide-[#acb3b2]/10">
+            @for (session of dashboard()!.upcomingSessions; track session.sessionId) {
+              <div class="flex items-center gap-4 px-6 py-4 hover:bg-[#f1f4f3] transition-colors">
+                <div class="w-10 h-10 rounded-lg bg-[#c9e7f7] flex items-center justify-center text-[#466370]">
+                  <span class="material-symbols-outlined text-lg">videocam</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="font-bold text-[#2d3433] text-sm truncate">{{ session.lessonTitle }}</p>
+                  <p class="text-[10px] text-[#596060] font-bold uppercase tracking-tighter">{{ session.courseTitle }}</p>
+                </div>
+                <div class="text-right">
+                  <p class="text-xs font-bold text-[#2e6959]">{{ timeUntil(session.scheduledAt) }}</p>
+                  <p class="text-[10px] text-[#596060]">{{ session.scheduledAt | date:'MMM d, h:mm a' }}</p>
+                </div>
+                <a [href]="session.meetingUrl" target="_blank"
+                  class="p-2 rounded-full bg-[#2e6959] text-[#e4fff4] hover:bg-[#1f5b4c] transition-colors">
+                  <span class="material-symbols-outlined text-lg">open_in_new</span>
+                </a>
+              </div>
+            }
+            @if (dashboard()!.upcomingSessions.length === 0) {
+              <div class="px-6 py-12 text-center text-[#596060]">
+                <span class="material-symbols-outlined text-4xl block mb-2 text-[#acb3b2]">event_busy</span>
+                No upcoming sessions.
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Recent Enrollments -->
+        <div class="bg-[#eaefee] rounded-xl overflow-hidden">
+          <div class="p-6 border-b border-[#acb3b2]/10">
+            <p class="text-sm font-extrabold text-[#2d3433]">Recent Enrollments</p>
+            <p class="text-[10px] uppercase tracking-widest font-bold text-[#596060]">Latest students joining your courses</p>
+          </div>
+          <div class="divide-y divide-[#acb3b2]/10">
+            @for (enrollment of dashboard()!.recentEnrollments; track enrollment.enrollmentId) {
+              <div class="flex items-center gap-4 px-6 py-4 hover:bg-[#f1f4f3] transition-colors">
+                @if (enrollment.studentAvatarUrl) {
+                  <img [src]="enrollment.studentAvatarUrl" [alt]="enrollment.studentName"
+                    class="w-9 h-9 rounded-full object-cover" />
+                } @else {
+                  <div class="w-9 h-9 rounded-full bg-[#2e6959] flex items-center justify-center text-[#e4fff4] text-xs font-bold">
+                    {{ initials(enrollment.studentName) }}
+                  </div>
+                }
+                <div class="flex-1 min-w-0">
+                  <p class="font-bold text-[#2d3433] text-sm">{{ enrollment.studentName }}</p>
+                  <p class="text-[10px] text-[#596060] font-bold uppercase tracking-tighter truncate">{{ enrollment.courseTitle }}</p>
+                </div>
+                <p class="text-[10px] text-[#596060]">{{ enrollment.enrolledAt | date:'MMM d' }}</p>
+              </div>
+            }
+            @if (dashboard()!.recentEnrollments.length === 0) {
+              <div class="px-6 py-12 text-center text-[#596060]">
+                <span class="material-symbols-outlined text-4xl block mb-2 text-[#acb3b2]">group</span>
+                No recent enrollments.
+              </div>
+            }
+          </div>
+        </div>
+
+      </div>
+
+    }
+  </div>
+</div>
