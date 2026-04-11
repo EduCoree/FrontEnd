@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 import { QuizService } from '../../../../core/services/quiz.service';
 import { QuizDto } from '../../../../core/models/quiz';
@@ -26,7 +26,9 @@ export class QuizComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private quizService: QuizService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
+    
   ) {}
 
   ngOnInit(): void {
@@ -79,5 +81,14 @@ get filteredQuizzes(): QuizDto[] {
       next: () => this.loadQuizzes(),
       error: () => this.errorMessage = 'Failed to delete quiz.'
     });
+  }
+
+  onOpenBuilder(quizId:number)
+  {
+    
+    this.router.navigate(
+  ['/teacher/courses', this.courseId, 'quizzes', quizId, 'builder'],
+ 
+);
   }
 }
