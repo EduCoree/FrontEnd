@@ -216,14 +216,13 @@ export const routes: Routes = [
 ,
 
 {
-  path: 'quiz/intro',
+  path: 'quiz/intro/:quizId',
   component : StudentQuizIntro,
 }
 
 ,
-
 {
-  path: 'quiz/active',
+  path: 'quiz/:quizId/attempt/:attemptId',
   component : ActiveQuiz,
 }
 
@@ -240,8 +239,9 @@ export const routes: Routes = [
   path: 'Quiz/submission',
   component : QuizSubmission,
 },
+  
 {
-  path: 'Quiz/results',
+  path: 'Quiz/:quizId/result/:attemptId',
   component : QuizResult,
 },
 {
