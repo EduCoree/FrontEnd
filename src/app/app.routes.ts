@@ -362,7 +362,7 @@ export const routes: Routes = [
 {
   path:'abc',
   component:QuizBuilderComponent
-}
+},
 
 
 
@@ -379,6 +379,32 @@ export const routes: Routes = [
 
 
 //badr
+
+// ── Forum ────────────────────────────────────────────────────────────────
+{
+  path: 'courses/:courseId/forum',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./pages/forum/forum-posts/forum-posts')
+      .then(m => m.ForumPostsComponent),
+  title: 'Forum — EduCore',
+},
+{
+  path: 'courses/:courseId/forum/:postId',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./pages/forum/forum-post-detail/forum-post-detail')
+      .then(m => m.ForumPostDetailComponent),
+  title: 'Post Detail — EduCore',
+},
+{
+  path: 'admin/forum/reports',
+  canActivate: [adminGuard],
+  loadComponent: () =>
+    import('./pages/forum/forum-admin-reports/forum-admin-reports')
+      .then(m => m.ForumAdminReportsComponent),
+  title: 'Forum Reports — Admin',
+},
 
 
 
