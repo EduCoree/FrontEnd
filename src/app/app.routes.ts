@@ -39,6 +39,7 @@ import { StudentDashboardComponent } from './pages/student/student-dashboard/stu
 
 import { AdminCoursesComponent } from './pages/admin-courses/admin-courses';
 import { authGuard } from './core/guards/auth-guard';
+import { roleGuard } from './core/guards/role-guard';
 export const routes: Routes = [
    // ── Public ────────────────────────────────────────────────────────────────
   {
@@ -160,38 +161,37 @@ export const routes: Routes = [
       import('./pages/Quizzes/CreateQuiz/create-quiz/create-quiz')
         .then(m => m.CreateQuizComponent)
   },
-  {
-    path: 'teacher/dashboard',
-    canActivate: [authGuard],
-    loadComponent: () =>
-      import('./pages/teacher/teacher-dashboard/teacher-dashboard.component')
-        .then(m => m.TeacherDashboardComponent)
-  },
-  // Teacher Routes
-  {
-    path: 'teacher/courses',
-    canActivate: [authGuard],
-    loadComponent: () =>
-      import('./pages/teacher/my-courses/my-courses.component')
-        .then(m => m.MyCoursesComponent)
-  },
+ {
+  path: 'teacher/dashboard',
+  canActivate: [authGuard, roleGuard('Teacher')],
+  loadComponent: () =>
+    import('./pages/teacher/teacher-dashboard/teacher-dashboard.component')
+      .then(m => m.TeacherDashboardComponent)
+},
+{
+  path: 'teacher/courses',
+  canActivate: [authGuard, roleGuard('Teacher')],
+  loadComponent: () =>
+    import('./pages/teacher/my-courses/my-courses.component')
+      .then(m => m.MyCoursesComponent)
+},
   {
     path: 'teacher/courses/create',
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard('Teacher')],
     loadComponent: () =>
       import('./pages/teacher/create-course/create-course.component')
         .then(m => m.CreateCourseComponent)
   },
   {
     path: 'teacher/courses/edit/:id',
-    canActivate: [authGuard],
+    canActivate: [authGuard, roleGuard('Teacher')],
     loadComponent: () =>
       import('./pages/teacher/edit-course/edit-course.component')
         .then(m => m.EditCourseComponent)
   },
 {
   path: 'teacher/courses/:id/sections',
-  canActivate: [authGuard],
+  canActivate: [authGuard, roleGuard('Teacher')],
   loadComponent: () =>
     import('./pages/teacher/course-sections/course-sections.component')
       .then(m => m.CourseSectionsComponent)
@@ -200,7 +200,7 @@ export const routes: Routes = [
 // Content Delivery: Lesson Manager
 {
   path: 'teacher/courses/:courseId/lessons/:lessonId',
-  canActivate: [authGuard],
+  canActivate: [authGuard, roleGuard('Teacher')],
   loadComponent: () =>
     import('./pages/teacher/lesson-manager/lesson-manager.component')
       .then(m => m.LessonManagerComponent),
@@ -210,7 +210,7 @@ export const routes: Routes = [
 // Content Delivery: Media Page (wired)
 {
   path: 'teacher/courses/:id/media',
-  canActivate: [authGuard],
+  canActivate: [authGuard, roleGuard('Teacher')],
   loadComponent: () =>
     import('./pages/lessons/course-media/course-media.component')
       .then(m => m.CourseMediaComponent),
@@ -327,10 +327,18 @@ export const routes: Routes = [
 {
   path: 'student',
   component: StudentLayoutComponent,
+  canActivate: [authGuard, roleGuard('Student')],
   children: [
     { path: 'dashboard', component: StudentDashboardComponent },
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
   ]
+},
+{
+  path: 'teacher/courses/:id/pricing',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./pages/teacher/course-pricing/course-pricing.component')
+      .then(m => m.CoursePricingComponent)
 },
 
 

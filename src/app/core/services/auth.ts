@@ -93,4 +93,22 @@ export class AuthService {
     const raw = localStorage.getItem('user');
     return raw ? JSON.parse(raw) : null;
   }
+  // exract role from token
+ getRoleFromToken(): string | string[] | null {
+  const token = this.getToken();
+  if (!token) return null;
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] ?? null;
+  } catch {
+    return null;
+  }
+}
+
+hasRole(role: string): boolean {
+  const roles = this.getRoleFromToken();
+  if (!roles) return false;
+  if (Array.isArray(roles)) return roles.includes(role);
+  return roles === role;
+}
 }

@@ -1,0 +1,227 @@
+<!-- صفحة التسعير والنشر - Step 4 -->
+<div class="bg-surface text-on-surface min-h-screen font-body">
+
+  <!-- السايدبار -->
+  <aside class="hidden md:flex h-screen w-72 sticky top-0 bg-surface-container flex-col p-6 gap-8 z-50">
+    <div class="flex flex-col gap-1 px-4">
+      <span class="text-lg font-black text-primary cursor-pointer" (click)="goToDashboard()">EduCore</span>
+      <span class="uppercase tracking-widest text-xs font-bold text-on-surface-variant">Course Studio</span>
+    </div>
+    <nav class="flex flex-col gap-2">
+      <a class="flex items-center gap-3 p-3 text-on-surface-variant/60 hover:bg-white/50 rounded-full transition-all cursor-pointer">
+        <span class="material-symbols-outlined">info</span>
+        <span class="uppercase tracking-widest text-xs font-bold">Course Info</span>
+      </a>
+      <a class="flex items-center gap-3 p-3 text-on-surface-variant/60 hover:bg-white/50 rounded-full transition-all cursor-pointer"
+        (click)="router.navigate(['/teacher/courses', courseId, 'sections'])">
+        <span class="material-symbols-outlined">menu_book</span>
+        <span class="uppercase tracking-widest text-xs font-bold">Curriculum</span>
+      </a>
+      <a class="flex items-center gap-3 p-3 text-on-surface-variant/60 hover:bg-white/50 rounded-full transition-all cursor-pointer"
+        (click)="goBack()">
+        <span class="material-symbols-outlined">video_library</span>
+        <span class="uppercase tracking-widest text-xs font-bold">Media</span>
+      </a>
+      <!-- Active -->
+      <a class="flex items-center gap-3 p-3 bg-white text-primary rounded-full shadow-sm">
+        <span class="material-symbols-outlined">payments</span>
+        <span class="uppercase tracking-widest text-xs font-bold">Pricing</span>
+      </a>
+    </nav>
+    <div class="mt-auto bg-white text-primary rounded-xl p-4 shadow-sm">
+      <p class="uppercase tracking-widest text-xs font-bold mb-1 text-on-surface-variant">Step 4 of 4</p>
+      <p class="font-bold text-sm">Pricing & Publish</p>
+    </div>
+  </aside>
+
+  <!-- المحتوى الرئيسي -->
+  <main class="flex-1 flex flex-col min-w-0 md:ml-72">
+
+    <!-- الهيدر -->
+    <header class="flex justify-between items-center w-full px-8 py-4 bg-surface/70 backdrop-blur-xl sticky top-0 z-40 border-b border-outline-variant/10">
+      <div class="flex items-center gap-6">
+        <span class="text-on-surface-variant font-semibold hover:text-primary cursor-pointer" (click)="goBack()">Media</span>
+        <span class="text-primary border-b-4 border-primary pb-2 font-semibold">Pricing</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <button (click)="saveDraft()"
+          class="text-on-surface-variant font-semibold hover:text-primary px-4 py-2 transition-colors text-sm">
+          Save Draft
+        </button>
+        <button (click)="publishAndFinish()" [disabled]="isPublishing()"
+          class="bg-primary text-on-primary px-6 py-2 rounded-full font-bold transition-all active:scale-95 disabled:opacity-50 text-sm">
+          {{ isPublishing() ? 'Publishing...' : 'Publish' }}
+        </button>
+      </div>
+    </header>
+
+    <!-- المحتوى -->
+    <div class="flex-1 px-8 py-12 flex flex-col md:flex-row gap-12 max-w-7xl mx-auto w-full">
+
+      <!-- القسم الرئيسي -->
+      <div class="flex-[1.5] space-y-10">
+
+        <!-- Progress -->
+        <div class="space-y-4">
+          <div class="flex justify-between items-end">
+            <div>
+              <span class="uppercase tracking-widest text-xs font-bold text-primary">Step 04 of 04</span>
+              <h2 class="text-3xl font-extrabold tracking-tight text-on-surface">Pricing & Monetization</h2>
+            </div>
+            <span class="font-bold text-primary">100% Complete</span>
+          </div>
+          <div class="h-4 w-full bg-surface-variant rounded-full overflow-hidden">
+            <div class="h-full bg-gradient-to-r from-primary to-primary-fixed w-full rounded-full transition-all duration-700"></div>
+          </div>
+        </div>
+
+        <!-- رسالة النجاح -->
+        <div *ngIf="successMessage()"
+          class="bg-primary-container text-on-primary-container p-4 rounded-xl text-sm font-semibold text-center">
+          ✓ {{ successMessage() }}
+        </div>
+
+        <!-- Pricing Card -->
+        <section class="bg-surface-container rounded-xl p-8 space-y-8">
+          <div>
+            <h3 class="text-xl font-bold tracking-tight">Pricing Type</h3>
+            <p class="text-on-surface-variant text-sm mt-1">Decide how students will access your course.</p>
+          </div>
+
+          <form [formGroup]="pricingForm" class="space-y-6">
+
+            <!-- Pricing Type Toggle -->
+            <div class="flex p-1 bg-surface-container-high rounded-full w-fit">
+              <label *ngFor="let type of pricingTypes" class="cursor-pointer">
+                <input type="radio" formControlName="pricingType" [value]="type" class="hidden peer"/>
+                <div class="px-8 py-2 rounded-full text-sm font-bold transition-all peer-checked:bg-primary peer-checked:text-on-primary text-on-surface opacity-50 peer-checked:opacity-100">
+                  {{ type }}
+                </div>
+              </label>
+            </div>
+
+            <!-- السعر -->
+            <div *ngIf="pricingForm.get('pricingType')?.value === 'Paid'" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="space-y-2">
+                <label class="uppercase tracking-widest text-xs font-bold text-on-surface-variant ml-2">Course Price (USD)</label>
+                <div class="relative">
+                  <span class="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+                  <input type="number" formControlName="price"
+                    class="w-full bg-white border-none rounded-xl py-4 pl-8 pr-4 text-lg font-bold focus:ring-2 focus:ring-primary/20 outline-none"/>
+                </div>
+              </div>
+              <div class="space-y-2">
+                <label class="uppercase tracking-widest text-xs font-bold text-on-surface-variant ml-2">Discount Price (Optional)</label>
+                <div class="relative">
+                  <span class="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+                  <input type="number" formControlName="discountedPrice"
+                    class="w-full bg-white border-none rounded-xl py-4 pl-8 pr-4 text-lg font-bold focus:ring-2 focus:ring-primary/20 outline-none"
+                    placeholder="0.00"/>
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </section>
+
+        <!-- Earnings Breakdown -->
+        <section *ngIf="pricingForm.get('pricingType')?.value === 'Paid'"
+          class="bg-white rounded-xl p-8 shadow-sm border-t-4 border-primary/10">
+          <h3 class="text-xl font-bold tracking-tight mb-6">Earnings Breakdown</h3>
+          <div class="space-y-4">
+            <div class="flex justify-between items-center py-2">
+              <span class="text-on-surface-variant">Course Price</span>
+              <span class="font-bold">${{ pricingForm.get('price')?.value || 0 }}</span>
+            </div>
+            <div class="flex justify-between items-center py-2 text-error">
+              <span>Platform Fee (15%)</span>
+              <span class="font-bold">-${{ getPlatformFee() }}</span>
+            </div>
+            <div class="h-px bg-surface-container"></div>
+            <div class="flex justify-between items-center py-4">
+              <div>
+                <p class="text-lg font-bold">Your Earnings</p>
+                <p class="text-xs text-on-surface-variant uppercase tracking-widest font-bold">Per Enrollment</p>
+              </div>
+              <span class="text-3xl font-black text-primary">${{ getEarnings() }}</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Navigation Footer -->
+        <div class="flex justify-between items-center pt-8 border-t border-surface-variant">
+          <button (click)="goBack()"
+            class="flex items-center gap-2 text-on-surface-variant font-bold hover:text-primary transition-colors">
+            <span class="material-symbols-outlined">arrow_back</span>
+            Back to Media
+          </button>
+          <button (click)="publishAndFinish()" [disabled]="isPublishing()"
+            class="bg-primary text-on-primary px-10 py-4 rounded-full font-bold shadow-lg hover:scale-105 active:scale-95 transition-all disabled:opacity-50 flex items-center gap-3">
+            <span *ngIf="isPublishing()" class="material-symbols-outlined animate-spin text-sm">progress_activity</span>
+            {{ isPublishing() ? 'Publishing...' : 'Publish Course 🚀' }}
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Insights Sidebar -->
+      <aside class="flex-1 space-y-8">
+        <div class="bg-surface-container rounded-xl p-8 space-y-6">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1">analytics</span>
+            <h4 class="uppercase tracking-widest text-xs font-black text-on-surface">Course Summary</h4>
+          </div>
+          <div class="space-y-4">
+            <div class="bg-white p-4 rounded-xl shadow-sm">
+              <p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-1">Pricing Type</p>
+              <p class="text-xl font-black text-primary">{{ pricingForm.get('pricingType')?.value }}</p>
+            </div>
+            <div *ngIf="pricingForm.get('pricingType')?.value === 'Paid'"
+              class="bg-white p-4 rounded-xl shadow-sm">
+              <p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-1">Your Earnings / Sale</p>
+              <p class="text-2xl font-black text-primary">${{ getEarnings() }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Publishing Checklist -->
+        <div class="bg-white rounded-xl p-8 border border-outline-variant/10 shadow-sm space-y-4">
+          <h4 class="font-bold text-sm uppercase tracking-widest text-on-surface-variant">Publishing Checklist</h4>
+          <div class="space-y-3">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1">check_circle</span>
+              <span class="text-sm font-medium text-on-surface-variant line-through opacity-50">Course Info</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1">check_circle</span>
+              <span class="text-sm font-medium text-on-surface-variant line-through opacity-50">Curriculum</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1">check_circle</span>
+              <span class="text-sm font-medium text-on-surface-variant line-through opacity-50">Media</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1">check_circle</span>
+              <span class="text-sm font-semibold text-primary">Pricing</span>
+            </div>
+          </div>
+
+          <!-- Publish Button -->
+          <button (click)="publishAndFinish()" [disabled]="isPublishing()"
+            class="w-full mt-4 py-4 bg-primary text-on-primary rounded-full font-bold shadow-lg hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-sm">rocket_launch</span>
+            {{ isPublishing() ? 'Publishing...' : 'Publish Course' }}
+          </button>
+
+          <p class="text-xs text-on-surface-variant text-center">
+            You can unpublish anytime from your dashboard
+          </p>
+        </div>
+
+      </aside>
+
+    </div>
+
+  </main>
+
+</div>
