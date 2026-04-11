@@ -123,7 +123,7 @@
                   <td class="px-4 py-5">
                     <div class="flex items-center gap-2">
                       <div class="w-6 h-6 rounded-full bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] flex items-center justify-center text-white text-[10px] font-bold shrink-0">
-                        {{ course.teacherName[0] }}
+                        {{ course.teacherName?.[0] ?? '?' }}
                       </div>
                       <span class="text-sm font-medium text-[#191C1D]">{{ course.teacherName }}</span>
                     </div>
@@ -132,7 +132,7 @@
                   <!-- Category -->
                   <td class="px-4 py-5 hidden md:table-cell">
                     <span class="px-3 py-1 bg-[#B2EFDA]/30 text-[#2E6858] rounded-full text-xs font-semibold">
-                      {{ course.categoryName }}
+                     {{ course.categoryName ?? '—' }}
                     </span>
                   </td>
 
@@ -155,11 +155,11 @@
 
                   <!-- Price -->
                   <td class="px-4 py-5 font-bold text-[#191C1D] text-sm">
-                    @if (course.pricingType === 'Free') { Free } @else { ${{ course.price }} }
+                    @if (course.pricingType === 'Free') { Free } @else { ${{ course.price ?? 0 }} }
                   </td>
 
                   <!-- Students -->
-                  <td class="px-4 py-5 text-sm text-slate-500 hidden lg:table-cell">{{ course.totalStudents }}</td>
+                  <td class="px-4 py-5 text-sm text-slate-500 hidden lg:table-cell">{{ course.totalStudents ?? 0 }}</td>
 
                   <!-- Actions -->
                   <td class="px-4 py-5 text-right rounded-r-xl">

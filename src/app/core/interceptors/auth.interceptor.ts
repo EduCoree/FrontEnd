@@ -1,27 +1,19 @@
-// interceptor بيضيف الـ token تلقائياً لكل request
 import { HttpInterceptorFn } from '@angular/common/http';
-import { inject, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { inject } from '@angular/core';
+import { AuthService } from '../services/auth';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const platformId = inject(PLATFORM_ID);
+  const token = inject(AuthService).getToken();
 
-  if (!isPlatformBrowser(platformId)) return next(req);
-
-// Public endpoints 
-  const publicUrls = ['/api/courses', '/api/auth'];
+  // Public endpoints - مش محتاجة token
+  const publicUrls = ['/api/auth'];
   const isPublic = publicUrls.some(url => req.url.includes(url));
   if (isPublic) return next(req);
 
-  
-  const token = localStorage.getItem('token');
   if (token) {
-    const cloned = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
+    req = req.clone({
+      setHeaders: { Authorization: `Bearer ${token}` }
     });
-    return next(cloned);
   }
 
   return next(req);

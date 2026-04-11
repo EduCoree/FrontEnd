@@ -1,8 +1,7 @@
-// src/app/core/services/admin-course.service.ts
-
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { CourseSummaryDto, UpdatePricingDto, PagedResult } from '../models/course';
 import { environment } from '../../../environments/environment';
 
@@ -12,8 +11,8 @@ export class AdminCourseService {
   private base = `${environment.apiUrl}/api/admin/courses`;
 
   getCourses(
-    page: number = 1,
-    pageSize: number = 10,
+    page = 1,
+    pageSize = 10,
     search?: string,
     status?: string,
     categoryId?: number,
@@ -28,18 +27,27 @@ export class AdminCourseService {
     if (categoryId)  params = params.set('categoryId', categoryId);
     if (level)       params = params.set('level', level);
     if (pricingType) params = params.set('pricingType', pricingType);
-    return this.http.get<PagedResult<CourseSummaryDto>>(this.base, { params });
+
+    return this.http.get<any>(this.base, { params }).pipe(
+      map(res => res.data)
+    );
   }
 
   publishCourse(id: number): Observable<boolean> {
-    return this.http.put<boolean>(`${this.base}/${id}/publish`, {});
+    return this.http.put<any>(`${this.base}/${id}/publish`, {}).pipe(
+      map(res => res.data)
+    );
   }
 
   unpublishCourse(id: number): Observable<boolean> {
-    return this.http.put<boolean>(`${this.base}/${id}/unpublish`, {});
+    return this.http.put<any>(`${this.base}/${id}/unpublish`, {}).pipe(
+      map(res => res.data)
+    );
   }
 
   updatePricing(id: number, dto: UpdatePricingDto): Observable<boolean> {
-    return this.http.put<boolean>(`${this.base}/${id}/pricing`, dto);
+    return this.http.put<any>(`${this.base}/${id}/pricing`, dto).pipe(
+      map(res => res.data)
+    );
   }
 }
