@@ -218,6 +218,13 @@ export const routes: Routes = [
       .then(m => m.CourseMediaComponent),
   title: 'Course Media — EduCore',
 },
+  {
+    path: 'certificates/:certificateId',
+    loadComponent: () =>
+      import('./pages/public/certificate-detail/certificate-detail.component')
+        .then(m => m.CertificateDetailComponent),
+    title: 'Certificate — EduCore',
+  },
 
 //hala
 {
@@ -436,6 +443,16 @@ export const routes: Routes = [
     import('./pages/student/video-watch/video-watch.component')
       .then(m => m.StudentVideoWatchComponent),
   title: 'Watch Lesson — EduCore',
+},
+
+// Content Delivery: Teacher Progress
+{
+  path: 'teacher/courses/:courseId/progress',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./pages/teacher/teacher-progress/teacher-progress.component')
+      .then(m => m.TeacherProgressComponent),
+  title: 'Student Progress — EduCore',
 }
   ,
   {
