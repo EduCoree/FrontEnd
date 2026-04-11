@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Route, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { forkJoin, Observable } from 'rxjs';
 
@@ -9,6 +9,7 @@ import { QuizService } from '../../../core/services/quiz.service';
 import { QuizDetailsDto, QuestionDto, UpdateQuestionDto, UpdateAnswerOptionDto, ApiResponse, AnswerOptionDto, CreateQuestionDto, CreateAnswerOptionDto } from '../../../core/models/quiz';
 import { CenterDelete } from "../../centers/center-delete/center-delete";
 import { DeleteQuestionModalComponent } from "../delete-question/delete-question";
+
 
 interface EditingQuestion {
   question: QuestionDto;
@@ -48,7 +49,9 @@ export class QuizBuilderComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private quizService: QuizService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router:Router
+
   ) {}
 
   ngOnInit(): void {
@@ -299,5 +302,16 @@ export class QuizBuilderComponent implements OnInit {
       { text: '', isCorrect: false }
     ];
    }
+  }
+  AddQuestion()
+  {
+     
+    this.router.navigate(
+  ['/teacher/courses', this.courseId, 'quizzes', this.quizId,'add-question'],
+  { queryParams: { name: this.quiz?.title } }
+    )
+  
+ 
+
   }
 }
