@@ -2,7 +2,7 @@ import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthService } from '../services/auth';
 
-export const authInterceptor: HttpInterceptorFn = (req, next) => {
+export const authInterceptor2: HttpInterceptorFn = (req, next) => {
   const token = inject(AuthService).getToken();
 
   // Public endpoints - مش محتاجة token
