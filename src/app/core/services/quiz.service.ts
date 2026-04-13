@@ -10,8 +10,8 @@ import { CreateQuestionDto, CreateQuizDto, QuestionDto, QuizDetailsDto, QuizDto,
   providedIn: 'root',
 })
 export class QuizService {
-  private apiUrl = environment.apiUrl;
-  private baseUrl = environment.apiUrl + "/teacher/courses";
+  private apiUrl = environment.apiUrl+"/api";
+  private baseUrl = environment.apiUrl + "/api/teacher/courses";
 
   constructor(private http: HttpClient) {}
 
