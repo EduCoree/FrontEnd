@@ -7,13 +7,14 @@ import { Home } from './pages/home/home';
 import { CreateQuizComponent } from "./pages/Quizzes/CreateQuiz/create-quiz/create-quiz";
 import { filter } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { Sidebar } from "./shared/components/ui/sidebar/sidebar";
 
 
 
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet , Navbar],
+  imports: [RouterOutlet, Navbar, Sidebar],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

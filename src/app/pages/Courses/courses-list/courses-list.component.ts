@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CourseCardComponent } from '../course-card/course-card.component';
@@ -28,25 +28,25 @@ export class CoursesListComponent implements OnInit {
   levels = ['Beginner', 'Intermediate', 'Advanced'];
   pricingTypes = ['Free', 'Paid'];
 
-  constructor(private PublicCourseService: PublicCourseService) {}
+  constructor(private PublicCourseService: PublicCourseService,private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.loadCourses();
   }
 
   loadCourses(): void {
-    this.isLoading = true;
-    this.PublicCourseService.getAllCourses(this.filter, this.currentPage, this.pageSize)
-      .subscribe({
-        next: (res) => {
-          const data: PagedResult<CourseSummaryDto> = res.data;
-          this.courses = data.items;
-          this.totalPages = data.totalPages;
-          this.isLoading = false;
-        },
-        error: () => { this.isLoading = false; }
-      });
-  }
+  this.isLoading = true;
+  this.PublicCourseService.getAllCourses(this.filter, this.currentPage, this.pageSize)
+    .subscribe({
+      next: (res) => {
+        this.courses = res.data.items; 
+        this.totalPages = res.data.totalPages;
+        this.isLoading = false;
+        this.cdr.markForCheck();
+      },
+      error: () => { this.isLoading = false; }
+    });
+}
 
   applyFilters(): void {
     this.currentPage = 1;

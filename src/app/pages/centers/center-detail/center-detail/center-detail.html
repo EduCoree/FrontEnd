@@ -1,14 +1,10 @@
-
 <app-sidebar></app-sidebar>
 
-
-Loading
 @if (loading()) {
   <div class="flex items-center justify-center min-h-screen">
     <div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
   </div>
 }
-
 
 @if (error()) {
   <div class="max-w-4xl mx-auto px-6 pt-10">
@@ -18,37 +14,34 @@ Loading
   </div>
 }
 
-
 @if (!loading() && center()) {
-  <div class="max-w-4xl mx-auto px-6 pt-8 pb-12">
+  <div class="max-w-4xl mx-auto   pt-8 pb-12">
 
-<div class="mb-8 flex justify-end items-center gap-2 flex-wrap">
-  <div class="flex gap-2">
-    <a [routerLink]="['/centers', center()!.id, 'edit']"
-       class="flex items-center gap-2 text-primary bg-surface-container-high px-4 py-2 rounded-lg hover:bg-surface-container transition-colors">
-      <span class="material-symbols-outlined text-lg">person_edit</span>
-      <span class="font-medium text-sm">Edit</span>
-    </a>
+   
+    <div class="mb-8 flex justify-end items-center gap-2 flex-wrap">
+      <div class="flex gap-2">
+        <a [routerLink]="['/centers', center()!.id, 'edit']"
+           class="flex items-center gap-2 text-primary bg-surface-container-high px-4 py-2 rounded-lg hover:bg-surface-container transition-colors">
+          <span class="material-symbols-outlined text-lg">person_edit</span>
+          <span class="font-medium text-sm">{{ 'centerDetail.edit' | translate }}</span>
+        </a>
+        <a [routerLink]="['/centers', center()!.id, 'logo']"
+           class="flex items-center gap-2 text-primary bg-surface-container-high px-4 py-2 rounded-lg hover:bg-surface-container transition-colors">
+          <span class="material-symbols-outlined text-lg">upload</span>
+          <span class="font-medium text-sm">{{ 'centerDetail.updateLogo' | translate }}</span>
+        </a>
+        <a [routerLink]="['/centers', center()!.id, 'delete']"
+           class="flex items-center gap-2 text-error bg-error-container/20 px-4 py-2 rounded-lg hover:bg-error-container/30 transition-colors">
+          <span class="material-symbols-outlined text-lg">delete_forever</span>
+          <span class="font-medium text-sm">{{ 'centerDetail.delete' | translate }}</span>
+        </a>
+      </div>
+    </div>
 
-    <a [routerLink]="['/centers', center()!.id, 'logo']"
-       class="flex items-center gap-2 text-primary bg-surface-container-high px-4 py-2 rounded-lg hover:bg-surface-container transition-colors">
-      <span class="material-symbols-outlined text-lg">upload</span>
-      <span class="font-medium text-sm">Update Logo</span>
-    </a>
-
-    <a [routerLink]="['/centers', center()!.id, 'delete']"
-       class="flex items-center gap-2 text-error bg-error-container/20 px-4 py-2 rounded-lg hover:bg-error-container/30 transition-colors">
-      <span class="material-symbols-outlined text-lg">delete_forever</span>
-      <span class="font-medium text-sm">Delete</span>
-    </a>
-  </div>
-</div>
-
-  
+   
     <section class="relative mb-12">
       <div class="flex flex-col md:flex-row gap-8 items-start">
 
-        
         <div class="w-full md:w-1/3 aspect-square rounded-2xl bg-surface-container-lowest border border-outline-variant/20 p-8 flex items-center justify-center overflow-hidden">
           @if (center()!.logoUrl) {
             <img [src]="center()!.logoUrl" [alt]="center()!.name" class="w-full h-auto object-contain" />
@@ -59,11 +52,14 @@ Loading
           }
         </div>
 
-        
         <div class="w-full md:w-2/3">
           <div class="mb-2">
-            <span class="text-[10px] uppercase tracking-widest font-bold text-primary">TRAINING CENTER</span>
+           
+            <span class="text-[10px] uppercase tracking-widest font-bold text-primary">
+              {{ 'centerDetail.trainingCenter' | translate }}
+            </span>
           </div>
+       
           <h2 class="text-4xl md:text-5xl font-extrabold text-on-surface tracking-tight mb-4 leading-tight">
             {{ center()!.name }}
           </h2>
@@ -71,7 +67,10 @@ Loading
             {{ center()!.contactEmail }}
           </p>
           <div class="flex flex-wrap gap-3">
-            <span class="bg-primary-fixed-dim text-on-primary-container px-4 py-1 rounded-full text-xs font-semibold">Active</span>
+       
+            <span class="bg-primary-fixed-dim text-on-primary-container px-4 py-1 rounded-full text-xs font-semibold">
+              {{ 'centerDetail.active' | translate }}
+            </span>
             <span class="bg-surface-container-high text-on-surface-variant px-4 py-1 rounded-full text-xs font-semibold">
               ID: {{ center()!.id }}
             </span>
@@ -83,19 +82,24 @@ Loading
       </div>
     </section>
 
-    
+   
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-   
       <div class="md:col-span-2 bg-surface-container-lowest border border-outline-variant/20 p-8 rounded-2xl">
-        <h3 class="text-xl font-bold mb-6 text-on-surface">Location & Contact</h3>
+      
+        <h3 class="text-xl font-bold mb-6 text-on-surface">
+          {{ 'centerDetail.locationContact' | translate }}
+        </h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div class="space-y-4">
             @if (center()!.address) {
               <div class="flex items-start gap-3">
                 <span class="material-symbols-outlined text-primary">location_on</span>
                 <div>
-                  <p class="text-xs text-on-surface-variant uppercase font-bold tracking-wider">Address</p>
+                  <p class="text-xs text-on-surface-variant uppercase font-bold tracking-wider">
+                    {{ 'centerDetail.address' | translate }}
+                  </p>
+               
                   <p class="text-sm font-medium mt-1">{{ center()!.address }}</p>
                 </div>
               </div>
@@ -104,7 +108,10 @@ Loading
               <div class="flex items-start gap-3">
                 <span class="material-symbols-outlined text-primary">call</span>
                 <div>
-                  <p class="text-xs text-on-surface-variant uppercase font-bold tracking-wider">Phone</p>
+                  <p class="text-xs text-on-surface-variant uppercase font-bold tracking-wider">
+                    {{ 'centerDetail.phone' | translate }}
+                  </p>
+                
                   <p class="text-sm font-medium mt-1">{{ center()!.phone }}</p>
                 </div>
               </div>
@@ -114,7 +121,10 @@ Loading
             <div class="flex items-start gap-3">
               <span class="material-symbols-outlined text-primary">email</span>
               <div>
-                <p class="text-xs text-on-surface-variant uppercase font-bold tracking-wider">Email</p>
+                <p class="text-xs text-on-surface-variant uppercase font-bold tracking-wider">
+                  {{ 'centerDetail.email' | translate }}
+                </p>
+               
                 <p class="text-sm font-medium mt-1">{{ center()!.contactEmail }}</p>
               </div>
             </div>
@@ -122,7 +132,10 @@ Loading
               <div class="flex items-start gap-3">
                 <span class="material-symbols-outlined text-primary">share</span>
                 <div>
-                  <p class="text-xs text-on-surface-variant uppercase font-bold tracking-wider">Social Links</p>
+                  <p class="text-xs text-on-surface-variant uppercase font-bold tracking-wider">
+                    {{ 'centerDetail.socialLinks' | translate }}
+                  </p>
+                 
                   <div class="flex flex-wrap gap-2 mt-1">
                     @for (link of getSocialLinksArray(); track link.key) {
                       <a [href]="link.value" target="_blank"
@@ -138,16 +151,20 @@ Loading
         </div>
       </div>
 
- 
       <div class="bg-primary p-8 rounded-2xl text-on-primary flex flex-col justify-between">
-        <h3 class="text-xl font-bold">Quick Info</h3>
+        <h3 class="text-xl font-bold">{{ 'centerDetail.quickInfo' | translate }}</h3>
         <div class="space-y-6 mt-8">
           <div>
-            <p class="text-[10px] uppercase font-bold opacity-70">Center ID</p>
+            <p class="text-[10px] uppercase font-bold opacity-70">
+              {{ 'centerDetail.centerId' | translate }}
+            </p>
             <p class="text-4xl font-extrabold tracking-tighter">#{{ center()!.id }}</p>
           </div>
           <div>
-            <p class="text-[10px] uppercase font-bold opacity-70">Created</p>
+            <p class="text-[10px] uppercase font-bold opacity-70">
+              {{ 'centerDetail.created' | translate }}
+            </p>
+          
             <p class="text-lg font-bold">{{ center()!.createdAt | date:'mediumDate' }}</p>
           </div>
         </div>
@@ -162,21 +179,25 @@ Loading
     <div class="bg-surface-container-lowest rounded-2xl p-8 w-full max-w-md mx-4 border border-outline-variant/20">
       <div class="flex items-center gap-3 mb-4">
         <span class="material-symbols-outlined text-error text-3xl">warning</span>
-        <h3 class="text-xl font-bold text-on-surface">Delete Center</h3>
+        <h3 class="text-xl font-bold text-on-surface">
+          {{ 'centerDetail.deleteTitle' | translate }}
+        </h3>
       </div>
       <p class="text-on-surface-variant text-sm mb-6">
-        Are you sure you want to delete <strong>"{{ center()!.name }}"</strong>?
-        This action cannot be undone.
+        {{ 'centerDetail.deleteConfirm' | translate }}
+      
+        <strong>"{{ center()!.name }}"</strong>?
+        {{ 'centerDetail.deleteWarning' | translate }}
       </p>
       <div class="flex gap-3 justify-end">
         <button (click)="cancelDelete()"
                 class="px-5 py-2 rounded-lg bg-surface-container text-on-surface text-sm font-medium hover:bg-surface-container-high transition-colors">
-          Cancel
+          {{ 'centerDetail.cancel' | translate }}
         </button>
         <button (click)="deleteCenter()"
                 [disabled]="deleting()"
                 class="px-5 py-2 rounded-lg bg-error text-on-error text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-60">
-          {{ deleting() ? 'Deleting...' : 'Yes, Delete' }}
+          {{ deleting() ? ('centerDetail.deleting' | translate) : ('centerDetail.yesDelete' | translate) }}
         </button>
       </div>
     </div>

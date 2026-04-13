@@ -1,39 +1,37 @@
-
-import { Component, inject, OnInit, signal, PLATFORM_ID } from '@angular/core';
+import { Component, inject, OnInit, signal, PLATFORM_ID, effect } from '@angular/core';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CategoryService } from '../../../core/services/category.service';
 import { Category } from '../../../core/models/category.model';
 import { Sidebar } from "../../../shared/components/ui/sidebar/sidebar";
-
-
+import { TranslateModule } from '@ngx-translate/core'; 
+import { LanguageService } from '../../../core/services/language.service';
 
 @Component({
   selector: 'app-categories',
-  imports: [CommonModule, ReactiveFormsModule, Sidebar],
+  imports: [CommonModule, ReactiveFormsModule, Sidebar, TranslateModule],
   templateUrl: './categories.html',
   styleUrl: './categories.css',
 })
 export class Categories {
- private route = inject(ActivatedRoute);
+  private route = inject(ActivatedRoute);
   private categoryService = inject(CategoryService);
   private fb = inject(FormBuilder);
   private platformId = inject(PLATFORM_ID);
+  private langService = inject(LanguageService);
 
   centerId = signal<number>(0);
   categories = signal<Category[]>([]);
   loading = signal(true);
   error = signal<string | null>(null);
 
-  // Panel state
   showPanel = signal(false);
   panelMode = signal<'create' | 'edit'>('create');
   selectedCategory = signal<Category | null>(null);
   saving = signal(false);
   panelError = signal<string | null>(null);
 
-  // Delete modal state
   showDeleteModal = signal(false);
   categoryToDelete = signal<Category | null>(null);
   deleting = signal(false);
@@ -42,6 +40,15 @@ export class Categories {
   form: FormGroup = this.fb.group({
     name: ['', [Validators.required, Validators.maxLength(100)]]
   });
+
+  constructor() {
+    
+    effect(() => {
+      this.langService.currentLang();
+      if (this.centerId() > 0) 
+        this.loadCategories();
+    });
+  }
 
   get slugPreview(): string {
     const name = this.form.get('name')?.value ?? '';
@@ -56,7 +63,7 @@ export class Categories {
 
     const id = Number(this.route.snapshot.paramMap.get('centerId'));
     this.centerId.set(id);
-    this.loadCategories();
+    this.loadCategories(); 
   }
 
   loadCategories() {
@@ -156,11 +163,10 @@ export class Categories {
         this.closeDeleteModal();
       },
       error: (err) => {
-        if (err.status === 409) {
+        if (err.status === 409)
           this.deleteError.set('Cannot delete: this category has existing courses.');
-        } else {
+        else
           this.deleteError.set('Failed to delete category.');
-        }
         this.deleting.set(false);
       }
     });
