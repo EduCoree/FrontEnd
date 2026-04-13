@@ -1,45 +1,25 @@
-
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { TranslateModule, TranslateService } from '@ngx-translate/core'; 
 
 @Component({
   selector: 'app-sidebar',
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterLink, RouterLinkActive, TranslateModule], 
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css',
 })
 export class Sidebar {
- isOpen = signal(true);
+  isOpen = signal(true);
 
   toggle() {
     this.isOpen.set(!this.isOpen());
   }
 
   navItems = [
-    {
-      label: 'Centers',
-      icon: 'business',
-      route: '/centers/11',
-      exact: true
-    },
-    {
-      label: 'Edit Center',
-      icon: 'person_edit',
-      route: '/centers/11/edit',
-      exact: false
-    },
-    {
-      label: 'Update Logo',
-      icon: 'upload',
-      route: '/centers/11/logo',
-      exact: false
-    },
-    {
-      label: 'Categories',
-      icon: 'category',
-      route: '/centers/11/categories',
-      exact: false
-    }
+    { labelKey: 'sidebar.centers',    icon: 'business',     route: '/centers/11',            exact: true  },
+    { labelKey: 'sidebar.editCenter', icon: 'person_edit',  route: '/centers/11/edit',       exact: false },
+    { labelKey: 'sidebar.updateLogo', icon: 'upload',       route: '/centers/11/logo',       exact: false },
+    { labelKey: 'sidebar.categories', icon: 'category',     route: '/centers/11/categories', exact: false }
   ];
 }

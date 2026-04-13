@@ -13,7 +13,7 @@
         </div>
         <div>
           <p class="text-sm font-bold text-on-surface">EduCore</p>
-          <p class="text-[10px] text-on-surface-variant">Admin Panel</p>
+          <p class="text-[10px] text-on-surface-variant">{{ 'sidebar.adminPanel' | translate }}</p>
         </div>
       </div>
     }
@@ -37,17 +37,14 @@
          [class.hover:bg-surface-container]="!rla.isActive"
          [class.text-on-surface-variant]="!rla.isActive"
          [class.justify-center]="!isOpen()">
-
-       
         <span class="material-symbols-outlined text-xl flex-shrink-0"
               [class.text-on-primary]="rla.isActive"
               [class.text-primary]="!rla.isActive">
           {{ item.icon }}
         </span>
-
         @if (isOpen()) {
           <span class="text-sm font-medium whitespace-nowrap">
-            {{ item.label }}
+            {{ item.labelKey | translate }} <!-- ✅ -->
           </span>
         }
       </a>
@@ -62,15 +59,14 @@
           AU
         </div>
         <div>
-          <p class="text-xs font-bold text-on-surface">Admin User</p>
-          <p class="text-[10px] text-on-surface-variant">Super Admin</p>
+          <p class="text-xs font-bold text-on-surface">{{ 'sidebar.adminUser' | translate }}</p>
+          <p class="text-[10px] text-on-surface-variant">{{ 'sidebar.superAdmin' | translate }}</p>
         </div>
       </div>
     </div>
   }
 </aside>
 
-<!-- Content offset -->
 <div [class.ml-64]="isOpen()"
      [class.ml-16]="!isOpen()"
      class="transition-all duration-300 lg:block hidden h-0">

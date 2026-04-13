@@ -7,9 +7,10 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CenterService } from '../../../../core/services/center.service';
 import { Categories } from "../../categories/categories";
 import { Sidebar } from "../../../../shared/components/ui/sidebar/sidebar";
+import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-center-edit',
-  imports: [CommonModule, ReactiveFormsModule, Categories, Sidebar],
+  imports: [CommonModule, ReactiveFormsModule, Categories, Sidebar , TranslateModule],
   templateUrl: './center-edit.html',
   styleUrl: './center-edit.css',
 })
@@ -19,7 +20,7 @@ export class CenterEdit implements OnInit{
   private router = inject(Router);
   private fb = inject(FormBuilder);
   private centerService = inject(CenterService);
-  private platformId = inject(PLATFORM_ID);  // ✅ مهم للـ SSR
+  private platformId = inject(PLATFORM_ID);  
 
   centerId = signal<number>(0);
   loading = signal(true);
@@ -44,7 +45,7 @@ export class CenterEdit implements OnInit{
   });
 
   ngOnInit() {
-    // ✅ بس لو في Browser مش Server
+   
     if (!isPlatformBrowser(this.platformId)) {
       this.loading.set(false);
       return;

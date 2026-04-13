@@ -1,4 +1,3 @@
-
 <app-sidebar></app-sidebar>
 
 @if (loading()) {
@@ -9,97 +8,73 @@
 
 @if (!loading()) {
   <main class="max-w-2xl mx-auto px-6 pt-8 pb-12">
-
-    <!-- Header -->
     <div class="mb-8 flex flex-col gap-2">
-      
-      <h2 class="text-4xl font-extrabold text-on-surface mt-2">Upload Logo</h2>
-      <p class="text-on-surface-variant">Manage your training center's visual identity</p>
+      <h2 class="text-4xl font-extrabold text-on-surface mt-2">{{ 'uploadLogo.title' | translate }}</h2>
+      <p class="text-on-surface-variant">{{ 'uploadLogo.subtitle' | translate }}</p>
     </div>
 
-    <!-- Success -->
     @if (successMsg()) {
       <div class="mb-6 px-5 py-3 rounded-xl bg-secondary-container text-on-secondary-container text-sm font-medium flex items-center gap-2">
-        <span class="material-symbols-outlined text-lg">check_circle</span>
-        {{ successMsg() }}
+        <span class="material-symbols-outlined text-lg">check_circle</span>{{ successMsg() }}
       </div>
     }
-
-    <!-- Error -->
     @if (error()) {
       <div class="mb-6 px-5 py-3 rounded-xl bg-error-container text-on-error-container text-sm font-medium flex items-center gap-2">
-        <span class="material-symbols-outlined text-lg">error</span>
-        {{ error() }}
+        <span class="material-symbols-outlined text-lg">error</span>{{ error() }}
       </div>
     }
 
-    <!-- Live Preview Card -->
     <div class="bg-surface-container-lowest border border-outline-variant/20 rounded-3xl p-8 mb-6 flex flex-col items-center">
-      <p class="text-[10px] uppercase tracking-widest font-bold text-on-surface-variant mb-6">Live Preview</p>
-
+      <p class="text-[10px] uppercase tracking-widest font-bold text-on-surface-variant mb-6">
+        {{ 'uploadLogo.livePreview' | translate }}
+      </p>
       <div class="w-48 h-48 rounded-2xl bg-surface-container flex items-center justify-center overflow-hidden border border-outline-variant/20 mb-6">
         @if (previewUrl()) {
-          <img [src]="previewUrl()"
-               (error)="onImageError()"
-               alt="Logo Preview"
-               class="w-full h-full object-contain p-4" />
+          <img [src]="previewUrl()" (error)="onImageError()" alt="Logo Preview" class="w-full h-full object-contain p-4" />
         } @else {
           <div class="flex flex-col items-center gap-2 text-on-surface-variant">
             <span class="material-symbols-outlined text-4xl">image</span>
-            <span class="text-xs">No preview</span>
+            <span class="text-xs">{{ 'uploadLogo.noPreview' | translate }}</span>
           </div>
         }
       </div>
-
-      <p class="text-sm font-semibold text-primary">Brand Representation</p>
-      <p class="text-xs text-on-surface-variant text-center mt-1">
-        This is how your logo will appear on certificates and dashboards.
-      </p>
+      <p class="text-sm font-semibold text-primary">{{ 'uploadLogo.brandRep' | translate }}</p>
+      <p class="text-xs text-on-surface-variant text-center mt-1">{{ 'uploadLogo.brandDesc' | translate }}</p>
     </div>
 
-    <!-- Form -->
     <form [formGroup]="form" (ngSubmit)="save()"
           class="bg-surface-container-lowest border border-outline-variant/20 rounded-3xl p-8 space-y-6">
-
       <div class="flex flex-col gap-2">
-        <label class="text-sm font-semibold text-on-surface">Logo Image URL</label>
+        <label class="text-sm font-semibold text-on-surface">{{ 'uploadLogo.logoUrlLabel' | translate }}</label>
         <div class="flex items-center gap-2 bg-surface-container rounded-xl px-4 py-3 border"
              [class.border-error]="form.get('logoUrl')?.invalid && form.get('logoUrl')?.touched"
              [class.border-outline-variant]="!(form.get('logoUrl')?.invalid && form.get('logoUrl')?.touched)">
-          <input formControlName="logoUrl"
-                 type="url"
+          <input formControlName="logoUrl" type="url"
                  class="flex-1 bg-transparent outline-none text-sm text-on-surface"
-                 placeholder="https://example.com/logo.png" />
+                 [placeholder]="'uploadLogo.logoUrlPlaceholder' | translate" />
           <span class="material-symbols-outlined text-on-surface-variant text-lg">link</span>
         </div>
-        <p class="text-xs text-on-surface-variant">
-          Ensure the URL points to a high-quality SVG, PNG, or JPG.
-        </p>
+        <p class="text-xs text-on-surface-variant">{{ 'uploadLogo.logoUrlHint' | translate }}</p>
         @if (form.get('logoUrl')?.invalid && form.get('logoUrl')?.touched) {
-          <span class="text-xs text-error">Please enter a valid URL starting with http:// or https://</span>
+          <span class="text-xs text-error">{{ 'uploadLogo.logoUrlError' | translate }}</span>
         }
       </div>
-
-      <!-- Buttons -->
       <div class="flex flex-col gap-3 pt-2">
-        <button type="submit"
-                [disabled]="saving()"
+        <button type="submit" [disabled]="saving()"
                 class="w-full bg-primary text-on-primary py-4 rounded-xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform disabled:opacity-60">
           @if (saving()) {
             <div class="w-4 h-4 border-2 border-on-primary border-t-transparent rounded-full animate-spin"></div>
-            Updating...
+            {{ 'uploadLogo.updating' | translate }}
           } @else {
             <span class="material-symbols-outlined text-lg">upload</span>
-            Update Logo
+            {{ 'uploadLogo.update' | translate }}
           }
         </button>
-
         <button type="button" (click)="cancel()"
                 class="w-full bg-surface-container text-on-surface py-4 rounded-xl font-bold hover:bg-surface-container-high transition-colors">
-          Cancel
+          {{ 'uploadLogo.cancel' | translate }}
         </button>
       </div>
     </form>
-
   </main>
 }
