@@ -2,7 +2,7 @@
 <div class="bg-background text-on-surface min-h-screen flex flex-col font-body">
 
   <!-- الهيدر -->
-  <header class="bg-surface/70 backdrop-blur-xl fixed top-0 w-full z-50 flex justify-between items-center px-8 h-20 border-b border-surface-container">
+<header class="bg-surface/70 backdrop-blur-xl fixed top-0 w-full z-50 ...">
     <div class="flex items-center gap-8">
       <span class="text-2xl font-bold text-primary">EduCore</span>
       <nav class="hidden md:flex gap-8 text-sm font-medium">
@@ -20,7 +20,7 @@
     </div>
   </header>
 
-  <div class="flex flex-1 pt-20">
+  <div class="flex flex-1 ">
 
     <!-- السايدبار -->
     <aside class="bg-surface-container h-[calc(100vh-80px)] w-64 fixed left-0 top-20 flex-col p-6 gap-4 hidden md:flex">
@@ -44,24 +44,23 @@
       </nav>
 
       <!-- Create Course CTA -->
-      <div class="mt-auto bg-primary text-on-primary p-6 rounded-xl flex flex-col gap-4">
+      <!-- <div class="mt-auto bg-primary text-on-primary p-6 rounded-xl flex flex-col gap-4">
         <p class="normal-case tracking-normal text-xs opacity-90">Ready to share your knowledge?</p>
         <button (click)="goToCreate()"
           class="bg-white text-primary px-4 py-2 rounded-full font-bold text-xs uppercase tracking-widest hover:scale-105 transition-transform shadow-md">
           Create New Course
         </button>
-      </div>
+      </div> -->
     </aside>
 
     <!-- المحتوى الرئيسي -->
-    <main class="flex-1 md:ml-64 p-8 bg-surface">
-
+<main class="flex-1 md:ml-64 px-8 py-6 bg-surface">
       <!-- العنوان -->
-      <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+      <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 ">
         <div class="max-w-2xl">
-          <h1 class="text-4xl font-extrabold tracking-tight text-on-surface mb-2">Teacher Dashboard</h1>
+          <!-- <h1 class="text-4xl font-extrabold tracking-tight text-on-surface mb-2">Teacher Dashboard</h1> -->
           <p class="text-on-surface-variant text-lg">
-            Welcome back, {{ teacherName() }}. Here is what is happening with your courses today.
+            Welcome back, {{ teacherName() }}. 
           </p>
         </div>
         <div class="flex gap-3">

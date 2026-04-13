@@ -1,0 +1,168 @@
+<div class="md:ml-72 pt-16 min-h-screen">
+  <main class="pt-8 pb-12 px-6 md:px-12 min-h-screen">
+
+    <!-- Header -->
+    <header class="mb-12">
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-2 block">Student Workspace</span>
+          <h1 class="text-5xl font-extrabold text-on-surface tracking-tight leading-none">My Courses</h1>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="flex gap-2 bg-surface-container-high p-1.5 rounded-full self-start">
+          <button
+             *ngFor="let tab of tabs"
+            (click)="setFilter(tab.value)"
+            [class]="filter === tab.value
+              ? 'px-6 py-2 rounded-full bg-surface-container-lowest text-on-surface text-sm font-semibold shadow-sm transition-all duration-300'
+              : 'px-6 py-2 rounded-full hover:bg-surface-container-lowest/50 text-on-surface-variant text-sm font-medium transition-all duration-300'">
+            {{ tab.label }}
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Loading -->
+    <div *ngIf="isLoading" class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="md:col-span-2 bg-surface-container-low rounded-xl h-72 animate-pulse"></div>
+      <div *ngFor="let i of [1,2,3,4,5]" class="bg-surface-container-low rounded-xl h-72 animate-pulse"></div>
+    </div>
+
+    <!-- Empty -->
+    <div *ngIf="!isLoading && filteredCourses.length === 0"
+      class="max-w-7xl mx-auto flex flex-col items-center justify-center py-24 text-center">
+      <span class="material-symbols-outlined text-6xl text-outline-variant mb-4">menu_book</span>
+      <h3 class="text-xl font-bold mb-2">No courses found</h3>
+      <p class="text-on-surface-variant text-sm mb-6">Start learning by browsing our courses.</p>
+      <button routerLink="/courses"
+        class="px-8 py-3 bg-primary text-on-primary rounded-full font-bold hover:bg-primary-dim transition-all">
+        Browse Courses
+      </button>
+    </div>
+
+    <!-- Bento Grid -->
+    <section *ngIf="!isLoading && filteredCourses.length > 0"
+      class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <!-- Featured Card -->
+      <div *ngIf="featuredCourse"
+        class="md:col-span-2 group relative bg-surface-container-lowest rounded-xl overflow-hidden flex flex-col md:flex-row transition-all duration-500 hover:shadow-xl hover:shadow-primary/5"
+        [routerLink]="['/courses', featuredCourse.courseId]">
+
+        <!-- Cover -->
+        <div class="md:w-1/2 overflow-hidden h-48 md:h-auto">
+          <img
+            [src]="featuredCourse.coverImage || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600'"
+            [alt]="featuredCourse.title"
+            class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+        </div>
+
+        <!-- Content -->
+        <div class="p-8 md:w-1/2 flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-start mb-4">
+              <span class="px-3 py-1 bg-primary-container text-on-primary-container text-[10px] font-black uppercase tracking-widest rounded-full">
+                {{ featuredCourse.progressPercentage === 100 ? 'Completed' : 'In Progress' }}
+              </span>
+              <span class="text-primary font-bold text-lg">{{ featuredCourse.progressPercentage }}%</span>
+            </div>
+            <h2 class="text-3xl font-extrabold text-on-surface mb-3 tracking-tight line-clamp-2">
+              {{ featuredCourse.title }}
+            </h2>
+            <div class="flex items-center gap-3 mb-4">
+              <span class="material-symbols-outlined text-sm text-on-surface-variant">person</span>
+              <span class="text-xs font-bold text-on-surface/80">{{ featuredCourse.teacherName }}</span>
+            </div>
+            <p class="text-xs text-on-surface-variant">
+              {{ featuredCourse.completedLessons }}/{{ featuredCourse.totalLessons }} Lessons
+            </p>
+          </div>
+
+          <div class="mt-6">
+            <div class="h-2 w-full bg-surface-container-high rounded-full overflow-hidden mb-6">
+              <div class="h-full bg-gradient-to-r from-primary to-primary-dim rounded-full transition-all"
+                [style.width.%]="featuredCourse.progressPercentage">
+              </div>
+            </div>
+            <button
+              class="w-full bg-primary text-on-primary py-4 px-6 rounded-full font-bold flex items-center justify-center gap-2 hover:bg-primary-dim transition-all active:scale-95">
+              Resume Lesson
+              <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rest of Courses -->
+      <div *ngFor="let course of restCourses"
+        class="group bg-surface-container-lowest rounded-xl p-6 transition-all duration-500 hover:shadow-xl hover:shadow-primary/5 flex flex-col border border-transparent hover:border-primary/10 cursor-pointer"
+        [routerLink]="['/courses', course.courseId]">
+
+        <!-- Cover -->
+        <div class="aspect-video rounded-lg overflow-hidden mb-6">
+          <img
+            [src]="course.coverImage || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600'"
+            [alt]="course.title"
+            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          />
+        </div>
+
+        <div class="flex-grow">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-[10px] font-black uppercase tracking-widest text-primary/60">
+              {{ course.completedLessons }}/{{ course.totalLessons }} Lessons
+            </span>
+            <span class="text-xs font-bold text-on-surface-variant">{{ course.progressPercentage }}%</span>
+          </div>
+          <h3 class="text-xl font-extrabold text-on-surface mb-2 tracking-tight group-hover:text-primary transition-colors line-clamp-2">
+            {{ course.title }}
+          </h3>
+          <p class="text-xs text-on-surface-variant mb-4">By {{ course.teacherName }}</p>
+        </div>
+
+        <div class="mt-4">
+          <div class="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden mb-4">
+            <div class="h-full bg-primary rounded-full transition-all"
+              [style.width.%]="course.progressPercentage">
+            </div>
+          </div>
+          <button
+            class="w-full bg-surface-container text-on-surface font-bold py-3 px-4 rounded-full text-sm hover:bg-primary-container hover:text-on-primary-container transition-colors active:scale-95">
+            Resume
+          </button>
+        </div>
+      </div>
+
+      <!-- Browse More -->
+      <div
+        class="group border-2 border-dashed border-outline-variant/30 rounded-xl p-8 flex flex-col items-center justify-center text-center transition-all duration-300 hover:bg-surface-container-high/30 hover:border-primary/30 cursor-pointer"
+        routerLink="/courses">
+        <div class="w-16 h-16 rounded-full bg-surface-container-high flex items-center justify-center mb-4 transition-transform group-hover:scale-110">
+          <span class="material-symbols-outlined text-primary text-3xl">add</span>
+        </div>
+        <h3 class="text-lg font-bold text-on-surface mb-1">Explore New Subjects</h3>
+        <p class="text-sm text-on-surface-variant mb-6">Browse the library for your next challenge.</p>
+        <button class="text-primary font-bold text-sm uppercase tracking-widest hover:underline">Go to Library</button>
+      </div>
+
+    </section>
+
+    <!-- Teacher's Note -->
+    <aside class="max-w-7xl mx-auto mt-20 relative bg-secondary-container/30 rounded-lg p-10 overflow-hidden">
+      <div class="absolute -top-4 -left-4 text-9xl text-secondary/10 font-serif opacity-40 select-none">"</div>
+      <div class="relative z-10 max-w-2xl">
+        <h4 class="text-xl font-bold text-on-secondary-container mb-4">Academic Tip: Spaced Repetition</h4>
+        <p class="text-on-secondary-container/80 leading-relaxed italic">
+          Focus on completing one module every 48 hours to maintain high retention.
+        </p>
+        <div class="mt-6 flex items-center gap-4">
+          <div class="h-0.5 w-12 bg-secondary/30"></div>
+          <span class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary">Sage Faculty Insights</span>
+        </div>
+      </div>
+    </aside>
+
+  </main>
+</div>
