@@ -1,10 +1,12 @@
+import { AnsweroptionService } from './../../../core/services/answeroption.service';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { QuizService } from '../../core/services/quiz.service';
-import { AnswerOptionDto, ApiResponse, CreateQuestionDto, QuestionDto, QuizDetailsDto, QuizDto } from '../../core/models/quiz';
+import { QuizService } from '../../../core/services/quiz.service';
+import { AnswerOptionDto, ApiResponse, CreateQuestionDto, QuestionDto, QuizDetailsDto, QuizDto } from '../../../core/models/quiz';
 import { forkJoin, Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { QuestionService } from '../../../core/services/question.service';
 
 @Component({
   selector: 'app-add-question',
@@ -31,7 +33,7 @@ addingQuestion = false;
 
     quizName:string|null=null;
   
-constructor(private quizservice:QuizService,private cdr:ChangeDetectorRef,private route:ActivatedRoute,private router:Router)
+constructor(private quizservice:QuizService, private questionservice:QuestionService,private answeroptionservice: AnsweroptionService ,private cdr:ChangeDetectorRef,private route:ActivatedRoute,private router:Router)
 {
    this.courseId = Number(this.route.snapshot.paramMap.get('courseId'));
     this.quizId = Number(this.route.snapshot.paramMap.get('quizId'));
@@ -107,12 +109,12 @@ constructor(private quizservice:QuizService,private cdr:ChangeDetectorRef,privat
        points: this.newQuestionPoints
      };
  
-     this.quizservice.addQuestion(this.courseId, this.quizId, questionDto).subscribe({
+     this.questionservice.addQuestion(this.quizId, questionDto).subscribe({
        next: (res:ApiResponse<QuestionDto>) => {
          console.log(res);
          const questionId = res.data.id;
          const optionCalls: Observable<ApiResponse<AnswerOptionDto>>[] = validOptions.map(opt => 
-           this.quizservice.addanswerOption(this.courseId, this.quizId, questionId, {
+           this.answeroptionservice.addanswerOption( questionId, {
              text: opt.text.trim(),
              isCorrect: opt.isCorrect
            })

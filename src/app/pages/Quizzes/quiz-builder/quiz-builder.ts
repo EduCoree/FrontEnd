@@ -2,13 +2,13 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Route, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { forkJoin, Observable } from 'rxjs';
-
 import { CourseSidebar } from "../../../shared/components/ui/sidebar/course-sidebar/course-sidebar";
 import { FormsModule } from '@angular/forms';
-import { QuizService } from '../../../core/services/quiz.service';
 import { QuizDetailsDto, QuestionDto, UpdateQuestionDto, UpdateAnswerOptionDto, ApiResponse, AnswerOptionDto, CreateQuestionDto, CreateAnswerOptionDto } from '../../../core/models/quiz';
 import { CenterDelete } from "../../centers/center-delete/center-delete";
 import { DeleteQuestionModalComponent } from "../delete-question/delete-question";
+import { QuestionService } from '../../../core/services/question.service';
+import { AnsweroptionService } from '../../../core/services/answeroption.service';
 
 
 interface EditingQuestion {
@@ -48,14 +48,14 @@ export class QuizBuilderComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private quizService: QuizService,
+    private questionservice: QuestionService,
+    private answeroptionservice:AnsweroptionService,
     private cdr: ChangeDetectorRef,
     private router:Router
 
   ) {}
 
   ngOnInit(): void {
-    this.courseId = Number(this.route.snapshot.paramMap.get('courseId'));
     this.quizId = Number(this.route.snapshot.paramMap.get('quizId'));
     this.loadQuizQuestions();
   }
@@ -63,7 +63,7 @@ export class QuizBuilderComponent implements OnInit {
   loadQuizQuestions(): void {
     this.loading = true;
     this.error = null;
-    this.quizService.getQuizQuestions(this.courseId, this.quizId).subscribe({
+    this.questionservice.getQuizQuestions(this.quizId).subscribe({
       next: (res) => {
         this.quiz = res.data;
         this.loading = false;
@@ -118,14 +118,14 @@ export class QuizBuilderComponent implements OnInit {
       points: this.editingQuestion.points
     };
 
-    this.quizService.updateQuestion(this.courseId, this.quizId, question.id, questionDto).subscribe({
+    this.questionservice.updateQuestion( this.quizId, question.id, questionDto).subscribe({
       next: () => {
         const optionUpdates: Observable<ApiResponse<AnswerOptionDto>>[] = [];
         this.editingQuestion!.options.forEach((opt, index) => {
           const originalOpt = originalOptions[index];
           if (originalOpt.text !== opt.text || originalOpt.isCorrect !== opt.isCorrect) {
             optionUpdates.push(
-              this.quizService.updateAnswerOption(this.courseId, this.quizId, question.id, opt.id, {
+              this.answeroptionservice.updateAnswerOption( question.id, opt.id, {
                 text: opt.text,
                 isCorrect: opt.isCorrect
               })
@@ -238,12 +238,12 @@ export class QuizBuilderComponent implements OnInit {
       points: this.newQuestionPoints
     };
 
-    this.quizService.addQuestion(this.courseId, this.quizId, questionDto).subscribe({
+    this.questionservice.addQuestion(this.quizId, questionDto).subscribe({
       next: (res:ApiResponse<QuestionDto>) => {
         console.log(res);
         const questionId = res.data.id;
         const optionCalls: Observable<ApiResponse<AnswerOptionDto>>[] = validOptions.map(opt => 
-          this.quizService.addanswerOption(this.courseId, this.quizId, questionId, {
+          this.answeroptionservice.addanswerOption( questionId, {
             text: opt.text.trim(),
             isCorrect: opt.isCorrect
           })
@@ -307,7 +307,7 @@ export class QuizBuilderComponent implements OnInit {
   {
      
     this.router.navigate(
-  ['/teacher/courses', this.courseId, 'quizzes', this.quizId,'add-question'],
+  ['teacher','quizzes', this.quizId,'add-question'],
   { queryParams: { name: this.quiz?.title } }
     )
   

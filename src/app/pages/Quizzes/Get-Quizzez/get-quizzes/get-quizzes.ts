@@ -87,7 +87,7 @@ get filteredQuizzes(): QuizDto[] {
   {
     
     this.router.navigate(
-  ['/teacher/courses', this.courseId, 'quizzes', quizId, 'builder'],
+  ['/teacher/quizzes', quizId, 'builder'],
  
 );
   }
