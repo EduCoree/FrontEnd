@@ -1,0 +1,36 @@
+<div class="chat-widget" id="chat-widget">
+  <!-- Chat Panel -->
+  @if (chatService.isOpen()) {
+    <div class="chat-widget__panel" @panelAnimation>
+      <app-chat-panel
+        [courseId]="courseId()"
+        (closed)="closeChat()" />
+    </div>
+  }
+
+  <!-- Floating Action Button -->
+  <button
+    (click)="toggleChat()"
+    class="chat-widget__fab"
+    [class.chat-widget__fab--active]="chatService.isOpen()"
+    id="chat-fab-btn"
+    @fabPulse
+    aria-label="Toggle AI chat">
+    <!-- Chat icon (when closed) -->
+    @if (!chatService.isOpen()) {
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="fab-icon">
+        <path d="M4.913 2.658c2.075-.27 4.19-.408 6.337-.408 2.147 0 4.262.139 6.337.408 1.922.25 3.291 1.861 3.405 3.727a4.403 4.403 0 0 0-1.032-.211 50.89 50.89 0 0 0-8.42 0c-2.358.196-4.04 2.19-4.04 4.434v4.286a4.47 4.47 0 0 0 2.433 3.984L7.28 21.53A.75.75 0 0 1 6 21v-2.234a4.75 4.75 0 0 1-1.526-.776 4.485 4.485 0 0 1-1.566-3.578V6.385a4.505 4.505 0 0 1 2.005-3.727ZM11.84 9.63a49.403 49.403 0 0 1 7.92 0c1.36.113 2.24 1.269 2.24 2.578v4.286c0 1.31-.88 2.465-2.24 2.578a49.36 49.36 0 0 1-7.92 0c-1.36-.113-2.24-1.269-2.24-2.578v-4.286c0-1.31.88-2.465 2.24-2.578Z" />
+      </svg>
+    } @else {
+      <!-- Close icon (when open) -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="fab-icon">
+        <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+      </svg>
+    }
+
+    <!-- Unread dot -->
+    @if (chatService.hasMessages() && !chatService.isOpen()) {
+      <span class="chat-widget__dot"></span>
+    }
+  </button>
+</div>

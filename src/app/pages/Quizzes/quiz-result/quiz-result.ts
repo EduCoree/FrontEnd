@@ -1,8 +1,9 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { AttemptResultDto } from '../../core/models/quiz';
-import { QuizService } from '../../core/services/quiz.service';
+import { AttemptResultDto } from '../../../core/models/quiz';
+import { QuizService } from '../../../core/services/quiz.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { StudentquizService } from '../../../core/services/studentquiz.service';
 
 @Component({
   selector: 'app-quiz-result',
@@ -21,7 +22,7 @@ export class QuizResult implements OnInit {
 
 
 
-  constructor(private quizservice:QuizService,private router:Router, private route:ActivatedRoute,private cdr:ChangeDetectorRef)
+  constructor(private studentquizservice:StudentquizService,private router:Router, private route:ActivatedRoute,private cdr:ChangeDetectorRef)
   {
      
   }
@@ -37,7 +38,7 @@ export class QuizResult implements OnInit {
     }
     else
     {
-      this.quizservice.getAttemptResult(this.quizId,this.AttemptId)
+      this.studentquizservice.getAttemptResult(this.quizId,this.AttemptId)
       .subscribe(
         {
           next:(res)=>

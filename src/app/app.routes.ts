@@ -1,13 +1,13 @@
-import { QuizHistory } from './pages/quiz-history/quiz-history';
-import { QuizResult } from './pages/quiz-result/quiz-result';
+import { QuizHistory } from './pages/Quizzes/quiz-history/quiz-history';
+import { QuizResult } from './pages/Quizzes/quiz-result/quiz-result';
 import { Categories } from './pages/centers/categories/categories';
 // import { CenterEdit } from './pages/centers/center-edit/center-edit/center-edit';
 
-import { QuestionsList } from './pages/questions-list/questions-list';
-import { StudentQuizIntro } from './pages/student-quiz-intro/student-quiz-intro';
-import { ActiveQuiz } from './pages/active-quiz/active-quiz';
-import { AddQuestion } from './pages/add-question/add-question';
-import { QuizSubmission } from './pages/quiz-submission/quiz-submission';
+import { QuestionsList } from './pages/Quizzes/questions-list/questions-list';
+import { StudentQuizIntro } from './pages/Quizzes/student-quiz-intro/student-quiz-intro';
+import { ActiveQuiz } from './pages/Quizzes/active-quiz/active-quiz';
+import { AddQuestion } from './pages/Quizzes/add-question/add-question';
+import { QuizSubmission } from './pages/Quizzes/quiz-submission/quiz-submission';
 import { QuizComponent } from './pages/Quizzes/Get-Quizzez/get-quizzes/get-quizzes';
 import { QuizBuilderComponent } from './pages/Quizzes/quiz-builder/quiz-builder';
 import { CreateQuizComponent } from './pages/Quizzes/CreateQuiz/create-quiz/create-quiz';
@@ -42,6 +42,7 @@ import { authGuard } from './core/guards/auth-guard';
 import { roleGuard } from './core/guards/role-guard';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard';
 import { TeacherDashboardComponent } from './pages/teacher-dashboard/teacher-dashboard';
+import { MyCoursesComponent } from './pages/student/my-courses/my-courses.component';
 export const routes: Routes = [
    // ── Public ────────────────────────────────────────────────────────────────
   {
@@ -118,7 +119,7 @@ export const routes: Routes = [
  
 { path: 'teacher/dashboard/2', component: TeacherDashboardComponent  },
  
-{ path: 'student/dashboard', component: StudentDashboardComponent },
+// { path: 'student/dashboard/2', component: StudentDashboardComponent },
  
     
   {
@@ -312,39 +313,6 @@ export const routes: Routes = [
 }
 ,
 
-{
-  path: 'questions',
-  component : QuestionsList,
-},
-
-{
-  path: 'quiz/intro/:quizId',
-  component : StudentQuizIntro,
-},
-
-{
-  path: 'quiz/:quizId/attempt/:attemptId',
-  component : ActiveQuiz,
-},
-
-{
-  path: 'teacher/courses/:courseId/quizzes/:quizId/add-question',
-  component : AddQuestion,
-},
-
-{
-  path: 'Quiz/submission',
-  component : QuizSubmission,
-},
-  
-{
-  path: 'Quiz/:quizId/result/:attemptId',
-  component : QuizResult,
-},
-{
-  path: 'Quiz/history',
-  component : QuizHistory,
-},
 
 
 
@@ -365,6 +333,7 @@ export const routes: Routes = [
   canActivate: [authGuard, roleGuard('Student')],
   children: [
     { path: 'dashboard', component: StudentDashboardComponent },
+    { path: 'my-courses', component: MyCoursesComponent },
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
   ]
 },
@@ -391,12 +360,32 @@ export const routes: Routes = [
   component: QuizComponent,
 },
 {
-  path:'teacher/courses/:courseId/quizzes/:quizId/builder',
+  path:'teacher/quizzes/:quizId/builder',
   component: QuizBuilderComponent
 },
+
 {
-  path:'abc',
-  component:QuizBuilderComponent
+  path: 'quiz/intro/:quizId',
+  component : StudentQuizIntro,
+},
+
+{
+  path: 'quiz/:quizId/attempt/:attemptId',
+  component : ActiveQuiz,
+},
+
+{
+  path: 'teacher/quizzes/:quizId/add-question',
+  component : AddQuestion,
+},
+  
+{
+  path: 'Quiz/:quizId/result/:attemptId',
+  component : QuizResult,
+},
+{
+  path: 'quiz/history',
+  component : QuizHistory,
 },
 
 

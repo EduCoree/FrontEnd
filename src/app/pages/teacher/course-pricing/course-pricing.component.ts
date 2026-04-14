@@ -68,10 +68,10 @@ public router: Router,
 
   publishAndFinish(): void {
     this.isPublishing.set(true);
-    // أول حاجة احفظ التسعير
+    // save pricing
     this.courseService.updatePricing(this.courseId, this.pricingForm.value).subscribe({
       next: () => {
-        // بعدين انشر الكورس
+        // then publish the course
         this.courseService.publishCourse(this.courseId).subscribe({
           next: () => {
             this.isPublishing.set(false);
@@ -110,4 +110,17 @@ public router: Router,
     const price = this.pricingForm.get('price')?.value || 0;
     return Math.round(price * 0.15 * 100) / 100;
   }
+  goToStep(step: number): void {
+  switch(step) {
+    case 1:
+      this.router.navigate(['/teacher/courses/create']);
+      break;
+    case 2:
+      this.router.navigate(['/teacher/courses', this.courseId, 'sections']);
+      break;
+    case 3:
+      this.router.navigate(['/teacher/courses', this.courseId, 'media']);
+      break;
+  }
+}
 }

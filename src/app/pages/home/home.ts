@@ -4,10 +4,11 @@ import { RouterModule } from '@angular/router';
 import { PublicCourseService } from '../../core/services/public-course.service';
 import { CourseSummaryDto } from '../../core/models/course';
 import { CourseCardComponent } from '../Courses/course-card/course-card.component';
+import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, CourseCardComponent],
+  imports: [CommonModule, RouterModule, CourseCardComponent , TranslateModule],
   templateUrl: './home.html',
 })
 export class Home implements OnInit {

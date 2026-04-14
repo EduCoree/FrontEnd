@@ -1,21 +1,24 @@
-
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, effect } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CenterService } from '../../../../core/services/center.service';
 import { Center } from '../../../../core/models/center.model';
 import { Sidebar } from "../../../../shared/components/ui/sidebar/sidebar";
+import { TranslateModule } from '@ngx-translate/core';
+import { LanguageService } from '../../../../core/services/language.service'; 
+
 @Component({
   selector: 'app-center-detail',
-  imports: [CommonModule, RouterLink, Sidebar],
+  imports: [CommonModule, RouterLink, Sidebar, TranslateModule],
   templateUrl: './center-detail.html',
   styleUrl: './center-detail.css',
 })
-export class CenterDetail implements OnInit{
+export class CenterDetail implements OnInit {
 
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private centerService = inject(CenterService);
+  private langService = inject(LanguageService); 
 
   center = signal<Center | null>(null);
   loading = signal(true);
@@ -23,9 +26,23 @@ export class CenterDetail implements OnInit{
   showDeleteModal = signal(false);
   deleting = signal(false);
 
+  private centerId = Number(this.route.snapshot.paramMap.get('id'));
+
+  constructor() {
+   
+    effect(() => {
+      this.langService.currentLang(); 
+      this.loadCenter();
+    });
+  }
+
   ngOnInit() {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.centerService.getById(id).subscribe({
+    
+  }
+
+  loadCenter() {
+    this.loading.set(true);
+    this.centerService.getById(this.centerId).subscribe({
       next: (data) => {
         this.center.set(data);
         this.loading.set(false);

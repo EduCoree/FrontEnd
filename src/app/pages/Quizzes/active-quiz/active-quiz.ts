@@ -1,10 +1,12 @@
+import { StudentquizService } from './../../../core/services/studentquiz.service';
 
 import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
-import { StudentAnswerOptionDto, StudentQuestionDto, StudentQuizDto } from '../../core/models/quiz';
+import { StudentAnswerOptionDto, StudentQuestionDto, StudentQuizDto } from '../../../core/models/quiz';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { QuizService } from '../../core/services/quiz.service';
+import { QuizService } from '../../../core/services/quiz.service';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { QuizSubmission } from "../quiz-submission/quiz-submission";
+
 
 @Component({
   selector: 'app-active-quiz',
@@ -33,7 +35,7 @@ quizId!: number;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private quizService: QuizService,
+    private studentquizservice: StudentquizService,
     private cdr:ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
@@ -51,7 +53,7 @@ quizId!: number;
   loadQuiz(): void {
     this.loading = true;
     this.error = null;
-    this.quizService.getStudentQuiz(this.quizId).subscribe({
+    this.studentquizservice.getStudentQuiz(this.quizId).subscribe({
       next: (res) => {
         this.quiz = res.data;
         this.loading = false;
@@ -183,7 +185,7 @@ quizId!: number;
     }));
     this.cdr.detectChanges();
  
-    this.quizService.submitAttempt(this.quizId, this.attemptId, { answers }).subscribe({
+    this.studentquizservice.submitAttempt(this.quizId, this.attemptId, { answers }).subscribe({
       next: (res) => {
         this.submitting = false;
         this.router.navigate(['/Quiz',this.quizId,'result',this.attemptId],{state:{result:res.data}})

@@ -5,10 +5,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CenterService } from '../../../core/services/center.service';
 import { Sidebar } from "../../../shared/components/ui/sidebar/sidebar";
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-center-logo',
-  imports: [CommonModule, ReactiveFormsModule, Sidebar],
+  imports: [CommonModule, ReactiveFormsModule, Sidebar , TranslateModule],
   templateUrl: './center-logo.html',
   styleUrl: './center-logo.css',
 })
@@ -54,7 +55,7 @@ private route = inject(ActivatedRoute);
       }
     });
 
-    // ✅ live preview لما يكتب URL
+
     this.form.get('logoUrl')?.valueChanges.subscribe(val => {
       this.previewUrl.set(val);
     });

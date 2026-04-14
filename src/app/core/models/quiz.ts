@@ -1,4 +1,4 @@
-import { StudentQuizIntro } from './../../pages/student-quiz-intro/student-quiz-intro';
+import { StudentQuizIntro } from '../../pages/Quizzes/student-quiz-intro/student-quiz-intro';
 export enum QuestionType {
   MCQ = 'MCQ',
   TrueFalse = 'TrueFalse'

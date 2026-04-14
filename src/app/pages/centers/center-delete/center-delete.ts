@@ -4,11 +4,12 @@ import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CenterService } from '../../../core/services/center.service';
 import { Sidebar } from "../../../shared/components/ui/sidebar/sidebar";
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @Component({
   selector: 'app-center-delete',
-  imports: [CommonModule, Sidebar],
+  imports: [CommonModule, Sidebar , TranslateModule],
   templateUrl: './center-delete.html',
   styleUrl: './center-delete.css',
 })

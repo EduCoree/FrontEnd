@@ -1,0 +1,106 @@
+:host {
+  display: block;
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  font-family: 'Inter', sans-serif;
+}
+
+.chat-widget {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+
+  &__panel {
+    transform-origin: bottom right;
+  }
+
+  // ── FAB ──────────────────────────────────────────────────────────────────
+  &__fab {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    border: none;
+    background: linear-gradient(135deg, #2e6858 0%, #3a7d68 50%, #7db8a5 100%);
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow:
+      0 8px 25px rgba(46, 104, 88, 0.35),
+      0 0 0 0 rgba(125, 184, 165, 0.4);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: fabGlow 3s ease-in-out infinite;
+
+    &:hover {
+      transform: scale(1.08);
+      box-shadow:
+        0 12px 35px rgba(46, 104, 88, 0.45),
+        0 0 0 0 rgba(125, 184, 165, 0.4);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    &--active {
+      border-radius: 14px;
+      background: linear-gradient(135deg, #404945 0%, #2e3131 100%);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+      animation: none;
+
+      &:hover {
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+      }
+    }
+
+    .fab-icon {
+      width: 26px;
+      height: 26px;
+      transition: transform 0.2s ease;
+    }
+  }
+
+  // ── Unread Dot ─────────────────────────────────────────────────────────
+  &__dot {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 14px;
+    height: 14px;
+    background: #ba1a1a;
+    border-radius: 50%;
+    border: 2.5px solid #ffffff;
+    animation: dotPulse 2s ease-in-out infinite;
+  }
+}
+
+@keyframes fabGlow {
+  0%, 100% {
+    box-shadow:
+      0 8px 25px rgba(46, 104, 88, 0.35),
+      0 0 0 0 rgba(125, 184, 165, 0.4);
+  }
+  50% {
+    box-shadow:
+      0 8px 25px rgba(46, 104, 88, 0.35),
+      0 0 0 8px rgba(125, 184, 165, 0);
+  }
+}
+
+@keyframes dotPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+// ── Mobile Responsive ──────────────────────────────────────────────────────
+@media (max-width: 640px) {
+  :host {
+    bottom: 16px;
+    right: 16px;
+  }
+}

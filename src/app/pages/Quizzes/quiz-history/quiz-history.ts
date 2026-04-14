@@ -1,9 +1,10 @@
 import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { AttemptHistoryDto } from '../../core/models/quiz';
-import { QuizService } from '../../core/services/quiz.service';
+import { AttemptHistoryDto } from '../../../core/models/quiz';
+import { QuizService } from '../../../core/services/quiz.service';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { StudentquizService } from '../../../core/services/studentquiz.service';
 
 @Component({
   selector: 'app-quiz-history',
@@ -21,7 +22,7 @@ attempts: AttemptHistoryDto[] = [];
 
 
   constructor(
-    private quizService: QuizService,
+    private studentquizservice: StudentquizService,
     @Inject(PLATFORM_ID) private platformId: Object,
     private cdr:ChangeDetectorRef
 
@@ -35,7 +36,7 @@ attempts: AttemptHistoryDto[] = [];
 
   loadHistory(): void {
     this.loading = true;
-    this.quizService.getHistory().subscribe({
+    this.studentquizservice.getHistory().subscribe({
       next: (res) => {
         this.attempts = res.data;
         this.loading = false;
