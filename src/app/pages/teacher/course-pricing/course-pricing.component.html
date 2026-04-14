@@ -1,68 +1,109 @@
-<!-- صفحة التسعير والنشر - Step 4 -->
+<!-- Step 4: Pricing - Unified Design -->
 <div class="bg-surface text-on-surface min-h-screen font-body">
 
-  <!-- السايدبار -->
-  <aside class="hidden md:flex h-screen w-72 sticky top-0 bg-surface-container flex-col p-6 gap-8 z-50">
+  <!-- ═══ Sidebar (Unified: w-72) ═══════════════════════════════════ -->
+  <aside class="fixed left-0 top-0 h-full w-72 bg-surface-container flex-col p-6 gap-8 z-50 hidden md:flex">
     <div class="flex flex-col gap-1 px-4">
-      <span class="text-lg font-black text-primary cursor-pointer" (click)="goToDashboard()">EduCore</span>
-      <span class="uppercase tracking-widest text-xs font-bold text-on-surface-variant">Course Studio</span>
+      <span class="text-lg font-black text-primary cursor-pointer" (click)="goToDashboard()">
+        EduCore
+      </span>
+      <span class="uppercase tracking-widest text-xs font-bold text-on-surface-variant">
+        Course Builder
+      </span>
     </div>
-    <nav class="flex flex-col gap-2">
-      <a class="flex items-center gap-3 p-3 text-on-surface-variant/60 hover:bg-white/50 rounded-full transition-all cursor-pointer">
+    
+    <nav class="flex flex-col gap-2 mt-4">
+      <a (click)="goToStep(1)"
+        class="flex items-center gap-4 text-on-surface-variant/60 px-6 py-3 rounded-full hover:bg-surface-container-high transition-all cursor-pointer">
         <span class="material-symbols-outlined">info</span>
         <span class="uppercase tracking-widest text-xs font-bold">Course Info</span>
       </a>
-      <a class="flex items-center gap-3 p-3 text-on-surface-variant/60 hover:bg-white/50 rounded-full transition-all cursor-pointer"
-        (click)="router.navigate(['/teacher/courses', courseId, 'sections'])">
+      
+      <a (click)="goToStep(2)"
+        class="flex items-center gap-4 text-on-surface-variant/60 px-6 py-3 rounded-full hover:bg-surface-container-high transition-all cursor-pointer">
         <span class="material-symbols-outlined">menu_book</span>
         <span class="uppercase tracking-widest text-xs font-bold">Curriculum</span>
       </a>
-      <a class="flex items-center gap-3 p-3 text-on-surface-variant/60 hover:bg-white/50 rounded-full transition-all cursor-pointer"
-        (click)="goBack()">
+      
+      <a (click)="goBack()"
+        class="flex items-center gap-4 text-on-surface-variant/60 px-6 py-3 rounded-full hover:bg-surface-container-high transition-all cursor-pointer">
         <span class="material-symbols-outlined">video_library</span>
         <span class="uppercase tracking-widest text-xs font-bold">Media</span>
       </a>
+      
       <!-- Active -->
-      <a class="flex items-center gap-3 p-3 bg-white text-primary rounded-full shadow-sm">
+      <a class="flex items-center gap-4 bg-white text-primary rounded-full px-6 py-3 shadow-sm">
         <span class="material-symbols-outlined">payments</span>
         <span class="uppercase tracking-widest text-xs font-bold">Pricing</span>
       </a>
     </nav>
-    <div class="mt-auto bg-white text-primary rounded-xl p-4 shadow-sm">
-      <p class="uppercase tracking-widest text-xs font-bold mb-1 text-on-surface-variant">Step 4 of 4</p>
-      <p class="font-bold text-sm">Pricing & Publish</p>
-    </div>
+    
+    <!-- <div class="mt-auto bg-white rounded-2xl p-6 shadow-sm border border-primary/10">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-10 h-10 bg-primary-container rounded-xl flex items-center justify-center">
+          <span class="material-symbols-outlined text-primary">emoji_events</span>
+        </div>
+        <div>
+          <p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Almost There!</p>
+          <p class="text-sm font-bold text-primary">Final Step</p>
+        </div>
+      </div>
+      <div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+        <div class="h-full bg-gradient-to-r from-primary to-primary-fixed w-full rounded-full"></div>
+      </div>
+    </div> -->
   </aside>
 
-  <!-- المحتوى الرئيسي -->
-  <main class="flex-1 flex flex-col min-w-0 md:ml-72">
+  <!-- ═══ Main Content (Unified: ml-72) ═══════════════════════════ -->
+  <main class="md:ml-72 min-h-screen pb-32">
 
-    <!-- الهيدر -->
-    <header class="flex justify-between items-center w-full px-8 py-4 bg-surface/70 backdrop-blur-xl sticky top-0 z-40 border-b border-outline-variant/10">
-      <div class="flex items-center gap-6">
-        <span class="text-on-surface-variant font-semibold hover:text-primary cursor-pointer" (click)="goBack()">Media</span>
-        <span class="text-primary border-b-4 border-primary pb-2 font-semibold">Pricing</span>
+    <!-- ═══ Header (Unified) ═══════════════════════════════════════ -->
+    <header class="flex justify-between items-center w-full px-8 py-3 bg-surface/90 backdrop-blur-xl sticky top-0 z-40 border-b border-outline-variant/10">
+      <div class="flex items-center gap-8">
+        <!-- Step Indicator -->
+        <nav class="hidden lg:flex items-center gap-1 bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant/10">
+          <div class="flex items-center gap-2 px-3 py-1 text-on-surface-variant/40">
+            <span class="text-xs font-bold">01</span>
+            <span class="text-xs font-bold uppercase tracking-wider">Course Info</span>
+          </div>
+          <div class="w-3 h-px bg-outline-variant/30"></div>
+          <div class="flex items-center gap-2 px-3 py-1 text-on-surface-variant/40">
+            <span class="text-xs font-bold">02</span>
+            <span class="text-xs font-bold uppercase tracking-wider">Curriculum</span>
+          </div>
+          <div class="w-3 h-px bg-outline-variant/30"></div>
+          <div class="flex items-center gap-2 px-3 py-1 text-on-surface-variant/40">
+            <span class="text-xs font-bold">03</span>
+            <span class="text-xs font-bold uppercase tracking-wider">Media</span>
+          </div>
+          <div class="w-3 h-px bg-outline-variant/30"></div>
+          <div class="flex items-center gap-2 px-3 py-1 bg-primary text-white rounded-full shadow-sm">
+            <span class="text-xs font-bold">04</span>
+            <span class="text-xs font-bold uppercase tracking-wider">Pricing</span>
+          </div>
+        </nav>
       </div>
-      <div class="flex items-center gap-4">
-        <button (click)="saveDraft()"
-          class="text-on-surface-variant font-semibold hover:text-primary px-4 py-2 transition-colors text-sm">
-          Save Draft
+      
+      <div class="flex items-center gap-3">
+        <button (click)="goToDashboard()"
+          class="px-5 py-1.5 rounded-full border border-outline-variant text-on-surface text-sm font-semibold hover:bg-surface-container transition-colors">
+          Cancel
         </button>
-        <button (click)="publishAndFinish()" [disabled]="isPublishing()"
-          class="bg-primary text-on-primary px-6 py-2 rounded-full font-bold transition-all active:scale-95 disabled:opacity-50 text-sm">
-          {{ isPublishing() ? 'Publishing...' : 'Publish' }}
+        <button (click)="saveDraft()"
+          class="px-7 py-1.5 rounded-full bg-primary text-white text-sm font-bold hover:opacity-90 transition-all">
+          Save Draft
         </button>
       </div>
     </header>
 
-    <!-- المحتوى -->
-    <div class="flex-1 px-8 py-12 flex flex-col md:flex-row gap-12 max-w-7xl mx-auto w-full">
+    <!-- Content -->
+    <div class="px-8 py-8 flex flex-col md:flex-row gap-12 max-w-7xl mx-auto w-full">
 
-      <!-- القسم الرئيسي -->
+      <!-- Main Section -->
       <div class="flex-[1.5] space-y-10">
 
         <!-- Progress -->
-        <div class="space-y-4">
+        <!-- <div class="space-y-4">
           <div class="flex justify-between items-end">
             <div>
               <span class="uppercase tracking-widest text-xs font-bold text-primary">Step 04 of 04</span>
@@ -73,9 +114,9 @@
           <div class="h-4 w-full bg-surface-variant rounded-full overflow-hidden">
             <div class="h-full bg-gradient-to-r from-primary to-primary-fixed w-full rounded-full transition-all duration-700"></div>
           </div>
-        </div>
+        </div> -->
 
-        <!-- رسالة النجاح -->
+        <!-- Success Message -->
         <div *ngIf="successMessage()"
           class="bg-primary-container text-on-primary-container p-4 rounded-xl text-sm font-semibold text-center">
           ✓ {{ successMessage() }}
@@ -100,7 +141,7 @@
               </label>
             </div>
 
-            <!-- السعر -->
+            <!-- Price -->
             <div *ngIf="pricingForm.get('pricingType')?.value === 'Paid'" class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div class="space-y-2">
                 <label class="uppercase tracking-widest text-xs font-bold text-on-surface-variant ml-2">Course Price (USD)</label>
@@ -148,20 +189,6 @@
           </div>
         </section>
 
-        <!-- Navigation Footer -->
-        <div class="flex justify-between items-center pt-8 border-t border-surface-variant">
-          <button (click)="goBack()"
-            class="flex items-center gap-2 text-on-surface-variant font-bold hover:text-primary transition-colors">
-            <span class="material-symbols-outlined">arrow_back</span>
-            Back to Media
-          </button>
-          <button (click)="publishAndFinish()" [disabled]="isPublishing()"
-            class="bg-primary text-on-primary px-10 py-4 rounded-full font-bold shadow-lg hover:scale-105 active:scale-95 transition-all disabled:opacity-50 flex items-center gap-3">
-            <span *ngIf="isPublishing()" class="material-symbols-outlined animate-spin text-sm">progress_activity</span>
-            {{ isPublishing() ? 'Publishing...' : 'Publish Course 🚀' }}
-          </button>
-        </div>
-
       </div>
 
       <!-- Insights Sidebar -->
@@ -206,14 +233,7 @@
             </div>
           </div>
 
-          <!-- Publish Button -->
-          <button (click)="publishAndFinish()" [disabled]="isPublishing()"
-            class="w-full mt-4 py-4 bg-primary text-on-primary rounded-full font-bold shadow-lg hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 flex items-center justify-center gap-2">
-            <span class="material-symbols-outlined text-sm">rocket_launch</span>
-            {{ isPublishing() ? 'Publishing...' : 'Publish Course' }}
-          </button>
-
-          <p class="text-xs text-on-surface-variant text-center">
+          <p class="text-xs text-on-surface-variant text-center pt-4 border-t border-outline-variant/10">
             You can unpublish anytime from your dashboard
           </p>
         </div>
@@ -221,7 +241,34 @@
       </aside>
 
     </div>
-
   </main>
+
+  <!-- ═══ Footer (Unified) ══════════════════════════════════════════ -->
+  <footer class="fixed bottom-0 md:left-72 left-0 right-0 z-40 px-8 pb-6">
+    <div class="bg-white shadow-2xl rounded-full px-8 py-4 flex items-center justify-between border border-primary/10">
+      <div class="flex items-center gap-3">
+        <div class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></div>
+        <div class="flex flex-col">
+          <span class="text-xs font-bold text-on-surface">
+            {{ isPublishing() ? 'Publishing...' : 'Ready' }}
+          </span>
+          <span class="text-xs font-medium text-on-surface-variant">Step 4 of 4</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <button type="button" (click)="goBack()"
+          class="px-6 py-2 rounded-full text-on-surface-variant text-sm font-bold hover:text-on-surface transition-colors">
+          Back
+        </button>
+        <div class="w-px h-6 bg-outline-variant/20"></div>
+        <button type="button" (click)="publishAndFinish()" [disabled]="isPublishing()"
+          class="px-10 py-3 bg-primary text-white rounded-full text-sm font-extrabold flex items-center gap-3 hover:opacity-95 transition-all shadow-xl disabled:opacity-50">
+          <span *ngIf="isPublishing()" class="material-symbols-outlined text-sm animate-spin">progress_activity</span>
+          <span class="material-symbols-outlined text-lg">rocket_launch</span>
+          {{ isPublishing() ? 'Publishing...' : 'Publish Course' }}
+        </button>
+      </div>
+    </div>
+  </footer>
 
 </div>

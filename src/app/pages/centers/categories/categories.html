@@ -2,21 +2,20 @@
 
 <div class="max-w-4xl mx-auto px-6 pt-8 pb-12">
 
-  <!-- Header -->
+ 
   <div class="mb-8 flex items-center justify-between flex-wrap gap-4">
     <div>
-    
-      <h2 class="text-3xl font-extrabold text-on-surface">Categories</h2>
-      <p class="text-on-surface-variant text-sm mt-1">Manage categories for this training center</p>
+      <h2 class="text-3xl font-extrabold text-on-surface">{{ 'categories.title' | translate }}</h2>
+      <p class="text-on-surface-variant text-sm mt-1">{{ 'categories.manage' | translate }}</p>
     </div>
     <button (click)="openCreatePanel()"
             class="flex items-center gap-2 bg-primary text-on-primary px-5 py-2.5 rounded-xl font-medium text-sm active:scale-95 transition-transform">
       <span class="material-symbols-outlined text-lg">add</span>
-      Add Category
+      {{ 'categories.add' | translate }}
     </button>
   </div>
 
-  <!-- Error -->
+  
   @if (error()) {
     <div class="mb-6 px-5 py-3 rounded-xl bg-error-container text-on-error-container text-sm flex items-center gap-2">
       <span class="material-symbols-outlined text-lg">error</span>
@@ -24,53 +23,48 @@
     </div>
   }
 
-  <!-- Loading -->
+ 
   @if (loading()) {
     <div class="flex justify-center py-16">
       <div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
     </div>
   }
 
-  <!-- Empty State -->
+ 
   @if (!loading() && categories().length === 0) {
     <div class="flex flex-col items-center justify-center py-20 text-center">
       <span class="material-symbols-outlined text-5xl text-on-surface-variant mb-4">category</span>
-      <p class="text-on-surface font-semibold text-lg">No categories yet</p>
-      <p class="text-on-surface-variant text-sm mt-1">Click "Add Category" to create the first one</p>
+      <p class="text-on-surface font-semibold text-lg">{{ 'categories.noCategories' | translate }}</p>
+      <p class="text-on-surface-variant text-sm mt-1">{{ 'categories.noCategoriesHint' | translate }}</p>
     </div>
   }
 
-  <!-- Categories Table -->
+ 
   @if (!loading() && categories().length > 0) {
     <div class="bg-surface-container-lowest border border-outline-variant/20 rounded-2xl overflow-hidden">
 
-      <!-- Table Header -->
+    
       <div class="grid grid-cols-12 gap-4 px-6 py-3 bg-surface-container border-b border-outline-variant/20">
-        <span class="col-span-1 text-xs font-bold text-on-surface-variant uppercase tracking-wider">ID</span>
-        <span class="col-span-4 text-xs font-bold text-on-surface-variant uppercase tracking-wider">Name</span>
-        <span class="col-span-4 text-xs font-bold text-on-surface-variant uppercase tracking-wider">Slug</span>
-        <span class="col-span-2 text-xs font-bold text-on-surface-variant uppercase tracking-wider">Created</span>
-        <span class="col-span-1 text-xs font-bold text-on-surface-variant uppercase tracking-wider">Actions</span>
+        <span class="col-span-1 text-xs font-bold text-on-surface-variant uppercase tracking-wider">{{ 'categories.id' | translate }}</span>
+        <span class="col-span-4 text-xs font-bold text-on-surface-variant uppercase tracking-wider">{{ 'categories.name' | translate }}</span>
+        <span class="col-span-4 text-xs font-bold text-on-surface-variant uppercase tracking-wider">{{ 'categories.slug' | translate }}</span>
+        <span class="col-span-2 text-xs font-bold text-on-surface-variant uppercase tracking-wider">{{ 'categories.created' | translate }}</span>
+        <span class="col-span-1 text-xs font-bold text-on-surface-variant uppercase tracking-wider">{{ 'categories.actions' | translate }}</span>
       </div>
 
-      <!-- Table Rows -->
+      
       @for (cat of categories(); track cat.id) {
         <div class="grid grid-cols-12 gap-4 px-6 py-4 border-b border-outline-variant/10 hover:bg-surface-container/50 transition-colors items-center">
-
           <span class="col-span-1 text-sm text-on-surface-variant font-mono">#{{ cat.id }}</span>
-
           <span class="col-span-4 text-sm font-semibold text-on-surface">{{ cat.name }}</span>
-
           <span class="col-span-4">
             <code class="text-xs bg-surface-container px-2 py-1 rounded-lg text-on-surface-variant font-mono">
               {{ cat.slug }}
             </code>
           </span>
-
           <span class="col-span-2 text-xs text-on-surface-variant">
             {{ cat.createdAt | date:'MMM d, y' }}
           </span>
-
           <div class="col-span-1 flex items-center gap-1">
             <button (click)="openEditPanel(cat)"
                     class="w-8 h-8 rounded-lg hover:bg-surface-container flex items-center justify-center transition-colors text-on-surface-variant hover:text-primary">
@@ -86,7 +80,7 @@
     </div>
 
     <p class="text-xs text-on-surface-variant text-right mt-3">
-      {{ categories().length }} categories total
+      {{ categories().length }} {{ 'categories.total' | translate }}
     </p>
   }
 </div>
@@ -94,14 +88,10 @@
 
 @if (showPanel()) {
   <div class="fixed inset-0 z-50 flex">
-
-  
     <div class="flex-1 bg-black/30" (click)="closePanel()"></div>
-
-    
     <div class="w-full max-w-md bg-surface-container-lowest h-full shadow-xl flex flex-col">
 
-      <!-- Panel Header -->
+   
       <div class="flex items-center justify-between px-6 py-5 border-b border-outline-variant/20">
         <div>
           <div class="flex items-center gap-2 mb-1">
@@ -119,7 +109,7 @@
             </code>
           </div>
           <h3 class="text-lg font-bold text-on-surface">
-            {{ panelMode() === 'create' ? 'Add Category' : 'Rename Category' }}
+            {{ (panelMode() === 'create' ? 'categories.addCategory' : 'categories.renameCategory') | translate }}
           </h3>
         </div>
         <button (click)="closePanel()"
@@ -128,9 +118,8 @@
         </button>
       </div>
 
-      <!-- Panel Body -->
+      
       <div class="flex-1 px-6 py-6 overflow-y-auto">
-
         @if (panelError()) {
           <div class="mb-4 px-4 py-3 rounded-xl bg-error-container text-on-error-container text-sm flex items-center gap-2">
             <span class="material-symbols-outlined text-lg">error</span>
@@ -139,72 +128,59 @@
         }
 
         <form [formGroup]="form" (ngSubmit)="saveCategory()" class="space-y-6">
-
-          <!-- Name Input -->
           <div class="flex flex-col gap-2">
-            <label class="text-sm font-semibold text-on-surface">Category Name *</label>
+            <label class="text-sm font-semibold text-on-surface">{{ 'categories.nameLabel' | translate }}</label>
             <input formControlName="name" type="text"
                    class="w-full bg-surface-container rounded-xl px-4 py-3 border outline-none text-sm transition-colors"
                    [class.border-error]="form.get('name')?.invalid && form.get('name')?.touched"
                    [class.border-outline-variant]="!(form.get('name')?.invalid && form.get('name')?.touched)"
-                   [class.focus:border-primary]="true"
-                   placeholder="e.g. Web Development" />
+                   [placeholder]="'categories.namePlaceholder' | translate" />
             @if (form.get('name')?.invalid && form.get('name')?.touched) {
-              <span class="text-xs text-error">Name is required</span>
+              <span class="text-xs text-error">{{ 'categories.nameError' | translate }}</span>
             }
           </div>
 
-          <!-- Slug Preview -->
           <div class="flex flex-col gap-2">
-            <label class="text-sm font-semibold text-on-surface">Slug Preview</label>
+            <label class="text-sm font-semibold text-on-surface">{{ 'categories.slugPreview' | translate }}</label>
             <div class="flex items-center gap-2 bg-surface-container rounded-xl px-4 py-3 border border-outline-variant/20">
               <span class="material-symbols-outlined text-on-surface-variant text-lg">tag</span>
-              <code class="text-sm text-on-surface-variant font-mono">
-                {{ slugPreview || 'auto-generated' }}
-              </code>
+              <code class="text-sm text-on-surface-variant font-mono">{{ slugPreview || 'auto-generated' }}</code>
             </div>
-            <p class="text-xs text-on-surface-variant">Auto-generated from the name</p>
+            <p class="text-xs text-on-surface-variant">{{ 'categories.slugAuto' | translate }}</p>
           </div>
 
-          <!-- Submit -->
-          <button type="submit"
-                  [disabled]="saving()"
+          <button type="submit" [disabled]="saving()"
                   class="w-full bg-primary text-on-primary py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform disabled:opacity-60">
             @if (saving()) {
               <div class="w-4 h-4 border-2 border-on-primary border-t-transparent rounded-full animate-spin"></div>
-              Saving...
+              {{ 'categories.saving' | translate }}
             } @else {
-              <span class="material-symbols-outlined text-lg">
-                {{ panelMode() === 'create' ? 'add' : 'save' }}
-              </span>
-              {{ panelMode() === 'create' ? 'Create Category' : 'Save Changes' }}
+              <span class="material-symbols-outlined text-lg">{{ panelMode() === 'create' ? 'add' : 'save' }}</span>
+              {{ (panelMode() === 'create' ? 'categories.createCategory' : 'categories.saveChanges') | translate }}
             }
           </button>
-
         </form>
       </div>
     </div>
   </div>
 }
 
-<!-- Delete Modal -->
+
 @if (showDeleteModal()) {
   <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
     <div class="bg-surface-container-lowest rounded-2xl p-8 w-full max-w-sm border border-outline-variant/20">
-
       <div class="flex justify-center mb-4">
         <div class="w-14 h-14 rounded-full bg-error-container flex items-center justify-center">
           <span class="material-symbols-outlined text-error text-2xl">delete_forever</span>
         </div>
       </div>
 
-      <h3 class="text-xl font-bold text-on-surface text-center mb-2">Delete Category</h3>
+      <h3 class="text-xl font-bold text-on-surface text-center mb-2">{{ 'categories.deleteTitle' | translate }}</h3>
       <p class="text-on-surface-variant text-sm text-center mb-6">
-        Are you sure you want to delete
+        {{ 'categories.deleteConfirm' | translate }}
         <span class="font-semibold text-on-surface">"{{ categoryToDelete()?.name }}"</span>?
       </p>
 
-      <!-- API Badge -->
       <div class="bg-surface-container rounded-xl px-4 py-2 mb-6 flex items-center gap-2">
         <span class="text-error text-xs font-bold">DELETE</span>
         <code class="text-xs font-mono text-on-surface-variant">
@@ -220,20 +196,19 @@
       }
 
       <div class="flex flex-col gap-3">
-        <button (click)="confirmDelete()"
-                [disabled]="deleting()"
+        <button (click)="confirmDelete()" [disabled]="deleting()"
                 class="w-full bg-error text-on-error py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform disabled:opacity-60">
           @if (deleting()) {
             <div class="w-4 h-4 border-2 border-on-error border-t-transparent rounded-full animate-spin"></div>
-            Deleting...
+            {{ 'categories.deleting' | translate }}
           } @else {
             <span class="material-symbols-outlined text-lg">delete</span>
-            Yes, Delete
+            {{ 'categories.yesDelete' | translate }}
           }
         </button>
         <button (click)="closeDeleteModal()"
                 class="w-full bg-surface-container text-on-surface py-3.5 rounded-xl font-bold hover:bg-surface-container-high transition-colors">
-          Cancel
+          {{ 'categories.cancel' | translate }}
         </button>
       </div>
     </div>

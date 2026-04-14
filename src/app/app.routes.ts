@@ -42,6 +42,7 @@ import { authGuard } from './core/guards/auth-guard';
 import { roleGuard } from './core/guards/role-guard';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard';
 import { TeacherDashboardComponent } from './pages/teacher-dashboard/teacher-dashboard';
+import { MyCoursesComponent } from './pages/student/my-courses/my-courses.component';
 export const routes: Routes = [
    // ── Public ────────────────────────────────────────────────────────────────
   {
@@ -118,7 +119,7 @@ export const routes: Routes = [
  
 { path: 'teacher/dashboard/2', component: TeacherDashboardComponent  },
  
-{ path: 'student/dashboard', component: StudentDashboardComponent },
+// { path: 'student/dashboard/2', component: StudentDashboardComponent },
  
     
   {
@@ -332,6 +333,7 @@ export const routes: Routes = [
   canActivate: [authGuard, roleGuard('Student')],
   children: [
     { path: 'dashboard', component: StudentDashboardComponent },
+    { path: 'my-courses', component: MyCoursesComponent },
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
   ]
 },
