@@ -2,7 +2,7 @@
 <div class="bg-background font-body text-slate-800 min-h-screen pb-24">
 
   <!-- الهيدر -->
-  <header class="w-full top-0 sticky z-40 bg-white/80 backdrop-blur-md border-b border-surface-container">
+  <!-- <header class="w-full top-0 sticky z-40 bg-white/80 backdrop-blur-md border-b border-surface-container">
     <div class="max-w-5xl mx-auto flex justify-between items-center px-6 py-4">
       <div class="flex items-center gap-4 cursor-pointer group" (click)="goBack()">
         <div class="p-2 rounded-full group-hover:bg-primary/10 transition-colors">
@@ -18,8 +18,8 @@
         {{ courseStatus() === 'Published' ? 'Unpublish' : 'Publish Course' }}
       </button>
     </div>
-  </header>
-
+  </header> -->
+<app-course-sidebar></app-course-sidebar>
   <!-- Loading -->
   <div *ngIf="isLoading()" class="flex justify-center py-20">
     <span class="material-symbols-outlined text-primary text-4xl animate-spin">progress_activity</span>
