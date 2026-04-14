@@ -5,8 +5,9 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { forkJoin, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { ProgressService } from '../../../core/services/progress';
+import { PublicCourseService } from '../../../core/services/public-course.service';
 import { CourseProgress, ResumeLesson } from '../../../core/models/progress';
 
 @Component({
@@ -24,22 +25,28 @@ export class StudentProgressComponent implements OnInit {
 
   constructor(
     private progressService: ProgressService,
+    private publicCourseService: PublicCourseService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    // FIXME: Replace with actual API call to fetch enrolled course IDs when available
-    const enrolledCourseIds$ = of([1]); // Hardcoded mock for now
+    const enrolledCourseIds$ = this.publicCourseService.getMyCoursesWithEnrollment().pipe(
+      map((res: any) => {
+        const courses = res.data || [];
+        return courses.map((c: any) => c.courseId);
+      }),
+      catchError(() => of([]))
+    );
 
     enrolledCourseIds$.subscribe({
-      next: (courseIds) => {
+      next: (courseIds: number[]) => {
         if (courseIds.length === 0) {
           this.progressList.set([]);
           this.isLoading.set(false);
           return;
         }
 
-        const progressRequests = courseIds.map(id =>
+        const progressRequests = courseIds.map((id: number) =>
           this.progressService.getCourseProgress(id).pipe(
             catchError(() => of(null)) // Ignore failed fetches for individual courses
           )
