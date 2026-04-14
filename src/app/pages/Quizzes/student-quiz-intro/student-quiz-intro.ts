@@ -1,10 +1,11 @@
-import { AuthService } from './../../core/services/auth';
+import { AuthService } from '../../../core/services/auth';
 import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { QuizService } from '../../core/services/quiz.service';
+import { QuizService } from '../../../core/services/quiz.service';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { catchError, forkJoin, of } from 'rxjs';
-import { AttemptHistoryDto, QuizAttemptHistoryDto, QuizDto, QuizSummaryDto } from '../../core/models/quiz';
+import { AttemptHistoryDto, QuizAttemptHistoryDto, QuizDto, QuizSummaryDto } from '../../../core/models/quiz';
+import { StudentquizService } from '../../../core/services/studentquiz.service';
 
 @Component({
   selector: 'app-student-quiz-intro',
@@ -29,7 +30,7 @@ export class StudentQuizIntro implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private studentQuizService: QuizService,
+    private studentQuizService: StudentquizService,
     private authService:AuthService,
     private cdr : ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object
