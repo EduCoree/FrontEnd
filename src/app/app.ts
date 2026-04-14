@@ -1,5 +1,7 @@
 import { Navbar } from './shared/components/ui/navbar/navbar';
-import { Component, signal } from '@angular/core';
+import { ChatWidgetComponent } from './pages/chat/components/chat-widget/chat-widget.component';
+import { AuthService } from './core/services/auth';
+import { Component, signal, inject } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { FlowbiteService } from './core/services/flowbite/flowbite';
 import { initFlowbite } from 'flowbite';
@@ -14,12 +16,13 @@ import { Sidebar } from "./shared/components/ui/sidebar/sidebar";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Navbar, Sidebar],
+  imports: [RouterOutlet, Navbar, Sidebar, ChatWidgetComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
 showNavbar = true;
+authService = inject(AuthService);
 
   private hiddenRoutes = [
     '/teacher/courses/create',
