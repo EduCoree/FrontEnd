@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { CertificateService } from '../../../core/services/certificate';
 import { Certificate } from '../../../core/models/progress';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-certificate-detail',
@@ -26,8 +27,8 @@ export class CertificateDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const certificateId = Number(this.route.snapshot.paramMap.get('certificateId'));
-    if (isNaN(certificateId) || certificateId <= 0) {
+    const certificateId = this.route.snapshot.paramMap.get('certificateId');
+    if (!certificateId) {
       this.errorMsg.set('Invalid certificate link.');
       this.isLoading.set(false);
       return;
@@ -36,7 +37,7 @@ export class CertificateDetailComponent implements OnInit {
     this.loadCertificate(certificateId);
   }
 
-  private loadCertificate(id: number): void {
+  private loadCertificate(id: string): void {
     this.isLoading.set(true);
     this.certificateService.getCertificate(id).subscribe({
       next: (cert) => {
@@ -56,10 +57,17 @@ export class CertificateDetailComponent implements OnInit {
 
   // ─── Helpers ──────────────────────────────────────────────────────────────
   
+  getDownloadUrl(): string {
+    const cert = this.certificate();
+    if (!cert) return '#';
+    return `${environment.apiUrl}/api/certificates/${cert.certificateUuid}/view`;
+  }
+
   get encodedLinkedinShareUrl(): string {
     const cert = this.certificate();
-    if (!cert || !cert.certificateUrl) return '#';
-    // Use the exact URL as the sharing parameter
-    return `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(cert.certificateUrl)}`;
+    if (!cert) return '#';
+    // Share the actual frontend URL so viewers see this beautiful public page
+    const frontendUrl = window.location.href;
+    return `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(frontendUrl)}`;
   }
 }

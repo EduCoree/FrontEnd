@@ -1,31 +1,15 @@
 <!-- صفحة تعديل الكورس -->
-<div class="bg-background font-body text-slate-800 min-h-screen pb-24">
+<div class="flex min-h-screen bg-background font-body text-slate-800">
+  <app-course-sidebar></app-course-sidebar>
 
-  <!-- الهيدر -->
-  <!-- <header class="w-full top-0 sticky z-40 bg-white/80 backdrop-blur-md border-b border-surface-container">
-    <div class="max-w-5xl mx-auto flex justify-between items-center px-6 py-4">
-      <div class="flex items-center gap-4 cursor-pointer group" (click)="goBack()">
-        <div class="p-2 rounded-full group-hover:bg-primary/10 transition-colors">
-          <span class="material-symbols-outlined text-primary">arrow_back</span>
-        </div>
-        <h1 class="font-headline text-xl font-bold tracking-tight text-slate-900">Edit Course</h1>
-      </div>
-          <button
-        (click)="courseStatus() === 'Published' ? unpublishCourse() : publishCourse()"
-        [class]="courseStatus() === 'Published'
-          ? 'bg-error hover:opacity-90 text-white px-6 py-2 rounded-full font-bold text-sm transition-all shadow-sm active:scale-95'
-          : 'bg-primary hover:opacity-90 text-white px-6 py-2 rounded-full font-bold text-sm transition-all shadow-sm active:scale-95'">
-        {{ courseStatus() === 'Published' ? 'Unpublish' : 'Publish Course' }}
-      </button>
+  <!-- Main Content Wrapper to offset fixed sidebar -->
+  <div class="flex-1 w-full lg:ml-64 pb-24 transition-all duration-300">
+    <!-- Loading -->
+    <div *ngIf="isLoading()" class="flex justify-center py-20">
+      <span class="material-symbols-outlined text-primary text-4xl animate-spin">progress_activity</span>
     </div>
-  </header> -->
-<app-course-sidebar></app-course-sidebar>
-  <!-- Loading -->
-  <div *ngIf="isLoading()" class="flex justify-center py-20">
-    <span class="material-symbols-outlined text-primary text-4xl animate-spin">progress_activity</span>
-  </div>
 
-  <main *ngIf="!isLoading()" class="px-6 py-10 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8">
+    <main *ngIf="!isLoading()" class="px-6 py-10 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8">
 
     <!-- العمود الأيسر -->
     <div class="md:col-span-5 space-y-8">
@@ -280,4 +264,5 @@
     </div>
 
   </main>
+  </div>
 </div>

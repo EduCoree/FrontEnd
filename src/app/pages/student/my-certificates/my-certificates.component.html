@@ -55,13 +55,13 @@
 
         <!-- Actions -->
         <div class="pt-5 border-t border-gray-50 flex items-center gap-3">
-          <a [routerLink]="['/certificates', cert.id]"
+          <a [routerLink]="['/certificates', cert.certificateUuid]"
              class="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-xl text-xs font-bold hover:bg-gray-200 transition-colors">
             <span class="material-symbols-outlined text-[16px]">visibility</span>
             View Page
           </a>
           <!-- The prompt specified using certificateUrl, likely external secure S3 or PDF link -->
-          <a [href]="cert.certificateUrl" target="_blank"
+          <a [href]="getDownloadUrl(cert.certificateUuid)" target="_blank"
              class="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-teal-50 text-teal-700 border border-teal-100 rounded-xl text-xs font-bold hover:bg-teal-100 transition-colors">
             <span class="material-symbols-outlined text-[16px]">download</span>
             Download

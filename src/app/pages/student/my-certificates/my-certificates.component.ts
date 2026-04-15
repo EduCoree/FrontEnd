@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CertificateService } from '../../../core/services/certificate';
 import { Certificate } from '../../../core/models/progress';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-my-certificates',
@@ -38,5 +39,9 @@ export class MyCertificatesComponent implements OnInit {
         this.isLoading.set(false);
       }
     });
+  }
+
+  getDownloadUrl(uuid: string): string {
+    return `${environment.apiUrl}/api/certificates/${uuid}/view`;
   }
 }
