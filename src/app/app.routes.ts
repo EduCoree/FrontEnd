@@ -43,6 +43,8 @@ import { roleGuard } from './core/guards/role-guard';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard';
 import { TeacherDashboardComponent } from './pages/teacher-dashboard/teacher-dashboard';
 import { MyCoursesComponent } from './pages/student/my-courses/my-courses.component';
+import { ErrorPageComponent } from './pages/error-page/error-page';
+
 export const routes: Routes = [
    // ── Public ────────────────────────────────────────────────────────────────
   {
@@ -522,5 +524,15 @@ export const routes: Routes = [
       import('./pages/student/lesson-player/lesson-player.component')
         .then(m => m.LessonPlayerComponent),
     title: 'Lesson Player — EduCore',
-  }
+  },
+
+
+
+
+{ path: 'error', component: ErrorPageComponent, data: { code: 404 } },
+{ path: 'error/401', component: ErrorPageComponent, data: { code: 401 } },
+{ path: 'error/403', component: ErrorPageComponent, data: { code: 403 } },
+{ path: 'error/404', component: ErrorPageComponent, data: { code: 404 } },
+{ path: 'error/500', component: ErrorPageComponent, data: { code: 500 } },
+{ path: '**', component: ErrorPageComponent, data: { code: 404 } },
 ];
