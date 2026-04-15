@@ -1,0 +1,104 @@
+<div class="min-h-screen bg-[#f8faf9] flex items-center justify-center p-6 relative overflow-hidden">
+
+  <!-- Background pattern -->
+  <div class="absolute inset-0 opacity-[0.03]"
+    style="background-image: radial-gradient(circle at 1px 1px, #2d3433 1px, transparent 0); background-size: 32px 32px;">
+  </div>
+
+  <div class="relative z-10 max-w-md w-full text-center">
+
+    <!-- Icon with ping ring -->
+    <div class="anim-icon mb-10">
+      <div class="relative inline-flex items-center justify-center">
+        <!-- Ping ring -->
+        <div class="absolute w-24 h-24 rounded-full anim-ping"
+          [style.background]="config.iconBg"></div>
+        <!-- Icon circle -->
+        <div class="relative w-24 h-24 rounded-2xl flex items-center justify-center anim-float shadow-lg"
+          [style.background]="config.iconBg">
+          <span class="material-symbols-outlined text-[42px]"
+            [style.color]="config.iconColor">
+            {{ config.icon }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error code badge -->
+    <div class="anim-1 mb-4">
+      <span class="inline-block px-4 py-1.5 rounded-full text-xs font-black tracking-widest uppercase"
+        [style.background]="config.iconBg"
+        [style.color]="config.iconColor">
+        Error {{ code() }}
+      </span>
+    </div>
+
+    <!-- Title -->
+    <div class="anim-2 mb-4">
+      <h1 class="text-3xl font-extrabold text-[#2d3433] tracking-tight leading-tight">
+        {{ config.title }}
+      </h1>
+    </div>
+
+    <!-- Message -->
+    <div class="anim-3 mb-10">
+      <p class="text-[#707975] text-sm leading-relaxed max-w-sm mx-auto">
+        {{ config.message }}
+      </p>
+    </div>
+
+    <!-- Actions -->
+    <div class="anim-4 flex flex-col items-center gap-3">
+      <div class="flex items-center justify-center gap-3">
+        @if (code() === 401) {
+          <a routerLink="/login"
+            class="px-7 py-3 rounded-xl bg-[#2e6959] font-bold text-sm text-white transition-all duration-200 hover:bg-[#1f5b4c] hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2">
+            <span class="material-symbols-outlined text-lg">login</span>
+            Sign In
+          </a>
+        }
+
+        @if (code() === 403) {
+          <a [routerLink]="isLoggedIn() ? '/' : '/login'"
+            class="px-7 py-3 rounded-xl bg-[#2e6959] font-bold text-sm text-white transition-all duration-200 hover:bg-[#1f5b4c] hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2">
+            <span class="material-symbols-outlined text-lg">{{ isLoggedIn() ? 'home' : 'login' }}</span>
+            {{ isLoggedIn() ? 'Go Home' : 'Sign In' }}
+          </a>
+        }
+
+        @if (code() === 404) {
+          <a routerLink="/"
+            class="px-7 py-3 rounded-xl bg-[#2e6959] font-bold text-sm text-white transition-all duration-200 hover:bg-[#1f5b4c] hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2">
+            <span class="material-symbols-outlined text-lg">home</span>
+            Back to Home
+          </a>
+        }
+
+        @if (code() === 500) {
+          <button (click)="reload()"
+            class="px-7 py-3 rounded-xl bg-[#2e6959] font-bold text-sm text-white transition-all duration-200 hover:bg-[#1f5b4c] hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2">
+            <span class="material-symbols-outlined text-lg">refresh</span>
+            Try Again
+          </button>
+        }
+
+        @if (code() !== 401) {
+          <button (click)="goBack()"
+            class="px-7 py-3 rounded-xl bg-[#eaefee] font-bold text-sm text-[#2d3433] transition-all duration-200 hover:bg-[#e4e9e8] hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2">
+            <span class="material-symbols-outlined text-lg">arrow_back</span>
+            Go Back
+          </button>
+        }
+      </div>
+
+      <!-- Support link -->
+      <!-- <div class="mt-6">
+        <p class="text-xs text-[#acb3b2]">
+          Need help?
+          <a href="mailto:support&#64;educore.com" class="font-bold text-[#2e6959] hover:underline">Contact Support</a>
+        </p>
+      </div> -->
+    </div>
+
+  </div>
+</div>
