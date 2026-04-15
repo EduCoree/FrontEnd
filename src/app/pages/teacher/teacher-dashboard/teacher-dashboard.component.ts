@@ -85,8 +85,8 @@ export class TeacherDashboardComponent implements OnInit {
       return;
     }
     
-    // Top 5 active courses
-    const activeCourses = courses.slice(0, 5);
+    // Scan all active courses for upcoming sessions
+    const activeCourses = courses;
     const requests = activeCourses.map(c => 
       this.liveSessionService.getSessionsByCourse(c.id).pipe(
         map(sessions => (sessions || []).map(s => ({ ...s, courseTitle: c.title })))

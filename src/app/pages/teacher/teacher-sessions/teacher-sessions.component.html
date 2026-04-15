@@ -103,6 +103,49 @@
         </button>
       </div>
 
+      <!-- ── Current Sessions (Starting soon or ongoing) ───────────────────────────────────────────── -->
+      <div *ngIf="currentSessions().length > 0">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+          <h2 class="text-[10px] font-bold uppercase tracking-widest text-red-500">Happening Now</h2>
+        </div>
+        <div class="space-y-4">
+          <div *ngFor="let session of currentSessions()"
+            class="bg-white rounded-2xl border border-red-100 shadow-md shadow-red-50/50 px-6 py-5 flex items-center gap-5">
+
+            <!-- Provider badge -->
+            <div class="shrink-0">
+              <span class="px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider"
+                [ngClass]="{
+                  'bg-indigo-50 text-indigo-700':  session.provider === 'Jitsi',
+                  'bg-blue-50 text-blue-700':      session.provider === 'Zoom',
+                  'bg-purple-50 text-purple-700':  session.provider === 'MicrosoftTeams',
+                  'bg-red-50 text-red-600':        session.provider === 'GoogleMeet'
+                }">
+                {{ session.provider === 'MicrosoftTeams' ? 'Teams' : session.provider }}
+              </span>
+            </div>
+
+            <!-- Info -->
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-bold text-gray-800 truncate">{{ session.title ?? 'Live Session' }}</p>
+              <p class="text-[11px] text-gray-400 mt-0.5">
+                <span class="material-symbols-outlined text-[13px] align-middle">schedule</span>
+                {{ session.scheduledAt | date:'medium' }}
+              </p>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-2 shrink-0">
+              <button (click)="joinSession(session)"
+                class="flex items-center gap-2 px-5 py-2 rounded-xl bg-teal-600 text-white text-sm font-bold hover:bg-teal-700 transition-colors shadow-md shadow-teal-100">
+                <span class="material-symbols-outlined text-[16px]">video_camera_front</span> Join Session
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- ── Upcoming Sessions ───────────────────────────────────────────── -->
       <div *ngIf="upcomingSessions().length > 0">
         <h2 class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-4">Upcoming</h2>
