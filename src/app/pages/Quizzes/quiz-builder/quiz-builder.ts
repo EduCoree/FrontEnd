@@ -309,7 +309,6 @@ export class QuizBuilderComponent implements OnInit {
      
     this.router.navigate(
   ['teacher','quizzes', this.quizId,'add-question'],
-  { queryParams: { name: this.quiz?.title } }
     )
   
  

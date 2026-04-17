@@ -121,9 +121,37 @@
                         <span class="material-symbols-outlined text-[18px]">edit</span>
                         {{ 'teacherQuizzes.openBuilder' | translate }}
                       </button>
-                      <button (click)="onDelete(quiz.id)" class="p-2 text-slate-400 hover:text-primary transition-colors">
-                        <span class="material-symbols-outlined">more_vert</span>
-                      </button>
+                      <!-- More actions dropdown -->
+    <div class="relative">
+      <button
+        (click)="toggleMenu(quiz.id)"
+        class="p-2 text-slate-400 hover:text-primary hover:bg-surface-container-low rounded-lg transition-colors">
+        <span class="material-symbols-outlined">more_vert</span>
+      </button>
+ 
+      @if (openMenuId === quiz.id) {
+        <div class="absolute right-0 top-full mt-1 w-40 bg-white rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-outline-variant/20 z-50 overflow-hidden">
+ 
+          <button
+            (click)="onEdit(quiz.id)"
+            class="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-on-surface hover:bg-surface-container-low transition-colors text-left">
+            <span class="material-symbols-outlined text-[18px] text-primary">tune</span>
+            Edit Quiz
+          </button>
+ 
+          <div class="h-px bg-outline-variant/20 mx-3"></div>
+ 
+          <button
+            (click)="onDelete(quiz.id);"
+            class="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-error hover:bg-error-container/20 transition-colors text-left">
+            <span class="material-symbols-outlined text-[18px]">delete</span>
+            Delete Quiz
+          </button>
+ 
+        </div>
+      }
+    </div>
+ 
                     </div>
                   </td>
                 </tr>
@@ -181,5 +209,16 @@
       </div>
     </div>
   }
+  @if (showEditModal && selectedQuizId) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+    <div class="w-full max-w-lg mx-4">
+      <app-edit-quiz
+        [quizId]="selectedQuizId"
+        (updated)="onQuizUpdated()"
+        (cancelled)="showEditModal = false"
+      />
+    </div>
+  </div>
+}
 
 </div>

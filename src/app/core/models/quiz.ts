@@ -12,6 +12,14 @@ export interface CreateQuizDto {
      isRandomized: boolean;
 
 }
+
+export interface UpdateQuizDto {
+  title?: string;
+  timeLimitMins?: number | null;
+  passScore?: number;
+  maxAttempts?: number;
+  isRandomized?: boolean;
+}
 export interface QuizDto {
   id: number;
   courseId: number;

@@ -1,0 +1,257 @@
+
+
+<!-- ── Top App Bar ───────────────────────────────────────────────────────── -->
+<header class="bg-[#F8FAFA] sticky top-0 z-40 shadow-[0_1px_0_rgba(0,0,0,0.06)]">
+  <div class="flex justify-between items-center w-full px-8 py-4">
+
+    <div class="flex items-center gap-4">
+      <button
+        (click)="goBack()"
+        class="hover:bg-[#F2F4F4] transition-colors active:scale-95 duration-200
+               p-2 rounded-full flex items-center justify-center"
+        aria-label="Go back">
+        <span class="material-symbols-outlined text-[#2E6858]">arrow_back</span>
+      </button>
+      <h1 class="font-['Plus_Jakarta_Sans'] font-bold text-xl text-[#2E6858]">
+        Notifications center
+      </h1>
+
+      <!-- Unread badge -->
+      @if (unreadCount > 0) {
+        <span class="bg-primary text-white text-[10px] font-bold
+                     px-2 py-0.5 rounded-full leading-none">
+          {{ unreadCount }}
+        </span>
+      }
+    </div>
+
+    <!-- Mark all as read -->
+    <button
+      (click)="markAllAsRead($event)"
+      [disabled]="isMarkingRead || unreadCount === 0"
+      class="font-['Inter'] text-sm font-semibold text-[#2E6858]
+             hover:opacity-80 transition-opacity disabled:opacity-40
+             flex items-center gap-2">
+      @if (isMarkingRead) {
+        <svg class="animate-spin h-4 w-4 text-[#2E6858]"
+             fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10"
+                  stroke="currentColor" stroke-width="4"/>
+          <path class="opacity-75" fill="currentColor"
+                d="M4 12a8 8 0 018-8v8H4z"/>
+        </svg>
+      } @else {
+        Mark all as read
+      }
+    </button>
+
+  </div>
+
+  <!-- Error toast -->
+  @if (errorMessage) {
+    <div class="mx-6 mb-3 px-4 py-3 rounded-xl bg-error-container
+                text-on-error-container text-sm font-medium
+                animate-[fadeIn_0.2s_ease-out]">
+      ⚠ {{ errorMessage }}
+    </div>
+  }
+</header>
+
+<!-- ── Main Content ──────────────────────────────────────────────────────── -->
+<main class="max-w-3xl mx-auto px-6 mt-8 pb-32">
+
+  <!-- Loading skeleton (initial) -->
+  @if (isLoading && notifications.length === 0) {
+    <div class="space-y-4">
+      @for (i of [1,2,3]; track i) {
+        <div class="bg-white p-6 rounded-xl shadow-sm animate-pulse">
+          <div class="flex gap-4">
+            <div class="w-10 h-10 rounded-full bg-surface-container-high"></div>
+            <div class="flex-grow space-y-2">
+              <div class="h-4 bg-surface-container-high rounded w-2/5"></div>
+              <div class="h-3 bg-surface-container-high rounded w-4/5"></div>
+              <div class="h-3 bg-surface-container-high rounded w-3/5"></div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Empty state -->
+  @if (!isLoading && notifications.length === 0) {
+    <div class="flex flex-col items-center justify-center py-24 text-center">
+      <div class="w-16 h-16 rounded-full bg-surface-container
+                  flex items-center justify-center mb-4">
+        <span class="material-symbols-outlined text-3xl text-outline">
+          notifications_off
+        </span>
+      </div>
+      <h3 class="font-['Plus_Jakarta_Sans'] font-bold text-on-surface mb-1">
+        You're all caught up
+      </h3>
+      <p class="text-sm text-on-surface-variant">No new notifications right now.</p>
+    </div>
+  }
+
+  <!-- ── NEWEST Section ────────────────────────────────────────────────── -->
+  @if (newestNotifications.length > 0) {
+    <section class="mb-10">
+      <div class="flex items-center mb-6">
+        <h2 class="font-['Plus_Jakarta_Sans'] font-extrabold text-sm
+                   tracking-[0.1em] text-on-surface-variant/60 shrink-0">
+          NEWEST
+        </h2>
+        <div class="h-[1px] flex-grow ml-4 bg-outline-variant/20"></div>
+      </div>
+
+      <div class="space-y-4">
+        @for (notif of newestNotifications; track notif.id) {
+          <ng-container
+            *ngTemplateOutlet="notifCard; context: { $implicit: notif, isRead: false }">
+          </ng-container>
+        }
+      </div>
+    </section>
+  }
+
+  <!-- ── YESTERDAY Section ─────────────────────────────────────────────── -->
+  @if (yesterdayNotifications.length > 0) {
+    <section class="mb-10">
+      <div class="flex items-center mb-6">
+        <h2 class="font-['Plus_Jakarta_Sans'] font-extrabold text-sm
+                   tracking-[0.1em] text-on-surface-variant/60 shrink-0">
+          YESTERDAY
+        </h2>
+        <div class="h-[1px] flex-grow ml-4 bg-outline-variant/20"></div>
+      </div>
+
+      <div class="space-y-4">
+        @for (notif of yesterdayNotifications; track notif.id) {
+          <ng-container
+            *ngTemplateOutlet="notifCard; context: { $implicit: notif, isRead: true }">
+          </ng-container>
+        }
+      </div>
+    </section>
+  }
+
+  <!-- ── OLDER Section ─────────────────────────────────────────────────── -->
+  @if (olderNotifications.length > 0) {
+    <section class="mb-10">
+      <div class="flex items-center mb-6">
+        <h2 class="font-['Plus_Jakarta_Sans'] font-extrabold text-sm
+                   tracking-[0.1em] text-on-surface-variant/60 shrink-0">
+          OLDER
+        </h2>
+        <div class="h-[1px] flex-grow ml-4 bg-outline-variant/20"></div>
+      </div>
+
+      <div class="space-y-4">
+        @for (notif of olderNotifications; track notif.id) {
+          <ng-container
+            *ngTemplateOutlet="notifCard; context: { $implicit: notif, isRead: true }">
+          </ng-container>
+        }
+      </div>
+    </section>
+  }
+
+  <!-- ── Load More ─────────────────────────────────────────────────────── -->
+  @if (hasMorePages && notifications.length > 0) {
+    <div class="flex justify-center mt-4 mb-8">
+      <button
+        (click)="loadMore()"
+        [disabled]="isLoading"
+        class="px-6 py-2.5 rounded-xl border border-outline-variant
+               text-primary font-['Inter'] font-semibold text-sm
+               hover:bg-surface-container-low transition-colors
+               disabled:opacity-50 flex items-center gap-2">
+        @if (isLoading) {
+          <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10"
+                    stroke="currentColor" stroke-width="4"/>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
+          </svg>
+          Loading...
+        } @else {
+          Load more
+        }
+      </button>
+    </div>
+  }
+
+</main>
+
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     Notification Card Template
+     Context: $implicit = NotificationDto, isRead = boolean hint from group
+     ══════════════════════════════════════════════════════════════════════ -->
+<ng-template #notifCard let-notif let-isReadGroup="isRead">
+
+  <div
+    (click)="onNotificationClick(notif)"
+    [class]="notif.isRead
+      ? 'bg-surface-container-lowest/70 border border-outline-variant/10'
+      : 'bg-surface-container-lowest shadow-[0_8px_32px_rgba(125,184,165,0.12)]'"
+    class="p-6 rounded-xl transition-all duration-200
+           hover:translate-y-[-2px] cursor-pointer select-none
+           active:scale-[0.99]">
+
+    <div class="flex gap-4">
+
+      <!-- Icon -->
+      <div [class]="getIconBgClass(notif.type)"
+           class="flex-shrink-0 w-10 h-10 rounded-full
+                  flex items-center justify-center">
+        <span class="material-symbols-outlined"
+              [class]="getIconColorClass(notif.type)">
+          {{ getIconForType(notif.type) }}
+        </span>
+      </div>
+
+      <!-- Body -->
+      <div class="flex-grow min-w-0">
+
+        <div class="flex justify-between items-start gap-2">
+          <h3 [class]="notif.isRead ? 'text-on-surface-variant' : 'text-on-surface'"
+              class="font-['Plus_Jakarta_Sans'] font-bold leading-tight truncate">
+            {{ notif.title }}
+          </h3>
+          <!-- Unread dot -->
+          @if (!notif.isRead) {
+            <span class="flex-shrink-0 w-2.5 h-2.5 bg-primary
+                         rounded-full mt-1 ring-2 ring-[#F8FAFA]">
+            </span>
+          }
+        </div>
+
+        <p [class]="notif.isRead ? 'text-on-surface-variant/70' : 'text-on-surface-variant'"
+           class="text-sm mt-1 line-clamp-2 leading-relaxed">
+          {{ notif.message }}
+        </p>
+
+        <div class="flex items-center justify-between mt-4">
+          <span class="text-xs font-medium text-outline">
+            {{ (notif.createdAt|timeAgoPipe) }}
+          </span>
+
+          <!-- Action button (only for unread QuizResult & Enrollment) -->
+          @if (!notif.isRead && (notif.type === 'QuizResult' || notif.type === 'NewEnrollment')) {
+            <button
+              (click)="onNotificationClick(notif); $event.stopPropagation()"
+              class="bg-surface-container-high text-primary px-4 py-2 rounded-lg
+                     font-['Inter'] text-xs font-bold
+                     hover:bg-surface-variant transition-colors
+                     active:scale-95 duration-200">
+              {{ notif.type === 'QuizResult' ? 'VIEW RESULT' : 'GO TO COURSE' }}
+            </button>
+          }
+        </div>
+
+      </div>
+    </div>
+  </div>
+</ng-template>

@@ -25,7 +25,6 @@ addingQuestion = false;
     { text: '', isCorrect: false }
   ];
   newQuestionType = 'MCQ';
-    courseId!: number;
     quizId!: number;
     quiz: QuizDto | null = null;
     loading = true;
@@ -36,15 +35,12 @@ addingQuestion = false;
   
 constructor(private quizservice:QuizService, private questionservice:QuestionService,private answeroptionservice: AnsweroptionService ,private cdr:ChangeDetectorRef,private route:ActivatedRoute,private router:Router)
 {
-   this.courseId = Number(this.route.snapshot.paramMap.get('courseId'));
     this.quizId = Number(this.route.snapshot.paramMap.get('quizId'));
-    this.route.queryParamMap.subscribe(params => {
-   this.quizName = params.get('name');
-});
+
   
 }
   ngOnInit(): void {
-     this.quizservice.getQuizById(this.courseId, this.quizId).subscribe(res => {
+     this.quizservice.getQuizById(this.quizId).subscribe(res => {
     this.quiz = res.data;
 
     // 3. Override with real value
@@ -103,51 +99,58 @@ constructor(private quizservice:QuizService, private questionservice:QuestionSer
        return;
      }
  
-     this.addingQuestion = true;
-     const questionDto: CreateQuestionDto = {
-       text: this.newQuestionText.trim(),
-       type: this.newQuestionType,
-       points: this.newQuestionPoints
-     };
+this.addingQuestion = true;
+      this.saving = true;
+      const questionDto: CreateQuestionDto = {
+        text: this.newQuestionText.trim(),
+        type: this.newQuestionType,
+        points: this.newQuestionPoints
+      };
+  
+      this.questionservice.addQuestion(this.quizId, questionDto).subscribe({
+        next: (res:ApiResponse<QuestionDto>) => {
+          console.log(res);
+                console.log(res.data.id);
+          const questionId = res.data.id;
+    
+          const optionCalls: Observable<ApiResponse<AnswerOptionDto>>[] = validOptions.map(opt => 
+            this.answeroptionservice.addanswerOption( questionId, {
+              text: opt.text.trim(),
+              isCorrect: opt.isCorrect
+            })
+          );
  
-     this.questionservice.addQuestion(this.quizId, questionDto).subscribe({
-       next: (res:ApiResponse<QuestionDto>) => {
-         console.log(res);
-         const questionId = res.data.id;
-         const optionCalls: Observable<ApiResponse<AnswerOptionDto>>[] = validOptions.map(opt => 
-           this.answeroptionservice.addanswerOption( questionId, {
-             text: opt.text.trim(),
-             isCorrect: opt.isCorrect
-           })
-         );
- 
-         forkJoin(optionCalls).subscribe({
-           next: () => {
-  this.saving = false;
-  this.router.navigate([
-    '/teacher/courses', this.courseId,
-    'quizzes', this.quizId, 'builder'
-  ]);
-},
-          error: (err) => {
-   if (err.error?.errors) {
-     this.addingQuestionError = Object.values(err.error.errors)
-       .flat()
-       .join(', ');
-   } else {
-     this.addingQuestionError = 'Failed to add answer options';
-   }
- 
-   console.log('Option error:', err); // 🔥 VERY IMPORTANT
-   this.addingQuestion = false;
- }
-         });
+          forkJoin(optionCalls).subscribe({   // fork join make all optioncalls success or all failed instead of nested subscription
+            next: () => {
+              this.saving = false;
+              this.addingQuestion = false;
+              this.router.navigate([
+                '/teacher/quizzes', this.quizId, 'builder'
+              ]);
+              this.cdr.detectChanges();
+            },
+error: (err) => {
+              this.saving = false;
+              this.addingQuestion = false;
+    if (err.error?.errors) {
+      this.addingQuestionError = Object.values(err.error.errors)
+        .flat()
+        .join(', ');
+    } else {
+      this.addingQuestionError = 'Failed to add answer options';
+    }
+  
+    console.log('Option error:', err);
+    this.cdr.detectChanges();
+  }
+          });
        },
-       error: (err) => {
-         this.addingQuestionError = err.error?.message || 'Failed to add question';
-         this.addingQuestion = false;
-         this.cdr.detectChanges();
-       }
+error: (err) => {
+          this.addingQuestionError = err.error?.message || 'Failed to add question';
+          this.addingQuestion = false;
+          this.saving = false;
+          this.cdr.detectChanges();
+        }
      });
    }
  
