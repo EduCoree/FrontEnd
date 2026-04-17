@@ -41,6 +41,18 @@ export class CourseSidebar {
         route: `/teacher/courses/${this.courseId}/quizzes`, 
         exact: false 
       },
+      { 
+        labelKey: 'Sessions', 
+        icon: 'calendar_month', 
+        route: `/teacher/courses/${this.courseId}/sessions`, 
+        exact: false 
+      },
+      { 
+        labelKey: 'Progress', 
+        icon: 'trending_up', 
+        route: `/teacher/courses/${this.courseId}/progress`, 
+        exact: false 
+      },
     ];
   }
   toggle() {

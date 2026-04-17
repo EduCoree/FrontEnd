@@ -235,9 +235,17 @@
                       </span>
                     </div>
                   </div>
-                  <button (click)="goToEdit(course.id)" class="p-3 rounded-full hover:bg-surface-container text-on-surface-variant">
-                    <span class="material-symbols-outlined">more_vert</span>
-                  </button>
+                  <div class="flex items-center gap-1">
+                    <button (click)="goToProgress(course.id)" title="Student Progress"
+                      class="p-3 rounded-full hover:bg-primary-container text-primary transition-colors flex items-center justify-center">
+                      <span class="material-symbols-outlined">trending_up</span>
+                    </button>
+                    <button (click)="goToEdit(course.id)" title="Edit Course"
+                      class="p-3 rounded-full hover:bg-surface-container text-on-surface-variant transition-colors flex items-center justify-center">
+                      <span class="material-symbols-outlined">edit</span>
+                    </button>
+                  </div>
+
                 </div>
 
                 <div *ngIf="courses().length === 0" class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/10 text-center">

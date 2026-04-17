@@ -1,8 +1,9 @@
 // src/app/pages/student/student-agenda/student-agenda.component.ts
 // Branch: feature/student-sessions-video-flow
 
-import { Component, OnInit, OnDestroy, signal, computed } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { LiveSessionResponse, JoinSessionResponse } from '../../../core/models/session';
 import { LiveSessionService } from '../../../core/services/live-session';
 import { TranslateModule } from '@ngx-translate/core';
@@ -20,6 +21,7 @@ export class StudentAgendaComponent implements OnInit, OnDestroy {
   isLoading = signal(true);
   successMsg = signal('');
   errorMsg = signal('');
+  jitsiRoomName = signal<string>('');
 
   /** Per-session joinability map — updated every 30s */
   joinableMap = signal<Record<number, boolean>>({});
@@ -27,7 +29,8 @@ export class StudentAgendaComponent implements OnInit, OnDestroy {
   private joinabilityInterval: ReturnType<typeof setInterval> | null = null;
 
   constructor(
-    private liveSessionService: LiveSessionService
+    private liveSessionService: LiveSessionService,
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit(): void {
@@ -100,6 +103,20 @@ export class StudentAgendaComponent implements OnInit, OnDestroy {
         }
       },
     });
+  }
+
+  // ─── Jitsi In-App Viewer ──────────────────────────────────────────────────
+
+  /** Returns a sanitized iframe URL for the current Jitsi room. */
+  safeJitsiUrl(): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(
+      `https://meet.jit.si/${this.jitsiRoomName()}`
+    );
+  }
+
+  /** Closes the in-app Jitsi viewer overlay. */
+  leaveJitsiSession(): void {
+    this.jitsiRoomName.set('');
   }
 
   // ─── Helpers ──────────────────────────────────────────────────────────────

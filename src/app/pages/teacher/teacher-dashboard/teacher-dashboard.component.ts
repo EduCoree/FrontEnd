@@ -118,6 +118,10 @@ export class TeacherDashboardComponent implements OnInit {
     this.router.navigate(['/teacher/courses/edit', id]);
   }
 
+  goToProgress(courseId: number): void {
+    this.router.navigate(['/teacher/courses', courseId, 'progress']);
+  }
+
   goToMyCourses(): void {
     this.router.navigate(['/teacher/courses']);
   }
