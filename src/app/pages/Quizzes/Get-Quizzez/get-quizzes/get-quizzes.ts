@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
@@ -7,12 +7,13 @@ import { QuizDto } from '../../../../core/models/quiz';
 import { CreateQuizComponent } from '../../CreateQuiz/create-quiz/create-quiz';
 import { FormsModule } from '@angular/forms';
 import { CourseSidebar } from "../../../../shared/components/ui/sidebar/course-sidebar/course-sidebar";
+import { EditQuiz } from "../../edit-quiz/edit-quiz";
 
 
 @Component({
   selector: 'app-quiz',
   templateUrl: './get-quizzes.html',
-  imports: [CommonModule, CreateQuizComponent, FormsModule, CourseSidebar, RouterLink],
+  imports: [CommonModule, CreateQuizComponent, FormsModule, CourseSidebar, RouterLink, EditQuiz],
 })
 export class QuizComponent implements OnInit {
   courseId!: number;
@@ -22,6 +23,9 @@ export class QuizComponent implements OnInit {
    searchTerm = '';
    courseTitle='jndjendije';
   showCreateModal = false;
+  showEditModal=false;
+  selectedQuizId :number|null=null;
+  openMenuId: number | null = null;
  
   constructor(
     private route: ActivatedRoute,
@@ -77,11 +81,12 @@ get filteredQuizzes(): QuizDto[] {
   }
 
   onDelete(quizId: number): void {
-    this.quizService.deleteQuiz(this.courseId, quizId).subscribe({
+    this.quizService.deleteQuiz( quizId).subscribe({
       next: () => this.loadQuizzes(),
       error: () => this.errorMessage = 'Failed to delete quiz.'
     });
   }
+
 
   onOpenBuilder(quizId:number)
   {
@@ -91,4 +96,25 @@ get filteredQuizzes(): QuizDto[] {
  
 );
   }
+  toggleMenu(quizId:number|null)
+  {
+      this.openMenuId = this.openMenuId === quizId ? null : quizId;
+  }
+  onEdit(quizId: number): void {
+    this.selectedQuizId=quizId;
+   this.showEditModal=true;
+   
+}
+onQuizUpdated() {
+  this.showEditModal = false;
+  this.loadQuizzes(); 
+}
+ 
+@HostListener('document:click', ['$event'])
+onDocumentClick(event: MouseEvent): void {
+  const target = event.target as HTMLElement;
+  if (!target.closest('.relative')) {
+    this.openMenuId = null;
+  }
+}
 }

@@ -1,5 +1,6 @@
+import { NotificationService } from './../../../../core/services/notification.service';
 
-import { OnInit } from '@angular/core';
+import { ElementRef, HostListener, OnInit } from '@angular/core';
 // src/app/layouts/navbar/navbar.ts
 
 
@@ -10,18 +11,27 @@ import { AuthService } from '../../../../core/services/auth';
 import { UserService } from '../../../../core/services/user';
 import { LanguageService } from '../../../../core/services/language.service'; 
 import { TranslateModule } from '@ngx-translate/core';
+import { metadata, NotificationDto } from '../../../../core/models/notification';
+import { TimeAgoPipePipe } from "../../../pipes/time-ago-pipe-pipe";
 @Component({
   selector: 'app-navbar',
   
-  imports: [CommonModule, RouterLink, RouterLinkActive, RouterModule,TranslateModule],
+  imports: [CommonModule, RouterLink, RouterLinkActive, RouterModule, TranslateModule, TimeAgoPipePipe],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
 export class Navbar {
   auth = inject(AuthService);
   user = inject(UserService);
+  notification= inject(NotificationService)
   private router = inject(Router);
-  private langService = inject(LanguageService); 
+  private langService = inject(LanguageService);
+
+  unreadcount$=this.notification.unreadCount$;   // loaded from loggin in
+  isMarkingRead=false
+  isDropdownOpen=false;
+  errorMessage: string | null = null;
+  eRef = inject(ElementRef);
 
   userProfile$ = this.user.getMe();
   mobileMenuOpen = signal(false);
@@ -63,5 +73,111 @@ export class Navbar {
     img.style.display = 'none';
     const fallback = img.nextElementSibling as HTMLElement;
     if (fallback) fallback.style.display = 'flex';
+  }
+
+  toggleDropdown()
+  {
+    this.isDropdownOpen=!this.isDropdownOpen
+    if(this.isDropdownOpen)
+    {
+      this.notification.loadNotifications(1).subscribe();
+    }
+
+  }
+  markAllAsRead(event:Event)
+  {
+    // Prevent bubbling to document; otherwise, if the button is replaced by a spinner,
+  // the HostListener's .contains(event.target) check will fail (since the button 
+  // is no longer in the DOM), causing the dropdown to close incorrectly.
+    event.stopPropagation();  
+    this.isMarkingRead=true;
+     this.notification.markAllAsRead().subscribe(
+      {
+        next:()=>
+        {
+          this.notification.loadNotifications(1)
+          this.isMarkingRead=false;
+        },
+        error: () => {
+        this.isMarkingRead = false;
+        this.errorMessage = "Could not sync with server. Try again?";
+        setTimeout(() => this.errorMessage = null, 3000);
+}
+      }
+
+      
+     )
+  }
+
+
+ onNotificationClick(notification: NotificationDto, event: Event): void {
+    event.stopPropagation(); 
+    
+    if (!notification.isRead) {
+      this.notification.markAsRead(notification.id).subscribe({
+        next: () => {
+          console.log('Notification marked as read');
+          this.navigateToNotification(notification);
+        },
+        error: (err) => {
+          console.error('Failed to mark as read:', err);
+          this.navigateToNotification(notification);
+        }
+      });
+    } else {
+      // Already read, just navigate
+      this.navigateToNotification(notification);
+    }
+  }
+ private navigateToNotification(notification: NotificationDto): void {
+    
+    this.isDropdownOpen=false;
+  let extraData: metadata|null = null
+if (notification.metadata) {
+  try {
+    extraData = JSON.parse(notification.metadata) as metadata;
+  } catch (e) {
+    console.error("Failed to parse notification metadata", e);
+  }
+}
+
+    switch (notification.type) {
+      case 'QuizResult':
+        if (notification.entityId && extraData?.attemptId) {
+      this.router.navigate(['/Quiz', notification.entityId, 'result', extraData.attemptId]);
+        }
+        else {
+      this.router.navigate(['/quiz/intro', notification.entityId]);
+        }
+        break;
+      default:
+          this.router.navigate(['/notifications'])
+        
+    }
+  }
+
+  getIconForType(type: string): string {
+    const icons: Record<string, string> = {
+      'QuizResult': 'quiz',
+      'ForumReply': 'forum',
+    };
+    
+    return icons[type] || 'notifications';
+  }
+
+  goToAllNotifications()
+  {
+    this.isDropdownOpen=false;
+    this.router.navigate(['/notifications'])
+
+  }
+
+
+
+  @HostListener('document:click', ['$event'])   //like document.addeventlistner in js but here is a decorator function
+  clickOutside(event: Event) {
+    if (this.isDropdownOpen && !this.eRef.nativeElement.contains(event.target)) {  // if we removed the second check -> every click on the bell will close again , we tell him when the drop down is open and the click is not inside the navbar on the bell(when iam not opening it by myself)
+      this.isDropdownOpen = false;
+    }
   }
 }
