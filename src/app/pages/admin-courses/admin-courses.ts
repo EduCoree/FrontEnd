@@ -6,10 +6,11 @@ import { AdminSidebarComponent } from '../../layouts/admin-sidebar/admin-sidebar
 import { AdminTopbarComponent } from '../../layouts/admin-topbar/admin-topbar';
 import { AdminCourseService } from '../../core/services/admin-course';
 import { CourseSummaryDto, UpdatePricingDto } from '../../core/models/course';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin-courses',
-  imports: [CommonModule, ReactiveFormsModule, AdminSidebarComponent, AdminTopbarComponent],
+  imports: [CommonModule, ReactiveFormsModule, AdminSidebarComponent, AdminTopbarComponent , TranslateModule],
   templateUrl: './admin-courses.html',
   styleUrl: './admin-courses.css',
 })

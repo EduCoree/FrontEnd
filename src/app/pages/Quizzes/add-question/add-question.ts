@@ -7,10 +7,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionService } from '../../../core/services/question.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-add-question',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule,FormsModule , TranslateModule],
   templateUrl: './add-question.html',
   styleUrl: './add-question.css',
 })

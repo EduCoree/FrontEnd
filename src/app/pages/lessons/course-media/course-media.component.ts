@@ -13,6 +13,7 @@ import {
   PdfLessonResponse,
 } from '../../../core/models/course';
 import { CourseService } from '../../../core/services/course';
+import { TranslateModule } from '@ngx-translate/core';
 import { DrivePickerService } from '../../../core/services/drive-picker.service';
 
 interface LessonMediaState extends Omit<LessonDto, 'durationSeconds' | 'isFreePreview'> {
@@ -29,7 +30,7 @@ interface LessonMediaState extends Omit<LessonDto, 'durationSeconds' | 'isFreePr
 @Component({
   selector: 'app-course-media',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule , TranslateModule],
   templateUrl: './course-media.component.html',
 })
 export class CourseMediaComponent implements OnInit {

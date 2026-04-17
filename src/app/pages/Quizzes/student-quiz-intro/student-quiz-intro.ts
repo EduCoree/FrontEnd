@@ -6,10 +6,11 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { catchError, forkJoin, of } from 'rxjs';
 import { AttemptHistoryDto, QuizAttemptHistoryDto, QuizDto, QuizSummaryDto } from '../../../core/models/quiz';
 import { StudentquizService } from '../../../core/services/studentquiz.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-student-quiz-intro',
-  imports: [CommonModule],
+  imports: [CommonModule , TranslateModule],
   templateUrl: './student-quiz-intro.html',
   styleUrl: './student-quiz-intro.css',
 })

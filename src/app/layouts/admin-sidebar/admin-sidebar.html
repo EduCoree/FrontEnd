@@ -2,7 +2,7 @@
 <aside
   [class.w-64]="isOpen()"
   [class.w-16]="!isOpen()"
-  class="h-screen fixed left-0 top-0 bg-[#eaefee] flex flex-col z-50 transition-all duration-300 overflow-hidden">
+  class="h-screen fixed start-0 top-0 bg-[#eaefee] flex flex-col z-50 transition-all duration-300 overflow-hidden">
 
   <!-- Header -->
   <div
@@ -17,7 +17,9 @@
         </div>
         <div>
           <p class="text-sm font-bold text-emerald-900">EduCore</p>
-          <p class="text-[10px] text-emerald-800/50 uppercase tracking-widest">Admin Portal</p>
+          <p class="text-[10px] text-emerald-800/50 uppercase tracking-widest">
+            {{ 'adminSidebar.adminPortal' | translate }}
+          </p>
         </div>
       </div>
     }
@@ -34,8 +36,7 @@
   <!-- Nav -->
   <nav class="flex-1 p-3 space-y-1 overflow-y-auto">
     @for (item of navItems; track item.route) {
-      
-        <a [routerLink]="item.route"
+      <a [routerLink]="item.route"
         routerLinkActive #rla="routerLinkActive"
         [routerLinkActiveOptions]="{ exact: item.exact }"
         class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group"
@@ -54,7 +55,7 @@
 
         @if (isOpen()) {
           <span class="uppercase tracking-widest text-[10px] font-bold whitespace-nowrap">
-            {{ item.label }}
+            {{ item.label | translate }}
           </span>
         }
       </a>
@@ -64,15 +65,16 @@
   <!-- Footer -->
   <div class="border-t border-emerald-800/10">
 
-    <!-- Logout -->
+    <!-- Support & Logout -->
     <div class="p-3 space-y-1">
-      
-        <a href="#"
+      <a href="#"
         class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-emerald-800/60 hover:bg-emerald-800/10 transition-colors"
         [class.justify-center]="!isOpen()">
         <span class="material-symbols-outlined text-xl flex-shrink-0 text-emerald-700">contact_support</span>
         @if (isOpen()) {
-          <span class="uppercase tracking-widest text-[10px] font-bold whitespace-nowrap">Support</span>
+          <span class="uppercase tracking-widest text-[10px] font-bold whitespace-nowrap">
+            {{ 'adminSidebar.support' | translate }}
+          </span>
         }
       </a>
 
@@ -82,7 +84,9 @@
         [class.justify-center]="!isOpen()">
         <span class="material-symbols-outlined text-xl flex-shrink-0">logout</span>
         @if (isOpen()) {
-          <span class="uppercase tracking-widest text-[10px] font-bold whitespace-nowrap">Logout</span>
+          <span class="uppercase tracking-widest text-[10px] font-bold whitespace-nowrap">
+            {{ 'adminSidebar.logout' | translate }}
+          </span>
         }
       </button>
     </div>
@@ -96,8 +100,10 @@
           </div>
           <div class="overflow-hidden">
             <p class="text-xs font-bold text-emerald-900 truncate">{{ userName }}</p>
-            <p class="text-[10px] text-emerald-800/50 uppercase tracking-widest">Administrator</p>
-            </div>
+            <p class="text-[10px] text-emerald-800/50 uppercase tracking-widest">
+              {{ 'adminSidebar.administrator' | translate }}
+            </p>
+          </div>
         </div>
       </div>
     } @else {
@@ -115,7 +121,7 @@
 
 <!-- Content offset -->
 <div
-  [class.ml-64]="isOpen()"
-  [class.ml-16]="!isOpen()"
+  [class.ms-64]="isOpen()"
+  [class.ms-16]="!isOpen()"
   class="transition-all duration-300 h-0">
 </div>

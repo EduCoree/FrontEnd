@@ -2,8 +2,10 @@
   <div class="max-w-4xl mx-auto">
 
     <div class="mb-10">
-      <h1 class="font-headline text-4xl font-extrabold text-[#191C1D] tracking-tight">My Profile</h1>
-      <p class="text-[#404945] mt-2">Manage your personal information and account settings.</p>
+      <h1 class="font-headline text-4xl font-extrabold text-[#191C1D] tracking-tight">
+        {{ 'profile.title' | translate }}
+      </h1>
+      <p class="text-[#404945] mt-2">{{ 'profile.subtitle' | translate }}</p>
     </div>
 
     @if (successMsg()) {
@@ -42,7 +44,9 @@
           @if (profile()!.bio) {
             <p class="mt-4 text-sm text-[#404945] leading-relaxed">{{ profile()!.bio }}</p>
           }
-          <p class="mt-5 text-xs text-[#707975]">Member since {{ profile()!.createdAt | date:'MMM yyyy' }}</p>
+          <p class="mt-5 text-xs text-[#707975]">
+            {{ 'profile.memberSince' | translate }} {{ profile()!.createdAt | date:'MMM yyyy' }}
+          </p>
         }
       </div>
 
@@ -54,17 +58,20 @@
           <button (click)="activeTab.set('info')"
             class="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold transition-all"
             [class]="activeTab() === 'info' ? 'text-[#2E6858] border-b-2 border-[#2E6858] bg-[#F2F4F4]' : 'text-[#707975] hover:text-[#2E6858] hover:bg-[#F8FAFA]'">
-            <span class="material-symbols-outlined text-[18px]">edit</span>Edit Info
+            <span class="material-symbols-outlined text-[18px]">edit</span>
+            {{ 'profile.tabInfo' | translate }}
           </button>
           <button (click)="activeTab.set('avatar')"
             class="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold transition-all"
             [class]="activeTab() === 'avatar' ? 'text-[#2E6858] border-b-2 border-[#2E6858] bg-[#F2F4F4]' : 'text-[#707975] hover:text-[#2E6858] hover:bg-[#F8FAFA]'">
-            <span class="material-symbols-outlined text-[18px]">photo_camera</span>Avatar
+            <span class="material-symbols-outlined text-[18px]">photo_camera</span>
+            {{ 'profile.tabAvatar' | translate }}
           </button>
           <button (click)="activeTab.set('password')"
             class="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold transition-all"
             [class]="activeTab() === 'password' ? 'text-[#2E6858] border-b-2 border-[#2E6858] bg-[#F2F4F4]' : 'text-[#707975] hover:text-[#2E6858] hover:bg-[#F8FAFA]'">
-            <span class="material-symbols-outlined text-[18px]">lock</span>Password
+            <span class="material-symbols-outlined text-[18px]">lock</span>
+            {{ 'profile.tabPassword' | translate }}
           </button>
         </div>
 
@@ -75,35 +82,47 @@
             <form [formGroup]="infoForm" (ngSubmit)="saveInfo()" class="space-y-6">
               <div class="grid md:grid-cols-2 gap-6">
                 <div class="md:col-span-2">
-                  <label class="block text-sm font-semibold text-[#191C1D] mb-2">Full Name</label>
+                  <label class="block text-sm font-semibold text-[#191C1D] mb-2">
+                    {{ 'profile.fullName' | translate }}
+                  </label>
                   <div class="flex items-center gap-3 px-4 py-3 bg-[#F2F4F4] rounded-xl border border-transparent focus-within:border-[#2E6858] focus-within:bg-white transition-all">
                     <span class="material-symbols-outlined text-[#707975] text-[18px]">badge</span>
-                    <input formControlName="name" type="text" placeholder="Your full name"
+                    <input formControlName="name" type="text"
+                      [placeholder]="'profile.fullNamePlaceholder' | translate"
                       class="bg-transparent border-none focus:ring-0 flex-1 text-sm text-[#191C1D] placeholder-[#707975]" />
                   </div>
                   @if (infoForm.get('name')?.invalid && infoForm.get('name')?.touched) {
-                    <p class="mt-1 text-xs text-[#BA1A1A]">Name must be at least 2 characters.</p>
+                    <p class="mt-1 text-xs text-[#BA1A1A]">{{ 'profile.fullNameError' | translate }}</p>
                   }
                 </div>
                 <div>
-                  <label class="block text-sm font-semibold text-[#191C1D] mb-2">Phone Number</label>
+                  <label class="block text-sm font-semibold text-[#191C1D] mb-2">
+                    {{ 'profile.phone' | translate }}
+                  </label>
                   <div class="flex items-center gap-3 px-4 py-3 bg-[#F2F4F4] rounded-xl border border-transparent focus-within:border-[#2E6858] focus-within:bg-white transition-all">
                     <span class="material-symbols-outlined text-[#707975] text-[18px]">phone</span>
-                    <input formControlName="phoneNumber" type="tel" placeholder="+20 1xx xxx xxxx"
+                    <input formControlName="phoneNumber" type="tel"
+                      [placeholder]="'profile.phonePlaceholder' | translate"
                       class="bg-transparent border-none focus:ring-0 flex-1 text-sm text-[#191C1D] placeholder-[#707975]" />
                   </div>
                 </div>
                 <div>
-                  <label class="block text-sm font-semibold text-[#191C1D] mb-2">Email <span class="text-[#707975] font-normal">(read-only)</span></label>
+                  <label class="block text-sm font-semibold text-[#191C1D] mb-2">
+                    {{ 'profile.email' | translate }}
+                    <span class="text-[#707975] font-normal">{{ 'profile.emailReadOnly' | translate }}</span>
+                  </label>
                   <div class="flex items-center gap-3 px-4 py-3 bg-[#ECEEEE] rounded-xl border border-[#E1E3E3]">
                     <span class="material-symbols-outlined text-[#707975] text-[18px]">mail</span>
                     <span class="text-sm text-[#707975]">{{ profile()?.email }}</span>
                   </div>
                 </div>
                 <div class="md:col-span-2">
-                  <label class="block text-sm font-semibold text-[#191C1D] mb-2">Bio</label>
+                  <label class="block text-sm font-semibold text-[#191C1D] mb-2">
+                    {{ 'profile.bio' | translate }}
+                  </label>
                   <div class="px-4 py-3 bg-[#F2F4F4] rounded-xl border border-transparent focus-within:border-[#2E6858] focus-within:bg-white transition-all">
-                    <textarea formControlName="bio" rows="4" placeholder="Tell students a little about yourself..."
+                    <textarea formControlName="bio" rows="4"
+                      [placeholder]="'profile.bioPlaceholder' | translate"
                       class="bg-transparent border-none focus:ring-0 w-full text-sm text-[#191C1D] placeholder-[#707975] resize-none"></textarea>
                   </div>
                 </div>
@@ -111,8 +130,10 @@
               <div class="flex justify-end pt-2">
                 <button type="submit" [disabled]="infoForm.invalid || loading()"
                   class="px-8 py-3 bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] text-white font-bold rounded-xl shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-all hover:shadow-lg active:scale-95">
-                  <span class="material-symbols-outlined text-[18px]" [class.animate-spin]="loading()">{{ loading() ? 'progress_activity' : 'save' }}</span>
-                  Save Changes
+                  <span class="material-symbols-outlined text-[18px]" [class.animate-spin]="loading()">
+                    {{ loading() ? 'progress_activity' : 'save' }}
+                  </span>
+                  {{ 'profile.saveChanges' | translate }}
                 </button>
               </div>
             </form>
@@ -121,8 +142,6 @@
           <!-- Tab: Avatar Picker -->
           @if (activeTab() === 'avatar') {
             <div class="space-y-6">
-
-              <!-- Preview -->
               <div class="flex flex-col items-center gap-3 py-2">
                 @if (selectedAvatar()) {
                   <img [src]="selectedAvatar()!" class="w-24 h-24 rounded-full object-cover ring-4 ring-[#2E6858] shadow-lg transition-all" />
@@ -133,12 +152,15 @@
                     {{ avatarInitials }}
                   </div>
                 }
-                <p class="text-sm text-[#707975]">{{ selectedAvatar() ? 'New avatar selected — click Apply to save' : 'Pick an avatar from the collection below' }}</p>
+                <p class="text-sm text-[#707975]">
+                  {{ (selectedAvatar() ? 'profile.avatarPreviewNew' : 'profile.avatarPreviewDefault') | translate }}
+                </p>
               </div>
 
-              <!-- Grid -->
               <div>
-                <p class="text-sm font-semibold text-[#191C1D] mb-4">Avatar Collection</p>
+                <p class="text-sm font-semibold text-[#191C1D] mb-4">
+                  {{ 'profile.avatarCollection' | translate }}
+                </p>
                 <div class="grid grid-cols-5 sm:grid-cols-8 gap-3">
                   @for (avatar of avatarOptions; track avatar) {
                     <button type="button" (click)="selectAvatar(avatar)"
@@ -158,8 +180,10 @@
               <div class="flex justify-end pt-2">
                 <button type="button" (click)="saveAvatar()" [disabled]="!selectedAvatar() || loading()"
                   class="px-8 py-3 bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] text-white font-bold rounded-xl shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-all hover:shadow-lg active:scale-95">
-                  <span class="material-symbols-outlined text-[18px]" [class.animate-spin]="loading()">{{ loading() ? 'progress_activity' : 'check' }}</span>
-                  Apply Avatar
+                  <span class="material-symbols-outlined text-[18px]" [class.animate-spin]="loading()">
+                    {{ loading() ? 'progress_activity' : 'check' }}
+                  </span>
+                  {{ 'profile.applyAvatar' | translate }}
                 </button>
               </div>
             </div>
@@ -169,7 +193,9 @@
           @if (activeTab() === 'password') {
             <form [formGroup]="passwordForm" (ngSubmit)="savePassword()" class="space-y-6">
               <div>
-                <label class="block text-sm font-semibold text-[#191C1D] mb-2">Current Password</label>
+                <label class="block text-sm font-semibold text-[#191C1D] mb-2">
+                  {{ 'profile.currentPassword' | translate }}
+                </label>
                 <div class="flex items-center gap-3 px-4 py-3 bg-[#F2F4F4] rounded-xl border border-transparent focus-within:border-[#2E6858] focus-within:bg-white transition-all">
                   <span class="material-symbols-outlined text-[#707975] text-[18px]">lock</span>
                   <input formControlName="currentPassword" type="password" placeholder="••••••••"
@@ -177,36 +203,44 @@
                 </div>
               </div>
               <div>
-                <label class="block text-sm font-semibold text-[#191C1D] mb-2">New Password</label>
+                <label class="block text-sm font-semibold text-[#191C1D] mb-2">
+                  {{ 'profile.newPassword' | translate }}
+                </label>
                 <div class="flex items-center gap-3 px-4 py-3 bg-[#F2F4F4] rounded-xl border border-transparent focus-within:border-[#2E6858] focus-within:bg-white transition-all">
                   <span class="material-symbols-outlined text-[#707975] text-[18px]">lock_open</span>
-                  <input formControlName="newPassword" type="password" placeholder="Min. 8 characters"
+                  <input formControlName="newPassword" type="password"
+                    [placeholder]="'profile.newPasswordPlaceholder' | translate"
                     class="bg-transparent border-none focus:ring-0 flex-1 text-sm text-[#191C1D] placeholder-[#707975]" />
                 </div>
                 @if (passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched) {
-                  <p class="mt-1 text-xs text-[#BA1A1A]">Password must be at least 8 characters.</p>
+                  <p class="mt-1 text-xs text-[#BA1A1A]">{{ 'profile.newPasswordError' | translate }}</p>
                 }
               </div>
               <div>
-                <label class="block text-sm font-semibold text-[#191C1D] mb-2">Confirm New Password</label>
+                <label class="block text-sm font-semibold text-[#191C1D] mb-2">
+                  {{ 'profile.confirmPassword' | translate }}
+                </label>
                 <div class="flex items-center gap-3 px-4 py-3 bg-[#F2F4F4] rounded-xl border border-transparent focus-within:border-[#2E6858] focus-within:bg-white transition-all">
                   <span class="material-symbols-outlined text-[#707975] text-[18px]">lock_reset</span>
-                  <input formControlName="confirmPassword" type="password" placeholder="Repeat new password"
+                  <input formControlName="confirmPassword" type="password"
+                    [placeholder]="'profile.confirmPasswordPlaceholder' | translate"
                     class="bg-transparent border-none focus:ring-0 flex-1 text-sm text-[#191C1D] placeholder-[#707975]" />
                 </div>
                 @if (passwordForm.errors?.['mismatch'] && passwordForm.get('confirmPassword')?.touched) {
-                  <p class="mt-1 text-xs text-[#BA1A1A]">Passwords do not match.</p>
+                  <p class="mt-1 text-xs text-[#BA1A1A]">{{ 'profile.confirmPasswordError' | translate }}</p>
                 }
               </div>
               <div class="bg-[#F2F4F4] rounded-xl p-4 flex gap-3">
                 <span class="material-symbols-outlined text-[#2E6858] text-[20px] shrink-0">info</span>
-                <p class="text-xs text-[#404945] leading-relaxed">Strong passwords include uppercase letters, numbers, and special characters. Minimum 8 characters required.</p>
+                <p class="text-xs text-[#404945] leading-relaxed">{{ 'profile.passwordTip' | translate }}</p>
               </div>
               <div class="flex justify-end">
                 <button type="submit" [disabled]="passwordForm.invalid || loading()"
                   class="px-8 py-3 bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] text-white font-bold rounded-xl shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-all hover:shadow-lg active:scale-95">
-                  <span class="material-symbols-outlined text-[18px]" [class.animate-spin]="loading()">{{ loading() ? 'progress_activity' : 'key' }}</span>
-                  Change Password
+                  <span class="material-symbols-outlined text-[18px]" [class.animate-spin]="loading()">
+                    {{ loading() ? 'progress_activity' : 'key' }}
+                  </span>
+                  {{ 'profile.changePassword' | translate }}
                 </button>
               </div>
             </form>

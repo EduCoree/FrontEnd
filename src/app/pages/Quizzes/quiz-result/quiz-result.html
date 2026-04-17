@@ -1,195 +1,140 @@
 <div class="min-h-screen bg-slate-50 text-slate-900">
 
-  <!-- Loading -->
   @if (isloading) {
     <div class="flex justify-center items-center min-h-screen">
-      <span class="material-symbols-outlined text-primary text-4xl animate-spin">
-        progress_activity
-      </span>
+      <span class="material-symbols-outlined text-primary text-4xl animate-spin">progress_activity</span>
     </div>
   }
 
   @if (!isloading && AttemptResult) {
     <main class="mx-auto max-w-6xl px-6 py-10">
 
-      <!-- Hero -->
       <section class="grid gap-8 lg:grid-cols-[320px_1fr] lg:items-center">
 
-        <!-- Score Card -->
         <div class="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
           <div class="mx-auto flex h-52 w-52 items-center justify-center rounded-full p-4"
             [style.background]="'conic-gradient(' + (AttemptResult.passed ? '#0f766e' : '#e11d48') + ' ' + AttemptResult.score + '%,#e5e7eb 0)'">
             <div class="flex h-full w-full flex-col items-center justify-center rounded-full bg-white">
-              <span class="text-5xl font-extrabold tracking-tight text-slate-900">
-                {{ AttemptResult.score }}%
-              </span>
+              <span class="text-5xl font-extrabold tracking-tight text-slate-900">{{ AttemptResult.score }}%</span>
               <span class="mt-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-                Final Score
+                {{ 'result.finalScore' | translate }}
               </span>
             </div>
           </div>
-
           <div class="mt-6 flex justify-center">
             <span class="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold"
-              [ngClass]="AttemptResult.passed
-                ? 'bg-emerald-100 text-emerald-800'
-                : 'bg-rose-100 text-rose-800'">
-              {{ AttemptResult.passed ? 'Passed' : 'Failed' }}
-              <span class="material-symbols-outlined text-[18px]">
-                {{ AttemptResult.passed ? 'check' : 'close' }}
-              </span>
+              [ngClass]="AttemptResult.passed ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'">
+              {{ AttemptResult.passed ? ('result.passed' | translate) : ('result.failed' | translate) }}
+              <span class="material-symbols-outlined text-[18px]">{{ AttemptResult.passed ? 'check' : 'close' }}</span>
             </span>
           </div>
         </div>
 
-        <!-- Summary -->
         <div class="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200">
           <p class="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">
-            Quiz Summary
+            {{ 'result.summary' | translate }}
           </p>
           <h3 class="mt-3 text-[28px] font-extrabold tracking-tight text-slate-900">
-            {{ AttemptResult.earnedPoints }} / {{ AttemptResult.totalPoints }} Points
+            {{ AttemptResult.earnedPoints }} / {{ AttemptResult.totalPoints }} {{ 'quiz.legend.completed' | translate }}
           </h3>
           <p class="mt-3 text-lg text-slate-500">
-            Attempt #{{ AttemptResult.attemptId }}
+            {{ 'result.attempt' | translate }} #{{ AttemptResult.attemptId }}
           </p>
-
           <div class="mt-8 grid gap-4 sm:grid-cols-3">
-
             <div class="rounded-2xl bg-slate-50 p-5 ring-1 ring-slate-200">
-              <p class="text-sm text-slate-500">Correct Answers</p>
+              <p class="text-sm text-slate-500">{{ 'result.correctAnswers' | translate }}</p>
               <p class="mt-2 text-3xl font-bold text-slate-900">{{ CorrectCount }}</p>
             </div>
-
             <div class="rounded-2xl bg-slate-50 p-5 ring-1 ring-slate-200">
-              <p class="text-sm text-slate-500">Missed</p>
+              <p class="text-sm text-slate-500">{{ 'result.missed' | translate }}</p>
               <p class="mt-2 text-3xl font-bold text-rose-600">{{ missedCount }}</p>
             </div>
-
             <div class="rounded-2xl bg-slate-50 p-5 ring-1 ring-slate-200">
-              <p class="text-sm text-slate-500">Status</p>
-              <p class="mt-2 text-3xl font-bold"
-                [ngClass]="AttemptResult.passed ? 'text-emerald-700' : 'text-rose-600'">
-                {{ AttemptResult.passed ? 'Pass' : 'Fail' }}
+              <p class="text-sm text-slate-500">{{ 'result.status' | translate }}</p>
+              <p class="mt-2 text-3xl font-bold" [ngClass]="AttemptResult.passed ? 'text-emerald-700' : 'text-rose-600'">
+                {{ AttemptResult.passed ? ('result.pass' | translate) : ('result.fail' | translate) }}
               </p>
             </div>
-
           </div>
         </div>
-
       </section>
 
-      <!-- Review -->
       <section class="mt-12">
         <div class="mb-6 flex items-end justify-between gap-4">
           <div>
             <p class="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
-              Answers Review
+              {{ 'result.reviewLabel' | translate }}
             </p>
             <h3 class="mt-2 text-3xl font-extrabold tracking-tight text-slate-900">
-              See what you got right and wrong
+              {{ 'result.reviewTitle' | translate }}
             </h3>
           </div>
-
-          <div class="hidden rounded-2xl bg-white px-5 py-4 text-right shadow-sm ring-1 ring-slate-200 sm:block">
-            <p class="text-sm text-slate-500">Questions Missed</p>
+          <div class="hidden rounded-2xl bg-white px-5 py-4 text-end shadow-sm ring-1 ring-slate-200 sm:block">
+            <p class="text-sm text-slate-500">{{ 'result.questionsMissed' | translate }}</p>
             <p class="text-2xl font-bold text-rose-600 pe-14">{{ missedCount }}</p>
           </div>
         </div>
 
         <div class="space-y-5">
           @for (question of AttemptResult.review; track question.questionId; let i = $index) {
-
             <article class="rounded-3xl border bg-white p-6 shadow-sm"
               [ngClass]="question.isCorrect ? 'border-emerald-100' : 'border-rose-100'">
-
               <div class="flex items-start gap-4">
-
-                <!-- Icon -->
                 <div class="mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl"
                   [ngClass]="question.isCorrect ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'">
-                  <span class="material-symbols-outlined">
-                    {{ question.isCorrect ? 'check_circle' : 'close' }}
-                  </span>
+                  <span class="material-symbols-outlined">{{ question.isCorrect ? 'check_circle' : 'close' }}</span>
                 </div>
-
                 <div class="min-w-0 flex-1">
-
-                  <!-- Badges -->
                   <div class="flex flex-wrap items-center gap-3">
                     <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
-                      Question {{ i + 1 }}
+                      {{ 'result.question' | translate }} {{ i + 1 }}
                     </span>
                     <span class="rounded-full px-3 py-1 text-xs font-semibold"
-                      [ngClass]="question.isCorrect
-                        ? 'bg-emerald-100 text-emerald-700'
-                        : 'bg-rose-100 text-rose-700'">
-                      {{ question.isCorrect ? 'Correct' : 'Incorrect' }}
+                      [ngClass]="question.isCorrect ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'">
+                      {{ question.isCorrect ? ('result.correct' | translate) : ('result.incorrect' | translate) }}
                     </span>
                     <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
-                      {{ question.points }} pts
+                      {{ question.points }} {{ 'quizView.totalPoints' | translate }}
                     </span>
                   </div>
-
-                  <!-- Question Text -->
-                  <h4 class="mt-4 text-2xl font-bold leading-snug text-slate-900">
-                    {{ question.questionText }}
-                  </h4>
-
-                  <!-- Answers -->
-                  <div class="mt-5"
-                    [ngClass]="!question.isCorrect ? 'grid gap-3 md:grid-cols-2' : ''">
-
-                    <!-- Your Answer -->
+                  <h4 class="mt-4 text-2xl font-bold leading-snug text-slate-900">{{ question.questionText }}</h4>
+                  <div class="mt-5" [ngClass]="!question.isCorrect ? 'grid gap-3 md:grid-cols-2' : ''">
                     <div class="rounded-2xl p-4 ring-1"
-                      [ngClass]="question.isCorrect
-                        ? 'bg-emerald-50 ring-emerald-100'
-                        : 'bg-rose-50 ring-rose-100'">
-                      <p class="text-sm font-medium"
-                        [ngClass]="question.isCorrect ? 'text-emerald-700' : 'text-rose-700'">
-                        Your Answer
+                      [ngClass]="question.isCorrect ? 'bg-emerald-50 ring-emerald-100' : 'bg-rose-50 ring-rose-100'">
+                      <p class="text-sm font-medium" [ngClass]="question.isCorrect ? 'text-emerald-700' : 'text-rose-700'">
+                        {{ 'result.yourAnswer' | translate }}
                       </p>
-                      <p class="mt-1 text-lg font-semibold"
-                        [ngClass]="question.isCorrect ? 'text-emerald-900' : 'text-rose-900'">
+                      <p class="mt-1 text-lg font-semibold" [ngClass]="question.isCorrect ? 'text-emerald-900' : 'text-rose-900'">
                         {{ question.selectedAnswerText }}
                       </p>
                     </div>
-
-                    <!-- Correct Answer (only if wrong) -->
                     @if (!question.isCorrect) {
                       <div class="rounded-2xl bg-emerald-50 p-4 ring-1 ring-emerald-100">
-                        <p class="text-sm font-medium text-emerald-700">Correct Answer</p>
-                        <p class="mt-1 text-lg font-semibold text-emerald-900">
-                          {{ question.correctAnswerText }}
-                        </p>
+                        <p class="text-sm font-medium text-emerald-700">{{ 'result.correctAnswer' | translate }}</p>
+                        <p class="mt-1 text-lg font-semibold text-emerald-900">{{ question.correctAnswerText }}</p>
                       </div>
                     }
-
                   </div>
-
                 </div>
               </div>
             </article>
-
           }
         </div>
       </section>
 
-      <!-- Bottom Actions -->
       <section class="mt-10 border-t border-slate-200 pt-6">
         <div class="flex flex-col gap-3 sm:flex-row sm:justify-end">
           <button (click)="retakeQuiz()"
             class="inline-flex items-center justify-center rounded-2xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
-            Retake Quiz
+            {{ 'result.retake' | translate }}
           </button>
           <button (click)="backToCourse()"
             class="inline-flex items-center justify-center rounded-2xl bg-emerald-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-emerald-800">
-            Back to Course
+            {{ 'result.backToCourse' | translate }}
           </button>
         </div>
       </section>
 
     </main>
   }
-
 </div>

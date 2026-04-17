@@ -9,6 +9,7 @@ import { CenterDelete } from "../../centers/center-delete/center-delete";
 import { DeleteQuestionModalComponent } from "../delete-question/delete-question";
 import { QuestionService } from '../../../core/services/question.service';
 import { AnsweroptionService } from '../../../core/services/answeroption.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 interface EditingQuestion {
@@ -20,7 +21,7 @@ interface EditingQuestion {
 @Component({
   selector: 'app-quiz-builder',
   standalone: true,
-  imports: [CommonModule, CourseSidebar, FormsModule, DeleteQuestionModalComponent, RouterLink],
+  imports: [CommonModule, CourseSidebar, FormsModule, DeleteQuestionModalComponent, RouterLink , TranslateModule],
   templateUrl: './quiz-builder.html'
 })
 export class QuizBuilderComponent implements OnInit {

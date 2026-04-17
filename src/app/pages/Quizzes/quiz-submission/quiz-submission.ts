@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-quiz-submission',
-  imports: [CommonModule],
+  imports: [CommonModule , TranslateModule],
   templateUrl: './quiz-submission.html',
   styleUrl: './quiz-submission.css',
 })

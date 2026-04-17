@@ -5,11 +5,12 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ReorderItemDto, SectionDto, CreateLessonDto } from '../../../core/models/course';
 import { CourseService } from '../../../core/services/course';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-course-sections',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule , TranslateModule],
   templateUrl: './course-sections.component.html',
   styleUrl: './course-sections.component.css'
 })

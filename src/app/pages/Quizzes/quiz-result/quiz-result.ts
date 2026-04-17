@@ -4,10 +4,11 @@ import { QuizService } from '../../../core/services/quiz.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { StudentquizService } from '../../../core/services/studentquiz.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-quiz-result',
-  imports: [CommonModule],
+  imports: [CommonModule , TranslateModule],
   templateUrl: './quiz-result.html',
   styleUrl: './quiz-result.css',
 })

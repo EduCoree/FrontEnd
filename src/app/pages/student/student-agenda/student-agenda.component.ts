@@ -5,11 +5,12 @@ import { Component, OnInit, OnDestroy, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LiveSessionResponse, JoinSessionResponse } from '../../../core/models/session';
 import { LiveSessionService } from '../../../core/services/live-session';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-student-agenda',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule , TranslateModule],
   templateUrl: './student-agenda.component.html',
 })
 export class StudentAgendaComponent implements OnInit, OnDestroy {

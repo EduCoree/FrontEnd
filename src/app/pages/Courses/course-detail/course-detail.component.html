@@ -38,14 +38,16 @@
         <div
           class="bg-white/10 backdrop-blur-md p-6 rounded-lg border border-white/20 flex flex-col items-center min-w-[200px]"
         >
-          <span class="text-white/80 text-sm uppercase tracking-widest mb-1">Tuition</span>
+          <span class="text-white/80 text-sm uppercase tracking-widest mb-1">
+            {{ 'courseDetails.tuition' | translate }}
+          </span>
           <span class="text-white text-3xl font-bold">
-            {{ course.pricingType === 'Free' ? 'Free' : '$' + course.price }}
+            {{ course.pricingType === 'Free' ? ('courseDetails.free' | translate) : '$' + course.price }}
           </span>
           <button
             class="mt-4 bg-primary text-on-primary px-8 py-3 rounded-full font-bold w-full hover:bg-primary-dim transition-all"
           >
-            Enroll Now
+            {{ 'courseDetails.enroll' | translate }}
           </button>
         </div>
       </div>
@@ -57,7 +59,9 @@
       <div class="lg:col-span-8 space-y-16">
         <!-- Description -->
         <article>
-          <h2 class="text-2xl font-bold mb-6 tracking-tight">About This Course</h2>
+          <h2 class="text-2xl font-bold mb-6 tracking-tight">
+            {{ 'courseDetails.about' | translate }}
+          </h2>
           <p class="text-on-surface-variant leading-relaxed text-lg mb-8">
             {{ course.description }}
           </p>
@@ -67,21 +71,25 @@
             <div class="bg-surface-container p-6 rounded-lg">
               <span class="material-symbols-outlined text-primary mb-2">signal_cellular_alt</span>
               <h4 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">
-                Level
+                {{ 'courseDetails.level' | translate }}
               </h4>
               <p class="font-bold">{{ course.level }}</p>
             </div>
+
             <div class="bg-surface-container p-6 rounded-lg">
               <span class="material-symbols-outlined text-primary mb-2">menu_book</span>
               <h4 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">
-                Lessons
+                {{ 'courseDetails.lessons' | translate }}
               </h4>
-              <p class="font-bold">{{ getTotalLessons() }} Lessons</p>
+              <p class="font-bold">
+                {{ getTotalLessons() }} {{ 'courseDetails.lessons' | translate }}
+              </p>
             </div>
+
             <div class="bg-surface-container p-6 rounded-lg">
               <span class="material-symbols-outlined text-primary mb-2">category</span>
               <h4 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">
-                Category
+                {{ 'courseDetails.category' | translate }}
               </h4>
               <p class="font-bold">{{ course.categoryName }}</p>
             </div>
@@ -91,15 +99,17 @@
         <!-- Curriculum -->
         <section>
           <div class="flex justify-between items-end mb-8">
-            <h2 class="text-2xl font-bold tracking-tight">Curriculum</h2>
-            <span class="text-sm font-bold text-primary"
-              >{{ getTotalLessons() }} LESSONS TOTAL</span
-            >
+            <h2 class="text-2xl font-bold tracking-tight">
+              {{ 'courseDetails.curriculum' | translate }}
+            </h2>
+            <span class="text-sm font-bold text-primary">
+              {{ getTotalLessons() }} {{ 'courseDetails.totalLessons' | translate }}
+            </span>
           </div>
 
           <div class="bg-surface-container-low p-4 rounded-lg space-y-3">
             <div *ngFor="let section of course.sections; let i = index">
-              <!-- Section Header -->
+
               <div
                 class="bg-surface-container-lowest rounded-lg overflow-hidden cursor-pointer"
                 (click)="toggleSection(section.id)"
@@ -111,11 +121,14 @@
                     >
                       {{ (i + 1).toString().padStart(2, '0') }}
                     </span>
+
                     <h3 class="font-bold text-lg">{{ section.title }}</h3>
-                    <span class="text-xs text-on-surface-variant"
-                      >({{ section.lessons.length }} lessons)</span
-                    >
+
+                    <span class="text-xs text-on-surface-variant">
+                      ({{ section.lessons.length }} {{ 'courseDetails.lessons' | translate }})
+                    </span>
                   </div>
+
                   <span
                     class="material-symbols-outlined transition-transform duration-300"
                     [class.rotate-180]="openSectionId === section.id"
@@ -137,11 +150,14 @@
                       </span>
                       <span class="text-on-surface-variant text-sm group-hover:text-primary transition-colors">{{ lesson.title }}</span>
                     </div>
+
                     <span class="text-xs font-bold text-outline-variant">
-                      {{ lesson.durationSeconds / 60 | number: '1.0-0' }} min
+                      {{ lesson.durationSeconds / 60 | number: '1.0-0' }}
+                      {{ 'courseDetails.min' | translate }}
                     </span>
                   </div>
                 </div>
+
               </div>
             </div>
           </div>
@@ -150,37 +166,47 @@
 
       <!-- Right Column -->
       <aside class="lg:col-span-4 space-y-8">
+
         <!-- Instructor -->
         <div class="bg-surface-container-lowest p-8 rounded-lg shadow-sm">
           <h3 class="text-xs font-bold text-primary uppercase tracking-[0.15em] mb-6">
-            Instructor
+            {{ 'courseDetails.instructor' | translate }}
           </h3>
+
           <div class="flex items-center gap-4 mb-4">
             <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
               <span class="material-symbols-outlined text-primary text-3xl">person</span>
             </div>
+
             <div>
               <h4 class="font-bold text-lg">{{ course.teacherName }}</h4>
-              <p class="text-xs text-on-surface-variant">Course Instructor</p>
+              <p class="text-xs text-on-surface-variant">
+                {{ 'courseDetails.courseInstructor' | translate }}
+              </p>
             </div>
           </div>
         </div>
 
         <!-- Included -->
         <div class="bg-surface-container p-8 rounded-lg">
-          <h4 class="font-bold mb-4">Included in Tuition</h4>
+          <h4 class="font-bold mb-4">
+            {{ 'courseDetails.included' | translate }}
+          </h4>
+
           <ul class="space-y-4">
             <li class="flex items-center gap-3 text-sm text-on-surface-variant">
               <span class="material-symbols-outlined text-primary text-xl">all_inclusive</span>
-              Lifetime Access
+              {{ 'courseDetails.lifetime' | translate }}
             </li>
+
             <li class="flex items-center gap-3 text-sm text-on-surface-variant">
               <span class="material-symbols-outlined text-primary text-xl">workspace_premium</span>
-              Official Certification
+              {{ 'courseDetails.certificate' | translate }}
             </li>
+
             <li class="flex items-center gap-3 text-sm text-on-surface-variant">
               <span class="material-symbols-outlined text-primary text-xl">groups</span>
-              Community Access
+              {{ 'courseDetails.community' | translate }}
             </li>
           </ul>
         </div>
@@ -191,8 +217,9 @@
           class="w-full py-3 bg-surface-container text-on-surface-variant rounded-full font-bold text-sm hover:bg-surface-container-high transition-all flex items-center justify-center gap-2"
         >
           <span class="material-symbols-outlined text-sm">arrow_back</span>
-          Back to Courses
+          {{ 'courseDetails.back' | translate }}
         </button>
+
       </aside>
     </div>
   </ng-container>
@@ -203,9 +230,13 @@
     class="flex flex-col items-center justify-center py-24 text-center"
   >
     <span class="material-symbols-outlined text-6xl text-outline-variant mb-4">error_outline</span>
-    <h3 class="text-xl font-bold text-on-surface mb-2">Course not found</h3>
+
+    <h3 class="text-xl font-bold text-on-surface mb-2">
+      {{ 'courseDetails.notFound' | translate }}
+    </h3>
+
     <button routerLink="/courses" class="mt-4 text-primary font-bold text-sm">
-      ← Back to Courses
+      ← {{ 'courseDetails.back' | translate }}
     </button>
   </div>
 </main>

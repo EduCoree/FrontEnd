@@ -7,10 +7,11 @@ import { AdminUserService } from '../../core/services/admin-user';
 import { AdminSidebarComponent } from '../../layouts/admin-sidebar/admin-sidebar';
 import { AdminTopbarComponent } from '../../layouts/admin-topbar/admin-topbar';
 import { StudentSummary } from '../../core/models/admin-user';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin-students',
-  imports: [CommonModule, RouterLink, AdminSidebarComponent, AdminTopbarComponent],
+  imports: [CommonModule, RouterLink, AdminSidebarComponent, AdminTopbarComponent , TranslateModule],
   templateUrl: './admin-students.html',
   styleUrl: './admin-students.css',
 })

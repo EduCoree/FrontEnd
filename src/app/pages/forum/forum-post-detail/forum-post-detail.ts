@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,7 +12,7 @@ import { Sidebar } from '../../../shared/components/ui/sidebar/sidebar';
 @Component({
   selector: 'app-forum-post-detail',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, Sidebar],
+  imports: [CommonModule, ReactiveFormsModule, Sidebar , TranslateModule],
   templateUrl: './forum-post-detail.html',
   styleUrl: './forum-post-detail.css',
 })

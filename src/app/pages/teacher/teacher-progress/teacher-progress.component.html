@@ -1,69 +1,62 @@
 <div class="bg-[#f5f7fa] text-gray-900 min-h-screen font-sans">
 
-  <!-- ══ Sidebar ══════════════════════════════════════════════════════════════ -->
-  <aside class="fixed left-0 top-0 h-full p-6 flex flex-col gap-8 bg-white border-r border-gray-100 w-64 z-50">
+  <aside class="fixed start-0 top-0 h-full p-6 flex flex-col gap-8 bg-white border-e border-gray-100 w-64 z-50">
     <div class="px-2">
       <span class="text-lg font-black text-teal-600 cursor-pointer" (click)="goToDashboard()">EduCore</span>
-      <p class="text-[10px] uppercase tracking-widest text-gray-400 font-bold mt-0.5">Course Builder</p>
+      <p class="text-[10px] uppercase tracking-widest text-gray-400 font-bold mt-0.5">{{ 'courseBuilder.courseBuilder' | translate }}</p>
     </div>
-
     <nav class="flex flex-col gap-1">
       <a (click)="goBack()" class="flex items-center gap-3 text-gray-400 px-4 py-2.5 rounded-xl hover:bg-gray-50 cursor-pointer text-sm font-medium transition-colors">
-        <span class="material-symbols-outlined text-[18px]">info</span> Course Info
+        <span class="material-symbols-outlined text-[18px]">info</span> {{ 'courseBuilder.courseInfo' | translate }}
       </a>
       <a (click)="goBack()" class="flex items-center gap-3 text-gray-400 px-4 py-2.5 rounded-xl hover:bg-gray-50 cursor-pointer text-sm font-medium transition-colors">
-        <span class="material-symbols-outlined text-[18px]">menu_book</span> Curriculum
+        <span class="material-symbols-outlined text-[18px]">menu_book</span> {{ 'courseBuilder.curriculum' | translate }}
       </a>
       <a (click)="goToMedia()" class="flex items-center gap-3 text-gray-400 px-4 py-2.5 rounded-xl hover:bg-gray-50 cursor-pointer text-sm font-medium transition-colors">
-        <span class="material-symbols-outlined text-[18px]">video_library</span> Media
+        <span class="material-symbols-outlined text-[18px]">video_library</span> {{ 'courseBuilder.media' | translate }}
       </a>
       <a (click)="goToSessions()" class="flex items-center gap-3 text-gray-400 px-4 py-2.5 rounded-xl hover:bg-gray-50 cursor-pointer text-sm font-medium transition-colors">
-        <span class="material-symbols-outlined text-[18px]">calendar_month</span> Sessions
+        <span class="material-symbols-outlined text-[18px]">calendar_month</span> {{ 'teacherSessions.sessions' | translate }}
       </a>
-      <!-- Active -->
       <a class="flex items-center gap-3 bg-teal-50 text-teal-700 px-4 py-2.5 rounded-xl text-sm font-bold">
-        <span class="material-symbols-outlined text-[18px]">trending_up</span> Progress
+        <span class="material-symbols-outlined text-[18px]">trending_up</span> {{ 'studentProgress.title' | translate }}
       </a>
       <a class="flex items-center gap-3 text-gray-300 px-4 py-2.5 rounded-xl text-sm font-medium cursor-not-allowed">
-        <span class="material-symbols-outlined text-[18px]">payments</span> Pricing
+        <span class="material-symbols-outlined text-[18px]">payments</span> {{ 'courseBuilder.pricing' | translate }}
       </a>
     </nav>
   </aside>
 
-  <!-- ══ Main ══════════════════════════════════════════════════════════════════ -->
-  <main class="ml-64 min-h-screen pb-28">
+  <main class="ms-64 min-h-screen pb-28">
 
-    <!-- Header -->
     <header class="flex justify-between items-center px-8 py-3 bg-white border-b border-gray-100 sticky top-0 z-40">
       <div class="flex items-center gap-6">
-        <h1 class="text-sm font-bold text-gray-700">Student Progress</h1>
-        <!-- Step breadcrumb -->
+        <h1 class="text-sm font-bold text-gray-700">{{ 'studentProgress.title' | translate }}</h1>
         <div class="flex items-center gap-2 text-xs text-gray-400">
-          <span>Course Info</span>
+          <span>{{ 'courseBuilder.courseInfo' | translate }}</span>
           <span class="material-symbols-outlined text-[14px]">chevron_right</span>
-          <span>Curriculum</span>
+          <span>{{ 'courseBuilder.curriculum' | translate }}</span>
           <span class="material-symbols-outlined text-[14px]">chevron_right</span>
-          <span>Media</span>
+          <span>{{ 'courseBuilder.media' | translate }}</span>
           <span class="material-symbols-outlined text-[14px]">chevron_right</span>
-          <span>Sessions</span>
+          <span>{{ 'teacherSessions.sessions' | translate }}</span>
           <span class="material-symbols-outlined text-[14px]">chevron_right</span>
-          <span class="text-teal-600 font-bold">Progress</span>
+          <span class="text-teal-600 font-bold">{{ 'studentProgress.title' | translate }}</span>
         </div>
       </div>
       <div class="flex items-center gap-3">
-        <button (click)="goToDashboard()" class="px-4 py-1.5 text-xs font-semibold text-gray-500 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">Exit Course Builder</button>
+        <button (click)="goToDashboard()" class="px-4 py-1.5 text-xs font-semibold text-gray-500 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+          {{ 'teacherPortal.exitCourseBuilder' | translate }}
+        </button>
       </div>
     </header>
 
-    <!-- Loading -->
     <div *ngIf="isLoading()" class="flex justify-center py-32">
       <span class="material-symbols-outlined text-teal-500 text-4xl animate-spin">progress_activity</span>
     </div>
 
-    <!-- Content -->
     <div *ngIf="!isLoading()" class="p-8 max-w-5xl mx-auto space-y-8">
 
-      <!-- Error State -->
       <div *ngIf="errorMsg()"
         class="bg-white rounded-2xl border-2 border-dashed border-red-200 py-20 flex flex-col items-center justify-center text-center gap-4">
         <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center">
@@ -74,27 +67,25 @@
         </div>
       </div>
 
-      <!-- Empty State -->
       <div *ngIf="!errorMsg() && students().length === 0"
         class="bg-white rounded-2xl border-2 border-dashed border-gray-200 py-20 flex flex-col items-center justify-center text-center gap-4">
         <div class="w-16 h-16 bg-teal-50 rounded-full flex items-center justify-center">
           <span class="material-symbols-outlined text-2xl text-teal-500">groups</span>
         </div>
         <div class="space-y-1">
-          <h3 class="text-base font-bold text-gray-700">No enrolled students yet</h3>
-          <p class="text-xs text-gray-400">Students who enroll in this course will appear here.</p>
+          <h3 class="text-base font-bold text-gray-700">{{ 'teacherProgress.noStudents' | translate }}</h3>
+          <p class="text-xs text-gray-400">{{ 'teacherProgress.noStudentsHint' | translate }}</p>
         </div>
       </div>
 
-      <!-- Students Table -->
       <div *ngIf="!errorMsg() && students().length > 0" class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <table class="w-full text-left border-collapse">
+        <table class="w-full text-start border-collapse">
           <thead>
             <tr class="bg-gray-50 border-b border-gray-100 text-[10px] uppercase font-bold text-gray-400 tracking-wider">
-              <th class="px-6 py-4">Student Name</th>
-              <th class="px-6 py-4">Email</th>
-              <th class="px-6 py-4">Completed</th>
-              <th class="px-6 py-4 w-48">Progress</th>
+              <th class="px-6 py-4">{{ 'teacherProgress.studentName' | translate }}</th>
+              <th class="px-6 py-4">{{ 'adminStudents.email' | translate }}</th>
+              <th class="px-6 py-4">{{ 'teacherProgress.completed' | translate }}</th>
+              <th class="px-6 py-4 w-48">{{ 'studentProgress.title' | translate }}</th>
               <th class="px-6 py-4">%</th>
             </tr>
           </thead>
@@ -108,9 +99,7 @@
               <td class="px-6 py-4 text-gray-600">{{ student.completedLessons }} / {{ student.totalLessons }}</td>
               <td class="px-6 py-4">
                 <div class="w-full bg-gray-100 rounded-full h-2">
-                  <div class="bg-teal-500 h-2 rounded-full transition-all"
-                       [style.width]="student.percentComplete + '%'">
-                  </div>
+                  <div class="bg-teal-500 h-2 rounded-full transition-all" [style.width]="student.percentComplete + '%'"></div>
                 </div>
               </td>
               <td class="px-6 py-4 font-bold text-gray-700">{{ student.percentComplete }}%</td>
@@ -119,64 +108,59 @@
         </table>
       </div>
 
-      <!-- Detail Panel -->
       <div *ngIf="selectedStudent()" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
-        
         <div class="flex items-center justify-between pb-4 border-b border-gray-50">
           <h3 class="text-sm font-bold text-gray-800">
-            {{ selectedStudent()?.studentName }} <span class="text-gray-400 font-medium">— Lesson Breakdown</span>
+            {{ selectedStudent()?.studentName }}
+            <span class="text-gray-400 font-medium">— {{ 'teacherProgress.lessonBreakdown' | translate }}</span>
           </h3>
           <button (click)="clearSelection()" class="text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center p-1">
             <span class="material-symbols-outlined text-[18px]">close</span>
           </button>
         </div>
 
-        <!-- Detail Loading -->
         <div *ngIf="isLoadingDetail()" class="flex justify-center py-10">
           <span class="material-symbols-outlined text-teal-500 text-3xl animate-spin">progress_activity</span>
         </div>
 
-        <!-- Detail Items -->
-        <div *ngIf="!isLoadingDetail()" class="space-y-2 max-h-96 overflow-y-auto pr-2">
+        <div *ngIf="!isLoadingDetail()" class="space-y-2 max-h-96 overflow-y-auto pe-2">
           <div *ngFor="let lesson of lessonDetails()" class="flex items-center justify-between bg-gray-50 p-3 rounded-xl border border-gray-100">
             <div class="flex items-center gap-4">
-              <!-- Status Badge -->
-              <span *ngIf="lesson.isCompleted" class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded shrink-0 w-24 text-center">Completed</span>
-              <span *ngIf="!lesson.isCompleted && lesson.lastPositionSecs > 0" class="bg-yellow-100 text-yellow-700 text-xs font-bold px-2 py-0.5 rounded shrink-0 w-24 text-center">In Progress</span>
-              <span *ngIf="!lesson.isCompleted && lesson.lastPositionSecs === 0" class="bg-gray-100 text-gray-500 text-xs font-bold px-2 py-0.5 rounded shrink-0 w-24 text-center">Not Started</span>
-              
-              <!-- Title -->
+              <span *ngIf="lesson.isCompleted" class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded shrink-0 w-24 text-center">
+                {{ 'teacherProgress.statusCompleted' | translate }}
+              </span>
+              <span *ngIf="!lesson.isCompleted && lesson.lastPositionSecs > 0" class="bg-yellow-100 text-yellow-700 text-xs font-bold px-2 py-0.5 rounded shrink-0 w-24 text-center">
+                {{ 'teacherProgress.statusInProgress' | translate }}
+              </span>
+              <span *ngIf="!lesson.isCompleted && lesson.lastPositionSecs === 0" class="bg-gray-100 text-gray-500 text-xs font-bold px-2 py-0.5 rounded shrink-0 w-24 text-center">
+                {{ 'teacherProgress.statusNotStarted' | translate }}
+              </span>
               <span class="text-sm font-medium text-gray-700">{{ lesson.title }}</span>
             </div>
-
-            <div class="text-xs text-gray-500 font-medium text-right shrink-0">
-              <span *ngIf="lesson.isCompleted">
-                {{ lesson.completedAt | date:'mediumDate' }}
-              </span>
+            <div class="text-xs text-gray-500 font-medium text-end shrink-0">
+              <span *ngIf="lesson.isCompleted">{{ lesson.completedAt | date:'mediumDate' }}</span>
               <span *ngIf="!lesson.isCompleted && lesson.lastPositionSecs > 0">
-                Watched up to {{ getMinSec(lesson.lastPositionSecs) }}
+                {{ 'teacherProgress.watchedUpTo' | translate }} {{ getMinSec(lesson.lastPositionSecs) }}
               </span>
             </div>
           </div>
         </div>
-
       </div>
 
-    </div><!-- /content wrapper -->
+    </div>
 
-    <!-- ── Footer nav ─────────────────────────────────────────────────────── -->
-    <footer class="fixed bottom-0 left-64 right-0 z-40 bg-white border-t border-gray-100">
+    <footer class="fixed bottom-0 start-64 end-0 z-40 bg-white border-t border-gray-100">
       <div class="max-w-5xl mx-auto px-8 py-4 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <div class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></div>
-          <span class="text-xs font-semibold text-gray-500">Progress — Course Builder</span>
+          <span class="text-xs font-semibold text-gray-500">{{ 'teacherProgress.footerLabel' | translate }}</span>
         </div>
         <div class="flex items-center gap-3">
           <button (click)="goToSessions()" class="px-5 py-2 rounded-xl text-sm font-semibold text-gray-500 border border-gray-200 hover:bg-gray-50 transition-colors">
-            ← Back to Sessions
+            ← {{ 'teacherProgress.backToSessions' | translate }}
           </button>
           <button (click)="goToDashboard()" class="px-8 py-2 rounded-xl bg-teal-600 text-white text-sm font-bold hover:bg-teal-700 transition-colors flex items-center gap-2">
-            Done
+            {{ 'teacherProgress.done' | translate }}
             <span class="material-symbols-outlined text-[16px]">check</span>
           </button>
         </div>

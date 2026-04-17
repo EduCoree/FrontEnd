@@ -6,12 +6,13 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { CertificateService } from '../../../core/services/certificate';
 import { Certificate } from '../../../core/models/progress';
+import { TranslateModule } from '@ngx-translate/core';
 import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-certificate-detail',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule , TranslateModule],
   templateUrl: './certificate-detail.component.html',
 })
 export class CertificateDetailComponent implements OnInit {

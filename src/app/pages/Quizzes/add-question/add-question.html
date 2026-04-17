@@ -1,63 +1,77 @@
 <div class="flex-1 p-10 bg-surface">
   <nav class="mb-8 flex items-center gap-2 ms-64 text-sm">
-    <span class="text-slate-400 font-label">Quizzes</span>
+    <span class="text-slate-400 font-label">{{ 'addQuestion.quizzes' | translate }}</span>
     <span class="material-symbols-outlined text-slate-300 text-base">chevron_right</span>
-    <span class="text-slate-400 font-label">{{quizName}}</span>
+    <span class="text-slate-400 font-label">{{ quizName }}</span>
     <span class="material-symbols-outlined text-slate-300 text-base">chevron_right</span>
-    <span class="text-primary font-bold font-label">Add Question</span>
+    <span class="text-primary font-bold font-label">{{ 'addQuestion.addQuestion' | translate }}</span>
   </nav>
 
   <div class="max-w-4xl mx-auto">
     <div class="flex flex-col gap-8">
-      
+
       <div class="flex justify-between items-end">
         <div>
-          <p class="text-xs font-bold text-primary tracking-widest uppercase mb-1 font-label">Question Editor</p>
-          <h3 class="text-3xl font-extrabold text-on-surface font-headline leading-tight">Create New Question</h3>
+          <p class="text-xs font-bold text-primary tracking-widest uppercase mb-1 font-label">
+            {{ 'addQuestion.questionEditor' | translate }}
+          </p>
+          <h3 class="text-3xl font-extrabold text-on-surface font-headline leading-tight">
+            {{ 'addQuestion.createQuestion' | translate }}
+          </h3>
         </div>
         <div class="bg-primary-fixed-dim/20 text-on-primary-container px-4 py-1 rounded-full text-xs font-bold font-label">
-          Question #{{ (quiz?.questionsCount??0) + 1 }}
+          Question #{{ (quiz?.questionsCount ?? 0) + 1 }}
         </div>
       </div>
 
       <div class="bg-surface-container-lowest rounded-xl ambient-shadow p-8 flex flex-col gap-8">
-        
+
         <div class="space-y-3">
-          <label class="text-xs font-bold text-slate-500 font-label tracking-wide">QUESTION PROMPT</label>
+          <label class="text-xs font-bold text-slate-500 font-label tracking-wide">
+            {{ 'addQuestion.questionPrompt' | translate | uppercase }}
+          </label>
           <textarea
             [(ngModel)]="newQuestionText"
             class="w-full bg-surface-container-low border-none rounded-lg p-5 focus:ring-2 focus:ring-primary-fixed-dim font-body text-lg min-h-[120px] resize-none placeholder:text-slate-400"
-            placeholder="Enter your question text here...">
+            [placeholder]="'addQuestion.questionPlaceholder' | translate">
           </textarea>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="space-y-3">
-            <label class="text-xs font-bold text-slate-500 font-label tracking-wide">QUESTION TYPE</label>
+            <label class="text-xs font-bold text-slate-500 font-label tracking-wide">
+              {{ 'addQuestion.questionType' | translate | uppercase }}
+            </label>
             <div class="relative">
               <select
                 [(ngModel)]="newQuestionType"
                 (ngModelChange)="onQuestionTypeChange($event)"
                 class="w-full bg-surface-container-low border-none rounded-lg p-4 pr-10 focus:ring-2 focus:ring-primary-fixed-dim font-label appearance-none cursor-pointer">
-                <option value="MCQ">Multiple Choice</option>
-                <option value="TrueFalse">True/False</option>
+                <option value="MCQ">{{ 'addQuestion.mcq' | translate }}</option>
+                <option value="TrueFalse">{{ 'addQuestion.trueFalse' | translate }}</option>
               </select>
               <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">expand_more</span>
             </div>
           </div>
           <div class="space-y-3">
-            <label class="text-xs font-bold text-slate-500 font-label tracking-wide">POINTS</label>
+            <label class="text-xs font-bold text-slate-500 font-label tracking-wide">
+              {{ 'addQuestion.points' | translate | uppercase }}
+            </label>
             <input
               [(ngModel)]="newQuestionPoints"
               type="number"
-              class="w-full bg-surface-container-low border-none rounded-lg p-4 focus:ring-2 focus:ring-primary-fixed-dim font-label"/>
+              class="w-full bg-surface-container-low border-none rounded-lg p-4 focus:ring-2 focus:ring-primary-fixed-dim font-label" />
           </div>
         </div>
 
         <div class="space-y-6">
           <div class="flex justify-between items-center">
-            <label class="text-xs font-bold text-slate-500 font-label tracking-wide">ANSWER OPTIONS</label>
-            <span class="text-[10px] text-slate-400 font-label italic">Toggle radio to select the correct answer</span>
+            <label class="text-xs font-bold text-slate-500 font-label tracking-wide">
+              {{ 'addQuestion.answerOptions' | translate | uppercase }}
+            </label>
+            <span class="text-[10px] text-slate-400 font-label italic">
+              {{ 'addQuestion.toggleHint' | translate }}
+            </span>
           </div>
 
           <div class="space-y-4">
@@ -68,13 +82,12 @@
                   name="newAnswer"
                   [checked]="opt.isCorrect"
                   (change)="setNewOptionCorrect(i)"
-                  class="w-5 h-5 text-primary border-none bg-surface-container-highest focus:ring-primary-fixed-dim cursor-pointer"/>
+                  class="w-5 h-5 text-primary border-none bg-surface-container-highest focus:ring-primary-fixed-dim cursor-pointer" />
                 <input
                   [(ngModel)]="opt.text"
                   type="text"
-                  [placeholder]="'Option ' + (i + 1)"
-                  class="flex-1 bg-transparent border-none focus:ring-0 font-body text-sm"/>
-                
+                  [placeholder]="('addQuestion.optionPlaceholder' | translate) + ' ' + (i + 1)"
+                  class="flex-1 bg-transparent border-none focus:ring-0 font-body text-sm" />
                 @if (newQuestionOptions.length > 2) {
                   <button (click)="removeNewOption(i)" class="p-2 text-slate-300 hover:text-error transition-colors">
                     <span class="material-symbols-outlined">close</span>
@@ -88,7 +101,7 @@
             (click)="addNewOption()"
             class="flex items-center gap-2 text-primary font-bold text-sm px-2 py-2 hover:bg-surface-container-low rounded-lg transition-colors font-label w-max">
             <span class="material-symbols-outlined text-lg">add_circle</span>
-            Add Option
+            {{ 'addQuestion.addOption' | translate }}
           </button>
         </div>
 
@@ -99,16 +112,16 @@
 
       <div class="flex items-center justify-end gap-6 pt-4">
         <button
-        (click)="resetNewQuestionForm()"
-        class="text-slate-500 font-bold px-8 py-3 rounded-lg hover:bg-surface-container-high transition-colors font-label">
-        Cancel Changes
-      </button>
+          (click)="resetNewQuestionForm()"
+          class="text-slate-500 font-bold px-8 py-3 rounded-lg hover:bg-surface-container-high transition-colors font-label">
+          {{ 'addQuestion.cancelChanges' | translate }}
+        </button>
         <button
-        (click)="saveNewQuestion()"
-        [disabled]="saving"
-        class="bg-gradient-to-br from-primary to-primary-container text-white font-bold px-10 py-3 rounded-lg hover:brightness-110 active:scale-95 transition-all duration-150 font-label disabled:opacity-50">
-        {{ saving ? 'Saving...' : 'Save Question' }}
-      </button>
+          (click)="saveNewQuestion()"
+          [disabled]="saving"
+          class="bg-gradient-to-br from-primary to-primary-container text-white font-bold px-10 py-3 rounded-lg hover:brightness-110 active:scale-95 transition-all duration-150 font-label disabled:opacity-50">
+          {{ saving ? ('addQuestion.saving' | translate) : ('addQuestion.saveQuestion' | translate) }}
+        </button>
       </div>
 
     </div>

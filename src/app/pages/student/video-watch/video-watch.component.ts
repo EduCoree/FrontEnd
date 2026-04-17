@@ -6,11 +6,12 @@ import { ActivatedRoute } from '@angular/router';
 import { CommonModule, Location } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { StudentContentService } from '../../../core/services/student-content';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-video-watch',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule , TranslateModule],
   templateUrl: './video-watch.component.html',
 })
 export class StudentVideoWatchComponent implements OnInit, OnDestroy {
