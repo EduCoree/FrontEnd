@@ -164,7 +164,7 @@ export const routes: Routes = [
         .then(m => m.RegisterComponent)
   },
   {
-    path: 'teacher/courses/:courseId/quizzes/create',
+    path: 'review/create',
     loadComponent: () =>
       import('./pages/Quizzes/CreateQuiz/create-quiz/create-quiz')
         .then(m => m.CreateQuizComponent)
@@ -356,7 +356,7 @@ export const routes: Routes = [
 //tawfik
 
 {
-  path: 'teacher/courses/:courseId/quizzes',
+  path: 'reviews',
   component: QuizComponent,
 },
 {

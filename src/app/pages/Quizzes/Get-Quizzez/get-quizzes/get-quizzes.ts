@@ -8,11 +8,12 @@ import { CreateQuizComponent } from '../../CreateQuiz/create-quiz/create-quiz';
 import { FormsModule } from '@angular/forms';
 import { CourseSidebar } from "../../../../shared/components/ui/sidebar/course-sidebar/course-sidebar";
 import { Sidebar } from "../../../../shared/components/ui/sidebar/sidebar";
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-quiz',
   templateUrl: './get-quizzes.html',
-  imports: [CommonModule, CreateQuizComponent, FormsModule, CourseSidebar, Sidebar, RouterLink],
+  imports: [CommonModule, CreateQuizComponent, FormsModule, CourseSidebar, Sidebar, RouterLink , TranslateModule],
 })
 export class QuizComponent implements OnInit {
   courseId!: number;

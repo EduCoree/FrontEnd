@@ -12,11 +12,12 @@ import {
   UpdateRecordingRequest,
 } from '../../../core/models/session';
 import { LiveSessionService } from '../../../core/services/live-session';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-teacher-sessions',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule , TranslateModule],
   templateUrl: './teacher-sessions.component.html',
 })
 export class TeacherSessionsComponent implements OnInit {

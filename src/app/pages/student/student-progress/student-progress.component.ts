@@ -8,11 +8,12 @@ import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ProgressService } from '../../../core/services/progress';
 import { CourseProgress, ResumeLesson } from '../../../core/models/progress';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-student-progress',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule , TranslateModule],
   templateUrl: './student-progress.component.html',
 })
 export class StudentProgressComponent implements OnInit {

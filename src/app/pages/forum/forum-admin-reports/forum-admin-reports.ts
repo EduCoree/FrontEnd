@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { AdminSidebarComponent } from '../../../layouts/admin-sidebar/admin-sidebar';
 import { ForumService } from '../../../core/services/forum.service';
 import { PostReportDto } from '../../../core/models/forum';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-forum-admin-reports',
   standalone: true,
-  imports: [CommonModule, AdminSidebarComponent],
+  imports: [CommonModule, AdminSidebarComponent , TranslateModule],
   templateUrl: './forum-admin-reports.html',
   styleUrl: './forum-admin-reports.css',
 })

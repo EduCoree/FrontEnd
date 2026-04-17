@@ -4,12 +4,13 @@ import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth';
+import { TranslateModule } from '@ngx-translate/core';
 
 type State = 'pending' | 'verifying' | 'success' | 'error';
 
 @Component({
   selector: 'app-confirm-email',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink , TranslateModule],
   templateUrl: './confirm-email.html',
   styleUrl: './confirm-email.css',
 })

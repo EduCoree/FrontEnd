@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -7,7 +8,7 @@ import { StudentEnrolledCourseDto } from '../../../core/models/course';
 @Component({
   selector: 'app-student-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule , TranslateModule],
   templateUrl: './student-dashboard.component.html',
 })
 export class StudentDashboardComponent implements OnInit {

@@ -7,11 +7,12 @@ import { Category } from '../../../core/models/category.model';
 import { CategoryService } from '../../../core/services/category.service';
 import { ReorderItemDto, SectionDto } from '../../../core/models/course';
 import { CourseService } from '../../../core/services/course';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-edit-course',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule , TranslateModule],
   templateUrl: './edit-course.component.html',
   styleUrl: './edit-course.component.css'
 })

@@ -4,9 +4,10 @@ import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../core/services/user';
 import { TeacherProfileModel } from '../../core/models/user';
 import { TotalStudentsPipe } from '../../shared/pipes/total-students-pipe';
+import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-teacher-profile',
-  imports: [CommonModule,TotalStudentsPipe ],
+  imports: [CommonModule,TotalStudentsPipe , TranslateModule],
   templateUrl: './teacher-profile.html',
   styleUrl: './teacher-profile.css',
 })

@@ -4,12 +4,13 @@ import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ReviewService } from '../../core/services/review.service';
 import { Review, ReviewSummary } from '../../core/models/review.model';
+import { TranslateModule } from '@ngx-translate/core';
 
 type SortType = 'recent' | 'highest' | 'lowest';
 
 @Component({
   selector: 'app-reviews',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule , TranslateModule],
   templateUrl: './reviews.html',
   styleUrl: './reviews.css',
 })

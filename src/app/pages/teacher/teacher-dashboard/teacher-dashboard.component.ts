@@ -7,6 +7,7 @@ import { CourseService } from '../../../core/services/course';
 import { CourseSummaryDto } from '../../../core/models/course';
 import { LiveSessionService } from '../../../core/services/live-session';
 import { LiveSessionResponse } from '../../../core/models/session';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface DashboardSession extends LiveSessionResponse {
   courseTitle?: string;
@@ -14,7 +15,7 @@ interface DashboardSession extends LiveSessionResponse {
 @Component({
   selector: 'app-teacher-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule , TranslateModule],
   templateUrl: './teacher-dashboard.component.html',
   styleUrl: './teacher-dashboard.component.css'
 })

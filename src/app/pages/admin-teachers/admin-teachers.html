@@ -1,28 +1,25 @@
-<!-- src/app/pages/admin-teachers/admin-teachers.html -->
 <div class="flex min-h-screen bg-[#f8faf9] font-headline">
   <app-admin-sidebar />
 
-  <main class="ml-12 flex-1 min-h-screen">
-    <!-- <app-admin-topbar placeholder="Search for teachers..." /> -->
-
+  <main class="ms-6 flex-1 min-h-screen">
     <div class="p-8 space-y-8">
 
-      <!-- Header -->
       <div class="grid grid-cols-12 gap-6 items-start">
         <div class="col-span-8">
-          <h2 class="text-3xl font-bold tracking-tight text-[#2d3433] mb-2">Faculty Roster</h2>
-          <p class="text-[#596060]">Manage teacher accounts, permissions, and activity status.</p>
+          <h2 class="text-3xl font-bold tracking-tight text-[#2d3433] mb-2">
+            {{ 'adminTeachers.title' | translate }}
+          </h2>
+          <p class="text-[#596060]">{{ 'adminTeachers.subtitle' | translate }}</p>
         </div>
         <div class="col-span-4 flex justify-end">
           <button (click)="openCreate()"
             class="bg-[#2e6959] text-[#e4fff4] flex items-center gap-2 px-8 py-4 rounded-full font-bold shadow-lg shadow-[#2e6959]/10 hover:bg-[#205d4d] transition-all active:scale-95">
             <span class="material-symbols-outlined">person_add</span>
-            Create Teacher
+            {{ 'adminTeachers.createTeacher' | translate }}
           </button>
         </div>
       </div>
 
-      <!-- Toast -->
       @if (successMsg()) {
         <div class="flex items-center gap-3 px-5 py-3 bg-[#b2efda]/50 border border-[#2e6959]/20 rounded-xl text-[#2e6959] font-bold text-sm">
           <span class="material-symbols-outlined text-[18px]">check_circle</span>{{ successMsg() }}
@@ -34,34 +31,40 @@
         </div>
       }
 
-      <!-- Stats -->
       <div class="grid grid-cols-4 gap-6">
         <div class="ps-8 bg-[#f1f4f3] p-6 rounded-xl space-y-2">
-          <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">Total Faculty</p>
+          <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">
+            {{ 'adminTeachers.totalFaculty' | translate }}
+          </p>
           <h3 class="text-3xl font-extrabold text-[#2d3433]">{{ teachers().length }}</h3>
         </div>
         <div class="ps-8 bg-[#b2efda] p-6 rounded-xl space-y-2">
-          <p class="uppercase tracking-widest text-[10px] font-bold text-[#1f5b4c]">Active</p>
+          <p class="uppercase tracking-widest text-[10px] font-bold text-[#1f5b4c]">
+            {{ 'adminTeachers.active' | translate }}
+          </p>
           <h3 class="text-3xl font-extrabold text-[#1f5b4c]">{{ activeCount }}</h3>
         </div>
         <div class="ps-8 bg-[#c9e7f7] p-6 rounded-xl space-y-2">
-          <p class="uppercase tracking-widest text-[10px] font-bold text-[#395663]">Inactive</p>
+          <p class="uppercase tracking-widest text-[10px] font-bold text-[#395663]">
+            {{ 'adminTeachers.inactive' | translate }}
+          </p>
           <h3 class="text-3xl font-extrabold text-[#395663]">{{ inactiveCount }}</h3>
         </div>
         <div class="ps-8 bg-[#dde4e3] p-6 rounded-xl space-y-2">
-          <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">New This Month</p>
+          <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">
+            {{ 'adminTeachers.newThisMonth' | translate }}
+          </p>
           <h3 class="text-3xl font-extrabold text-[#2d3433]">—</h3>
         </div>
       </div>
 
-      <!-- Search -->
       <div class="relative max-w-sm">
         <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[#596060]">search</span>
-        <input (input)="onSearch($event)" type="text" placeholder="Search teachers..."
+        <input (input)="onSearch($event)" type="text"
+          [placeholder]="'adminTeachers.search' | translate"
           class="w-full bg-[#eaefee] border-none rounded-full py-2.5 pl-12 pr-4 text-sm focus:ring-2 focus:ring-[#2e6959]/20 outline-none" />
       </div>
 
-      <!-- Table -->
       @if (loading()) {
         <div class="flex justify-center py-20">
           <span class="material-symbols-outlined text-[#2e6959] text-5xl animate-spin">progress_activity</span>
@@ -71,17 +74,27 @@
       @if (!loading()) {
         <div class="bg-[#eaefee] rounded-xl overflow-hidden">
           <div class="p-6 border-b border-[#acb3b2]/20 flex justify-between items-center">
-            <h3 class="text-xl font-bold text-[#2d3433]">Manage Members</h3>
+            <h3 class="text-xl font-bold text-[#2d3433]">{{ 'adminTeachers.manageMembers' | translate }}</h3>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full border-collapse">
               <thead>
                 <tr class="text-left bg-[#eaefee]/50">
-                  <th class="px-6 py-4 uppercase tracking-widest text-[10px] font-bold text-[#596060]">Profile</th>
-                  <th class="px-6 py-4 uppercase tracking-widest text-[10px] font-bold text-[#596060] hidden md:table-cell">Email</th>
-                  <th class="px-6 py-4 uppercase tracking-widest text-[10px] font-bold text-[#596060] hidden lg:table-cell">Courses</th>
-                  <th class="px-6 py-4 uppercase tracking-widest text-[10px] font-bold text-[#596060]">Status</th>
-                  <th class="px-6 py-4 uppercase tracking-widest text-[10px] font-bold text-[#596060] text-right">Actions</th>
+                  <th class="px-6 py-4 uppercase tracking-widest text-[10px] font-bold text-[#596060]">
+                    {{ 'adminTeachers.profile' | translate }}
+                  </th>
+                  <th class="px-6 py-4 uppercase tracking-widest text-[10px] font-bold text-[#596060] hidden md:table-cell">
+                    {{ 'adminTeachers.email' | translate }}
+                  </th>
+                  <th class="px-6 py-4 uppercase tracking-widest text-[10px] font-bold text-[#596060] hidden lg:table-cell">
+                    {{ 'adminTeachers.courses' | translate }}
+                  </th>
+                  <th class="px-6 py-4 uppercase tracking-widest text-[10px] font-bold text-[#596060]">
+                    {{ 'adminTeachers.status' | translate }}
+                  </th>
+                  <th class="px-6 py-4 uppercase tracking-widest text-[10px] font-bold text-[#596060] text-right">
+                    {{ 'adminTeachers.actions' | translate }}
+                  </th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-[#acb3b2]/10">
@@ -101,13 +114,13 @@
                     <td class="px-6 py-5 text-sm text-[#596060] hidden md:table-cell">{{ teacher.email }}</td>
                     <td class="px-6 py-5 hidden lg:table-cell">
                       <span class="px-3 py-1 bg-[#f1f4f3] rounded-full text-[10px] font-bold uppercase text-[#596060]">
-                        {{ teacher.courseCount }} courses
+                        {{ teacher.courseCount }} {{ 'adminTeachers.coursesCount' | translate }}
                       </span>
                     </td>
                     <td class="px-6 py-5">
                       <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase"
                         [class]="teacher.isActive ? 'bg-[#b2efda] text-[#1f5b4c]' : 'bg-[#dde4e3] text-[#596060]'">
-                        {{ teacher.isActive ? 'Active' : 'Inactive' }}
+                        {{ (teacher.isActive ? 'adminTeachers.active' : 'adminTeachers.inactive') | translate }}
                       </span>
                     </td>
                     <td class="px-6 py-5 text-right">
@@ -119,7 +132,7 @@
                         <button (click)="toggleActive(teacher)"
                           class="p-2 rounded-full transition-colors"
                           [class]="teacher.isActive ? 'hover:bg-[#fa746f]/20 text-[#a83836]' : 'hover:bg-[#b2efda] text-[#2e6959]'"
-                          [title]="teacher.isActive ? 'Deactivate' : 'Activate'">
+                          [title]="(teacher.isActive ? 'adminTeachers.inactive' : 'adminTeachers.active') | translate">
                           <span class="material-symbols-outlined text-sm">{{ teacher.isActive ? 'block' : 'check_circle' }}</span>
                         </button>
                       </div>
@@ -130,7 +143,7 @@
                   <tr>
                     <td colspan="5" class="px-6 py-20 text-center text-[#596060]">
                       <span class="material-symbols-outlined text-5xl block mb-3 text-[#acb3b2]">school</span>
-                      No teachers found.
+                      {{ 'adminTeachers.noTeachersFound' | translate }}
                     </td>
                   </tr>
                 }
@@ -149,25 +162,37 @@
   <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
     <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-8">
       <div class="flex items-center justify-between mb-6">
-        <h2 class="text-xl font-bold text-[#2d3433] font-headline">Add New Teacher</h2>
+        <h2 class="text-xl font-bold text-[#2d3433] font-headline">
+          {{ 'adminTeachers.addNewTeacher' | translate }}
+        </h2>
         <button (click)="showCreateModal.set(false)" class="p-2 rounded-lg hover:bg-[#eaefee] transition-colors">
           <span class="material-symbols-outlined text-[#596060]">close</span>
         </button>
       </div>
       <form [formGroup]="createForm" (ngSubmit)="submitCreate()" class="space-y-4">
-        @for (field of [{key:'name',label:'Full Name',type:'text'},{key:'userName',label:'Username',type:'text'},{key:'email',label:'Email',type:'email'},{key:'phoneNumber',label:'Phone',type:'tel'},{key:'tempPassword',label:'Temp Password',type:'password'}]; track field.key) {
+        @for (field of [
+          {key:'name',         labelKey:'adminTeachers.fullName',     type:'text'},
+          {key:'userName',     labelKey:'adminTeachers.username',     type:'text'},
+          {key:'email',        labelKey:'adminTeachers.email',        type:'email'},
+          {key:'phoneNumber',  labelKey:'adminTeachers.phone',        type:'tel'},
+          {key:'tempPassword', labelKey:'adminTeachers.tempPassword', type:'password'}
+        ]; track field.key) {
           <div>
-            <label class="uppercase tracking-widest text-[10px] font-bold text-[#596060] block mb-1 px-1">{{ field.label }}</label>
+            <label class="uppercase tracking-widest text-[10px] font-bold text-[#596060] block mb-1 px-1">
+              {{ field.labelKey | translate }}
+            </label>
             <input [formControlName]="field.key" [type]="field.type"
               class="w-full bg-[#eaefee] border-none rounded-xl py-3 px-4 text-sm focus:ring-1 focus:ring-[#2e6959]/40 outline-none" />
           </div>
         }
         <div class="flex justify-end gap-3 pt-2">
           <button type="button" (click)="showCreateModal.set(false)"
-            class="px-6 py-2.5 rounded-full border border-[#acb3b2]/30 text-[#596060] font-semibold hover:bg-[#eaefee] transition-colors text-sm">Cancel</button>
+            class="px-6 py-2.5 rounded-full border border-[#acb3b2]/30 text-[#596060] font-semibold hover:bg-[#eaefee] transition-colors text-sm">
+            {{ 'adminTeachers.cancel' | translate }}
+          </button>
           <button type="submit" [disabled]="createForm.invalid || loading()"
             class="px-6 py-2.5 bg-[#2e6959] text-[#e4fff4] font-bold rounded-full disabled:opacity-50 text-sm hover:bg-[#205d4d] transition-colors">
-            Create Teacher
+            {{ 'adminTeachers.createTeacher' | translate }}
           </button>
         </div>
       </form>
@@ -180,25 +205,35 @@
   <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
     <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-8">
       <div class="flex items-center justify-between mb-6">
-        <h2 class="text-xl font-bold text-[#2d3433] font-headline">Edit Teacher</h2>
+        <h2 class="text-xl font-bold text-[#2d3433] font-headline">
+          {{ 'adminTeachers.editTeacher' | translate }}
+        </h2>
         <button (click)="showEditModal.set(false)" class="p-2 rounded-lg hover:bg-[#eaefee] transition-colors">
           <span class="material-symbols-outlined text-[#596060]">close</span>
         </button>
       </div>
       <form [formGroup]="editForm" (ngSubmit)="submitEdit()" class="space-y-4">
-        @for (field of [{key:'name',label:'Full Name',type:'text'},{key:'phoneNumber',label:'Phone',type:'tel'},{key:'bio',label:'Bio',type:'text'}]; track field.key) {
+        @for (field of [
+          {key:'name',        labelKey:'adminTeachers.fullName', type:'text'},
+          {key:'phoneNumber', labelKey:'adminTeachers.phone',    type:'tel'},
+          {key:'bio',         labelKey:'adminTeachers.bio',      type:'text'}
+        ]; track field.key) {
           <div>
-            <label class="uppercase tracking-widest text-[10px] font-bold text-[#596060] block mb-1 px-1">{{ field.label }}</label>
+            <label class="uppercase tracking-widest text-[10px] font-bold text-[#596060] block mb-1 px-1">
+              {{ field.labelKey | translate }}
+            </label>
             <input [formControlName]="field.key" [type]="field.type"
               class="w-full bg-[#eaefee] border-none rounded-xl py-3 px-4 text-sm focus:ring-1 focus:ring-[#2e6959]/40 outline-none" />
           </div>
         }
         <div class="flex justify-end gap-3 pt-2">
           <button type="button" (click)="showEditModal.set(false)"
-            class="px-6 py-2.5 rounded-full border border-[#acb3b2]/30 text-[#596060] font-semibold hover:bg-[#eaefee] transition-colors text-sm">Cancel</button>
+            class="px-6 py-2.5 rounded-full border border-[#acb3b2]/30 text-[#596060] font-semibold hover:bg-[#eaefee] transition-colors text-sm">
+            {{ 'adminTeachers.cancel' | translate }}
+          </button>
           <button type="submit" [disabled]="editForm.invalid || loading()"
             class="px-6 py-2.5 bg-[#2e6959] text-[#e4fff4] font-bold rounded-full disabled:opacity-50 text-sm hover:bg-[#205d4d] transition-colors">
-            Save Changes
+            {{ 'adminTeachers.saveChanges' | translate }}
           </button>
         </div>
       </form>

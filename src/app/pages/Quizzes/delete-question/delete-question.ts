@@ -3,12 +3,13 @@ import { Component, Input, Output, EventEmitter, ChangeDetectorRef } from '@angu
 import { CommonModule } from '@angular/common';
 import { QuizService } from '../../../core/services/quiz.service';
 import { QuestionService } from '../../../core/services/question.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @Component({
   selector: 'app-delete-question-modal',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule , TranslateModule],
   templateUrl: './delete-question.html'
 })
 export class DeleteQuestionModalComponent {

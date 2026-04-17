@@ -2,12 +2,13 @@ import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { QuizService } from '../../../../core/services/quiz.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @Component({
   selector: 'app-create-quiz',
   templateUrl: './create-quiz.html',
-  imports:[CommonModule,ReactiveFormsModule],
+  imports:[CommonModule,ReactiveFormsModule , TranslateModule],
   styleUrls: ['./create-quiz.css']
 })
 export class CreateQuizComponent implements OnInit {

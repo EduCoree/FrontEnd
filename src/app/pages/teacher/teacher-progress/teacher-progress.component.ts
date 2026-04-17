@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProgressService } from '../../../core/services/progress';
 import { StudentProgressSummary, StudentLessonDetail } from '../../../core/models/progress';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-teacher-progress',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule , TranslateModule],
   templateUrl: './teacher-progress.component.html'
 })
 export class TeacherProgressComponent implements OnInit {
