@@ -43,6 +43,8 @@ import { roleGuard } from './core/guards/role-guard';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard';
 import { TeacherDashboardComponent } from './pages/teacher-dashboard/teacher-dashboard';
 import { MyCoursesComponent } from './pages/student/my-courses/my-courses.component';
+import { Notification } from './pages/notification/notification';
+
 export const routes: Routes = [
    // ── Public ────────────────────────────────────────────────────────────────
   {
@@ -357,35 +359,48 @@ export const routes: Routes = [
 
 {
   path: 'teacher/courses/:courseId/quizzes',
+  canActivate: [authGuard, roleGuard('Teacher')],
   component: QuizComponent,
 },
 {
   path:'teacher/quizzes/:quizId/builder',
+   canActivate: [authGuard, roleGuard('Teacher')],
   component: QuizBuilderComponent
+},
+{
+  path: 'teacher/quizzes/:quizId/add-question',
+   canActivate: [authGuard, roleGuard('Teacher')],
+  component : AddQuestion,
 },
 
 {
   path: 'quiz/intro/:quizId',
+   canActivate: [authGuard, roleGuard('Student')],
   component : StudentQuizIntro,
 },
 
 {
   path: 'quiz/:quizId/attempt/:attemptId',
+   canActivate: [authGuard, roleGuard('Student')],
   component : ActiveQuiz,
 },
 
-{
-  path: 'teacher/quizzes/:quizId/add-question',
-  component : AddQuestion,
-},
+
   
 {
   path: 'Quiz/:quizId/result/:attemptId',
+   canActivate: [authGuard, roleGuard('Student')],
   component : QuizResult,
 },
 {
   path: 'quiz/history',
+   canActivate: [authGuard, roleGuard('Student')],
   component : QuizHistory,
+},
+{
+  path: 'notifications',
+   canActivate: [authGuard, roleGuard('Student')],
+  component : Notification,
 },
 
 
