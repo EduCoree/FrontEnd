@@ -51,15 +51,29 @@ export class Navbar {
   }
 
   isAdmin(): boolean {
+    return this.getRole() === 'Admin';
+  }
+
+  isTeacher(): boolean {
+    return this.getRole() === 'Teacher';
+  }
+
+  /** Route the "Live Sessions" nav link based on the logged-in role */
+  get liveSessionsRoute(): string {
+    return this.isTeacher() ? '/teacher/dashboard' : '/student/sessions';
+  }
+
+  private getRole(): string {
     const token = this.auth.getToken();
-    if (!token) return false;
+    if (!token) return '';
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
       const roles = payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
         ?? payload['role'] ?? [];
-      return Array.isArray(roles) ? roles.includes('Admin') : roles === 'Admin';
+      const role = Array.isArray(roles) ? roles[0] : roles;
+      return role ?? '';
     } catch {
-      return false;
+      return '';
     }
   }
 

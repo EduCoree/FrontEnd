@@ -3,11 +3,12 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { DashboardService } from '../../core/services/dashboard';
 import { StudentDashboard } from '../../core/models/dashboard';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-student-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, DatePipe],
+  imports: [CommonModule, RouterLink, DatePipe , TranslateModule],
   templateUrl: './student-dashboard.html',
 })
 export class StudentDashboardComponent implements OnInit {

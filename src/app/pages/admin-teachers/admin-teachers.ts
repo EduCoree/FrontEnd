@@ -7,10 +7,11 @@ import { AdminUserService } from '../../core/services/admin-user';
 import { AdminSidebarComponent } from '../../layouts/admin-sidebar/admin-sidebar';
 import { AdminTopbarComponent } from '../../layouts/admin-topbar/admin-topbar';
 import { TeacherSummary, CreateTeacherDto, UpdateTeacherDto } from '../../core/models/admin-user';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin-teachers',
-  imports: [CommonModule, ReactiveFormsModule, AdminSidebarComponent, AdminTopbarComponent],
+  imports: [CommonModule, ReactiveFormsModule, AdminSidebarComponent, AdminTopbarComponent , TranslateModule],
   templateUrl: './admin-teachers.html',
   styleUrl: './admin-teachers.css',
 })

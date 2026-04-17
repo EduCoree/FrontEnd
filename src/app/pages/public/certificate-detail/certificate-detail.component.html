@@ -1,46 +1,46 @@
-<!-- src/app/pages/public/certificate-detail/certificate-detail.component.html -->
-<!-- Branch: feature/public-certificate-page -->
-
 <div class="bg-[#f5f7fa] text-gray-900 min-h-screen font-sans py-12 px-6 flex flex-col items-center justify-center relative">
 
-  <!-- ── Loading State ────────────────────────────────────────────────────── -->
+  <!-- Loading State -->
   <div *ngIf="isLoading()" class="flex flex-col items-center justify-center gap-4 py-20">
     <span class="material-symbols-outlined text-teal-500 text-5xl animate-spin">progress_activity</span>
-    <p class="text-sm font-bold text-gray-400">Verifying certificate...</p>
+    <p class="text-sm font-bold text-gray-400">{{ 'certificate.verifying' | translate }}</p>
   </div>
 
-  <!-- ── Error State ──────────────────────────────────────────────────────── -->
-  <div *ngIf="!isLoading() && errorMsg()" 
+  <!-- Error State -->
+  <div *ngIf="!isLoading() && errorMsg()"
        class="max-w-md w-full bg-white rounded-3xl border-2 border-dashed border-red-200 p-12 flex flex-col items-center text-center gap-4 shadow-sm animate-[fadeIn_0.5s_ease-out]">
     <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center">
       <span class="material-symbols-outlined text-3xl text-red-400">gpp_bad</span>
     </div>
     <div class="space-y-1">
       <h3 class="text-lg font-black text-gray-800">{{ errorMsg() }}</h3>
-      <p class="text-sm text-gray-500">The certificate you are looking for may have been removed or the link is incorrect.</p>
+      <p class="text-sm text-gray-500">{{ 'certificate.errorDescription' | translate }}</p>
     </div>
   </div>
 
-  <!-- ── Success State (Certificate Card) ─────────────────────────────────── -->
+  <!-- Success State -->
   <div *ngIf="!isLoading() && !errorMsg() && certificate()" class="max-w-2xl w-full mx-auto space-y-8 animate-[fadeIn_0.5s_ease-out]">
-    
+
     <div class="bg-white border-4 border-teal-500 rounded-3xl p-10 md:p-14 text-center space-y-6 shadow-2xl relative overflow-hidden">
-      <!-- Decorative background element -->
       <div class="absolute -top-16 -right-16 w-48 h-48 bg-teal-50 rounded-full mix-blend-multiply opacity-50 blur-3xl pointer-events-none"></div>
 
       <div class="flex justify-center mb-2">
         <h1 class="text-2xl font-black text-teal-600 tracking-tight">EduCore</h1>
       </div>
 
-      <h2 class="text-xs uppercase tracking-widest font-bold text-gray-400">Certificate of Completion</h2>
+      <h2 class="text-xs uppercase tracking-widest font-bold text-gray-400">
+        {{ 'certificate.completionTitle' | translate }}
+      </h2>
 
       <div class="py-4">
-        <p class="text-sm font-medium text-gray-500">This certifies that</p>
-        <h3 class="text-3xl md:text-4xl font-extrabold text-gray-800 mt-2 font-serif">{{ certificate()?.studentName }}</h3>
+        <p class="text-sm font-medium text-gray-500">{{ 'certificate.certifies' | translate }}</p>
+        <h3 class="text-3xl md:text-4xl font-extrabold text-gray-800 mt-2 font-serif">
+          {{ certificate()?.studentName }}
+        </h3>
       </div>
 
       <div>
-        <p class="text-sm font-medium text-gray-500">has successfully completed</p>
+        <p class="text-sm font-medium text-gray-500">{{ 'certificate.completed' | translate }}</p>
         <h4 class="text-xl md:text-2xl font-black text-teal-700 mt-2 leading-tight">
           {{ certificate()?.courseTitle }}
         </h4>
@@ -49,26 +49,26 @@
       <div class="pt-8 flex flex-col items-center gap-2">
         <div class="w-10 h-px bg-gray-200"></div>
         <p class="text-xs font-bold text-gray-400">
-          Issued on {{ certificate()?.issuedAt | date:'longDate' }}
+          {{ 'certificate.issuedOn' | translate }} {{ certificate()?.issuedAt | date:'longDate' }}
         </p>
         <p class="text-[10px] text-gray-300 font-mono mt-1">
-          Verification ID: {{ certificate()?.certificateUuid }}
+          {{ 'certificate.verificationId' | translate }} {{ certificate()?.certificateUuid }}
         </p>
       </div>
     </div>
 
-    <!-- ── Actions ────────────────────────────────────────────────────────── -->
+    <!-- Actions -->
     <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-      <a [href]="certificate()?.certificateUrl" target="_blank"
+      <a [href]="getDownloadUrl()" target="_blank"
          class="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3 bg-white text-gray-700 border border-gray-200 rounded-xl text-sm font-bold shadow-sm hover:bg-gray-50 hover:shadow-md transition-all">
         <span class="material-symbols-outlined text-[18px]">download</span>
-        Download Certificate
+        {{ 'certificate.download' | translate }}
       </a>
 
       <a [href]="encodedLinkedinShareUrl" target="_blank"
          class="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3 bg-[#0a66c2] text-white rounded-xl text-sm font-bold shadow-md hover:bg-[#004182] hover:shadow-lg transition-all">
         <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn" class="w-4 h-4 brightness-0 invert">
-        Share on LinkedIn
+        {{ 'certificate.shareLinkedIn' | translate }}
       </a>
     </div>
 

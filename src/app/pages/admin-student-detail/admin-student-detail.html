@@ -1,10 +1,7 @@
-<!-- src/app/pages/admin-student-detail/admin-student-detail.html -->
 <div class="flex min-h-screen bg-[#f8faf9] font-headline">
   <app-admin-sidebar />
-
   <main class="ml-12 flex-1 min-h-screen">
     <app-admin-topbar placeholder="Search..." />
-
     <div class="p-8 space-y-8">
 
       @if (loading()) {
@@ -28,7 +25,6 @@
           </div>
         }
 
-        <!-- Profile Card -->
         <div class="bg-[#eaefee] rounded-2xl p-8">
           <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
             <div class="w-20 h-20 rounded-2xl bg-[#2e6959] flex items-center justify-center text-[#e4fff4] text-2xl font-extrabold font-headline shrink-0">
@@ -43,22 +39,23 @@
               <div class="flex flex-wrap justify-center md:justify-start gap-4 mt-4">
                 <span class="flex items-center gap-1 text-xs font-bold text-[#596060]">
                   <span class="material-symbols-outlined text-[15px]">menu_book</span>
-                  {{ student()!.enrollments.length }} Enrollments
+                  {{ student()!.enrollments.length }} {{ 'adminStudentDetail.enrollments' | translate }}
                 </span>
                 <span class="flex items-center gap-1 text-xs font-bold text-[#596060]">
                   <span class="material-symbols-outlined text-[15px]">payments</span>
-                  {{ student()!.payments.length }} Payments
+                  {{ student()!.payments.length }} {{ 'adminStudentDetail.payments' | translate }}
                 </span>
                 <span class="flex items-center gap-1 text-xs font-bold text-[#596060]">
                   <span class="material-symbols-outlined text-[15px]">calendar_month</span>
-                  Joined {{ student()!.createdAt | date:'mediumDate' }}
+                  {{ 'adminStudentDetail.joined' | translate }} {{ student()!.createdAt | date:'mediumDate' }}
                 </span>
               </div>
             </div>
             <div class="flex gap-3">
               <button (click)="openEnrollModal()"
                 class="flex items-center gap-2 px-6 py-3 bg-[#2e6959] text-[#e4fff4] font-bold rounded-full text-sm shadow-md hover:bg-[#205d4d] active:scale-95 transition-all">
-                <span class="material-symbols-outlined text-[16px]">add</span>Enroll
+                <span class="material-symbols-outlined text-[16px]">add</span>
+                {{ 'adminStudentDetail.enroll' | translate }}
               </button>
               <button (click)="toggleActive()"
                 class="flex items-center gap-2 px-6 py-3 font-bold rounded-full text-sm transition-all"
@@ -66,23 +63,26 @@
                   ? 'bg-[#fa746f]/20 text-[#a83836] hover:bg-[#a83836] hover:text-white border border-[#a83836]/20'
                   : 'bg-[#b2efda]/40 text-[#2e6959] hover:bg-[#2e6959] hover:text-[#e4fff4] border border-[#2e6959]/20'">
                 <span class="material-symbols-outlined text-[16px]">{{ student()!.isActive ? 'block' : 'check_circle' }}</span>
-                {{ student()!.isActive ? 'Deactivate' : 'Activate' }}
+                {{ (student()!.isActive ? 'adminStudentDetail.deactivate' : 'adminStudentDetail.activate') | translate }}
               </button>
             </div>
           </div>
         </div>
 
-        <!-- Tabs -->
         <div class="bg-[#eaefee] rounded-2xl overflow-hidden">
           <div class="flex border-b border-[#acb3b2]/20">
-            @for (tab of [{key:'enrollments',label:'Enrollments',icon:'menu_book'},{key:'payments',label:'Payments',icon:'payments'},{key:'attendance',label:'Attendance',icon:'calendar_month'}]; track tab.key) {
+            @for (tab of [
+              {key:'enrollments', labelKey:'adminStudentDetail.enrollments', icon:'menu_book'},
+              {key:'payments',    labelKey:'adminStudentDetail.payments',    icon:'payments'},
+              {key:'attendance',  labelKey:'adminStudentDetail.attendance',  icon:'calendar_month'}
+            ]; track tab.key) {
               <button (click)="setTab(tab.key)"
                 class="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-bold uppercase tracking-widest transition-all"
                 [class]="activeTab() === tab.key
                   ? 'text-[#2e6959] border-b-2 border-[#2e6959] bg-[#f8faf9]'
                   : 'text-[#596060] hover:text-[#2e6959] hover:bg-[#f1f4f3]'">
                 <span class="material-symbols-outlined text-[16px]">{{ tab.icon }}</span>
-                <span class="text-[10px]">{{ tab.label }}</span>
+                <span class="text-[10px]">{{ tab.labelKey | translate }}</span>
               </button>
             }
           </div>
@@ -94,8 +94,9 @@
                 <div class="flex items-center justify-between p-4 bg-[#f1f4f3] rounded-xl">
                   <div>
                     <p class="font-bold text-[#2d3433] text-sm">{{ e.courseTitle }}</p>
-                    <p class="text-xs text-[#596060] mt-1">Enrolled {{ e.enrolledAt | date:'mediumDate' }}
-                      @if (e.expiresAt) { · Expires {{ e.expiresAt | date:'mediumDate' }} }
+                    <p class="text-xs text-[#596060] mt-1">
+                      {{ 'adminStudentDetail.enroll' | translate }} {{ e.enrolledAt | date:'mediumDate' }}
+                      @if (e.expiresAt) { · {{ e.expiresAt | date:'mediumDate' }} }
                     </p>
                   </div>
                   <div class="flex gap-2">
@@ -107,7 +108,7 @@
                   </div>
                 </div>
               }
-              @empty { <p class="text-center text-[#596060] py-10">No enrollments yet.</p> }
+              @empty { <p class="text-center text-[#596060] py-10">{{ 'adminStudentDetail.noEnrollments' | translate }}</p> }
             }
 
             @if (activeTab() === 'payments') {
@@ -126,7 +127,7 @@
                   </span>
                 </div>
               }
-              @empty { <p class="text-center text-[#596060] py-10">No payments yet.</p> }
+              @empty { <p class="text-center text-[#596060] py-10">{{ 'adminStudentDetail.noPayments' | translate }}</p> }
             }
 
             @if (activeTab() === 'attendance') {
@@ -139,7 +140,7 @@
                   </div>
                 </div>
               }
-              @empty { <p class="text-center text-[#596060] py-10">No attendance records yet.</p> }
+              @empty { <p class="text-center text-[#596060] py-10">{{ 'adminStudentDetail.noAttendance' | translate }}</p> }
             }
 
           </div>
@@ -149,46 +150,56 @@
   </main>
 </div>
 
-<!-- Enroll Modal -->
 @if (showEnrollModal()) {
   <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
     <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
       <div class="flex items-center justify-between mb-6">
-        <h2 class="text-xl font-bold text-[#2d3433] font-headline">Enroll in Course</h2>
+        <h2 class="text-xl font-bold text-[#2d3433] font-headline">{{ 'adminStudentDetail.enrollInCourse' | translate }}</h2>
         <button (click)="showEnrollModal.set(false)" class="p-2 rounded-lg hover:bg-[#eaefee] transition-colors">
           <span class="material-symbols-outlined text-[#596060]">close</span>
         </button>
       </div>
       <form [formGroup]="enrollForm" (ngSubmit)="submitEnroll()" class="space-y-4">
         <div>
-          <label class="uppercase tracking-widest text-[10px] font-bold text-[#596060] block mb-1 px-1">Course</label>
+          <label class="uppercase tracking-widest text-[10px] font-bold text-[#596060] block mb-1 px-1">
+            {{ 'adminStudentDetail.enrollments' | translate }}
+          </label>
           <select formControlName="courseId" class="w-full bg-[#eaefee] border-none rounded-xl py-3 px-4 text-sm focus:ring-1 focus:ring-[#2e6959]/40 outline-none">
-            <option value="">— Select a course —</option>
+            <option value="">{{ 'adminStudentDetail.selectCourse' | translate }}</option>
             @for (course of courses(); track course.id) {
               <option [value]="course.id" [disabled]="enrolledCourseIds.has(course.id)">
-                {{ course.title }} — ${{ course.price }}{{ enrolledCourseIds.has(course.id) ? ' (enrolled)' : '' }}
+                {{ course.title }} — ${{ course.price }}
+                {{ enrolledCourseIds.has(course.id) ? ('adminStudentDetail.enrolled_tag' | translate) : '' }}
               </option>
             }
           </select>
         </div>
         <div>
-          <label class="uppercase tracking-widest text-[10px] font-bold text-[#596060] block mb-1 px-1">Type</label>
+          <label class="uppercase tracking-widest text-[10px] font-bold text-[#596060] block mb-1 px-1">
+            {{ 'adminStudentDetail.type' | translate }}
+          </label>
           <select formControlName="type" class="w-full bg-[#eaefee] border-none rounded-xl py-3 px-4 text-sm focus:ring-1 focus:ring-[#2e6959]/40 outline-none">
-            <option value="Paid">Paid</option>
-            <option value="Free">Free</option>
+            <option value="Paid">{{ 'adminStudentDetail.paid' | translate }}</option>
+            <option value="Free">{{ 'adminStudentDetail.free' | translate }}</option>
           </select>
         </div>
         <div>
-          <label class="uppercase tracking-widest text-[10px] font-bold text-[#596060] block mb-1 px-1">Expires At <span class="normal-case font-normal">(optional)</span></label>
+          <label class="uppercase tracking-widest text-[10px] font-bold text-[#596060] block mb-1 px-1">
+            {{ 'adminStudentDetail.expiresAt' | translate }}
+            <span class="normal-case font-normal">{{ 'adminStudentDetail.optional' | translate }}</span>
+          </label>
           <input formControlName="expiresAt" type="date"
             class="w-full bg-[#eaefee] border-none rounded-xl py-3 px-4 text-sm focus:ring-1 focus:ring-[#2e6959]/40 outline-none" />
         </div>
         <div class="flex justify-end gap-3 pt-2">
           <button type="button" (click)="showEnrollModal.set(false)"
-            class="px-6 py-2.5 rounded-full border border-[#acb3b2]/30 text-[#596060] font-semibold hover:bg-[#eaefee] transition-colors text-sm">Cancel</button>
+            class="px-6 py-2.5 rounded-full border border-[#acb3b2]/30 text-[#596060] font-semibold hover:bg-[#eaefee] transition-colors text-sm">
+            {{ 'adminStudentDetail.cancel' | translate }}
+          </button>
           <button type="submit" [disabled]="enrollForm.invalid"
             class="px-6 py-2.5 bg-[#2e6959] text-[#e4fff4] font-bold rounded-full disabled:opacity-50 text-sm hover:bg-[#205d4d] transition-colors flex items-center gap-2">
-            <span class="material-symbols-outlined text-[16px]">add</span>Enroll
+            <span class="material-symbols-outlined text-[16px]">add</span>
+            {{ 'adminStudentDetail.enroll' | translate }}
           </button>
         </div>
       </form>

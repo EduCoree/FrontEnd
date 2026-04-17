@@ -9,9 +9,10 @@ import { CourseSummaryDto } from '../../core/models/course';
 import { AdminSidebarComponent } from '../../layouts/admin-sidebar/admin-sidebar';
 import { AdminTopbarComponent } from '../../layouts/admin-topbar/admin-topbar';
 import { AdminCourseService } from '../../core/services/admin-course';
+import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-admin-student-detail',
-  imports: [CommonModule, ReactiveFormsModule, AdminSidebarComponent, AdminTopbarComponent ],
+  imports: [CommonModule, ReactiveFormsModule, AdminSidebarComponent, AdminTopbarComponent , TranslateModule],
   templateUrl: './admin-student-detail.html',
   styleUrl: './admin-student-detail.css',
 })

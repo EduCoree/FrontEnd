@@ -9,11 +9,12 @@ import { catchError, map } from 'rxjs/operators';
 import { ProgressService } from '../../../core/services/progress';
 import { PublicCourseService } from '../../../core/services/public-course.service';
 import { CourseProgress, ResumeLesson } from '../../../core/models/progress';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-student-progress',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule , TranslateModule],
   templateUrl: './student-progress.component.html',
 })
 export class StudentProgressComponent implements OnInit {

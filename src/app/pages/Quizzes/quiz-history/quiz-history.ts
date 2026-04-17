@@ -5,10 +5,11 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { StudentquizService } from '../../../core/services/studentquiz.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-quiz-history',
-  imports: [CommonModule,RouterLink,FormsModule],
+  imports: [CommonModule,RouterLink,FormsModule , TranslateModule],
   templateUrl: './quiz-history.html',
   styleUrl: './quiz-history.css',
 })

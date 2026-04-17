@@ -6,11 +6,12 @@ import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/r
 import { QuizService } from '../../../core/services/quiz.service';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { QuizSubmission } from "../quiz-submission/quiz-submission";
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @Component({
   selector: 'app-active-quiz',
-  imports: [CommonModule, RouterLinkActive, RouterLink, QuizSubmission],
+  imports: [CommonModule, RouterLinkActive, RouterLink, QuizSubmission , TranslateModule],
   templateUrl: './active-quiz.html',
   styleUrl: './active-quiz.css',
 })

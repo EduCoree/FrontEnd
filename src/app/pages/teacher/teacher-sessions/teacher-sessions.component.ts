@@ -12,11 +12,12 @@ import {
   UpdateRecordingRequest,
 } from '../../../core/models/session';
 import { LiveSessionService } from '../../../core/services/live-session';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-teacher-sessions',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule , TranslateModule],
   templateUrl: './teacher-sessions.component.html',
 })
 export class TeacherSessionsComponent implements OnInit {
@@ -37,14 +38,25 @@ export class TeacherSessionsComponent implements OnInit {
   // ─── Computed Groups ──────────────────────────────────────────────────────
   now = Date.now();
 
+  currentSessions = computed(() =>
+    this.sessions().filter(s => {
+      const msUntilStart = new Date(s.scheduledAt).getTime() - this.now;
+      return msUntilStart <= 15 * 60 * 1000 && msUntilStart >= -120 * 60 * 1000;
+    }).sort((a, b) => new Date(a.scheduledAt).getTime() - new Date(b.scheduledAt).getTime())
+  );
+
   upcomingSessions = computed(() =>
-    this.sessions().filter(s => new Date(s.scheduledAt).getTime() > this.now)
-      .sort((a, b) => new Date(a.scheduledAt).getTime() - new Date(b.scheduledAt).getTime())
+    this.sessions().filter(s => {
+      const msUntilStart = new Date(s.scheduledAt).getTime() - this.now;
+      return msUntilStart > 15 * 60 * 1000;
+    }).sort((a, b) => new Date(a.scheduledAt).getTime() - new Date(b.scheduledAt).getTime())
   );
 
   pastSessions = computed(() =>
-    this.sessions().filter(s => new Date(s.scheduledAt).getTime() <= this.now)
-      .sort((a, b) => new Date(b.scheduledAt).getTime() - new Date(a.scheduledAt).getTime())
+    this.sessions().filter(s => {
+      const msUntilStart = new Date(s.scheduledAt).getTime() - this.now;
+      return msUntilStart < -120 * 60 * 1000;
+    }).sort((a, b) => new Date(b.scheduledAt).getTime() - new Date(a.scheduledAt).getTime())
   );
 
   // ─── Forms ───────────────────────────────────────────────────────────────
@@ -154,7 +166,7 @@ export class TeacherSessionsComponent implements OnInit {
       // ── Update
       const payload: UpdateLiveSessionRequest = {
         provider:    val.provider,
-        scheduledAt: new Date(val.scheduledAt).toISOString(),
+        scheduledAt: val.scheduledAt,
         title:       val.title,
         description: val.description || undefined,
         meetingUrl:  val.provider !== 'Jitsi' ? val.meetingUrl : undefined,
@@ -175,7 +187,7 @@ export class TeacherSessionsComponent implements OnInit {
       // ── Create
       const payload: CreateLiveSessionRequest = {
         provider:    val.provider,
-        scheduledAt: new Date(val.scheduledAt).toISOString(),
+        scheduledAt: val.scheduledAt,
         title:       val.title,
         description: val.description || undefined,
         meetingUrl:  val.provider !== 'Jitsi' ? val.meetingUrl : undefined,
@@ -210,6 +222,15 @@ export class TeacherSessionsComponent implements OnInit {
       },
       error: () => this.flash('error', 'Failed to cancel session.'),
     });
+  }
+
+  joinSession(session: LiveSessionResponse): void {
+    const url = session.provider === 'Jitsi' 
+      ? `https://meet.jit.si/${session.meetingUrl}` 
+      : session.meetingUrl;
+    if (url) {
+      window.open(url, '_blank');
+    }
   }
 
   // ─── Recording Modal ──────────────────────────────────────────────────────
