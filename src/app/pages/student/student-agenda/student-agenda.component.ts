@@ -3,7 +3,6 @@
 
 import { Component, OnInit, OnDestroy, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { LiveSessionResponse, JoinSessionResponse } from '../../../core/models/session';
 import { LiveSessionService } from '../../../core/services/live-session';
 import { TranslateModule } from '@ngx-translate/core';
@@ -17,24 +16,19 @@ import { TranslateModule } from '@ngx-translate/core';
 export class StudentAgendaComponent implements OnInit, OnDestroy {
 
   // ─── State Signals ────────────────────────────────────────────────────────
-  sessions      = signal<LiveSessionResponse[]>([]);
-  isLoading     = signal(true);
-  successMsg    = signal('');
-  errorMsg      = signal('');
+  sessions = signal<LiveSessionResponse[]>([]);
+  isLoading = signal(true);
+  successMsg = signal('');
+  errorMsg = signal('');
 
   /** Per-session joinability map — updated every 30s */
-  joinableMap   = signal<Record<number, boolean>>({});
-
-  /** Set when a student joins a Jitsi session — triggers embedded iframe */
-  jitsiRoomName = signal<string | null>(null);
-  safeJitsiUrl  = signal<SafeResourceUrl | null>(null);
+  joinableMap = signal<Record<number, boolean>>({});
 
   private joinabilityInterval: ReturnType<typeof setInterval> | null = null;
 
   constructor(
-    private liveSessionService: LiveSessionService,
-    private sanitizer: DomSanitizer
-  ) {}
+    private liveSessionService: LiveSessionService
+  ) { }
 
   ngOnInit(): void {
     this.loadSessions();
@@ -91,17 +85,12 @@ export class StudentAgendaComponent implements OnInit, OnDestroy {
   joinSession(session: LiveSessionResponse): void {
     this.liveSessionService.joinSession(session.id).subscribe({
       next: (res: JoinSessionResponse) => {
-        if (res.provider === 'Jitsi') {
-          // ── Embed inside the website
-          const url = `https://meet.jit.si/${res.roomName}`;
-          this.safeJitsiUrl.set(
-            this.sanitizer.bypassSecurityTrustResourceUrl(url)
-          );
-          this.jitsiRoomName.set(res.roomName);
-        } else {
-          // ── External providers — open in new tab
-          window.open(res.roomName, '_blank');
-        }
+        // meet.jit.si blocks iframe embedding (X-Frame-Options: SAMEORIGIN),
+        // so all providers — including Jitsi — open in a new tab.
+        const url = res.provider === 'Jitsi'
+          ? `https://meet.jit.si/${res.roomName}`
+          : res.roomName;
+        window.open(url, '_blank');
       },
       error: (err) => {
         if (err?.status === 403) {
@@ -111,11 +100,6 @@ export class StudentAgendaComponent implements OnInit, OnDestroy {
         }
       },
     });
-  }
-
-  leaveJitsiSession(): void {
-    this.jitsiRoomName.set(null);
-    this.safeJitsiUrl.set(null);
   }
 
   // ─── Helpers ──────────────────────────────────────────────────────────────

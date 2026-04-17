@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CourseDetailDto } from '../../../core/models/course';
 import { PublicCourseService } from '../../../core/services/public-course.service';
 import { TranslateModule } from '@ngx-translate/core';
@@ -19,6 +19,7 @@ export class CourseDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private publicCourseService: PublicCourseService,
     private cdr: ChangeDetectorRef
   ) {}
@@ -61,6 +62,20 @@ export class CourseDetailComponent implements OnInit {
       case 'pdf': return 'description';
       case 'quiz': return 'quiz';
       default: return 'article';
+    }
+  }
+
+  goToLesson(lessonId: number, type: string): void {
+    if (!this.course) return;
+    
+    // We navigate to the student workspace player if it's a video
+    if (type.toLowerCase() === 'video') {
+      this.router.navigate(['/student/courses', this.course.id, 'lessons', lessonId, 'player']);
+    } else if (type.toLowerCase() === 'quiz') {
+      // Navigate to the quiz intro page
+      // Assuming lesson title might contain quiz ID or there's an endpoint to get the quiz ID from lesson ID.
+      // For now, if we have a generic player or we show a flash message:
+      this.router.navigate(['/student/courses', this.course.id, 'lessons', lessonId, 'player']);
     }
   }
 }

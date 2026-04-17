@@ -17,8 +17,16 @@
           : 'bg-primary hover:opacity-90 text-white px-6 py-2 rounded-full font-bold text-sm transition-all shadow-sm active:scale-95'">
         {{ (courseStatus() === 'Published' ? 'editCourse.unpublish' : 'editCourse.publishCourse') | translate }}
       </button>
+<!-- صفحة تعديل الكورس -->
+<div class="flex min-h-screen bg-background font-body text-slate-800">
+  <app-course-sidebar></app-course-sidebar>
+
+  <!-- Main Content Wrapper to offset fixed sidebar -->
+  <div class="flex-1 w-full lg:ml-64 pb-24 transition-all duration-300">
+    <!-- Loading -->
+    <div *ngIf="isLoading()" class="flex justify-center py-20">
+      <span class="material-symbols-outlined text-primary text-4xl animate-spin">progress_activity</span>
     </div>
-  </header>
 
   <div *ngIf="isLoading()" class="flex justify-center py-20">
     <span class="material-symbols-outlined text-primary text-4xl animate-spin">progress_activity</span>
@@ -268,4 +276,5 @@
     </div>
 
   </main>
+  </div>
 </div>

@@ -141,14 +141,14 @@
                 <div *ngIf="openSectionId === section.id" class="px-6 pb-6 space-y-3">
                   <div
                     *ngFor="let lesson of section.lessons"
-                    class="flex items-center justify-between py-3 border-t border-surface-container-highest"
+                    class="flex items-center justify-between py-3 border-t border-surface-container-highest cursor-pointer hover:bg-surface-container-lowest/50 transition-colors rounded-md -mx-2 px-2"
+                    (click)="goToLesson(lesson.id, lesson.type)"
                   >
                     <div class="flex items-center gap-3">
                       <span class="material-symbols-outlined text-primary text-xl">
                         {{ getLessonIcon(lesson.type) }}
                       </span>
-
-                      <span class="text-on-surface-variant text-sm">{{ lesson.title }}</span>
+                      <span class="text-on-surface-variant text-sm group-hover:text-primary transition-colors">{{ lesson.title }}</span>
                     </div>
 
                     <span class="text-xs font-bold text-outline-variant">

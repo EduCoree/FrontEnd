@@ -8,11 +8,12 @@ import { CategoryService } from '../../../core/services/category.service';
 import { ReorderItemDto, SectionDto } from '../../../core/models/course';
 import { CourseService } from '../../../core/services/course';
 import { TranslateModule } from '@ngx-translate/core';
+import { CourseSidebar } from "../../../shared/components/ui/sidebar/course-sidebar/course-sidebar";
 
 @Component({
   selector: 'app-edit-course',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule , TranslateModule],
+  imports: [ReactiveFormsModule, CommonModule , TranslateModule , CourseSidebar],
   templateUrl: './edit-course.component.html',
   styleUrl: './edit-course.component.css'
 })

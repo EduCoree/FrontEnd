@@ -21,7 +21,7 @@
            class="text-slate-600 font-medium hover:text-primary transition-colors duration-300">
           {{ 'nav.centers' | translate }}
         </a>
-        <a href="#" class="text-slate-600 font-medium hover:text-primary transition-colors duration-300">
+        <a [routerLink]="liveSessionsRoute" routerLinkActive="text-primary font-bold border-b-2 border-primary" class="text-slate-600 font-medium hover:text-primary transition-colors duration-300">
           {{ 'nav.liveSessions' | translate }}
         </a>
          <a routerLink="/teacher/dashboard" class="text-slate-600 font-medium hover:text-primary transition-colors duration-300">
@@ -147,7 +147,7 @@
         <span class="material-symbols-outlined text-[18px] text-[#2E6858]">location_city</span>
         {{ 'nav.centers' | translate }}
       </a>
-      <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-[#191C1D] hover:bg-[#F2F4F4] transition-colors">
+      <a [routerLink]="liveSessionsRoute" (click)="mobileMenuOpen.set(false)" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-[#191C1D] hover:bg-[#F2F4F4] transition-colors">
         <span class="material-symbols-outlined text-[18px] text-[#2E6858]">live_tv</span>
         {{ 'nav.liveSessions' | translate }}
       </a>

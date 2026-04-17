@@ -109,7 +109,7 @@
             </div>
 
             <div class="mt-auto flex items-center gap-3">
-              <button [routerLink]="['/teacher/courses', course.id, 'quizzes']"
+              <button  [routerLink]="['/teacher/courses/edit', course.id]"
                 class="flex-grow flex items-center justify-center gap-2 bg-primary-container text-on-primary-container py-3 rounded-full font-semibold hover:bg-primary-fixed transition-colors">
                 <span class="material-symbols-outlined text-lg">edit</span>
                 {{ course.status === 'Draft' ? ('teacherPortal.continueEditing' | translate) : ('teacherPortal.editCourse' | translate) }}

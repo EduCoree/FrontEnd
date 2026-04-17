@@ -229,6 +229,21 @@
                   </div>
                 </div>
 
+                <!-- Drive pick for video -->
+                <button type="button" (click)="openDrivePickerForVideo()" [disabled]="isDrivePickingVideo()"
+                  class="w-full flex items-center justify-center gap-2 py-2 rounded-xl border border-outline-variant/20 text-on-surface-variant text-sm font-semibold hover:border-[#1a73e8]/40 hover:text-[#1a73e8] transition-all disabled:opacity-60 bg-surface-container">
+                  <span *ngIf="isDrivePickingVideo()" class="material-symbols-outlined text-sm animate-spin">progress_activity</span>
+                  <svg *ngIf="!isDrivePickingVideo()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 87.3 78" class="w-3.5 h-3.5" fill="none">
+                    <path d="M6.6 66.85l3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3L27.5 53H0c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/>
+                    <path d="M43.65 25L29.9 1.4C28.55.6 27 .2 25.5.2c-1.55 0-3.1.4-4.4 1.2L6.6 25z" fill="#00ac47"/>
+                    <path d="M73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5H60.8l5.45 10.55z" fill="#ea4335"/>
+                    <path d="M43.65 25L57.4 1.4C56.05.6 54.5.2 52.9.2H34.4c-1.55 0-3.1.4-4.45 1.2z" fill="#00832d"/>
+                    <path d="M60.8 53H27.5L13.75 76.8c1.35.8 2.9 1.2 4.45 1.2h50.2c1.55 0 3.1-.4 4.4-1.2z" fill="#2684fc"/>
+                    <path d="M73.4 26.5l-7.15-12.4c-.8-1.4-1.95-2.5-3.3-3.3L49.2 33.5 60.8 53h26.45c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/>
+                  </svg>
+                  {{ isDrivePickingVideo() ? 'Opening Drive...' : 'Pick Video from Google Drive' }}
+                </button>
+
                 <button type="submit" [disabled]="videoForm.invalid || isSavingVideo()"
                   class="w-full py-2.5 rounded-xl bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-colors disabled:opacity-50 flex items-center justify-center gap-2">
                   <span *ngIf="isSavingVideo()" class="material-symbols-outlined text-sm animate-spin">progress_activity</span>
@@ -301,6 +316,32 @@
                 <span class="material-symbols-outlined text-[16px]">add_circle</span>
                 {{ 'courseMedia.addPdfUrl' | translate }}
               </button>
+              <!-- Drive pick error -->
+              <p *ngIf="drivePickError()" class="text-xs text-error font-semibold text-center">{{ drivePickError() }}</p>
+
+              <!-- Add PDF buttons -->
+              <div *ngIf="!showPdfForm()" class="flex flex-col gap-2">
+                <!-- Google Drive button (primary CTA) -->
+                <button (click)="openDrivePickerForPdf()" [disabled]="isDrivePickingPdf()"
+                  class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#1a73e8] text-white text-sm font-bold hover:bg-[#1765cc] transition-all disabled:opacity-60 shadow-sm">
+                  <span *ngIf="isDrivePickingPdf()" class="material-symbols-outlined text-sm animate-spin">progress_activity</span>
+                  <svg *ngIf="!isDrivePickingPdf()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 87.3 78" class="w-4 h-4" fill="none">
+                    <path d="M6.6 66.85l3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3L27.5 53H0c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/>
+                    <path d="M43.65 25L29.9 1.4C28.55.6 27 .2 25.5.2c-1.55 0-3.1.4-4.4 1.2L6.6 25z" fill="#00ac47"/>
+                    <path d="M73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5H60.8l5.45 10.55z" fill="#ea4335"/>
+                    <path d="M43.65 25L57.4 1.4C56.05.6 54.5.2 52.9.2H34.4c-1.55 0-3.1.4-4.45 1.2z" fill="#00832d"/>
+                    <path d="M60.8 53H27.5L13.75 76.8c1.35.8 2.9 1.2 4.45 1.2h50.2c1.55 0 3.1-.4 4.4-1.2z" fill="#2684fc"/>
+                    <path d="M73.4 26.5l-7.15-12.4c-.8-1.4-1.95-2.5-3.3-3.3L49.2 33.5 60.8 53h26.45c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/>
+                  </svg>
+                  {{ isDrivePickingPdf() ? 'Opening Drive...' : 'Pick PDF from Google Drive' }}
+                </button>
+                <!-- Manual URL option -->
+                <button (click)="showPdfForm.set(true)"
+                  class="w-full flex items-center justify-center gap-2 py-2 rounded-xl border-2 border-dashed border-outline-variant/30 text-on-surface-variant text-sm font-semibold hover:border-secondary/40 hover:text-secondary transition-all">
+                  <span class="material-symbols-outlined text-[16px]">link</span>
+                  Or enter URL manually
+                </button>
+              </div>
             </div>
           </div>
 

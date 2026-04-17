@@ -7,7 +7,9 @@
 
 <router-outlet />
 
-
+@if (authService.isLoggedIn()) {
+  <app-chat-widget />
+}
 
 
 

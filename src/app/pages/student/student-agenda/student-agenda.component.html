@@ -28,6 +28,8 @@
   </div>
 
   <div *ngIf="!jitsiRoomName()">
+  <!-- ══ Agenda View ════════════════════════════════════════════════════════════ -->
+  <div>
 
     <header class="flex justify-between items-center px-8 py-4 bg-white border-b border-gray-100 sticky top-0 z-40">
       <div class="flex items-center gap-4">
@@ -101,6 +103,12 @@
             <h2 class="text-sm font-bold text-gray-800 truncate">
               {{ session.title ?? ('studentAgenda.defaultSessionTitle' | translate) }}
             </h2>
+            <h2 class="text-sm font-bold text-gray-800 truncate">{{ session.title ?? 'Live Session' }}</h2>
+            <div class="flex items-center gap-2 text-[11px] text-gray-500 font-medium">
+              <span *ngIf="session.courseName" class="truncate">{{ session.courseName }}</span>
+              <span *ngIf="session.courseName && session.teacherName" class="text-gray-300">•</span>
+              <span *ngIf="session.teacherName" class="truncate text-gray-400">by {{ session.teacherName }}</span>
+            </div>
             <div class="flex items-center gap-1.5 text-[11px] text-gray-400">
               <span class="material-symbols-outlined text-[14px]">schedule</span>
               {{ session.scheduledAt | date:'medium' }}

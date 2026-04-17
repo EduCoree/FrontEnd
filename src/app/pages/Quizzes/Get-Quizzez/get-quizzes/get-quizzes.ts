@@ -10,6 +10,7 @@ import { CourseSidebar } from "../../../../shared/components/ui/sidebar/course-s
 import { Sidebar } from "../../../../shared/components/ui/sidebar/sidebar";
 import { TranslateModule } from '@ngx-translate/core';
 
+
 @Component({
   selector: 'app-quiz',
   templateUrl: './get-quizzes.html',
