@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { AttemptHistoryDto } from '../../../core/models/quiz';
 import { QuizService } from '../../../core/services/quiz.service';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
@@ -14,35 +14,54 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrl: './quiz-history.css',
 })
 export class QuizHistory implements OnInit {
-attempts: AttemptHistoryDto[] = [];
+ attempts: AttemptHistoryDto[] = [];
   loading = true;
   error: string | null = null;
-  activeFilter: 'All' | 'Passed' | 'Failed' = 'All';
-  selectedCourse='All';
-  selectedDateRange='All';
 
+  // Filters
+  activeFilter: 'All' | 'Passed' | 'Failed' = 'All';
+  selectedCourse = 'All';
+  selectedDateRange = 'All';
+
+  // Pagination
+  totalPages = signal(1);
+  currentPage = signal(1);
+
+  // Course options from backend
+  courseOptions: string[] = ['All'];
+  loadingCourses=false;
 
   constructor(
     private studentquizservice: StudentquizService,
     @Inject(PLATFORM_ID) private platformId: Object,
-    private cdr:ChangeDetectorRef
-
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
+      this.loadCourseOptions()
       this.loadHistory();
     }
   }
 
   loadHistory(): void {
     this.loading = true;
-    this.studentquizservice.getHistory().subscribe({
+
+    // Build filter params
+    const params = {
+      page: this.currentPage(),
+      pageSize: 8,
+      status: this.activeFilter === 'All' ? null : this.activeFilter,
+      courseTitle: this.selectedCourse === 'All' ? null : this.selectedCourse,
+      days: this.selectedDateRange === 'All' ? null : Number(this.selectedDateRange),
+    };
+
+    this.studentquizservice.getHistory(params).subscribe({
       next: (res) => {
-        this.attempts = res.data;
+        this.attempts = res.data.items;
+        this.totalPages.set(res.data.totalPages);
         this.loading = false;
         this.cdr.detectChanges();
-
       },
       error: (err) => {
         this.error = err.error?.message || 'Failed to load history.';
@@ -51,14 +70,22 @@ attempts: AttemptHistoryDto[] = [];
       }
     });
   }
-      get courseOptions(): string[] {
-        const titles = this.attempts
-    .map(a => a.courseTitle)
-    .filter(Boolean) as string[];    // boolean is shortcut for x=>!!x thats remove everything leads to false in like null or undefined 
-    return ['All', ...new Set(titles)];  // new set is js ds that remove the duplicates and return unique course titles and the ... to return it back to array
-    }
 
-     get dateRangeOptions(): { label: string; value: string }[] {
+  loadCourseOptions(): void {
+  this.loadingCourses = true;
+  this.studentquizservice.getHistoryCourseTitles().subscribe({
+    next: (res) => {
+      this.courseOptions = ['All', ...res.data]; 
+      this.loadingCourses = false;
+      this.cdr.detectChanges();
+    },
+    error: () => {
+      this.loadingCourses = false;
+    }
+  });
+  }
+
+  get dateRangeOptions(): { label: string; value: string }[] {
     return [
       { label: 'All Time',     value: 'All' },
       { label: 'Last 7 Days',  value: '7'   },
@@ -67,39 +94,33 @@ attempts: AttemptHistoryDto[] = [];
     ];
   }
 
-  private isWithinRange(dateStr: string): boolean {
-    if (this.selectedDateRange === 'All') return true;
-    const days = Number(this.selectedDateRange);
-    const cutoff = new Date();
-    cutoff.setDate(cutoff.getDate() - days);
-    return new Date(dateStr) >= cutoff;
-  }
- 
-  get filtered(): AttemptHistoryDto[] {
-    return this.attempts.filter(a => {
-      const matchStatus =
-        this.activeFilter === 'All' ||
-        (this.activeFilter === 'Passed' && a.passed) ||
-        (this.activeFilter === 'Failed' && !a.passed);
- 
-      const matchCourse =
-        this.selectedCourse === 'All' || a.courseTitle === this.selectedCourse;
- 
-      const matchDate = this.isWithinRange(a.submittedAt ?? a.startedAt);
- 
-      return matchStatus && matchCourse && matchDate;
-    });
+  setFilter(filter: 'All' | 'Passed' | 'Failed'): void {
+    this.activeFilter = filter;
+    this.currentPage.set(1);
+    this.loadHistory();
   }
 
-    getAttemptNumber(attempt: AttemptHistoryDto): number {
+  onCourseChange(): void {
+    this.currentPage.set(1);
+    this.loadHistory();
+  }
+
+  onDateRangeChange(): void {
+    this.currentPage.set(1);
+    this.loadHistory();
+  }
+
+  goToPage(page: number): void {
+    if (page < 1 || page > this.totalPages()) return;
+    this.currentPage.set(page);
+    this.loadHistory();
+  }
+
+  getAttemptNumber(attempt: AttemptHistoryDto): number {
     return this.attempts
       .filter(a => a.quizId === attempt.quizId)
       .sort((a, b) => new Date(a.startedAt).getTime() - new Date(b.startedAt).getTime())
       .findIndex(a => a.id === attempt.id) + 1;
-  }
- 
-  setFilter(filter: 'All' | 'Passed' | 'Failed'): void {
-    this.activeFilter = filter;
   }
 
   formatDate(date: string): string {

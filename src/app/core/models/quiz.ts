@@ -166,3 +166,17 @@ export interface AttemptHistoryDto {
   startedAt: string;
   submittedAt?: string;
 }
+export interface AvailableQuizDto {
+  id: number;
+  title: string;
+  passScore: number;
+  courseTitle: string;
+}
+
+export interface PagedResult<T> {
+  items: T[];
+  totalCount: number;
+  pageNumber: number;
+  pageSize: number;
+  totalPages: number;
+}

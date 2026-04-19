@@ -45,6 +45,9 @@ import { TeacherDashboardComponent } from './pages/teacher-dashboard/teacher-das
 import { MyCoursesComponent } from './pages/student/my-courses/my-courses.component';
 import { Notification } from './pages/notification/notification';
 import { ErrorPageComponent } from './pages/error-page/error-page';
+import { AvailableQuizzes } from './pages/Quizzes/available-quizzes/available-quizzes';
+import { StudentAgendaComponent } from './pages/student/student-agenda/student-agenda.component';
+import { MyCertificatesComponent } from './pages/student/my-certificates/my-certificates.component';
 
 export const routes: Routes = [
    // ── Public ────────────────────────────────────────────────────────────────
@@ -225,14 +228,14 @@ export const routes: Routes = [
       .then(m => m.StudentProgressComponent),
   title: 'My Progress — EduCore',
 },
-{
-  path: 'student/certificates',
-  canActivate: [authGuard],
-  loadComponent: () =>
-    import('./pages/student/my-certificates/my-certificates.component')
-      .then(m => m.MyCertificatesComponent),
-  title: 'My Certificates — EduCore',
-},
+// {
+//   path: 'student/certificates',
+//   canActivate: [authGuard],
+//   loadComponent: () =>
+//     import('./pages/student/my-certificates/my-certificates.component')
+//       .then(m => m.MyCertificatesComponent),
+//   title: 'My Certificates — EduCore',
+// },
 // Content Delivery: Media Page (wired)
 {
   path: 'teacher/courses/:id/media',
@@ -337,6 +340,10 @@ export const routes: Routes = [
   children: [
     { path: 'dashboard', component: StudentDashboardComponent },
     { path: 'my-courses', component: MyCoursesComponent },
+    {path:'quizzes',component:AvailableQuizzes},
+    {path:'quiz-history',component:QuizHistory},
+    { path: 'sessions',component:StudentAgendaComponent,title: 'My Schedule — EduCore'},
+    { path: 'certificates',component:MyCertificatesComponent,title: 'My Certificates — EduCore'},
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
   ]
 },
@@ -393,11 +400,8 @@ export const routes: Routes = [
    canActivate: [authGuard, roleGuard('Student')],
   component : QuizResult,
 },
-{
-  path: 'quiz/history',
-   canActivate: [authGuard, roleGuard('Student')],
-  component : QuizHistory,
-},
+
+
 {
   path: 'notifications',
    canActivate: [authGuard, roleGuard('Student')],
@@ -502,14 +506,14 @@ export const routes: Routes = [
 },
 
 // Content Delivery: Student Session Agenda
-{
-  path: 'student/sessions',
-  canActivate: [authGuard],
-  loadComponent: () =>
-    import('./pages/student/student-agenda/student-agenda.component')
-      .then(m => m.StudentAgendaComponent),
-  title: 'My Schedule — EduCore',
-},
+// {
+//   path: 'student/sessions',
+//   canActivate: [authGuard],
+//   loadComponent: () =>
+//     import('./pages/student/student-agenda/student-agenda.component')
+//       .then(m => m.StudentAgendaComponent),
+//   title: 'My Schedule — EduCore',
+// },
 
 // Content Delivery: Student Video Watch (Signed URL)
 {
