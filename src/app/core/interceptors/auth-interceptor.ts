@@ -1,4 +1,3 @@
-
 import { HttpInterceptorFn, HttpErrorResponse, HttpRequest, HttpHandlerFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
@@ -23,7 +22,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      // 401 → try refresh token
+      // 401 → try refresh token (must be first, must return)
       if (error.status === 401 && auth.isLoggedIn()) {
         return handleRefresh(req, next, auth, router);
       }
@@ -33,12 +32,12 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         router.navigate(['/error/403']);
       }
 
-      // 500 → error page
+      // 500 → error page (only for real 500s, not refresh issues)
       if (error.status === 500) {
         router.navigate(['/error/500']);
       }
 
-      // 0 → connection refused → error page
+      // 0 → connection refused
       if (error.status === 0) {
         router.navigate(['/error/500']);
       }
@@ -81,7 +80,7 @@ function handleRefresh(
   if (!refreshToken) {
     isRefreshing = false;
     auth.clearUser();
-    router.navigate(['/error/401']);
+    router.navigate(['/login']);
     return throwError(() => new Error('No refresh token'));
   }
 
@@ -95,7 +94,7 @@ function handleRefresh(
     catchError((err) => {
       isRefreshing = false;
       auth.clearUser();
-      router.navigate(['/error/401']);
+      router.navigate(['/login']);
       return throwError(() => err);
     }),
   );
