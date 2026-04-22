@@ -28,6 +28,7 @@ export interface QuizDto {
   passScore: number;
   maxAttempts: number;
   isRandomized: boolean;
+  isPublished:boolean;
   questionsCount:number
   totalPoints:number
 }
@@ -88,6 +89,7 @@ export interface QuizDetailsDto {
   passScore: number;
   maxAttempts: number;
   isRandomized: boolean;
+  isPublished:boolean;
   questions: QuestionDto[];
 }
 export interface CreateAnswerOptionDto {

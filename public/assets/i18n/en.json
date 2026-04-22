@@ -733,6 +733,7 @@
   "tablePassScore": "Pass Score",
   "tableMaxAttempts": "Max Attempts",
   "tableRandomized": "Randomized",
+  "tableStatus":"Status",
   "mins": "mins",
   "noLimit": "No limit",
   "unlimited": "Unlimited",

@@ -1,6 +1,6 @@
-import { AnswerOptionDto, AttemptDto, AttemptHistoryDto, CreateAnswerOptionDto, ApiResponse, QuizSummaryDto, StudentQuizDto, AttemptResultDto, QuizAttemptHistoryDto } from './../models/quiz';
+import { AnswerOptionDto, AttemptDto, AttemptHistoryDto, CreateAnswerOptionDto, ApiResponse, QuizSummaryDto, StudentQuizDto, AttemptResultDto, QuizAttemptHistoryDto, PagedResult } from './../models/quiz';
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -14,13 +14,15 @@ export class QuizService {
 
   constructor(private http: HttpClient) {}
 
-  getQuizzes(courseId: number): Observable<QuizDto[]> {
+  getQuizzes(courseId: number, params: {page: number; pageSize: number;}): Observable<ApiResponse<PagedResult<QuizDto>>> {
+    let httpParams = new HttpParams()
+      .set('pageNumber', params.page || 1)
+      .set('pageSize', params.pageSize || 10);
+
     return this.http
-      .get<ApiResponse<QuizDto[]>>(`${this.baseUrl}/courses/${courseId}/quizzes`)
-      .pipe(map(res =>{ 
-        return res.data ?? res;
-      }));
-  }
+      .get<ApiResponse<PagedResult<QuizDto>>>(`${this.baseUrl}/courses/${courseId}/quizzes`,{params:httpParams})
+      };
+
  getQuizById(quizId:number):Observable<ApiResponse<QuizDto>>
   {
      return this.http.get<ApiResponse<QuizDto>>(
@@ -39,6 +41,9 @@ createQuiz(courseId: number, dto: CreateQuizDto): Observable<QuizDto> {
   deleteQuiz( quizId: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/quizzes/${quizId}`);
   }
+  publishQuiz(quizId: number): Observable<ApiResponse<QuizDto>> {
+  return this.http.post<ApiResponse<QuizDto>>(`${this.baseUrl}/quizzes/${quizId}/publish`, {});
+}
 
 
 

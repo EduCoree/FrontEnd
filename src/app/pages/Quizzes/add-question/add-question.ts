@@ -42,10 +42,8 @@ constructor(private quizservice:QuizService, private questionservice:QuestionSer
   ngOnInit(): void {
      this.quizservice.getQuizById(this.quizId).subscribe(res => {
     this.quiz = res.data;
-
     // 3. Override with real value
     this.quizName = this.quiz.title;
-    console.log(this.quiz.questionsCount);
     this.cdr.detectChanges();
   });
   }
@@ -68,7 +66,7 @@ constructor(private quizservice:QuizService, private questionservice:QuestionSer
    {
       this.newQuestionType = newtype;
 
-  if (newtype === 'TrueFalse') {
+  if (newtype === 'TRUEFALSE') {
     // Set exactly 2 options for True/False
     this.newQuestionOptions = [
       { text: 'True', isCorrect: false },

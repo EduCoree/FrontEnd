@@ -164,6 +164,36 @@
       </section>
 
     </ng-container>
+     <!-- Pagination -->
+    @if (totalPages() > 1) {
+      <div class="flex justify-center items-center gap-2 mt-12 mb-28 md:mb-12">
+
+        <button
+          (click)="goToPage(currentPage() - 1)"
+          [disabled]="currentPage() === 1"
+          class="p-2 rounded-full hover:bg-surface-container-highest disabled:opacity-30 transition-all text-on-surface">
+          <span class="material-symbols-outlined">chevron_left</span>
+        </button>
+
+        <button
+          *ngFor="let page of [].constructor(totalPages()); let i = index"
+          (click)="goToPage(i + 1)"
+          [class]="(i + 1) === currentPage()
+            ? 'w-10 h-10 rounded-full bg-primary text-on-primary font-bold text-sm shadow-md'
+            : 'w-10 h-10 rounded-full hover:bg-surface-container-highest text-on-surface-variant font-bold text-sm transition-all'">
+          {{ i + 1 }}
+        </button>
+
+        <button
+          (click)="goToPage(currentPage() + 1)"
+          [disabled]="currentPage() === totalPages()"
+          class="p-2 rounded-full hover:bg-surface-container-highest disabled:opacity-30 transition-all text-on-surface">
+          <span class="material-symbols-outlined">chevron_right</span>
+        </button>
+
+      </div>
+    }
+      
   </main>
 </div>
 

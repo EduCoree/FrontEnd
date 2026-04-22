@@ -1,8 +1,9 @@
+import { PagedResult } from './../models/quiz';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ApiResponse, AttemptDto, AttemptHistoryDto, AttemptResultDto, AvailableQuizDto, PagedResult, QuizAttemptHistoryDto, QuizSummaryDto, StudentQuizDto } from '../models/quiz';
+import { ApiResponse, AttemptDto, AttemptHistoryDto, AttemptResultDto, AvailableQuizDto, QuizAttemptHistoryDto, QuizSummaryDto, StudentQuizDto } from '../models/quiz';
 
 @Injectable({
   providedIn: 'root',
@@ -32,22 +33,28 @@ submitAttempt(quizId: number, attemptId: number, body: {
   );
 }
 
-getQuizHistory(quizId: number): Observable<ApiResponse<QuizAttemptHistoryDto[]>> {
-  return this.http.get<ApiResponse<QuizAttemptHistoryDto[]>>(
-    `${this.baseUrl}/${quizId}/attempts`
+getQuizHistory(quizId: number, params:{page?:number,pageSize?:number}={page:1,pageSize:5}): Observable<ApiResponse<PagedResult<QuizAttemptHistoryDto>>> {
+   let httpParams = new HttpParams()
+   .set('pageNumber',params.page??1)
+   .set('pageSize',params.pageSize??5);
+
+  
+  return this.http.get<ApiResponse<PagedResult<QuizAttemptHistoryDto>>>(
+    `${this.baseUrl}/${quizId}/attempts`,{params:httpParams}
   );
 }
+
 getHistory(params: {
-  page: number;
-  pageSize: number;
+  page?: number;
+  pageSize?: number;
   status?: string | null;
   courseTitle?: string | null;
   days?: number | null;
 }): Observable<ApiResponse<PagedResult<AttemptHistoryDto>>> {
 
   let httpParams = new HttpParams()
-    .set('pageNumber', params.page)
-    .set('pageSize', params.pageSize);
+    .set('pageNumber', params.page??1)
+    .set('pageSize', params.pageSize??8);
 
   if (params.status)      httpParams = httpParams.set('status', params.status);
   if (params.courseTitle) httpParams = httpParams.set('courseTitle', params.courseTitle);
@@ -69,8 +76,8 @@ getHistory(params: {
 }
 getAvailableQuizzes(
   params: {
-  page: number;
-  pageSize: number;
+  page?: number;
+  pageSize?: number;
   courseTitle?: string | null;
 }
 ): Observable<ApiResponse<PagedResult<AvailableQuizDto>>> {

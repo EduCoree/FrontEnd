@@ -731,6 +731,7 @@
   "tablePassScore": "درجة النجاح",
   "tableMaxAttempts": "الحد الأقصى للمحاولات",
   "tableRandomized": "عشوائي",
+  "tableStatus":"الحاله",
   "mins": "دقيقة",
   "noLimit": "بلا حد",
   "unlimited": "غير محدود",
