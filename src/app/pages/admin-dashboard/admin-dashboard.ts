@@ -8,11 +8,12 @@ import {
   TrendPoint,
   TopCourse,
 } from '../../core/models/dashboard';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, AdminSidebarComponent],
+  imports: [CommonModule, RouterLink, AdminSidebarComponent , TranslateModule],
   templateUrl: './admin-dashboard.html',
 })
 export class AdminDashboardComponent implements OnInit {

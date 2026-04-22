@@ -1,4 +1,4 @@
-import { StudentQuizIntro } from './../../pages/student-quiz-intro/student-quiz-intro';
+import { StudentQuizIntro } from '../../pages/Quizzes/student-quiz-intro/student-quiz-intro';
 export enum QuestionType {
   MCQ = 'MCQ',
   TrueFalse = 'TrueFalse'
@@ -11,6 +11,14 @@ export interface CreateQuizDto {
     maxAttempts: number;
      isRandomized: boolean;
 
+}
+
+export interface UpdateQuizDto {
+  title?: string;
+  timeLimitMins?: number | null;
+  passScore?: number;
+  maxAttempts?: number;
+  isRandomized?: boolean;
 }
 export interface QuizDto {
   id: number;
@@ -157,4 +165,18 @@ export interface AttemptHistoryDto {
   passed: boolean;
   startedAt: string;
   submittedAt?: string;
+}
+export interface AvailableQuizDto {
+  id: number;
+  title: string;
+  passScore: number;
+  courseTitle: string;
+}
+
+export interface PagedResult<T> {
+  items: T[];
+  totalCount: number;
+  pageNumber: number;
+  pageSize: number;
+  totalPages: number;
 }

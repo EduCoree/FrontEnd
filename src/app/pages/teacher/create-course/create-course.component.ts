@@ -5,12 +5,13 @@ import { Router } from '@angular/router';
 import { CourseService } from '../../../core/services/course';
 import { CategoryService } from '../../../core/services/category.service';
 import { Category } from '../../../core/models/category.model';
+import { TranslateModule } from '@ngx-translate/core';
 //import { CategoryDto } from '../../../core/model/courses/course.model';
 
 @Component({
   selector: 'app-create-course',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule , TranslateModule],
   templateUrl: './create-course.component.html',
   styleUrl: './create-course.component.css'
 })

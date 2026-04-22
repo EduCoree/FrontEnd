@@ -1,16 +1,13 @@
 <div class="flex min-h-screen bg-[#f8faf9] font-headline">
   <app-admin-sidebar />
-
-  <main class="ml-12 flex-1 min-h-screen flex flex-col">
+  <main class="ms-6 flex-1 min-h-screen flex flex-col">
     <div class="p-8 space-y-8">
 
-      <!-- Header -->
       <div>
-        <h3 class="text-3xl font-extrabold tracking-tight text-[#2d3433] mb-2">Dashboard</h3>
-        <p class="text-[#596060] font-medium">Welcome back. Here's your platform overview.</p>
+        <h3 class="text-3xl font-extrabold tracking-tight text-[#2d3433] mb-2">{{ 'adminDashboard.title' | translate }}</h3>
+        <p class="text-[#596060] font-medium">{{ 'adminDashboard.subtitle' | translate }}</p>
       </div>
 
-      <!-- Loading -->
       @if (loading()) {
         <div class="flex justify-center py-20">
           <span class="material-symbols-outlined text-[#2e6959] text-5xl animate-spin">progress_activity</span>
@@ -19,62 +16,52 @@
 
       @if (!loading() && kpis()) {
 
-        <!-- KPI Cards -->
         <div class="grid grid-cols-4 gap-4">
-
-          <!-- Total Students -->
           <div class="bg-[#eaefee] rounded-xl p-6 flex items-center gap-4">
             <div class="w-12 h-12 rounded-full bg-[#b2efda] flex items-center justify-center text-[#2e6959]">
               <span class="material-symbols-outlined">group</span>
             </div>
             <div>
-              <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">Students</p>
+              <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">{{ 'adminDashboard.students' | translate }}</p>
               <p class="text-2xl font-black text-[#2d3433]">{{ kpis()!.totalStudents }}</p>
             </div>
           </div>
-
-          <!-- Total Teachers -->
           <div class="bg-[#eaefee] rounded-xl p-6 flex items-center gap-4">
             <div class="w-12 h-12 rounded-full bg-[#c9e7f7] flex items-center justify-center text-[#466370]">
               <span class="material-symbols-outlined">school</span>
             </div>
             <div>
-              <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">Teachers</p>
+              <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">{{ 'adminDashboard.teachers' | translate }}</p>
               <p class="text-2xl font-black text-[#2d3433]">{{ kpis()!.totalTeachers }}</p>
             </div>
           </div>
-
-          <!-- Active Courses -->
           <div class="bg-[#eaefee] rounded-xl p-6 flex items-center gap-4">
             <div class="w-12 h-12 rounded-full bg-[#fde9c9] flex items-center justify-center text-[#8a6d3b]">
               <span class="material-symbols-outlined">menu_book</span>
             </div>
             <div>
-              <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">Active Courses</p>
+              <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">{{ 'adminDashboard.activeCourses' | translate }}</p>
               <p class="text-2xl font-black text-[#2d3433]">{{ kpis()!.activeCourses }}<span class="text-sm font-bold text-[#596060]"> / {{ kpis()!.totalCourses }}</span></p>
             </div>
           </div>
-
-          <!-- Revenue -->
           <div class="bg-[#2e6959] rounded-xl p-6 flex items-center gap-4">
             <div class="w-12 h-12 rounded-full bg-white/15 flex items-center justify-center text-[#b2efda]">
               <span class="material-symbols-outlined">payments</span>
             </div>
             <div>
-              <p class="uppercase tracking-widest text-[10px] font-bold text-[#b2efda]/70">Total Revenue</p>
+              <p class="uppercase tracking-widest text-[10px] font-bold text-[#b2efda]/70">{{ 'adminDashboard.totalRevenue' | translate }}</p>
               <p class="text-2xl font-black text-white">${{ formatCurrency(kpis()!.totalRevenue) }}</p>
             </div>
           </div>
         </div>
 
-        <!-- Secondary Stats Row -->
         <div class="grid grid-cols-3 gap-4">
           <div class="bg-[#eaefee] rounded-xl p-5 flex items-center gap-4">
             <div class="w-10 h-10 rounded-lg bg-[#b2efda] flex items-center justify-center text-[#2e6959]">
               <span class="material-symbols-outlined text-xl">trending_up</span>
             </div>
             <div>
-              <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">Total Enrollments</p>
+              <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">{{ 'adminDashboard.totalEnrollments' | translate }}</p>
               <p class="text-xl font-black text-[#2d3433]">{{ kpis()!.totalEnrollments }}</p>
             </div>
           </div>
@@ -83,7 +70,7 @@
               <span class="material-symbols-outlined text-xl">today</span>
             </div>
             <div>
-              <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">New Today</p>
+              <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">{{ 'adminDashboard.newToday' | translate }}</p>
               <p class="text-xl font-black text-[#2d3433]">{{ kpis()!.newEnrollmentsToday }}</p>
             </div>
           </div>
@@ -92,28 +79,23 @@
               <span class="material-symbols-outlined text-xl">workspace_premium</span>
             </div>
             <div>
-              <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">Certificates Issued</p>
+              <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">{{ 'adminDashboard.certificates' | translate }}</p>
               <p class="text-xl font-black text-[#2d3433]">{{ kpis()!.certificatesIssued }}</p>
             </div>
           </div>
         </div>
 
-        <!-- Charts Row -->
         <div class="grid grid-cols-2 gap-4">
-
-          <!-- Enrollments Trend -->
           <div class="bg-[#eaefee] rounded-xl p-6">
             <div class="flex justify-between items-center mb-6">
               <div>
-                <p class="text-sm font-extrabold text-[#2d3433]">Enrollment Trend</p>
-                <p class="text-[10px] uppercase tracking-widest font-bold text-[#596060]">New enrollments per day</p>
+                <p class="text-sm font-extrabold text-[#2d3433]">{{ 'adminDashboard.enrollmentTrend' | translate }}</p>
+                <p class="text-[10px] uppercase tracking-widest font-bold text-[#596060]">{{ 'adminDashboard.enrollmentSub' | translate }}</p>
               </div>
               <div class="flex gap-1 bg-[#e4e9e8] rounded-full p-0.5">
-                <button (click)="loadTrends(30)"
-                  class="px-3 py-1 rounded-full text-[10px] font-bold transition-all"
+                <button (click)="loadTrends(30)" class="px-3 py-1 rounded-full text-[10px] font-bold transition-all"
                   [class]="trendDays() === 30 ? 'bg-[#2e6959] text-[#e4fff4]' : 'text-[#596060] hover:bg-white'">30D</button>
-                <button (click)="loadTrends(90)"
-                  class="px-3 py-1 rounded-full text-[10px] font-bold transition-all"
+                <button (click)="loadTrends(90)" class="px-3 py-1 rounded-full text-[10px] font-bold transition-all"
                   [class]="trendDays() === 90 ? 'bg-[#2e6959] text-[#e4fff4]' : 'text-[#596060] hover:bg-white'">90D</button>
               </div>
             </div>
@@ -124,29 +106,25 @@
                     {{ formatDate(point.date) }}: {{ point.value }}
                   </div>
                   <div class="w-full bg-[#2e6959]/80 rounded-t hover:bg-[#2e6959] transition-colors"
-                    [style.height.%]="barHeight(point.value, enrollmentMax())">
-                  </div>
+                    [style.height.%]="barHeight(point.value, enrollmentMax())"></div>
                 </div>
               }
               @if (enrollmentTrend().length === 0) {
-                <div class="flex-1 flex items-center justify-center text-[#596060] text-xs">No data</div>
+                <div class="flex-1 flex items-center justify-center text-[#596060] text-xs">{{ 'adminDashboard.noData' | translate }}</div>
               }
             </div>
           </div>
 
-          <!-- Revenue Trend -->
           <div class="bg-[#eaefee] rounded-xl p-6">
             <div class="flex justify-between items-center mb-6">
               <div>
-                <p class="text-sm font-extrabold text-[#2d3433]">Revenue Trend</p>
-                <p class="text-[10px] uppercase tracking-widest font-bold text-[#596060]">Daily revenue</p>
+                <p class="text-sm font-extrabold text-[#2d3433]">{{ 'adminDashboard.revenueTrend' | translate }}</p>
+                <p class="text-[10px] uppercase tracking-widest font-bold text-[#596060]">{{ 'adminDashboard.revenueSub' | translate }}</p>
               </div>
               <div class="flex gap-1 bg-[#e4e9e8] rounded-full p-0.5">
-                <button (click)="loadTrends(30)"
-                  class="px-3 py-1 rounded-full text-[10px] font-bold transition-all"
+                <button (click)="loadTrends(30)" class="px-3 py-1 rounded-full text-[10px] font-bold transition-all"
                   [class]="trendDays() === 30 ? 'bg-[#2e6959] text-[#e4fff4]' : 'text-[#596060] hover:bg-white'">30D</button>
-                <button (click)="loadTrends(90)"
-                  class="px-3 py-1 rounded-full text-[10px] font-bold transition-all"
+                <button (click)="loadTrends(90)" class="px-3 py-1 rounded-full text-[10px] font-bold transition-all"
                   [class]="trendDays() === 90 ? 'bg-[#2e6959] text-[#e4fff4]' : 'text-[#596060] hover:bg-white'">90D</button>
               </div>
             </div>
@@ -157,22 +135,20 @@
                     {{ formatDate(point.date) }}: ${{ point.value }}
                   </div>
                   <div class="w-full bg-[#8a6d3b]/70 rounded-t hover:bg-[#8a6d3b] transition-colors"
-                    [style.height.%]="barHeight(point.value, revenueMax())">
-                  </div>
+                    [style.height.%]="barHeight(point.value, revenueMax())"></div>
                 </div>
               }
               @if (revenueTrend().length === 0) {
-                <div class="flex-1 flex items-center justify-center text-[#596060] text-xs">No data</div>
+                <div class="flex-1 flex items-center justify-center text-[#596060] text-xs">{{ 'adminDashboard.noData' | translate }}</div>
               }
             </div>
           </div>
         </div>
 
-        <!-- Top Courses -->
         <div class="bg-[#eaefee] rounded-xl overflow-hidden">
           <div class="p-6 border-b border-[#acb3b2]/10">
-            <p class="text-sm font-extrabold text-[#2d3433]">Top Courses</p>
-            <p class="text-[10px] uppercase tracking-widest font-bold text-[#596060]">By enrollment count</p>
+            <p class="text-sm font-extrabold text-[#2d3433]">{{ 'adminDashboard.topCourses' | translate }}</p>
+            <p class="text-[10px] uppercase tracking-widest font-bold text-[#596060]">{{ 'adminDashboard.topCoursesSub' | translate }}</p>
           </div>
           <div class="divide-y divide-[#acb3b2]/10">
             @for (course of topCourses(); track course.courseId; let i = $index) {
@@ -191,19 +167,18 @@
                 </div>
                 <div class="flex items-center gap-2">
                   <span class="text-lg font-black text-[#2d3433]">{{ course.enrollmentCount }}</span>
-                  <span class="text-[10px] font-bold text-[#596060] uppercase">enrolled</span>
+                  <span class="text-[10px] font-bold text-[#596060] uppercase">{{ 'adminDashboard.enrolled' | translate }}</span>
                 </div>
               </div>
             }
             @if (topCourses().length === 0) {
               <div class="px-6 py-12 text-center text-[#596060]">
                 <span class="material-symbols-outlined text-4xl block mb-2 text-[#acb3b2]">menu_book</span>
-                No courses yet.
+                {{ 'adminDashboard.noCourses' | translate }}
               </div>
             }
           </div>
         </div>
-
       }
     </div>
   </main>

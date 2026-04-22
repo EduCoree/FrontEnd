@@ -32,11 +32,11 @@
     <div class="flex items-center justify-between text-xs text-on-surface-variant mb-6">
       <div class="flex items-center gap-1">
         <span class="material-symbols-outlined text-[16px]">group</span>
-        <span>{{ course.totalStudents }} Students</span>
+        <span>{{ course.totalStudents }} {{ 'courseCard.students' | translate }}</span>
       </div>
       <div class="flex items-center gap-1">
         <span class="material-symbols-outlined text-[16px]">menu_book</span>
-        <span>{{ course.totalLessons }} Lessons</span>
+        <span>{{ course.totalLessons }} {{ 'courseCard.lessons' | translate }}</span>
       </div>
     </div>
 
@@ -44,7 +44,7 @@
     <div class="flex items-center justify-between pt-4 border-t border-outline-variant/20">
       <div class="flex items-baseline gap-2">
         <span class="text-xl font-bold text-primary">
-          {{ course.pricingType === 'Free' ? 'Free' : '$' + course.price }}
+          {{ course.pricingType === 'Free' ? ('courseCard.free' | translate) : '$' + course.price }}
         </span>
       </div>
       <button 

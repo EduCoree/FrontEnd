@@ -1,13 +1,13 @@
-import { QuizHistory } from './pages/quiz-history/quiz-history';
-import { QuizResult } from './pages/quiz-result/quiz-result';
+import { QuizHistory } from './pages/Quizzes/quiz-history/quiz-history';
+import { QuizResult } from './pages/Quizzes/quiz-result/quiz-result';
 import { Categories } from './pages/centers/categories/categories';
 // import { CenterEdit } from './pages/centers/center-edit/center-edit/center-edit';
 
-import { QuestionsList } from './pages/questions-list/questions-list';
-import { StudentQuizIntro } from './pages/student-quiz-intro/student-quiz-intro';
-import { ActiveQuiz } from './pages/active-quiz/active-quiz';
-import { AddQuestion } from './pages/add-question/add-question';
-import { QuizSubmission } from './pages/quiz-submission/quiz-submission';
+import { QuestionsList } from './pages/Quizzes/questions-list/questions-list';
+import { StudentQuizIntro } from './pages/Quizzes/student-quiz-intro/student-quiz-intro';
+import { ActiveQuiz } from './pages/Quizzes/active-quiz/active-quiz';
+import { AddQuestion } from './pages/Quizzes/add-question/add-question';
+import { QuizSubmission } from './pages/Quizzes/quiz-submission/quiz-submission';
 import { QuizComponent } from './pages/Quizzes/Get-Quizzez/get-quizzes/get-quizzes';
 import { QuizBuilderComponent } from './pages/Quizzes/quiz-builder/quiz-builder';
 import { CreateQuizComponent } from './pages/Quizzes/CreateQuiz/create-quiz/create-quiz';
@@ -46,6 +46,12 @@ import { MyCoursesComponent } from './pages/student/my-courses/my-courses.compon
 import { PaymentFailedComponent } from './pages/enroll&payment/payment-failed/payment-failed.component';
 import { PaymentSuccessComponent } from './pages/enroll&payment/payment-success/payment-success.component';
 // import { EnrollmentPageComponent } from './pages/enroll&payment/enrollment-page/enrollment-page.component';
+import { Notification } from './pages/notification/notification';
+import { ErrorPageComponent } from './pages/error-page/error-page';
+import { AvailableQuizzes } from './pages/Quizzes/available-quizzes/available-quizzes';
+import { StudentAgendaComponent } from './pages/student/student-agenda/student-agenda.component';
+import { MyCertificatesComponent } from './pages/student/my-certificates/my-certificates.component';
+
 export const routes: Routes = [
    // ── Public ────────────────────────────────────────────────────────────────
   {
@@ -167,7 +173,7 @@ export const routes: Routes = [
         .then(m => m.RegisterComponent)
   },
   {
-    path: 'teacher/courses/:courseId/quizzes/create',
+    path: 'review/create',
     loadComponent: () =>
       import('./pages/Quizzes/CreateQuiz/create-quiz/create-quiz')
         .then(m => m.CreateQuizComponent)
@@ -225,14 +231,14 @@ export const routes: Routes = [
       .then(m => m.StudentProgressComponent),
   title: 'My Progress — EduCore',
 },
-{
-  path: 'student/certificates',
-  canActivate: [authGuard],
-  loadComponent: () =>
-    import('./pages/student/my-certificates/my-certificates.component')
-      .then(m => m.MyCertificatesComponent),
-  title: 'My Certificates — EduCore',
-},
+// {
+//   path: 'student/certificates',
+//   canActivate: [authGuard],
+//   loadComponent: () =>
+//     import('./pages/student/my-certificates/my-certificates.component')
+//       .then(m => m.MyCertificatesComponent),
+//   title: 'My Certificates — EduCore',
+// },
 // Content Delivery: Media Page (wired)
 {
   path: 'teacher/courses/:id/media',
@@ -316,39 +322,6 @@ export const routes: Routes = [
 }
 ,
 
-{
-  path: 'questions',
-  component : QuestionsList,
-},
-
-{
-  path: 'quiz/intro/:quizId',
-  component : StudentQuizIntro,
-},
-
-{
-  path: 'quiz/:quizId/attempt/:attemptId',
-  component : ActiveQuiz,
-},
-
-{
-  path: 'teacher/courses/:courseId/quizzes/:quizId/add-question',
-  component : AddQuestion,
-},
-
-{
-  path: 'Quiz/submission',
-  component : QuizSubmission,
-},
-  
-{
-  path: 'Quiz/:quizId/result/:attemptId',
-  component : QuizResult,
-},
-{
-  path: 'Quiz/history',
-  component : QuizHistory,
-},
 
 
 
@@ -370,6 +343,10 @@ export const routes: Routes = [
   children: [
     { path: 'dashboard', component: StudentDashboardComponent },
     { path: 'my-courses', component: MyCoursesComponent },
+    {path:'quizzes',component:AvailableQuizzes},
+    {path:'quiz-history',component:QuizHistory},
+    { path: 'sessions',component:StudentAgendaComponent,title: 'My Schedule — EduCore'},
+    { path: 'certificates',component:MyCertificatesComponent,title: 'My Certificates — EduCore'},
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
   ]
 },
@@ -394,15 +371,45 @@ export const routes: Routes = [
 
 {
   path: 'teacher/courses/:courseId/quizzes',
+  canActivate: [authGuard, roleGuard('Teacher')],
   component: QuizComponent,
 },
 {
-  path:'teacher/courses/:courseId/quizzes/:quizId/builder',
+  path:'teacher/quizzes/:quizId/builder',
+   canActivate: [authGuard, roleGuard('Teacher')],
   component: QuizBuilderComponent
 },
 {
-  path:'abc',
-  component:QuizBuilderComponent
+  path: 'teacher/quizzes/:quizId/add-question',
+   canActivate: [authGuard, roleGuard('Teacher')],
+  component : AddQuestion,
+},
+
+{
+  path: 'quiz/intro/:quizId',
+   canActivate: [authGuard, roleGuard('Student')],
+  component : StudentQuizIntro,
+},
+
+{
+  path: 'quiz/:quizId/attempt/:attemptId',
+   canActivate: [authGuard, roleGuard('Student')],
+  component : ActiveQuiz,
+},
+
+
+  
+{
+  path: 'Quiz/:quizId/result/:attemptId',
+   canActivate: [authGuard, roleGuard('Student')],
+  component : QuizResult,
+},
+
+
+{
+  path: 'notifications',
+   canActivate: [authGuard, roleGuard('Student')],
+  component : Notification,
 },
 
 
@@ -503,14 +510,14 @@ export const routes: Routes = [
 },
 
 // Content Delivery: Student Session Agenda
-{
-  path: 'student/sessions',
-  canActivate: [authGuard],
-  loadComponent: () =>
-    import('./pages/student/student-agenda/student-agenda.component')
-      .then(m => m.StudentAgendaComponent),
-  title: 'My Schedule — EduCore',
-},
+// {
+//   path: 'student/sessions',
+//   canActivate: [authGuard],
+//   loadComponent: () =>
+//     import('./pages/student/student-agenda/student-agenda.component')
+//       .then(m => m.StudentAgendaComponent),
+//   title: 'My Schedule — EduCore',
+// },
 
 // Content Delivery: Student Video Watch (Signed URL)
 {
@@ -539,5 +546,15 @@ export const routes: Routes = [
       import('./pages/student/lesson-player/lesson-player.component')
         .then(m => m.LessonPlayerComponent),
     title: 'Lesson Player — EduCore',
-  }
+  },
+
+
+
+
+{ path: 'error', component: ErrorPageComponent, data: { code: 404 } },
+{ path: 'error/401', component: ErrorPageComponent, data: { code: 401 } },
+{ path: 'error/403', component: ErrorPageComponent, data: { code: 403 } },
+{ path: 'error/404', component: ErrorPageComponent, data: { code: 404 } },
+{ path: 'error/500', component: ErrorPageComponent, data: { code: 500 } },
+{ path: '**', component: ErrorPageComponent, data: { code: 404 } },
 ];

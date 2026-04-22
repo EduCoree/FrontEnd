@@ -5,12 +5,13 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth';
+import { TranslateModule } from '@ngx-translate/core';
 
 type Step = 'email' | 'otp' | 'reset' | 'done';
 
 @Component({
   selector: 'app-forgot-password',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink , TranslateModule],
   templateUrl: './forgot-password.html',
   styleUrl: './forgot-password.css',
 })

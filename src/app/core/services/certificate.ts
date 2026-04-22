@@ -37,7 +37,7 @@ export class CertificateService {
    * This endpoint is PUBLIC — no auth required.
    * Consumed by CertificateDetailComponent (no canActivate guard on that route).
    */
-  getCertificate(certificateId: number): Observable<Certificate> {
+  getCertificate(certificateId: string): Observable<Certificate> {
     return this.http
       .get<any>(`${this.base}/certificates/${certificateId}`)
       .pipe(map((res) => res.data ?? res));

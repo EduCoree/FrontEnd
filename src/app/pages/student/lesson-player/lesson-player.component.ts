@@ -7,11 +7,12 @@ import { CommonModule, Location } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { StudentContentService } from '../../../core/services/student-content';
 import { ProgressService } from '../../../core/services/progress';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-lesson-player',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule , TranslateModule],
   templateUrl: './lesson-player.component.html',
 })
 export class LessonPlayerComponent implements OnInit, OnDestroy {

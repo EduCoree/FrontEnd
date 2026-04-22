@@ -1,20 +1,19 @@
 <div class="md:ml-72 pt-16 min-h-screen">
   <div class="p-8 max-w-7xl mx-auto space-y-10">
 
-    <!-- Welcome Header -->
     <header class="flex flex-col md:flex-row md:items-end justify-between gap-4">
       <div>
-        <span class="text-xs uppercase tracking-[0.1em] text-on-surface-variant font-bold">Welcome Back</span>
+        <span class="text-xs uppercase tracking-[0.1em] text-on-surface-variant font-bold">
+          {{ 'studentDashboard.welcomeBack' | translate }}
+        </span>
         <h1 class="text-4xl font-headline font-extrabold text-on-surface tracking-tight mt-1">
-          Your Learning Progress
+          {{ 'studentDashboard.learningProgress' | translate }}
         </h1>
       </div>
     </header>
 
-    <!-- KPI Bento Grid -->
     <section class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-6">
 
-      <!-- Circular Progress -->
       <div class="md:col-span-2 bg-surface-container-low rounded-xl p-8 flex flex-col items-center justify-center text-center">
         <div class="relative w-40 h-40">
           <svg class="w-full h-full -rotate-90" viewBox="0 0 100 100">
@@ -29,14 +28,15 @@
           </svg>
           <div class="absolute inset-0 flex flex-col items-center justify-center">
             <span class="text-3xl font-extrabold text-primary">{{ overallProgress }}%</span>
-            <span class="text-[10px] uppercase tracking-widest font-bold text-on-surface-variant">Overall</span>
+            <span class="text-[10px] uppercase tracking-widest font-bold text-on-surface-variant">
+              {{ 'studentDashboard.overall' | translate }}
+            </span>
           </div>
         </div>
-        <h3 class="mt-6 font-headline font-bold text-xl">Learning Progress</h3>
-        <p class="text-sm text-on-surface-variant mt-1 px-4">Keep going, you're doing great!</p>
+        <h3 class="mt-6 font-headline font-bold text-xl">{{ 'studentDashboard.learningProgress' | translate }}</h3>
+        <p class="text-sm text-on-surface-variant mt-1 px-4">{{ 'studentDashboard.keepGoing' | translate }}</p>
       </div>
 
-      <!-- Stats Cards -->
       <div class="md:col-span-2 space-y-6">
         <div class="bg-surface-container-lowest p-6 rounded-xl flex items-center gap-6 hover:bg-primary/5 transition-colors">
           <div class="w-14 h-14 rounded-full bg-primary-container flex items-center justify-center text-primary">
@@ -44,130 +44,106 @@
           </div>
           <div>
             <div class="text-3xl font-extrabold">{{ enrolledCount }}</div>
-            <div class="text-sm font-bold text-on-surface-variant uppercase tracking-wider">Enrolled Courses</div>
+            <div class="text-sm font-bold text-on-surface-variant uppercase tracking-wider">
+              {{ 'studentDashboard.enrolledCourses' | translate }}
+            </div>
           </div>
         </div>
-
         <div class="bg-surface-container-lowest p-6 rounded-xl flex items-center gap-6 hover:bg-primary/5 transition-colors">
           <div class="w-14 h-14 rounded-full bg-secondary-container flex items-center justify-center text-secondary">
             <span class="material-symbols-outlined text-3xl">task_alt</span>
           </div>
           <div>
             <div class="text-3xl font-extrabold">{{ completedCount }}</div>
-            <div class="text-sm font-bold text-on-surface-variant uppercase tracking-wider">Completed Courses</div>
+            <div class="text-sm font-bold text-on-surface-variant uppercase tracking-wider">
+              {{ 'studentDashboard.completedCourses' | translate }}
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Resume Learning Card -->
       <div class="md:col-span-4 lg:col-span-2 bg-primary text-on-primary rounded-xl overflow-hidden relative flex flex-col">
         <div class="absolute top-0 right-0 p-8 opacity-10">
           <span class="material-symbols-outlined text-[120px]">auto_stories</span>
         </div>
         <div class="p-8 relative z-10 flex flex-col h-full">
           <span class="bg-primary-fixed text-on-primary-fixed text-[10px] px-3 py-1 rounded-full font-bold w-fit uppercase tracking-wider">
-            Active Now
+            {{ 'studentDashboard.activeNow' | translate }}
           </span>
 
           <ng-container *ngIf="courses.length > 0; else noCourse">
-            <h3 class="text-2xl font-headline font-bold mt-4 leading-tight line-clamp-2">
-              {{ courses[0].title }}
-            </h3>
+            <h3 class="text-2xl font-headline font-bold mt-4 leading-tight line-clamp-2">{{ courses[0].title }}</h3>
             <p class="mt-2 text-on-primary/80 text-sm">{{ courses[0].teacherName }}</p>
             <div class="mt-auto pt-8">
               <div class="flex justify-between text-xs mb-2 font-bold uppercase tracking-widest opacity-80">
-                <span>Progress</span>
+                <span>{{ 'studentDashboard.progress' | translate }}</span>
                 <span>{{ courses[0].progressPercentage }}%</span>
               </div>
               <div class="w-full h-2 bg-on-primary/20 rounded-full overflow-hidden">
-                <div class="h-full bg-on-primary rounded-full transition-all"
-                  [style.width.%]="courses[0].progressPercentage">
-                </div>
+                <div class="h-full bg-on-primary rounded-full transition-all" [style.width.%]="courses[0].progressPercentage"></div>
               </div>
-              <button
-                [routerLink]="['/courses', courses[0].courseId]"
+              <button [routerLink]="['/courses', courses[0].courseId]"
                 class="mt-6 w-full bg-on-primary text-primary py-3 rounded-full font-bold flex items-center justify-center gap-2 hover:scale-105 transition-transform">
                 <span class="material-symbols-outlined text-lg">play_arrow</span>
-                Resume Learning
+                {{ 'studentDashboard.resumeLearning' | translate }}
               </button>
             </div>
           </ng-container>
 
           <ng-template #noCourse>
-            <h3 class="text-2xl font-headline font-bold mt-4">No courses yet</h3>
-            <p class="mt-2 text-on-primary/80 text-sm">Start your learning journey today!</p>
+            <h3 class="text-2xl font-headline font-bold mt-4">{{ 'studentDashboard.noCourseYet' | translate }}</h3>
+            <p class="mt-2 text-on-primary/80 text-sm">{{ 'studentDashboard.startJourney' | translate }}</p>
             <button routerLink="/courses"
               class="mt-auto w-full bg-on-primary text-primary py-3 rounded-full font-bold hover:scale-105 transition-transform">
-              Browse Courses
+              {{ 'studentDashboard.browseCourses' | translate }}
             </button>
           </ng-template>
-
         </div>
       </div>
     </section>
 
-    <!-- My Courses Section -->
     <section class="space-y-6">
       <div class="flex items-center justify-between">
-        <h2 class="text-2xl font-headline font-extrabold">My Courses</h2>
+        <h2 class="text-2xl font-headline font-extrabold">{{ 'studentDashboard.myCourses' | translate }}</h2>
       </div>
 
-      <!-- Loading -->
       <div *ngIf="isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div *ngFor="let i of [1,2,3]" class="bg-surface-container-low rounded-xl h-48 animate-pulse"></div>
       </div>
 
-      <!-- Empty -->
       <div *ngIf="!isLoading && courses.length === 0"
         class="flex flex-col items-center justify-center py-16 text-center bg-surface-container-low rounded-xl">
         <span class="material-symbols-outlined text-6xl text-outline-variant mb-4">menu_book</span>
-        <h3 class="text-xl font-bold mb-2">No enrolled courses</h3>
-        <p class="text-on-surface-variant text-sm mb-6">Start learning by browsing our courses.</p>
+        <h3 class="text-xl font-bold mb-2">{{ 'studentDashboard.noEnrolled' | translate }}</h3>
+        <p class="text-on-surface-variant text-sm mb-6">{{ 'studentDashboard.noEnrolledDesc' | translate }}</p>
         <button routerLink="/courses"
           class="px-8 py-3 bg-primary text-on-primary rounded-full font-bold hover:bg-primary-dim transition-all">
-          Browse Courses
+          {{ 'studentDashboard.browseCourses' | translate }}
         </button>
       </div>
 
-      <!-- Courses Grid -->
-      <div *ngIf="!isLoading && courses.length > 0"
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div *ngIf="!isLoading && courses.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div *ngFor="let course of courses"
           class="bg-surface-container-lowest rounded-xl overflow-hidden hover:-translate-y-1 transition-transform cursor-pointer group"
           [routerLink]="['/courses', course.courseId]">
-
-          <!-- Cover -->
           <div class="relative h-40">
-            <img
-              [src]="course.coverImage || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600'"
-              [alt]="course.title"
-              class="w-full h-full object-cover"
-            />
-            <!-- Progress Badge -->
+            <img [src]="course.coverImage || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600'"
+              [alt]="course.title" class="w-full h-full object-cover" />
             <span class="absolute top-3 right-3 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[10px] font-bold text-primary">
               {{ course.progressPercentage }}%
             </span>
           </div>
-
-          <!-- Content -->
           <div class="p-5">
-            <h3 class="font-bold text-base group-hover:text-primary transition-colors line-clamp-2 mb-1">
-              {{ course.title }}
-            </h3>
+            <h3 class="font-bold text-base group-hover:text-primary transition-colors line-clamp-2 mb-1">{{ course.title }}</h3>
             <p class="text-xs text-on-surface-variant mb-4">{{ course.teacherName }}</p>
-
-            <!-- Progress Bar -->
             <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden mb-2">
-              <div class="h-full bg-primary rounded-full transition-all"
-                [style.width.%]="course.progressPercentage">
-              </div>
+              <div class="h-full bg-primary rounded-full transition-all" [style.width.%]="course.progressPercentage"></div>
             </div>
             <div class="flex justify-between text-xs text-on-surface-variant">
-              <span>{{ course.completedLessons }}/{{ course.totalLessons }} Lessons</span>
+              <span>{{ course.completedLessons }}/{{ course.totalLessons }} {{ 'studentDashboard.lessons' | translate }}</span>
               <span>{{ course.enrolledAt | date:'MMM d, y' }}</span>
             </div>
           </div>
-
         </div>
       </div>
     </section>

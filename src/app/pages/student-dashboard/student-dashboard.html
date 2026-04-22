@@ -1,13 +1,11 @@
 <div class="min-h-screen bg-[#f8faf9] font-headline">
   <div class="max-w-6xl mx-auto p-8 space-y-8">
 
-    <!-- Header -->
     <div>
-      <h3 class="text-3xl font-extrabold tracking-tight text-[#2d3433] mb-2">My Dashboard</h3>
-      <p class="text-[#596060] font-medium">Track your learning progress and upcoming activities.</p>
+      <h3 class="text-3xl font-extrabold tracking-tight text-[#2d3433] mb-2">{{ 'studentDashboardPage.title' | translate }}</h3>
+      <p class="text-[#596060] font-medium">{{ 'studentDashboardPage.subtitle' | translate }}</p>
     </div>
 
-    <!-- Loading -->
     @if (loading()) {
       <div class="flex justify-center py-20">
         <span class="material-symbols-outlined text-[#2e6959] text-5xl animate-spin">progress_activity</span>
@@ -16,43 +14,37 @@
 
     @if (!loading() && dashboard()) {
 
-      <!-- KPI Cards -->
       <div class="grid grid-cols-4 gap-4">
-
-        <!-- Enrolled Courses -->
         <div class="bg-[#eaefee] rounded-xl p-6 flex items-center gap-4">
           <div class="w-12 h-12 rounded-full bg-[#b2efda] flex items-center justify-center text-[#2e6959]">
             <span class="material-symbols-outlined">menu_book</span>
           </div>
           <div>
-            <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">Enrolled</p>
+            <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">{{ 'studentDashboardPage.enrolled' | translate }}</p>
             <p class="text-2xl font-black text-[#2d3433]">{{ dashboard()!.enrolledCourses }}</p>
           </div>
         </div>
 
-        <!-- Completed -->
         <div class="bg-[#eaefee] rounded-xl p-6 flex items-center gap-4">
           <div class="w-12 h-12 rounded-full bg-[#c9e7f7] flex items-center justify-center text-[#466370]">
             <span class="material-symbols-outlined">check_circle</span>
           </div>
           <div>
-            <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">Completed</p>
+            <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">{{ 'studentDashboardPage.completed' | translate }}</p>
             <p class="text-2xl font-black text-[#2d3433]">{{ dashboard()!.completedCourses }}</p>
           </div>
         </div>
 
-        <!-- Certificates -->
         <div class="bg-[#eaefee] rounded-xl p-6 flex items-center gap-4">
           <div class="w-12 h-12 rounded-full bg-[#fde9c9] flex items-center justify-center text-[#8a6d3b]">
             <span class="material-symbols-outlined">workspace_premium</span>
           </div>
           <div>
-            <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">Certificates</p>
+            <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">{{ 'studentDashboardPage.certificates' | translate }}</p>
             <p class="text-2xl font-black text-[#2d3433]">{{ dashboard()!.certificatesEarned }}</p>
           </div>
         </div>
 
-        <!-- Overall Progress -->
         <div class="bg-[#2e6959] rounded-xl p-6">
           <div class="flex items-center gap-4">
             <div class="relative w-14 h-14">
@@ -68,21 +60,21 @@
               </span>
             </div>
             <div>
-              <p class="uppercase tracking-widest text-[10px] font-bold text-[#b2efda]/70">Overall Progress</p>
-              <p class="text-sm font-bold text-white/80">Keep going!</p>
+              <p class="uppercase tracking-widest text-[10px] font-bold text-[#b2efda]/70">
+                {{ 'studentDashboardPage.overallProgress' | translate }}
+              </p>
+              <p class="text-sm font-bold text-white/80">{{ 'studentDashboardPage.keepGoing' | translate }}</p>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Content Row -->
       <div class="grid grid-cols-2 gap-4">
 
-        <!-- Upcoming Sessions -->
         <div class="bg-[#eaefee] rounded-xl overflow-hidden">
           <div class="p-6 border-b border-[#acb3b2]/10">
-            <p class="text-sm font-extrabold text-[#2d3433]">Upcoming Sessions</p>
-            <p class="text-[10px] uppercase tracking-widest font-bold text-[#596060]">Your scheduled live classes</p>
+            <p class="text-sm font-extrabold text-[#2d3433]">{{ 'studentDashboardPage.upcomingSessions' | translate }}</p>
+            <p class="text-[10px] uppercase tracking-widest font-bold text-[#596060]">{{ 'studentDashboardPage.upcomingSessionsSub' | translate }}</p>
           </div>
           <div class="divide-y divide-[#acb3b2]/10">
             @for (session of dashboard()!.upcomingSessions; track session.sessionId) {
@@ -107,23 +99,21 @@
             @if (dashboard()!.upcomingSessions.length === 0) {
               <div class="px-6 py-12 text-center text-[#596060]">
                 <span class="material-symbols-outlined text-4xl block mb-2 text-[#acb3b2]">event_busy</span>
-                No upcoming sessions.
+                {{ 'studentDashboardPage.noSessions' | translate }}
               </div>
             }
           </div>
         </div>
 
-        <!-- Recent Quiz Results -->
         <div class="bg-[#eaefee] rounded-xl overflow-hidden">
           <div class="p-6 border-b border-[#acb3b2]/10">
-            <p class="text-sm font-extrabold text-[#2d3433]">Recent Quiz Results</p>
-            <p class="text-[10px] uppercase tracking-widest font-bold text-[#596060]">Your latest quiz attempts</p>
+            <p class="text-sm font-extrabold text-[#2d3433]">{{ 'studentDashboardPage.recentQuizResults' | translate }}</p>
+            <p class="text-[10px] uppercase tracking-widest font-bold text-[#596060]">{{ 'studentDashboardPage.recentQuizSub' | translate }}</p>
           </div>
           <div class="divide-y divide-[#acb3b2]/10">
             @for (quiz of dashboard()!.recentQuizResults; track quiz.attemptId) {
               <div class="flex items-center gap-4 px-6 py-4 hover:bg-[#f1f4f3] transition-colors">
-                <div class="w-10 h-10 rounded-lg flex items-center justify-center"
-                  [class]="scoreColor(quiz.passed)">
+                <div class="w-10 h-10 rounded-lg flex items-center justify-center" [class]="scoreColor(quiz.passed)">
                   <span class="material-symbols-outlined text-lg">{{ quiz.passed ? 'check' : 'close' }}</span>
                 </div>
                 <div class="flex-1 min-w-0">
@@ -143,14 +133,13 @@
             @if (dashboard()!.recentQuizResults.length === 0) {
               <div class="px-6 py-12 text-center text-[#596060]">
                 <span class="material-symbols-outlined text-4xl block mb-2 text-[#acb3b2]">quiz</span>
-                No quiz results yet.
+                {{ 'studentDashboardPage.noQuizResults' | translate }}
               </div>
             }
           </div>
         </div>
 
       </div>
-
     }
   </div>
 </div>

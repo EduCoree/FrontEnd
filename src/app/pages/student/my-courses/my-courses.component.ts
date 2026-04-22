@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { PublicCourseService } from '../../../core/services/public-course.service';
 import { StudentEnrolledCourseDto } from '../../../core/models/course';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-my-courses',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule , TranslateModule],
   templateUrl: './my-courses.component.html',
 })
 export class MyCoursesComponent implements OnInit {

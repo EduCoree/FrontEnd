@@ -11,12 +11,10 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(AuthService);
   const router = inject(Router);
 
-  // Don't attach token to auth endpoints (login, register, refresh-token)
   if (isAuthEndpoint(req.url)) {
     return next(req);
   }
 
-  // Attach token if available
   const token = auth.getToken();
   if (token) {
     req = addToken(req, token);
@@ -24,9 +22,26 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
+      // 401 → try refresh token (must be first, must return)
       if (error.status === 401 && auth.isLoggedIn()) {
         return handleRefresh(req, next, auth, router);
       }
+
+      // 403 → error page
+      if (error.status === 403) {
+        router.navigate(['/error/403']);
+      }
+
+      // 500 → error page (only for real 500s, not refresh issues)
+      if (error.status === 500) {
+        router.navigate(['/error/500']);
+      }
+
+      // 0 → connection refused
+      if (error.status === 0) {
+        router.navigate(['/error/500']);
+      }
+
       return throwError(() => error);
     })
   );
@@ -50,7 +65,6 @@ function handleRefresh(
   auth: AuthService,
   router: Router,
 ) {
-  // If already refreshing, queue this request until new token arrives
   if (isRefreshing) {
     return refreshTokenSubject.pipe(
       filter((token) => token !== null),
@@ -75,12 +89,9 @@ function handleRefresh(
       isRefreshing = false;
       auth.saveUser(user);
       refreshTokenSubject.next(user.token);
-
-      // Retry the original request with the new token
       return next(addToken(req, user.token));
     }),
     catchError((err) => {
-      // Refresh failed — session is dead, force logout
       isRefreshing = false;
       auth.clearUser();
       router.navigate(['/login']);

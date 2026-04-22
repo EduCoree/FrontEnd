@@ -7,6 +7,7 @@ import { CourseService } from '../../../core/services/course';
 import { CourseSummaryDto } from '../../../core/models/course';
 import { LiveSessionService } from '../../../core/services/live-session';
 import { LiveSessionResponse } from '../../../core/models/session';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface DashboardSession extends LiveSessionResponse {
   courseTitle?: string;
@@ -14,7 +15,7 @@ interface DashboardSession extends LiveSessionResponse {
 @Component({
   selector: 'app-teacher-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule , TranslateModule],
   templateUrl: './teacher-dashboard.component.html',
   styleUrl: './teacher-dashboard.component.css'
 })
@@ -85,8 +86,8 @@ export class TeacherDashboardComponent implements OnInit {
       return;
     }
     
-    // Top 5 active courses
-    const activeCourses = courses.slice(0, 5);
+    // Scan all active courses for upcoming sessions
+    const activeCourses = courses;
     const requests = activeCourses.map(c => 
       this.liveSessionService.getSessionsByCourse(c.id).pipe(
         map(sessions => (sessions || []).map(s => ({ ...s, courseTitle: c.title })))
@@ -115,6 +116,10 @@ export class TeacherDashboardComponent implements OnInit {
 
   goToEdit(id: number): void {
     this.router.navigate(['/teacher/courses/edit', id]);
+  }
+
+  goToProgress(courseId: number): void {
+    this.router.navigate(['/teacher/courses', courseId, 'progress']);
   }
 
   goToMyCourses(): void {

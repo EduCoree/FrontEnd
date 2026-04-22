@@ -1,37 +1,35 @@
 <main class="pt-8 pb-12 px-6 md:px-12 max-w-[1600px] mx-auto">
 
-  <!-- Header -->
-  <!-- <div class="mb-12">
-    <h1 class="text-4xl md:text-5xl font-headline font-bold text-on-surface tracking-tight leading-tight">
-      Curated <span class="text-primary italic">Intelligence.</span>
-    </h1>
-    <p class="text-on-surface-variant mt-4 max-w-2xl text-lg">
-      Explore our boutique collection of professional courses.
-    </p>
-  </div> -->
-
   <div class="flex flex-col lg:flex-row gap-12">
 
     <!-- Sidebar Filter -->
     <aside class="w-full lg:w-72 flex-shrink-0">
       <div class="bg-surface-container-low p-8 rounded-xl sticky top-28">
 
-        <h3 class="font-bold uppercase tracking-[0.1em] text-xs text-primary mb-6">Filter Courses</h3>
+        <h3 class="font-bold uppercase tracking-[0.1em] text-xs text-primary mb-6">
+          {{ 'courses.filter.title' | translate }}
+        </h3>
 
         <!-- Search -->
         <div class="mb-8">
-          <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-3">Search</label>
+          <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-3">
+            {{ 'courses.filter.search' | translate }}
+          </label>
+
           <input
             type="text"
             [(ngModel)]="filter.search"
-            placeholder="Search courses..."
+            [placeholder]="'courses.filter.searchPlaceholder' | translate"
             class="w-full bg-surface-container rounded-lg px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/30"
           />
         </div>
 
         <!-- Level -->
         <div class="mb-8">
-          <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-3">Level</label>
+          <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-3">
+            {{ 'courses.filter.level' | translate }}
+          </label>
+
           <div class="space-y-3">
             <label class="flex items-center gap-3 cursor-pointer group" *ngFor="let level of levels">
               <input
@@ -45,17 +43,23 @@
                 {{ level }}
               </span>
             </label>
+
             <!-- Clear Level -->
             <label class="flex items-center gap-3 cursor-pointer group">
               <input type="radio" name="level" value="" [(ngModel)]="filter.level" class="w-4 h-4 text-primary"/>
-              <span class="text-sm font-medium text-on-surface-variant">All Levels</span>
+              <span class="text-sm font-medium text-on-surface-variant">
+                {{ 'courses.filter.allLevels' | translate }}
+              </span>
             </label>
           </div>
         </div>
 
         <!-- Pricing -->
         <div class="mb-8">
-          <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-3">Pricing</label>
+          <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-3">
+            {{ 'courses.filter.pricing' | translate }}
+          </label>
+
           <div class="space-y-3">
             <label class="flex items-center gap-3 cursor-pointer group" *ngFor="let type of pricingTypes">
               <input
@@ -69,9 +73,12 @@
                 {{ type }}
               </span>
             </label>
+
             <label class="flex items-center gap-3 cursor-pointer group">
               <input type="radio" name="pricingType" value="" [(ngModel)]="filter.pricingType" class="w-4 h-4 text-primary"/>
-              <span class="text-sm font-medium text-on-surface-variant">All</span>
+              <span class="text-sm font-medium text-on-surface-variant">
+                {{ 'courses.filter.all' | translate }}
+              </span>
             </label>
           </div>
         </div>
@@ -80,12 +87,13 @@
         <button
           (click)="applyFilters()"
           class="w-full py-3 bg-primary text-on-primary rounded-full font-bold text-sm hover:bg-primary-dim transition-all mb-3">
-          Apply Filters
+          {{ 'courses.filter.apply' | translate }}
         </button>
+
         <button
           (click)="resetFilters()"
           class="w-full py-3 bg-surface-container text-on-surface-variant rounded-full font-bold text-sm hover:bg-surface-container-high transition-all">
-          Reset
+          {{ 'courses.filter.reset' | translate }}
         </button>
 
       </div>
@@ -105,8 +113,14 @@
       <div *ngIf="!isLoading && courses.length === 0"
         class="flex flex-col items-center justify-center py-24 text-center">
         <span class="material-symbols-outlined text-6xl text-outline-variant mb-4">search_off</span>
-        <h3 class="text-xl font-bold text-on-surface mb-2">No courses found</h3>
-        <p class="text-on-surface-variant text-sm">Try adjusting your filters.</p>
+
+        <h3 class="text-xl font-bold text-on-surface mb-2">
+          {{ 'courses.empty.title' | translate }}
+        </h3>
+
+        <p class="text-on-surface-variant text-sm">
+          {{ 'courses.empty.subtitle' | translate }}
+        </p>
       </div>
 
       <!-- Grid -->

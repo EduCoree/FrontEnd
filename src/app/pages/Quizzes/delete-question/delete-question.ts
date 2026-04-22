@@ -2,12 +2,14 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { QuizService } from '../../../core/services/quiz.service';
+import { QuestionService } from '../../../core/services/question.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @Component({
   selector: 'app-delete-question-modal',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule , TranslateModule],
   templateUrl: './delete-question.html'
 })
 export class DeleteQuestionModalComponent {
@@ -23,12 +25,12 @@ export class DeleteQuestionModalComponent {
   deleting = false;
   deleteError: string | null = null;
 
-  constructor(private quizService: QuizService,private cdr:ChangeDetectorRef) {}
+  constructor(private questionservice: QuestionService,private cdr:ChangeDetectorRef) {}
 
   confirm(): void {
     this.deleting = true;
     this.deleteError = null;
-    this.quizService.deleteQuestion(this.courseId, this.quizId, this.questionId).subscribe({
+    this.questionservice.deleteQuestion( this.quizId, this.questionId).subscribe({
       next: () => {
         this.deleting = false;
         this.confirmed.emit();

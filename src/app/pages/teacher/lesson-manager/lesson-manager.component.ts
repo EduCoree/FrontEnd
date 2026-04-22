@@ -12,11 +12,12 @@ import {
   PdfLessonResponse,
 } from '../../../core/models/course';
 import { CourseService } from '../../../core/services/course';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-lesson-manager',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule , TranslateModule],
   templateUrl: './lesson-manager.component.html',
 })
 export class LessonManagerComponent implements OnInit {

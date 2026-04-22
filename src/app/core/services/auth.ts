@@ -9,14 +9,24 @@ import {
   RefreshTokenDto, VerifyOtpDto,
   ResetPasswordDto, EmailConfirmationDto, OtpPurpose
 } from '../models/auth';
+import { NotificationService } from './notification.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private http   = inject(HttpClient);
   private router = inject(Router);
+  private notificationservice=inject(NotificationService)
   private base   = `${environment.apiUrl}/api/authentication`;
 
   currentUser = signal<UserDto | null>(this.loadUser());
+  constructor()
+  {
+    const user = this.currentUser();
+    if(user?.token)
+    {
+      this.notificationservice.startConnection(user.token);   // handling refresh the page as save user is called at register or login
+    }
+  }
 
   // ── Auth ──────────────────────────────────────────────────────────────────
   login(dto: LoginDto) {
@@ -70,11 +80,13 @@ export class AuthService {
   saveUser(user: UserDto) {
     localStorage.setItem('user', JSON.stringify(user));
     this.currentUser.set(user);
+    this.notificationservice.startConnection(user.token);
   }
 
   clearUser() {
     localStorage.removeItem('user');
     this.currentUser.set(null);
+    this.notificationservice.stopConnection();
   }
 
   getToken(): string | null {

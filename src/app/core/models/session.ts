@@ -23,6 +23,8 @@ export interface LiveSessionResponse {
   title?: string;
   description?: string;
   createdAt: string;         // ISO string
+  courseName?: string;
+  teacherName?: string;
 }
 
 export interface JoinSessionResponse {

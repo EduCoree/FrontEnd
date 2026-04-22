@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { CourseCardComponent } from '../course-card/course-card.component';
 import { CourseFilterDto, CourseSummaryDto, PagedResult } from '../../../core/models/course';
 import { PublicCourseService } from '../../../core/services/public-course.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-courses-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, CourseCardComponent],
+  imports: [CommonModule, FormsModule, CourseCardComponent , TranslateModule],
   templateUrl: './courses-list.component.html',
 })
 export class CoursesListComponent implements OnInit {
