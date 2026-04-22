@@ -36,10 +36,7 @@ export class EnrollmentModalComponent {
     
     this.enrollmentService.enrollFree(this.course.id).subscribe({
       next: () => {
-        // ✅ Close modal first
         this.close();
-        
-        // 🚀 Navigate to success page with auto-redirect
         this.router.navigate(['/payment/success'], {
           queryParams: { 
             courseTitle: this.course.title,
@@ -52,7 +49,6 @@ export class EnrollmentModalComponent {
         const errorMessage = err?.error?.message ?? "Registration failed. Please try again.";
         this.errorMsg = errorMessage;
         
-        // ✅ إذا المستخدم مسجل بالفعل - روح لـ my-courses
         if (errorMessage.includes('مشترك') || errorMessage.includes('enrolled')) {
           setTimeout(() => {
             this.close();
@@ -60,7 +56,7 @@ export class EnrollmentModalComponent {
           }, 2000);
         }
         
-        console.error('❌ Free Enrollment Error:', errorMessage);
+        console.error(' Free Enrollment Error:', errorMessage);
       }
     });
   }
@@ -77,16 +73,14 @@ export class EnrollmentModalComponent {
         this.isLoading = false;
         const errorMessage = err?.error?.message ?? "Failed to create payment link. Please try again.";
         this.errorMsg = errorMessage;
-        
-        // ✅ إذا المستخدم مسجل بالفعل
-        if (errorMessage.includes('مشترك') || errorMessage.includes('enrolled')) {
+                if (errorMessage.includes('مشترك') || errorMessage.includes('enrolled')) {
           setTimeout(() => {
             this.close();
             this.router.navigate(['/student/my-courses']);
           }, 2000);
         }
         
-        console.error('❌ Card Checkout Error:', errorMessage);
+        console.error(' Card Checkout Error:', errorMessage);
       }
     });
   }

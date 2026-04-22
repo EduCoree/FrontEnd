@@ -21,33 +21,25 @@ export class PaymentSuccessComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-    this.courseTitle = this.route.snapshot.queryParams['courseTitle'] ?? 'your course';
-    this.isFreeEnrollment = this.route.snapshot.queryParams['isFree'] === 'true';
-    
-    // إذا كان من Card payment أو بدون courseTitle
-    this.isPaymentFromCard = 
-      this.route.snapshot.queryParams['fromCard'] === 'true' || 
-      (!this.courseTitle || this.courseTitle === 'your course') && !this.isFreeEnrollment;
+ngOnInit(): void {
+  this.courseTitle = this.route.snapshot.queryParams['courseTitle'] ?? 'your course';
+  this.isFreeEnrollment = this.route.snapshot.queryParams['isFree'] === 'true';
+  
+  this.isPaymentFromCard = 
+    this.route.snapshot.queryParams['fromCard'] === 'true' || 
+    ((!this.courseTitle || this.courseTitle === 'your course') && !this.isFreeEnrollment);
 
-    // Auto redirect logic
-    if (this.isPaymentFromCard) {
-      // 🏃 Card Payment: روح مباشرة بسرعة (2.5 ثانية)
-      setTimeout(() => {
-        this.router.navigate(['/student/my-courses']);
-      }, 2500);
-    } else if (this.isFreeEnrollment) {
-      // 📚 Free Enrollment: اعرض success message و عد من 10 إلى 1
-      this.showAutoRedirectMessage = true;
-      const countdownInterval = setInterval(() => {
-        this.countdownSeconds--;
-        if (this.countdownSeconds === 0) {
-          clearInterval(countdownInterval);
-          this.router.navigate(['/student/my-courses']);
-        }
-      }, 1000);
+  if (this.isPaymentFromCard) {
+  setTimeout(() => {
+    const user = localStorage.getItem('user');
+    if (user) {
+      this.router.navigate(['/student/my-courses']);
+    } else {
+      this.router.navigate(['/login']);
     }
-  }
+  }, 2500);
+}
+}
 
   goToMyCourses(): void {
     this.router.navigate(['/student/my-courses']);
