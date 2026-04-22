@@ -1361,6 +1361,8 @@
   "portal": "بوابة الطالب",
   "dashboard": "لوحة التحكم",
   "myCourses": "كورساتي",
+  "myQuizzes":"امتحاناتي",
+  "QuizHistory":"سابقه امتحانات",
   "liveSessions": "الجلسات المباشرة",
   "certificates": "الشهادات",
   "messages": "الرسائل",

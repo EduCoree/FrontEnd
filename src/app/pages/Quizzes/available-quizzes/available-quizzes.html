@@ -1,0 +1,127 @@
+<div class="md:ml-55 pt-16 min-h-screen">
+<div class="flex">
+
+  
+
+  <main class="flex-1 w-full max-w-4xl mx-auto px-6 pt-8 pb-32">
+
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-extrabold text-on-surface">Available Quizzes</h1>
+      <p class="text-on-surface-variant text-sm mt-1">Browse and take quizzes for your enrolled courses</p>
+    </div>
+
+    <!-- Filter -->
+    <div class="mb-6">
+      <select
+        [(ngModel)]="selectedCourse"
+        (change)="onCourseChange()"
+        class="px-4 py-2 rounded-xl border border-outline-variant/30 bg-surface-container-lowest text-sm font-medium text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20">
+        <option *ngFor="let course of courseOptions" [value]="course">
+          {{ course === 'All' ? 'All Courses' : course }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="flex items-center justify-center h-64">
+      <div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+    </div>
+
+    <!-- Error -->
+    <div *ngIf="error && !loading"
+      class="flex items-center gap-3 px-5 py-4 bg-error-container text-on-error-container rounded-xl text-sm font-medium mb-6">
+      <span class="material-symbols-outlined">error</span>
+      {{ error }}
+      <button (click)="loadQuizzes()" class="underline font-bold ms-2">Retry</button>
+    </div>
+
+    <!-- Quiz List -->
+    <div *ngIf="!loading && !error" class="flex flex-col gap-3">
+
+      <!-- Empty state -->
+      <div *ngIf="quizzes.length === 0"
+        class="flex flex-col items-center justify-center py-16 bg-surface-container-low rounded-3xl text-center">
+        <span class="material-symbols-outlined text-4xl text-primary/30 mb-3">quiz</span>
+        <p class="text-on-surface-variant font-medium text-sm">No quizzes available</p>
+      </div>
+
+      <!-- Quiz Row -->
+      <div *ngFor="let quiz of quizzes"
+        class="flex items-center justify-between px-6 py-4 bg-surface-container-lowest rounded-2xl border border-outline-variant/10 shadow-[0_8px_32px_rgba(125,184,165,0.06)] hover:shadow-md transition-shadow">
+
+        <div class="flex flex-col gap-1">
+          <!-- Course title -->
+          <span class="text-[10px] font-bold text-primary uppercase tracking-widest">
+            {{ quiz.courseTitle }}
+          </span>
+          <!-- Quiz title -->
+          <h3 class="text-base font-bold text-on-surface">{{ quiz.title }}</h3>
+          <!-- Pass score -->
+          <span class="text-xs text-on-surface-variant font-medium">
+            Pass Score:
+            <span class="text-primary font-bold">{{ quiz.passScore }}%</span>
+          </span>
+        </div>
+
+        <!-- View Quiz button -->
+        <a [routerLink]="['/quiz/intro', quiz.id]"
+          class="px-5 py-2 rounded-xl bg-primary text-white text-sm font-bold hover:scale-105 active:scale-95 transition-transform shadow-sm">
+          View Quiz
+        </a>
+
+      </div>
+    </div>
+<!-- Pagination -->
+    @if (totalPages > 1) {
+      <div class="flex justify-center items-center gap-2 mt-12 mb-28 md:mb-12">
+
+        <button
+          (click)="goToPage(currentPage- 1)"
+          [disabled]="currentPage === 1"
+          class="p-2 rounded-full hover:bg-surface-container-highest disabled:opacity-30 transition-all text-on-surface">
+          <span class="material-symbols-outlined">chevron_left</span>
+        </button>
+
+        <button
+          *ngFor="let page of [].constructor(totalPages); let i = index"
+          (click)="goToPage(i + 1)"
+          [class]="(i + 1) === currentPage
+            ? 'w-10 h-10 rounded-full bg-primary text-on-primary font-bold text-sm shadow-md'
+            : 'w-10 h-10 rounded-full hover:bg-surface-container-highest text-on-surface-variant font-bold text-sm transition-all'">
+          {{ i + 1 }}
+        </button>
+
+        <button
+          (click)="goToPage(currentPage + 1)"
+          [disabled]="currentPage === totalPages"
+          class="p-2 rounded-full hover:bg-surface-container-highest disabled:opacity-30 transition-all text-on-surface">
+          <span class="material-symbols-outlined">chevron_right</span>
+        </button>
+
+      </div>
+    }
+  </main>
+</div>
+
+<!-- Mobile Nav -->
+<nav class="md:hidden fixed bottom-0 start-0 w-full flex justify-around items-center px-4 pb-6 pt-2 bg-white/80 backdrop-blur-xl z-50 rounded-t-[24px] shadow-[0_-8px_32px_rgba(125,184,165,0.12)]">
+  <a routerLink="/student/courses" class="flex flex-col items-center text-slate-500 p-3">
+    <span class="material-symbols-outlined mb-1">book</span>
+    <span class="text-[10px] uppercase tracking-tighter">Courses</span>
+  </a>
+  <a routerLink="/student/live-sessions" class="flex flex-col items-center text-slate-500 p-3">
+    <span class="material-symbols-outlined mb-1">videocam</span>
+    <span class="text-[10px] uppercase tracking-tighter">Live</span>
+  </a>
+  <!-- Active -->
+  <a routerLink="/student/quizzes" class="flex flex-col items-center bg-primary/10 text-primary rounded-2xl p-3">
+    <span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">quiz</span>
+    <span class="text-[10px] uppercase tracking-tighter font-bold">Quizzes</span>
+  </a>
+  <a routerLink="/student/quiz-history" class="flex flex-col items-center text-slate-500 p-3">
+    <span class="material-symbols-outlined mb-1">history</span>
+    <span class="text-[10px] uppercase tracking-tighter">History</span>
+  </a>
+</nav>
+</div>

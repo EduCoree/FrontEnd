@@ -1363,6 +1363,8 @@
   "portal": "Student Portal",
   "dashboard": "Dashboard",
   "myCourses": "My Courses",
+  "myQuizzes":"My Quizzes",
+  "QuizHistory":"Quiz History",
   "liveSessions": "Live Sessions",
   "certificates": "Certificates",
   "messages": "Messages",
