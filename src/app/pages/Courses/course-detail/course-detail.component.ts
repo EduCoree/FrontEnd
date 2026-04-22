@@ -72,8 +72,6 @@ export class CourseDetailComponent implements OnInit {
 closeEnrollmentModal(): void {
   this.showEnrollmentModal = false;
 }
-}
-
   goToLesson(lessonId: number, type: string): void {
     if (!this.course) return;
     
@@ -88,3 +86,7 @@ closeEnrollmentModal(): void {
     }
   }
 }
+
+
+
+  

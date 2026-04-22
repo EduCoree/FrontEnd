@@ -40,7 +40,7 @@ import { StudentDashboardComponent } from './pages/student/student-dashboard/stu
 import { AdminCoursesComponent } from './pages/admin-courses/admin-courses';
 import { authGuard } from './core/guards/auth-guard';
 import { roleGuard } from './core/guards/role-guard';
-import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard';
+// import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard';
 import { TeacherDashboardComponent } from './pages/teacher-dashboard/teacher-dashboard';
 import { MyCoursesComponent } from './pages/student/my-courses/my-courses.component';
 import { PaymentFailedComponent } from './pages/enroll&payment/payment-failed/payment-failed.component';
@@ -124,7 +124,7 @@ export const routes: Routes = [
     title: 'Courses — Admin',
   },
  //Dashboard !!!! do not add guard yet
-{ path: 'admin/dashboard', component: AdminDashboardComponent  },
+// { path: 'admin/dashboard', component: AdminDashboardComponent  },
  
 { path: 'teacher/dashboard/2', component: TeacherDashboardComponent  },
  
