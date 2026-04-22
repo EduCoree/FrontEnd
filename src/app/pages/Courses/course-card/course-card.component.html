@@ -1,8 +1,8 @@
-<article 
+<!-- <article 
   class="group bg-surface-container-lowest rounded-2xl overflow-hidden transition-transform hover:-translate-y-2 duration-300 cursor-pointer"
   [routerLink]="['/courses', course.id]">
 
-  <!-- Cover Image -->
+
   <div class="relative h-48">
     <img
       class="w-full h-full object-cover"
@@ -14,21 +14,21 @@
     </span>
   </div>
 
-  <!-- Content -->
+ 
   <div class="p-6">
 
-    <!-- Teacher -->
+  
     <div class="flex items-center gap-2 mb-4">
       <span class="material-symbols-outlined text-sm text-on-surface-variant">person</span>
       <span class="text-xs font-semibold text-on-surface-variant">{{ course.teacherName }}</span>
     </div>
 
-    <!-- Title -->
+
     <h3 class="font-headline font-bold text-lg mb-3 group-hover:text-primary transition-colors line-clamp-2">
       {{ course.title }}
     </h3>
 
-    <!-- Lessons + Students -->
+  
     <div class="flex items-center justify-between text-xs text-on-surface-variant mb-6">
       <div class="flex items-center gap-1">
         <span class="material-symbols-outlined text-[16px]">group</span>
@@ -40,7 +40,7 @@
       </div>
     </div>
 
-    <!-- Price + Cart -->
+   
     <div class="flex items-center justify-between pt-4 border-t border-outline-variant/20">
       <div class="flex items-baseline gap-2">
         <span class="text-xl font-bold text-primary">
@@ -55,4 +55,161 @@
     </div>
 
   </div>
+</article> -->
+
+
+<article
+  class="group relative rounded-[30px] overflow-hidden cursor-pointer
+         p-[1.2px]
+         bg-gradient-to-br from-primary/70 via-white to-secondary/70
+         shadow-[0_10px_35px_rgba(15,23,42,0.10)]
+         hover:shadow-[0_22px_55px_rgba(46,104,88,0.18)]
+         hover:-translate-y-1.5
+         transition-all duration-500 ease-out"
+  [routerLink]="['/courses', course.id]">
+
+  <!-- real gradient border inner shell -->
+  <div class="relative rounded-[29px] overflow-hidden
+              bg-white/75 backdrop-blur-xl
+              border border-white/60
+              flex flex-col h-full isolate">
+
+    <!-- soft glass overlay -->
+    <div class="absolute inset-0 bg-gradient-to-br from-white/50 via-white/20 to-transparent pointer-events-none"></div>
+
+    <!-- shine -->
+    <div class="absolute inset-0 pointer-events-none overflow-hidden">
+      <div class="absolute top-0 -left-[120%] w-[70%] h-full
+                  bg-gradient-to-r from-transparent via-white/35 to-transparent
+                  skew-x-[-18deg]
+                  group-hover:left-[135%]
+                  transition-all duration-1000">
+      </div>
+    </div>
+
+    <!-- Cover Image -->
+    <div class="relative h-52 overflow-hidden flex-shrink-0">
+      <img
+        class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+        [src]="course.coverImage || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600'"
+        [alt]="course.title"
+      />
+
+      <div class="absolute inset-0 bg-gradient-to-t from-black/35 via-black/5 to-transparent"></div>
+
+      <!-- category badge -->
+      <span class="absolute top-4 left-4 inline-flex items-center 
+                   bg-white/70 backdrop-blur-xl
+                   px-3.5 py-1.5 rounded-full
+                   text-[11px] font-semibold text-on-surface
+                   border border-white/80
+                   shadow-[0_4px_16px_rgba(15,23,42,0.08)]">
+        <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+        {{ course.categoryName }}
+      </span>
+
+      <!-- floating price -->
+      <div class="absolute bottom-4 right-4 px-3.5 py-2 rounded-full
+                  bg-white/72 backdrop-blur-xl
+                  border border-white/80
+                  shadow-[0_4px_18px_rgba(15,23,42,0.10)]
+                  text-on-surface font-semibold text-sm
+                  group-hover:scale-105 transition-all duration-300">
+        {{ course.pricingType === 'Free' ? ('courseCard.free' | translate) : '$' + course.price }}
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="relative p-5 md:p-6 flex flex-col flex-1">
+
+      <!-- teacher -->
+      <div class="flex items-center gap-2.5 mb-2">
+        <div class="w-8 h-8 rounded-full
+                    bg-white/65 backdrop-blur-lg
+                    border border-white/80
+                    shadow-[0_2px_10px_rgba(15,23,42,0.06)]
+                    flex items-center justify-center">
+          <span class="material-symbols-outlined text-[16px] text-primary">person</span>
+        </div>
+        <span class="text-sm font-medium text-on-surface-variant truncate">
+          {{ course.teacherName }}
+        </span>
+      </div>
+
+      <!-- title -->
+      <h3 class="font-headline font-bold text-lg
+                 text-on-surface leading-snug min-h-[3.2rem] line-clamp-2 pt-1 pb-1
+                 transition-colors duration-300 group-hover:text-primary">
+        {{ course.title }}
+      </h3>
+
+      <!-- stats -->
+      <div class="grid grid-cols-2 gap-3 mb-2">
+        <div class="flex items-center gap-2.5 rounded-2xl
+                    bg-white/55 backdrop-blur-lg
+                    border border-white/70
+                    shadow-[0_4px_14px_rgba(15,23,42,0.05)]
+                    hover:bg-white/72
+                    transition-all duration-300
+                    px-3 py-2">
+          <span class="material-symbols-outlined text-[18px] text-primary">group</span>
+          <div class="flex flex-col leading-none">
+            <span class="text-xs text-on-surface-variant">
+              {{ 'courseCard.students' | translate }}
+            </span>
+            <span class="text-sm font-semibold text-on-surface">
+              {{ course.totalStudents }}
+            </span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2.5 rounded-2xl
+                    bg-white/55 backdrop-blur-lg
+                    border border-white/70
+                    shadow-[0_4px_14px_rgba(15,23,42,0.05)]
+                    hover:bg-white/72
+                    transition-all duration-300
+                    px-3 py-2">
+          <span class="material-symbols-outlined text-[18px] text-primary">menu_book</span>
+          <div class="flex flex-col leading-none">
+            <span class="text-xs text-on-surface-variant">
+              {{ 'courseCard.lessons' | translate }}
+            </span>
+            <span class="text-sm font-semibold text-on-surface">
+              {{ course.totalLessons }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- footer -->
+      <div class="flex items-center justify-between pt-2 mt-auto border-t border-white/60">
+        <div class="flex flex-col">
+       
+          <span class="text-2xl font-bold text-on-surface leading-none">
+            {{ course.pricingType === 'Free' ? ('courseCard.free' | translate) : '$' + course.price }}
+          </span>
+        </div>
+
+        <button
+          class="group/btn relative overflow-hidden
+                 p-2 rounded-2xl
+                 bg-white/72 backdrop-blur-xl
+                 border border-white/85
+                 text-primary
+                 shadow-[0_6px_18px_rgba(15,23,42,0.08)]
+                 hover:bg-white hover:scale-105 active:scale-95
+                 transition-all duration-300"
+          (click)="$event.stopPropagation()">
+
+          <span class="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"></span>
+
+          <span class="material-symbols-outlined text-[20px] relative z-10 transition-transform duration-300 group-hover/btn:scale-110">
+            shopping_cart
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
 </article>
+
