@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CourseDetailDto } from '../../../core/models/course';
 import { PublicCourseService } from '../../../core/services/public-course.service';
+import { EnrollmentModalComponent } from "../../enroll&payment/enrollment-modal/enrollment-modal.component";
 
 @Component({
   selector: 'app-course-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, EnrollmentModalComponent],
   templateUrl: './course-detail.component.html',
 })
 export class CourseDetailComponent implements OnInit {
@@ -15,7 +16,7 @@ export class CourseDetailComponent implements OnInit {
   course: CourseDetailDto | null = null;
   isLoading = false;
   openSectionId: number | null = null;
-
+  showEnrollmentModal = false;
   constructor(
     private route: ActivatedRoute,
     private publicCourseService: PublicCourseService,
@@ -62,4 +63,11 @@ export class CourseDetailComponent implements OnInit {
       default: return 'article';
     }
   }
+  openEnrollmentModal(): void {
+  this.showEnrollmentModal = true;
+}
+
+closeEnrollmentModal(): void {
+  this.showEnrollmentModal = false;
+}
 }

@@ -5,7 +5,7 @@ import { AuthService } from '../services/auth';
 export const authInterceptor2: HttpInterceptorFn = (req, next) => {
   const token = inject(AuthService).getToken();
 
-  // Public endpoints - مش محتاجة token
+  // Public endpoints token
   const publicUrls = ['/api/auth'];
   const isPublic = publicUrls.some(url => req.url.includes(url));
   if (isPublic) return next(req);

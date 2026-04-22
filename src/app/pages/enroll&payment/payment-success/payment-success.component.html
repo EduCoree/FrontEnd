@@ -1,0 +1,83 @@
+<main class="min-h-screen bg-surface flex flex-col items-center justify-center px-6 py-20">
+  <!-- Icon -->
+  <div class="w-24 h-24 rounded-full bg-primary-container flex items-center justify-center mb-8">
+    <span *ngIf="!isPaymentFromCard" class="material-symbols-outlined fill-1 text-5xl text-primary"
+      >check_circle</span
+    >
+    <span
+      *ngIf="isPaymentFromCard"
+      class="material-symbols-outlined animate-spin text-5xl text-primary"
+      >progress_activity</span
+    >
+  </div>
+
+  <!-- Text -->
+  <h1 class="text-4xl md:text-5xl font-extrabold text-on-surface tracking-tight text-center mb-4">
+    {{ isPaymentFromCard ? 'Processing...' : 'Enrollment Successful!' }}
+  </h1>
+  <p class="text-lg text-on-surface-variant text-center max-w-md mb-12 leading-relaxed">
+    <span *ngIf="!isPaymentFromCard"
+      >Welcome to <span class="text-primary font-bold">{{ courseTitle }}</span
+      >. Your learning journey begins now.</span
+    >
+    <span *ngIf="isPaymentFromCard">Redirecting to your courses...</span>
+  </p>
+
+  <!-- Bento -->
+  <div
+    *ngIf="!isPaymentFromCard"
+    class="w-full max-w-3xl grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"
+  >
+    <div
+      class="bg-surface-container-low p-6 rounded-xl flex flex-col items-center text-center gap-3"
+    >
+      <span class="material-symbols-outlined text-primary text-3xl">mail</span>
+      <p class="text-sm text-on-surface-variant">
+        Check your email for the enrollment confirmation.
+      </p>
+    </div>
+    <div
+      class="bg-surface-container-low p-6 rounded-xl flex flex-col items-center text-center gap-3"
+    >
+      <span class="material-symbols-outlined text-primary text-3xl">group</span>
+      <p class="text-sm text-on-surface-variant">
+        Join the community and connect with other students.
+      </p>
+    </div>
+    <div
+      class="bg-surface-container-low p-6 rounded-xl flex flex-col items-center text-center gap-3"
+    >
+      <span class="material-symbols-outlined text-primary text-3xl">event</span>
+      <p class="text-sm text-on-surface-variant">Add the first live session to your calendar.</p>
+    </div>
+  </div>
+
+  <!-- Quote -->
+  <div
+    *ngIf="!isPaymentFromCard"
+    class="w-full max-w-3xl bg-secondary-container/30 p-8 rounded-xl mb-12 relative overflow-hidden"
+  >
+    <span class="absolute -top-4 -left-2 text-8xl text-secondary/10 font-serif">"</span>
+    <p class="text-on-secondary-container italic leading-relaxed relative z-10">
+      "Education is not the filling of a vessel, but the kindling of a flame."
+    </p>
+    <p class="text-xs font-bold text-on-secondary-container/60 mt-3">— Socrates</p>
+  </div>
+
+  <!-- CTA -->
+  <div *ngIf="!isPaymentFromCard" class="text-center">
+    <!-- Countdown for FREE -->
+    <div *ngIf="isFreeEnrollment && showAutoRedirectMessage" class="mb-8">
+      <p class="text-sm text-on-surface-variant mb-2">Redirecting in:</p>
+      <p class="text-4xl font-bold text-primary">{{ countdownSeconds }}</p>
+    </div>
+
+    <button
+      (click)="goToMyCourses()"
+      class="px-10 py-4 bg-primary text-on-primary rounded-full font-bold text-lg hover:bg-primary-dim transition-all flex items-center gap-2"
+    >
+      Go to My Courses
+      <span class="material-symbols-outlined">arrow_forward</span>
+    </button>
+  </div>
+</main>
