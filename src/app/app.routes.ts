@@ -43,6 +43,9 @@ import { roleGuard } from './core/guards/role-guard';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard';
 import { TeacherDashboardComponent } from './pages/teacher-dashboard/teacher-dashboard';
 import { MyCoursesComponent } from './pages/student/my-courses/my-courses.component';
+import { PaymentFailedComponent } from './pages/enroll&payment/payment-failed/payment-failed.component';
+import { PaymentSuccessComponent } from './pages/enroll&payment/payment-success/payment-success.component';
+// import { EnrollmentPageComponent } from './pages/enroll&payment/enrollment-page/enrollment-page.component';
 import { Notification } from './pages/notification/notification';
 import { ErrorPageComponent } from './pages/error-page/error-page';
 import { AvailableQuizzes } from './pages/Quizzes/available-quizzes/available-quizzes';
@@ -354,7 +357,8 @@ export const routes: Routes = [
     import('./pages/teacher/course-pricing/course-pricing.component')
       .then(m => m.CoursePricingComponent)
 },
-
+{ path: 'payment/success', component: PaymentSuccessComponent },
+{ path: 'payment/failed',  component: PaymentFailedComponent },
 
 
 
