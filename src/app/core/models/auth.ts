@@ -1,4 +1,5 @@
 
+
 export interface LoginDto {
   email: string;
   password: string;
@@ -10,6 +11,11 @@ export interface RegisterDto {
   email: string;
   phoneNumber?: string;
   password: string;
+}
+export interface RegisterResponseDto {
+  email: string;
+  message: string;
+  requiresVerification: boolean;
 }
 
 export interface RefreshTokenDto {
@@ -27,17 +33,32 @@ export interface UserDto {
 export interface VerifyOtpDto {
   email: string;
   otp: string;
+  purpose:OtpPurpose
 }
 
 export interface ResetPasswordDto {
   email: string;
-  otp: string;
+  resetToken: string;
   newPassword: string;
+  confirmPassword:string
 }
 
 export interface EmailConfirmationDto {
   userId: string;
   token: string;
 }
-
-export type OtpPurpose = 'EmailConfirmation' | 'PasswordReset';
+export interface ResendEmailDto {
+  email: string;
+}
+export interface SendOtpDto {
+  email: string;
+  purpose:OtpPurpose
+}
+export interface VerifyOtpResponseDto
+  { 
+     message:string,
+     resetToken?:string,
+     expiresInSeconds?:number,
+     confirmedEmail?:string
+  }
+export type OtpPurpose = 'Email' | 'Password';

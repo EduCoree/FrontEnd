@@ -55,6 +55,9 @@
 
           {{ 'confirmEmail.pending.resend' | translate }}
         </button>
+         @if (errorMessage()) {
+          <p class="text-sm text-red-500 mt-4">{{ errorMessage() }}</p>
+        }
       }
 
       <!-- Success -->
@@ -89,7 +92,7 @@
         </h2>
 
         <p class="text-sm text-[#707975] mb-8">
-          {{ 'confirmEmail.error.subtitle' | translate }}
+          {{ errorMessage() || ('confirmEmail.error.subtitle' | translate) }}
         </p>
 
         @if (email()) {

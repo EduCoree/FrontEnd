@@ -1,3 +1,4 @@
+import { SendOtpDto, VerifyOtpResponseDto} from './../models/auth';
 // src/app/core/services/auth.service.ts
 
 import { Injectable, inject, signal } from '@angular/core';
@@ -7,9 +8,11 @@ import { environment } from '../../../environments/environment';
 import {
   LoginDto, RegisterDto, UserDto,
   RefreshTokenDto, VerifyOtpDto,
-  ResetPasswordDto, EmailConfirmationDto, OtpPurpose
+  ResetPasswordDto, EmailConfirmationDto, OtpPurpose,
+  ResendEmailDto
 } from '../models/auth';
 import { NotificationService } from './notification.service';
+import { json } from 'stream/consumers';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -50,26 +53,18 @@ export class AuthService {
   }
 
   // ── Email Confirmation ────────────────────────────────────────────────────
-  sendConfirmation(email: string) {
-    return this.http.post<string>(`${this.base}/send-confirmation`, JSON.stringify(email), {
-      headers: { 'Content-Type': 'application/json' }
-    });
-  }
-
-  confirmEmail(dto: EmailConfirmationDto) {
-    const params = new HttpParams().set('userId', dto.userId).set('token', dto.token);
-    return this.http.get<string>(`${this.base}/confirm-email`, { params });
+  ResendConfirmation(dto:ResendEmailDto) {
+    return this.http.post<string>(`${this.base}/resend-confirmation`,dto)
   }
 
   // ── OTP / Password Reset ──────────────────────────────────────────────────
-  sendOtp(email: string, purpose: OtpPurpose) {
-    const params = new HttpParams().set('email', email).set('purpose', purpose);
-    return this.http.post<boolean>(`${this.base}/send-otp`, {}, { params });
+  sendOtp(dto:SendOtpDto) {
+    return this.http.post<boolean>(`${this.base}/send-otp`,dto);
   }
 
-  verifyOtp(dto: VerifyOtpDto, purpose: OtpPurpose) {
-    const params = new HttpParams().set('purpose', purpose);
-    return this.http.post<boolean>(`${this.base}/verify-otp`, dto, { params });
+  verifyOtp(dto:VerifyOtpDto) {
+
+    return this.http.post<VerifyOtpResponseDto>(`${this.base}/verify-otp`, dto);
   }
 
   resetPassword(dto: ResetPasswordDto) {
