@@ -22,6 +22,9 @@ export class LoginComponent {
   errorMsg   = signal('');
   showPass   = signal(false);
 
+  notVerified  = signal(false);
+pendingEmail = signal('');
+
   form: FormGroup = this.fb.group({
     email:    ['', [Validators.required, Validators.email]],
     password: ['', Validators.required],
@@ -50,9 +53,18 @@ submit() {
     error: (err: HttpErrorResponse) => {
       if (err.status === 0) {
         this.errorMsg.set('Cannot reach the server. Please check your connection.');
-      } else if (err.status === 401 || err.status === 400) {
-        this.errorMsg.set('Invalid email or password.');
-      } else if (err.status === 403) {
+      }
+        else if(err.status===401 && err.error?.title==='Email.NotConfirmed')
+        {
+          this.pendingEmail.set(this.form.value.email);
+          this.notVerified.set(true);  
+         this.errorMsg.set('Please verify your email before logging in.');
+      }
+      else if (err.status === 401 || err.status === 400) {
+        this.errorMsg.set('Invalid email or password.'); 
+      }
+    
+       else if (err.status === 403) {
         this.errorMsg.set('Your account has been deactivated.');
       } else {
         this.errorMsg.set(err.error?.message || 'Something went wrong. Please try again.');
@@ -61,4 +73,14 @@ submit() {
     },
   });
 }
+goToVerification() {
+  this.router.navigate(['/confirm-email'], {
+    queryParams: { email: this.pendingEmail() }
+  });
+}
+backToLogin() {
+  this.notVerified.set(false);
+  this.pendingEmail.set('');
+}
+
 }
