@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Route, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { forkJoin, Observable } from 'rxjs';
@@ -10,6 +10,7 @@ import { DeleteQuestionModalComponent } from "../delete-question/delete-question
 import { QuestionService } from '../../../core/services/question.service';
 import { AnsweroptionService } from '../../../core/services/answeroption.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { QuizService } from '../../../core/services/quiz.service';
 
 
 interface EditingQuestion {
@@ -29,15 +30,18 @@ export class QuizBuilderComponent implements OnInit {
   quizId!: number;
   quiz: QuizDetailsDto | null = null;
   loading = true;
-  error: string | null = null;
+  successMsg = signal('');
+  errorMsg = signal('');
   editingQuestion: EditingQuestion | null = null;
   saving = false;
-
+  isPublishing = false;
   addingQuestion = false;
-
   questionToDelete: QuestionDto | null = null;
-
   addingQuestionError: string | null = null;
+
+
+  currentPage = signal(1);
+pageSize = 5;
 
   newQuestionText = '';
   newQuestionType = 'MCQ';
@@ -50,6 +54,7 @@ export class QuizBuilderComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private questionservice: QuestionService,
+    private quizService:QuizService,
     private answeroptionservice:AnsweroptionService,
     private cdr: ChangeDetectorRef,
     private router:Router
@@ -63,7 +68,6 @@ export class QuizBuilderComponent implements OnInit {
 
   loadQuizQuestions(): void {
     this.loading = true;
-    this.error = null;
     this.questionservice.getQuizQuestions(this.quizId).subscribe({
       next: (res) => {
         this.quiz = res.data;
@@ -71,9 +75,23 @@ export class QuizBuilderComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        this.error = err.error?.message || err.message || 'Failed to load quiz questions';
+        this.flash("error",err.error?.message || err.message || 'Failed to load quiz questions');
         this.loading = false;
         this.cdr.detectChanges();
+      }
+    });
+  }
+  onPublish() {
+    this.isPublishing = true;
+    this.quizService.publishQuiz(this.quizId).subscribe({
+      next: (res) => {
+        this.quiz!.isPublished = true; 
+        this.isPublishing = false;
+        this.flash("success","Quiz published successfully! Students can now see it.");
+      },
+      error: (err) => {
+        this.isPublishing = false;
+        this.flash("error",err.error?.message || 'Failed to publish quiz.');
       }
     });
   }
@@ -142,7 +160,7 @@ export class QuizBuilderComponent implements OnInit {
               this.loadQuizQuestions();
             },
             error: (err) => {
-              this.error = err.error?.message || err.message || 'Failed to update answer options';
+              this.flash("error",err.error?.message || err.message || 'Failed to update answer options');
               this.saving = false;
               this.cdr.detectChanges();
             }
@@ -154,7 +172,7 @@ export class QuizBuilderComponent implements OnInit {
         }
       },
       error: (err) => {
-        this.error = err.error?.message || err.message || 'Failed to update question';
+        this.flash("error",err.error?.message || err.message || 'Failed to update question');
         this.saving = false;
         this.cdr.detectChanges();
       }
@@ -314,4 +332,31 @@ export class QuizBuilderComponent implements OnInit {
  
 
   }
+
+   private flash(type: 'success' | 'error', msg: string): void {
+    if (type === 'success') {
+      this.successMsg.set(msg);
+      this.errorMsg.set('');
+      setTimeout(() => this.successMsg.set(''), 3500);
+    } else {
+      this.errorMsg.set(msg);
+      this.successMsg.set('');
+      setTimeout(() => this.errorMsg.set(''), 3500);
+    }
+  }
+  get paginatedQuestions(): QuestionDto[] {
+  if (!this.quiz?.questions) return [];
+  
+  const startIndex = (this.currentPage() - 1) * this.pageSize;
+  return this.quiz.questions.slice(startIndex, startIndex + this.pageSize);
+}
+
+get totalPages(): number {
+  return Math.ceil((this.quiz?.questions.length || 0) / this.pageSize);
+}
+
+goToPage(page: number): void {
+  this.currentPage.set(page);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 }
