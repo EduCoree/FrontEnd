@@ -177,13 +177,11 @@ export class EditCourseComponent implements OnInit {
     });
   }
 
-  // فتح فورم التعديل
   startEdit(section: SectionDto): void {
     this.editingSection = section;
     this.editForm.patchValue({ title: section.title });
   }
 
-  // حفظ التعديل
  saveEdit(): void {
   if (this.editForm.invalid || !this.editingSection) return;
   this.courseService.updateSection(
@@ -200,7 +198,6 @@ export class EditCourseComponent implements OnInit {
   });
 }
 
-  // إلغاء التعديل
   cancelEdit(): void {
     this.editingSection = null;
   }
@@ -212,7 +209,6 @@ export class EditCourseComponent implements OnInit {
     });
   }
 
-  // تحريك السيكشن لفوق
   moveUp(index: number): void {
     if (index === 0) return;
     const items = [...this.sections()];
@@ -221,7 +217,6 @@ export class EditCourseComponent implements OnInit {
     this.saveOrder();
   }
 
-  // تحريك السيكشن لتحت
   moveDown(index: number): void {
     if (index === this.sections().length - 1) return;
     const items = [...this.sections()];
@@ -230,7 +225,6 @@ export class EditCourseComponent implements OnInit {
     this.saveOrder();
   }
 
-  // حفظ الترتيب
  saveOrder(): void {
   const items: ReorderItemDto[] = this.sections().map((s, i) => ({
     id: s.id,

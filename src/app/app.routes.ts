@@ -40,9 +40,12 @@ import { StudentDashboardComponent } from './pages/student/student-dashboard/stu
 import { AdminCoursesComponent } from './pages/admin-courses/admin-courses';
 import { authGuard } from './core/guards/auth-guard';
 import { roleGuard } from './core/guards/role-guard';
-import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard';
+// import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard';
 import { TeacherDashboardComponent } from './pages/teacher-dashboard/teacher-dashboard';
 import { MyCoursesComponent } from './pages/student/my-courses/my-courses.component';
+import { PaymentFailedComponent } from './pages/enroll&payment/payment-failed/payment-failed.component';
+import { PaymentSuccessComponent } from './pages/enroll&payment/payment-success/payment-success.component';
+// import { EnrollmentPageComponent } from './pages/enroll&payment/enrollment-page/enrollment-page.component';
 import { Notification } from './pages/notification/notification';
 import { ErrorPageComponent } from './pages/error-page/error-page';
 import { AvailableQuizzes } from './pages/Quizzes/available-quizzes/available-quizzes';
@@ -120,6 +123,14 @@ export const routes: Routes = [
     canActivate: [adminGuard],
     title: 'Courses — Admin',
   },
+ //Dashboard !!!! do not add guard yet
+// { path: 'admin/dashboard', component: AdminDashboardComponent  },
+ 
+{ path: 'teacher/dashboard/2', component: TeacherDashboardComponent  },
+ 
+// { path: 'student/dashboard/2', component: StudentDashboardComponent },
+ 
+    
   {
     path: 'centers/:id',
     loadComponent: () =>
@@ -429,7 +440,8 @@ export const routes: Routes = [
     import('./pages/teacher/course-pricing/course-pricing.component')
       .then(m => m.CoursePricingComponent)
 },
-
+{ path: 'payment/success', component: PaymentSuccessComponent },
+{ path: 'payment/failed',  component: PaymentFailedComponent },
 
 
 

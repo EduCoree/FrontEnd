@@ -25,7 +25,7 @@ export class Navbar {
   user = inject(UserService);
   notification= inject(NotificationService)
   private router = inject(Router);
-  private langService = inject(LanguageService);
+   langService = inject(LanguageService);
 
   unreadcount$=this.notification.unreadCount$;   // loaded from loggin in
   isMarkingRead=false

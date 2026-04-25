@@ -1,212 +1,818 @@
-<main class=" bg-surface font-body text-on-surface">
+<main class="bg-surface font-body text-on-surface overflow-x-clip">
 
-  <section class="relative px-8 pt-24 pb-32 overflow-hidden max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+  <!-- ═══ HERO ═══ -->
+ <!-- <section class="relative px-6 md:px-12 pt-24 pb-32 max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
     <div class="z-10">
-      <span class="inline-block px-4 py-1.5 rounded-full bg-primary-fixed text-on-primary-fixed-variant text-xs font-bold uppercase tracking-widest mb-6">
+      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full
+                   bg-primary/10 border border-primary/25
+                   text-primary text-xs font-bold uppercase tracking-widest mb-6">
+        <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
         {{ 'home.badge' | translate }}
       </span>
-
-      <h1 class="font-headline text-5xl md:text-6xl lg:text-7xl font-extrabold text-on-surface leading-[1.1] mb-8 tracking-tight">
+      <h1 class="font-headline text-5xl md:text-6xl lg:text-7xl font-extrabold
+                 text-on-surface leading-[1.08] mb-8 tracking-tight">
         {{ 'home.hero_title' | translate }}
-        <span class="text-primary">{{ 'home.hero_highlight' | translate }}</span>
+        <span class="text-primary bg-gradient-to-r from-primary to-secondary
+                     bg-clip-text text-transparent">
+          {{ 'home.hero_highlight' | translate }}
+        </span>
       </h1>
-
       <p class="text-lg text-on-surface-variant max-w-lg mb-10 leading-relaxed">
         {{ 'home.hero_desc' | translate }}
       </p>
-
       <div class="flex flex-wrap gap-4">
-        <button class="px-8 py-4 bg-gradient-to-br from-[#2e6858] to-[#7db8a5] text-white font-bold rounded-xl shadow-lg shadow-[#7db8a5]/20 flex items-center gap-2 group transition-all">
+        <button class="group px-8 py-4 bg-gradient-to-br from-primary to-secondary
+                       text-white font-bold rounded-2xl shadow-lg shadow-primary/30
+                       flex items-center gap-2 transition-all duration-300
+                       hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/40">
           {{ 'home.browse_courses' | translate }}
-          <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+          <span class="material-symbols-outlined transition-transform duration-200
+                       group-hover:translate-x-1">arrow_forward</span>
         </button>
-        <button class="px-8 py-4 bg-transparent border-2 border-outline-variant text-on-surface font-bold rounded-xl hover:bg-surface-container-high transition-colors">
+        <button class="px-8 py-4 bg-transparent border-2 border-outline-variant
+                       text-on-surface font-bold rounded-2xl flex items-center gap-2
+                       transition-all duration-300 hover:bg-surface-container-high hover:border-primary">
+          <span class="material-symbols-outlined text-lg">school</span>
           {{ 'home.join_teacher' | translate }}
         </button>
       </div>
     </div>
 
     <div class="relative min-h-[500px] flex items-center justify-center">
-      <div class="absolute inset-0 bg-primary-container/10 rounded-[3rem] rotate-3 -z-10"></div>
-      <div class="absolute inset-0 bg-secondary-container/20 rounded-[3rem] -rotate-3 -z-10"></div>
-      <div class="relative w-full h-[450px] rounded-3xl overflow-hidden shadow-2xl">
-        <img class="w-full h-full object-cover"
+      <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+        <div class="w-[185%] h-[100%] bg-primary/15
+                    rounded-[28%_32%_24%_30%/18%_22%_26%_24%]
+                    rotate-[-6deg] translate-x-[-1%] translate-y-[2%]"></div>
+      </div>
+      <div class="relative w-full max-w-[700px] h-[430px] md:h-[460px]
+                  rounded-[2.8rem] overflow-hidden shadow-2xl shadow-primary/15 z-10">
+        <img class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
              src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1400&auto=format&fit=crop"
              alt="students" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none"></div>
       </div>
-
-      <div class="absolute -top-8 -right-4 md:-right-8 bg-surface-container-lowest p-5 rounded-2xl shadow-xl animate-bounce-slow max-w-[220px]">
+      <div class="absolute top-2 right-0 md:-right-6 bg-white p-4 rounded-2xl
+                  shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-outline-variant/20
+                  max-w-[210px] animate-floatA z-20">
         <div class="flex items-center gap-3 mb-3">
-          <div class="w-10 h-10 rounded-full bg-primary-container/20 flex items-center justify-center">
-            <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+          <div class="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-primary text-lg"
+                  style="font-variation-settings:'FILL' 1">star</span>
           </div>
           <div>
-            <p class="text-sm font-bold">{{ 'home.top_rated' | translate }}</p>
-            <p class="text-[10px] text-on-surface-variant">{{ 'home.avg_rating' | translate }}</p>
+            <p class="text-sm font-bold text-on-surface leading-tight">{{ 'home.top_rated' | translate }}</p>
+            <p class="text-[10px] text-on-surface-variant leading-tight">{{ 'home.avg_rating' | translate }}</p>
+            <div class="flex gap-0.5 mt-1"><span class="text-amber-400 text-xs">★★★★★</span></div>
           </div>
         </div>
         <div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
-          <div class="h-full bg-primary w-4/5"></div>
+          <div class="h-full bg-gradient-to-r from-primary to-secondary w-4/5 rounded-full"></div>
         </div>
       </div>
-
-      <div class="absolute -bottom-6 -left-2 md:-left-12 bg-surface-container-lowest p-4 rounded-2xl shadow-xl max-w-[200px]">
+      <div class="absolute bottom-2 left-0 md:-left-6 bg-white p-4 rounded-2xl
+                  shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-outline-variant/20
+                  animate-floatB z-20">
         <div class="flex items-center gap-3">
-          <img class="w-12 h-12 rounded-full object-cover"
-               src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400&auto=format&fit=crop"
-               alt="teacher" />
+          <div class="flex flex-shrink-0" style="direction:ltr">
+            <img class="w-9 h-9 rounded-full object-cover ring-2 ring-white"
+                 style="z-index:3;position:relative"
+                 src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100" />
+            <img class="w-9 h-9 rounded-full object-cover ring-2 ring-white -ml-2"
+                 style="z-index:2;position:relative"
+                 src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100" />
+            <div class="w-9 h-9 rounded-full ring-2 ring-white -ml-2 bg-primary
+                        flex items-center justify-center text-white text-[9px] font-bold"
+                 style="z-index:1;position:relative">+50</div>
+          </div>
           <div>
-            <p class="text-sm font-bold">{{ 'home.join' | translate }}</p>
+            <p class="text-sm font-bold text-on-surface">{{ 'home.join' | translate }}</p>
             <p class="text-xs text-primary font-semibold">$49.00</p>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </section>  -->
 
 
-  <section class="bg-surface-container-low py-12 px-8">
-    <div class="max-w-7xl mx-auto flex flex-wrap justify-between gap-8 md:gap-4">
-      <div class="flex-1 min-w-[150px] text-center lg:border-r border-outline-variant/30">
-        <p class="text-3xl font-extrabold text-primary font-headline">500+</p>
-        <p class="text-sm text-on-surface-variant font-medium mt-1">{{ 'home.stat_courses' | translate }}</p>
-      </div>
-      <div class="flex-1 min-w-[150px] text-center lg:border-r border-outline-variant/30">
-        <p class="text-3xl font-extrabold text-primary font-headline">50+</p>
-        <p class="text-sm text-on-surface-variant font-medium mt-1">{{ 'home.stat_centers' | translate }}</p>
-      </div>
-      <div class="flex-1 min-w-[150px] text-center lg:border-r border-outline-variant/30">
-        <p class="text-3xl font-extrabold text-primary font-headline">10,000+</p>
-        <p class="text-sm text-on-surface-variant font-medium mt-1">{{ 'home.stat_students' | translate }}</p>
-      </div>
-      <div class="flex-1 min-w-[150px] text-center">
-        <p class="text-3xl font-extrabold text-primary font-headline">200+</p>
-        <p class="text-sm text-on-surface-variant font-medium mt-1">{{ 'home.stat_instructors' | translate }}</p>
-      </div>
-    </div>
-  </section>
 
- 
-  <section class="py-24 px-8 max-w-7xl mx-auto">
-    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-      <div>
-        <h2 class="font-headline text-4xl font-bold mb-4">{{ 'home.programs_title' | translate }}</h2>
-        <p class="text-on-surface-variant">{{ 'home.programs_desc' | translate }}</p>
-      </div>
-    </div>
 
-    <div *ngIf="isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-      <div *ngFor="let i of [1,2,3,4]" class="bg-surface-container-low rounded-2xl h-80 animate-pulse"></div>
-    </div>
 
-    <div *ngIf="!isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-      <app-course-card *ngFor="let course of courses" [course]="course"></app-course-card>
-    </div>
+  <!-- ═══ HERO ═══ -->
+<section class="relative flex overflow-hidden" style="margin-top: 64px; min-height: calc(100vh - 64px);">
 
-    <div class="mt-16 text-center">
-      <button routerLink="/courses"
-              class="px-8 py-4 bg-surface-container-low text-primary font-bold rounded-xl hover:bg-primary/5 transition-all">
-        {{ 'home.view_all' | translate }}
+  <div class="absolute inset-0 z-0">
+    <img src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?q=80&w=1800&auto=format&fit=crop"
+         alt="hero background"
+         class="w-full h-full object-cover object-top" />
+    <div class="absolute inset-0 bg-black/50"></div>
+    <div class="absolute inset-0 bg-gradient-to-l from-black/5 via-black/35 to-black/65"></div>
+  </div>
+
+  <div class="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 py-16
+              flex flex-col justify-between">
+
+    <!-- النص في الأعلى -->
+    <div class="max-w-2xl mt-8">
+      <h1 class="font-headline text-5xl md:text-6xl lg:text-7xl font-extrabold
+                 text-white leading-[1.08] mb-6 tracking-tight">
+        {{ 'home.hero_title' | translate }}
+        <span class="text-primary">{{ 'home.hero_highlight' | translate }}</span>
+      </h1>
+
+      <p class="text-white/70 text-base md:text-lg max-w-lg mb-10 leading-relaxed">
+        {{ 'home.hero_desc' | translate }}
+      </p>
+
+      <button class="group px-8 py-4 bg-primary text-white font-bold rounded-full
+                     shadow-lg shadow-primary/30 uppercase tracking-wider text-sm
+                     flex items-center gap-2 w-fit
+                     transition-all duration-300
+                     hover:bg-primary/90 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/40">
+        {{ 'home.browse_courses' | translate }}
       </button>
     </div>
-  </section>
+
+    <!-- spacer -->
+    <div class="flex-1"></div>
+
+    <!-- الـ stats ثابتة في الأسفل -->
+    <div class="flex flex-wrap items-center gap-0 border-t border-white/15 pt-8">
+
+      <div class="flex items-baseline gap-3 pe-8 me-8 border-e border-white/20">
+        <span class="font-headline text-4xl font-extrabold text-primary">10</span>
+        <div>
+          <p class="text-white font-bold text-base leading-tight">{{ 'home.stat_years_label' | translate }}</p>
+          <p class="text-white/50 text-xs">{{ 'home.stat_years_desc' | translate }}</p>
+        </div>
+      </div>
+
+      <div class="flex items-baseline gap-3 pe-8 me-8 border-e border-white/20">
+        <span class="font-headline text-4xl font-extrabold text-primary">96%</span>
+        <div>
+          <p class="text-white font-bold text-base leading-tight">{{ 'home.stat_recommended_label' | translate }}</p>
+          <p class="text-white/50 text-xs">{{ 'home.stat_recommended_desc' | translate }}</p>
+        </div>
+      </div>
+
+      <div class="flex items-baseline gap-3">
+        <span class="font-headline text-4xl font-extrabold text-primary">40K</span>
+        <div>
+          <p class="text-white font-bold text-base leading-tight">{{ 'home.stat_students_label' | translate }}</p>
+          <p class="text-white/50 text-xs">{{ 'home.stat_students_desc' | translate }}</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
 
 
-  <section class="px-8 mb-24 max-w-7xl mx-auto">
-    <div class="bg-primary p-12 lg:p-20 rounded-[2.5rem] relative overflow-hidden">
-      <div class="absolute top-0 right-0 w-1/3 h-full bg-white/5 skew-x-[-20deg] translate-x-20"></div>
+
+
+
+<!-- ═══ STATS ═══ -->
+<section class="bg-gradient-to-br from-primary via-primary to-secondary py-12 px-8">
+  <div class="max-w-7xl mx-auto flex flex-wrap justify-between gap-8 md:gap-4">
+    <div class="flex-1 min-w-[140px] text-center">
+      <p class="text-4xl font-extrabold text-white font-headline">500+</p>
+      <p class="text-sm text-white/70 font-medium mt-1">{{ 'home.stat_courses' | translate }}</p>
+    </div>
+    <div class="flex-1 min-w-[140px] text-center lg:border-x border-white/15">
+      <p class="text-4xl font-extrabold text-white font-headline">50+</p>
+      <p class="text-sm text-white/70 font-medium mt-1">{{ 'home.stat_centers' | translate }}</p>
+    </div>
+    <div class="flex-1 min-w-[140px] text-center lg:border-r border-white/15">
+      <p class="text-4xl font-extrabold text-white font-headline">10,000+</p>
+      <p class="text-sm text-white/70 font-medium mt-1">{{ 'home.stat_students' | translate }}</p>
+    </div>
+    <div class="flex-1 min-w-[140px] text-center">
+      <p class="text-4xl font-extrabold text-white font-headline">200+</p>
+      <p class="text-sm text-white/70 font-medium mt-1">{{ 'home.stat_instructors' | translate }}</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ WHY EDUCORE ═══ -->
+<section class="py-24 px-6 md:px-12">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16">
+      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full
+                   bg-primary/10 border border-primary/25
+                   text-primary text-xs font-bold uppercase tracking-widest mb-4">
+        <span class="w-2 h-2 rounded-full bg-primary"></span>
+        {{ 'home.why_badge' | translate }}
+      </span>
+      <h2 class="font-headline text-4xl md:text-5xl font-extrabold text-on-surface tracking-tight mb-4">
+        {{ 'home.why_title' | translate }}
+      </h2>
+      <p class="text-on-surface-variant text-lg max-w-xl mx-auto leading-relaxed">
+        {{ 'home.why_desc' | translate }}
+      </p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="group relative rounded-3xl overflow-hidden cursor-pointer shadow-lg
+                  hover:shadow-2xl hover:shadow-primary/15 hover:-translate-y-2 transition-all duration-300">
+        <div class="h-64 overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?q=80&w=800&auto=format&fit=crop"
+               alt="1-on-1 lessons"
+               class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+        </div>
+        <div class="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/60 via-black/20 to-transparent">
+          <span class="inline-block bg-white text-on-surface font-bold text-base px-4 py-2 rounded-xl shadow-sm">
+            {{ 'home.why_card1_title' | translate }}
+          </span>
+        </div>
+        <div class="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+      </div>
+      <div class="group relative rounded-3xl overflow-hidden cursor-pointer shadow-lg
+                  hover:shadow-2xl hover:shadow-primary/15 hover:-translate-y-2 transition-all duration-300">
+        <div class="h-64 overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=800&auto=format&fit=crop"
+               alt="Group Class"
+               class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+        </div>
+        <div class="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/60 via-black/20 to-transparent">
+          <span class="inline-block bg-white text-on-surface font-bold text-base px-4 py-2 rounded-xl shadow-sm">
+            {{ 'home.why_card2_title' | translate }}
+          </span>
+        </div>
+        <div class="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+      </div>
+      <div class="group relative rounded-3xl overflow-hidden cursor-pointer shadow-lg
+                  hover:shadow-2xl hover:shadow-primary/15 hover:-translate-y-2 transition-all duration-300">
+        <div class="h-64 overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800&auto=format&fit=crop"
+               alt="Practice for Free"
+               class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+        </div>
+        <div class="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/60 via-black/20 to-transparent">
+          <span class="inline-block bg-white text-on-surface font-bold text-base px-4 py-2 rounded-xl shadow-sm">
+            {{ 'home.why_card3_title' | translate }}
+          </span>
+        </div>
+        <div class="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+      <p class="text-center text-on-surface-variant text-sm leading-relaxed px-2">{{ 'home.why_card1_desc' | translate }}</p>
+      <p class="text-center text-on-surface-variant text-sm leading-relaxed px-2">{{ 'home.why_card2_desc' | translate }}</p>
+      <p class="text-center text-on-surface-variant text-sm leading-relaxed px-2">{{ 'home.why_card3_desc' | translate }}</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ VIDEO FEATURES ═══ -->
+<section class="py-20 px-6 md:px-12 bg-surface-container-low/40">
+  <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+    <div>
+      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full
+                   bg-primary/10 border border-primary/25
+                   text-primary text-xs font-bold uppercase tracking-widest mb-6">
+        {{ 'home.features_badge' | translate }}
+      </span>
+      <h2 class="font-headline text-3xl md:text-4xl font-extrabold
+                 text-on-surface tracking-tight leading-tight mb-4">
+        {{ 'home.features_title_1' | translate }}
+        <span class="text-primary">{{ 'home.features_title_highlight' | translate }}</span>
+        {{ 'home.features_title_2' | translate }}
+      </h2>
+      <p class="text-on-surface-variant leading-relaxed mb-10 max-w-md">
+        {{ 'home.features_desc' | translate }}
+      </p>
+      <div class="flex flex-col gap-4">
+        <div class="flex items-start gap-4 p-4 bg-white rounded-2xl
+                    border border-outline-variant/20 shadow-sm
+                    hover:border-primary/30 hover:shadow-md transition-all duration-200">
+          <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-primary text-[20px]"
+                  style="font-variation-settings:'FILL' 1">groups</span>
+          </div>
+          <div>
+            <p class="font-bold text-sm text-on-surface mb-0.5">{{ 'home.feature1_title' | translate }}</p>
+            <p class="text-xs text-on-surface-variant leading-relaxed">{{ 'home.feature1_desc' | translate }}</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4 p-4 bg-white rounded-2xl
+                    border border-outline-variant/20 shadow-sm
+                    hover:border-primary/30 hover:shadow-md transition-all duration-200">
+          <div class="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-secondary text-[20px]"
+                  style="font-variation-settings:'FILL' 1">move_to_inbox</span>
+          </div>
+          <div>
+            <p class="font-bold text-sm text-on-surface mb-0.5">{{ 'home.feature2_title' | translate }}</p>
+            <p class="text-xs text-on-surface-variant leading-relaxed">{{ 'home.feature2_desc' | translate }}</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4 p-4 bg-white rounded-2xl
+                    border border-outline-variant/20 shadow-sm
+                    hover:border-primary/30 hover:shadow-md transition-all duration-200">
+          <div class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-amber-600 text-[20px]"
+                  style="font-variation-settings:'FILL' 1">bar_chart</span>
+          </div>
+          <div>
+            <p class="font-bold text-sm text-on-surface mb-0.5">{{ 'home.feature3_title' | translate }}</p>
+            <p class="text-xs text-on-surface-variant leading-relaxed">{{ 'home.feature3_desc' | translate }}</p>
+          </div>
+        </div>
+      </div>
+      <a class="inline-flex items-center gap-1.5 mt-8 text-primary font-bold text-sm
+                hover:gap-3 transition-all duration-200 cursor-pointer">
+        {{ 'home.learn_more' | translate }}
+        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+      </a>
+    </div>
+
+    <div class="relative">
+      <div class="absolute -top-6 -left-6 w-24 h-24 rounded-full bg-primary/20 blur-2xl pointer-events-none"></div>
+      <div class="absolute -bottom-6 -right-6 w-32 h-32 rounded-full bg-secondary/15 blur-2xl pointer-events-none"></div>
+      <div class="relative rounded-3xl overflow-hidden shadow-2xl shadow-primary/15 ring-1 ring-primary/10 z-10">
+        <video class="w-full h-auto object-cover rounded-3xl" autoplay muted loop playsinline
+               poster="https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?q=80&w=1200&auto=format&fit=crop">
+          <source src="https://videos.pexels.com/video-files/3195394/3195394-uhd_2560_1440_25fps.mp4" type="video/mp4" />
+          <img src="https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?q=80&w=1200&auto=format&fit=crop"
+               alt="Online learning" class="w-full h-full object-cover" />
+        </video>
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div class="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm
+                      flex items-center justify-center border border-white/40 shadow-xl">
+            <span class="material-symbols-outlined text-white text-3xl"
+                  style="font-variation-settings:'FILL' 1">play_arrow</span>
+          </div>
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent pointer-events-none"></div>
+      </div>
+      <div class="absolute -bottom-5 -left-5 bg-white p-4 rounded-2xl
+                  shadow-xl border border-outline-variant/20 z-20 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center">
+          <span class="material-symbols-outlined text-green-600 text-[20px]"
+                style="font-variation-settings:'FILL' 1">verified</span>
+        </div>
+        <div>
+          <p class="text-sm font-black text-on-surface">98%</p>
+          <p class="text-[10px] text-on-surface-variant">{{ 'home.satisfaction_rate' | translate }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ OUR FEATURES (CLASSROOM UI) ═══ -->
+<section class="py-24 px-6 md:px-12 bg-surface-container-low/30 overflow-hidden">
+  <div class="max-w-7xl mx-auto">
+
+    <div class="text-center mb-16">
+      <h2 class="font-headline text-4xl md:text-5xl font-extrabold text-on-surface tracking-tight mb-4">
+        {{ 'home.classroom_features_title_1' | translate }}
+        <span class="text-primary">{{ 'home.classroom_features_title_highlight' | translate }}</span>
+      </h2>
+      <p class="text-on-surface-variant text-lg max-w-xl mx-auto leading-relaxed">
+        {{ 'home.classroom_features_desc' | translate }}
+      </p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+
+      <div class="relative">
+        <div class="absolute -top-6 -left-6 w-28 h-28 rounded-full bg-secondary/80 pointer-events-none z-0"></div>
+        <div class="absolute top-10 left-32 w-5 h-5 rounded-full bg-primary/70 pointer-events-none z-0"></div>
+        <div class="absolute -bottom-6 right-16 w-36 h-36 rounded-full bg-primary/75 pointer-events-none z-0"></div>
+        <div class="absolute bottom-10 left-1/3 w-4 h-4 rounded-full bg-secondary/70 pointer-events-none z-0"></div>
+
+        <div class="relative bg-white/80 backdrop-blur-sm rounded-3xl
+                    shadow-[0_24px_64px_rgba(46,104,88,0.13)]
+                    ring-1 ring-outline-variant/20 overflow-hidden z-10 p-5 pt-8">
+
+          <div class="absolute top-3 left-4 flex gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-red-400"></span>
+            <span class="w-3 h-3 rounded-full bg-amber-400"></span>
+            <span class="w-3 h-3 rounded-full bg-green-400"></span>
+          </div>
+
+          <div class="flex gap-3">
+            <div class="relative rounded-2xl overflow-hidden flex-shrink-0"
+                 style="width: 42%; aspect-ratio: 3/4;">
+              <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&auto=format&fit=crop"
+                   alt="Instructor" class="w-full h-full object-cover object-top" />
+              <div class="absolute bottom-0 left-0 right-0 p-2
+                          bg-gradient-to-t from-black/70 via-black/20 to-transparent">
+                <span class="inline-flex items-center gap-1 bg-primary text-white
+                             text-[9px] font-bold px-2 py-0.5 rounded-full mb-1">
+                  <span class="material-symbols-outlined text-[9px]">bar_chart</span>
+                  {{ 'home.instructor_label' | translate }}
+                </span>
+                <p class="text-white text-[10px] font-semibold">Every Howard</p>
+              </div>
+            </div>
+
+            <div class="flex-1 grid grid-cols-2 gap-2">
+              <div class="relative rounded-2xl overflow-hidden" style="aspect-ratio: 1;">
+                <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=300&auto=format&fit=crop"
+                     alt="Tamara Clarke" class="w-full h-full object-cover" />
+                <div class="absolute bottom-0 left-0 right-0 px-2 py-1 bg-gradient-to-t from-black/60 to-transparent">
+                  <div class="flex items-center gap-0.5">
+                    <span class="material-symbols-outlined text-white text-[9px]">bar_chart</span>
+                    <p class="text-white text-[9px] font-semibold truncate">Tamara Clarke</p>
+                  </div>
+                </div>
+              </div>
+              <div class="relative rounded-2xl overflow-hidden" style="aspect-ratio: 1;">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=300&auto=format&fit=crop"
+                     alt="Adam Levin" class="w-full h-full object-cover" />
+                <div class="absolute bottom-0 left-0 right-0 px-2 py-1 bg-gradient-to-t from-black/60 to-transparent">
+                  <div class="flex items-center gap-0.5">
+                    <span class="material-symbols-outlined text-white text-[9px]">bar_chart</span>
+                    <p class="text-white text-[9px] font-semibold truncate">Adam Levin</p>
+                  </div>
+                </div>
+              </div>
+              <div class="relative rounded-2xl overflow-hidden flex items-center justify-center bg-surface-container" style="aspect-ratio: 1;">
+                <div class="w-14 h-14 rounded-full border-[8px] border-outline-variant/30 bg-white shadow-sm"></div>
+                <div class="absolute bottom-0 left-0 right-0 px-2 py-1 bg-gradient-to-t from-black/40 to-transparent">
+                  <div class="flex items-center gap-0.5">
+                    <span class="material-symbols-outlined text-white text-[9px]">bar_chart</span>
+                    <p class="text-white text-[9px] font-semibold truncate">Humbert Holland</p>
+                  </div>
+                </div>
+              </div>
+              <div class="relative rounded-2xl overflow-hidden" style="aspect-ratio: 1;">
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=300&auto=format&fit=crop"
+                     alt="Patricia Mendoza" class="w-full h-full object-cover" />
+                <div class="absolute inset-0 bg-primary/20"></div>
+                <div class="absolute bottom-0 left-0 right-0 px-2 py-1 bg-gradient-to-t from-black/60 to-transparent">
+                  <div class="flex items-center gap-0.5">
+                    <span class="material-symbols-outlined text-white text-[9px]">bar_chart</span>
+                    <p class="text-white text-[9px] font-bold truncate">Patricia Mendoza</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex gap-3 mt-4">
+            <button class="flex items-center gap-2 px-6 py-2.5 bg-primary text-white
+                           font-bold text-sm rounded-full shadow-md shadow-primary/25
+                           hover:bg-primary/90 transition-colors duration-200">
+              <span class="material-symbols-outlined text-[15px]">present_to_all</span>
+              {{ 'home.present_btn' | translate }}
+            </button>
+            <button class="flex items-center gap-2 px-6 py-2.5 bg-rose-500 text-white
+                           font-bold text-sm rounded-full shadow-md shadow-rose-500/25
+                           hover:bg-rose-600 transition-colors duration-200">
+              <span class="material-symbols-outlined text-[15px]">call</span>
+              {{ 'home.call_btn' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="font-headline text-3xl md:text-4xl font-extrabold text-on-surface leading-tight mb-10">
+          {{ 'home.classroom_ui_title_1' | translate }}
+          <span class="text-primary">{{ 'home.classroom_ui_highlight' | translate }}</span>
+          {{ 'home.classroom_ui_title_2' | translate }}
+        </h3>
+
+        <div class="flex flex-col gap-8">
+          <div class="flex items-start gap-5">
+            <div class="w-14 h-14 rounded-2xl flex-shrink-0 flex items-center justify-center
+                        bg-white shadow-lg shadow-primary/10 border border-outline-variant/20">
+              <div class="grid grid-cols-2 gap-1.5">
+                <span class="w-3 h-3 rounded-[4px] bg-primary"></span>
+                <span class="w-3 h-3 rounded-[4px] bg-primary/25"></span>
+                <span class="w-3 h-3 rounded-[4px] bg-primary/25"></span>
+                <span class="w-3 h-3 rounded-[4px] bg-secondary"></span>
+              </div>
+            </div>
+            <p class="text-on-surface-variant text-base leading-relaxed pt-2">
+              {{ 'home.classroom_feature1_desc' | translate }}
+            </p>
+          </div>
+          <div class="flex items-start gap-5">
+            <div class="w-14 h-14 rounded-2xl flex-shrink-0 flex items-center justify-center
+                        bg-white shadow-lg shadow-primary/10 border border-outline-variant/20 relative">
+              <span class="absolute w-5 h-5 rounded-[6px] bg-secondary -translate-x-1.5 -translate-y-1.5"></span>
+              <span class="absolute w-5 h-5 rounded-[6px] bg-primary translate-x-1.5 translate-y-1.5"></span>
+            </div>
+            <p class="text-on-surface-variant text-base leading-relaxed pt-2">
+              {{ 'home.classroom_feature2_desc' | translate }}
+            </p>
+          </div>
+          <div class="flex items-start gap-5">
+            <div class="w-14 h-14 rounded-2xl flex-shrink-0 flex items-center justify-center
+                        bg-white shadow-lg shadow-primary/10 border border-outline-variant/20">
+              <span class="material-symbols-outlined text-primary text-[28px]"
+                    style="font-variation-settings:'FILL' 1">groups</span>
+            </div>
+            <p class="text-on-surface-variant text-base leading-relaxed pt-2">
+              {{ 'home.classroom_feature3_desc' | translate }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ SUPPORT BANNER ═══ -->
+<section class="mt-24 ">
+  <div class="max-w-7xl mx-auto">
+    <div class="relative rounded-[2rem] overflow-visible flex flex-col lg:flex-row items-end"
+         style="background-color: var(--color-primary, #2e6858);">
+
+      <div class="absolute left-0 top-0 bottom-0 w-64 rounded-s-[2rem] pointer-events-none overflow-hidden"
+           style="background-image: radial-gradient(circle, rgba(255,255,255,0.18) 1.5px, transparent 1.5px);
+                  background-size: 22px 22px;
+                  background-position: 14px 14px;"></div>
+
+      <div class="relative z-10 flex-1 flex flex-col gap-5 px-10 md:px-14 py-4 lg:py-14">
+        <h2 class="font-headline text-3xl md:text-4xl lg:text-[2.6rem] font-extrabold text-white leading-tight">
+          {{ 'home.support_title' | translate }}
+        </h2>
+        <p class="text-white/60 text-sm md:text-base leading-relaxed max-w-sm">
+          {{ 'home.support_desc' | translate }}
+        </p>
+        <div>
+          <a href="#"
+             class="inline-block px-7 py-3 text-white font-semibold rounded-full
+                    border border-white/30 shadow-md backdrop-blur-sm text-sm
+                    hover:-translate-y-0.5 hover:bg-white/25 hover:shadow-lg
+                    transition-all duration-300"
+             style="background: rgba(255,255,255,0.15);">
+            {{ 'home.support_cta' | translate }}
+          </a>
+        </div>
+      </div>
+
+      <div class="relative flex-shrink-0 flex items-end justify-center w-full lg:w-[42%] self-end"
+           style="min-height: 320px;">
+        <div class="absolute bottom-0 right-8 w-80 h-80 rounded-full pointer-events-none"
+             style="background: rgba(200,240,218,0.20);"></div>
+        <img loading="lazy" decoding="async"
+             src="https://shop.creativemox.com/kursol/wp-content/uploads/sites/6/2024/09/img_1.png"
+             alt="Support student"
+             class="relative z-10 w-auto object-contain object-bottom overflow-hidden drop-shadow-2xl"
+             style="max-height: 420px; margin-bottom: -1px; transform: translateY(-80px);" />
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ COURSES ═══ -->
+<section class="py-24 px-6 md:px-12">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+      <div>
+        <h2 class="font-headline text-4xl font-bold mb-2 tracking-tight">
+          {{ 'home.programs_title' | translate }}
+        </h2>
+        <p class="text-on-surface-variant max-w-lg leading-relaxed">
+          {{ 'home.programs_desc' | translate }}
+        </p>
+      </div>
+    </div>
+    <div *ngIf="isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div *ngFor="let i of [1,2,3,4]"
+           class="bg-surface-container-low rounded-2xl h-80 animate-pulse ring-1 ring-outline-variant/20"></div>
+    </div>
+    <div *ngIf="!isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+      <app-course-card *ngFor="let course of courses" [course]="course"></app-course-card>
+    </div>
+    <div class="mt-12 text-center">
+      <button routerLink="/courses"
+              class="group inline-flex items-center gap-2 px-8 py-4
+                     border-2 border-outline-variant text-primary font-bold rounded-2xl
+                     hover:bg-primary hover:text-white hover:border-primary transition-all duration-300">
+        {{ 'home.view_all' | translate }}
+        <span class="material-symbols-outlined transition-transform duration-200 group-hover:translate-x-1">
+          arrow_forward
+        </span>
+      </button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ TESTIMONIALS ═══ -->
+<section class="py-24 px-6 md:px-12">
+  <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+    <div>
+      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full
+                   bg-primary/10 border border-primary/25
+                   text-primary text-xs font-bold uppercase tracking-widest mb-6">
+        <span class="w-2 h-2 rounded-full bg-primary"></span>
+        {{ 'home.testimonials_badge' | translate }}
+      </span>
+      <h2 class="font-headline text-4xl md:text-5xl font-extrabold
+                 text-on-surface tracking-tight leading-tight mb-6">
+        {{ 'home.testimonials_title' | translate }}
+      </h2>
+      <p class="text-on-surface-variant leading-relaxed mb-10 max-w-md">
+        {{ 'home.testimonials_desc' | translate }}
+      </p>
+      <button class="px-8 py-4 bg-primary text-white font-bold rounded-2xl
+                     shadow-lg shadow-primary/30 hover:-translate-y-1 hover:shadow-xl
+                     hover:shadow-primary/40 transition-all duration-300
+                     uppercase tracking-wider text-sm">
+        {{ 'home.view_testimonials' | translate }}
+      </button>
+      <div class="mt-12 grid grid-cols-2 gap-3">
+        <div class="rounded-[8px] overflow-hidden h-44">
+          <img src="https://templatekits.themewarrior.com/inlingo-new/wp-content/uploads/sites/102/2023/08/9JWKCV-large.jpg"
+               alt="student"
+               class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+        </div>
+        <div class="rounded-[8px] overflow-hidden h-44">
+          <img src="https://templatekits.themewarrior.com/inlingo-new/wp-content/uploads/sites/102/2023/08/PCSASS9-large.jpg"
+               alt="student"
+               class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-col gap-5">
+      <div class="relative bg-on-surface rounded-2xl p-6 flex gap-5 items-start shadow-xl overflow-hidden">
+        <div class="absolute top-3 right-3 w-5 h-5 grid grid-cols-2 gap-0.5 opacity-40">
+          <div class="bg-primary rounded-[2px]"></div>
+          <div class="bg-white/30 rounded-[2px]"></div>
+          <div class="bg-white/30 rounded-[2px]"></div>
+          <div class="bg-primary rounded-[2px]"></div>
+        </div>
+        <div class="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 ring-2 ring-white/10">
+          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop"
+               alt="Samantha Williams" class="w-full h-full object-cover" />
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex gap-0.5 mb-3"><span class="text-primary text-base">★★★★★</span></div>
+          <h4 class="font-headline font-extrabold text-white text-base mb-2 leading-snug">Best Courses Ever!</h4>
+          <p class="text-white/60 text-sm leading-relaxed line-clamp-3">
+            The curriculum is incredibly well-structured. I went from beginner to confident in just three months.
+          </p>
+          <div class="mt-4 pt-3 border-t border-white/10">
+            <p class="text-white font-bold text-sm">Samantha Williams</p>
+            <p class="text-white/40 text-xs mt-0.5">Business</p>
+          </div>
+        </div>
+      </div>
+      <div class="relative bg-on-surface rounded-2xl p-6 flex gap-5 items-start shadow-xl overflow-hidden">
+        <div class="absolute top-3 right-3 w-5 h-5 grid grid-cols-2 gap-0.5 opacity-40">
+          <div class="bg-primary rounded-[2px]"></div>
+          <div class="bg-white/30 rounded-[2px]"></div>
+          <div class="bg-white/30 rounded-[2px]"></div>
+          <div class="bg-primary rounded-[2px]"></div>
+        </div>
+        <div class="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 ring-2 ring-white/10">
+          <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop"
+               alt="James Carter" class="w-full h-full object-cover" />
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex gap-0.5 mb-3"><span class="text-primary text-base">★★★★★</span></div>
+          <h4 class="font-headline font-extrabold text-white text-base mb-2 leading-snug">Best Courses Ever!</h4>
+          <p class="text-white/60 text-sm leading-relaxed line-clamp-3">
+            The instructors are world-class. Each module built on the last — it felt like a real academic journey.
+          </p>
+          <div class="mt-4 pt-3 border-t border-white/10">
+            <p class="text-white font-bold text-sm">James Carter</p>
+            <p class="text-white/40 text-xs mt-0.5">Technology</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ CTA ═══ -->
+<section class="px-6 md:px-12 mb-24">
+  <div class="max-w-7xl mx-auto">
+    <div class="bg-gradient-to-br from-[#0e4a39] via-primary to-secondary
+                p-12 lg:p-20 rounded-[2.5rem] relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-1/3 h-full
+                  bg-white/5 skew-x-[-20deg] translate-x-20 pointer-events-none"></div>
       <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12">
         <div class="max-w-xl">
-          <h2 class="text-white font-headline text-4xl lg:text-5xl font-extrabold leading-tight mb-6">
+          <h2 class="text-white font-headline text-4xl lg:text-5xl font-extrabold leading-tight mb-6 tracking-tight">
             {{ 'home.cta_title' | translate }}
           </h2>
-          <p class="text-primary-container text-lg mb-8 leading-relaxed">
-            {{ 'home.cta_desc' | translate }}
-          </p>
+          <p class="text-white/70 text-lg mb-8 leading-relaxed">{{ 'home.cta_desc' | translate }}</p>
           <div class="flex flex-wrap gap-4">
-            <button class="px-8 py-4 bg-white text-primary font-bold rounded-xl hover:shadow-xl transition-all">
+            <button class="px-8 py-4 bg-white text-primary font-bold rounded-2xl
+                           shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
               {{ 'home.get_started' | translate }}
             </button>
-            <button class="px-8 py-4 bg-primary-container text-on-primary-container font-bold rounded-xl hover:bg-primary-container/90 transition-all">
+            <button class="px-8 py-4 bg-white/12 border border-white/25 text-white font-bold rounded-2xl
+                           hover:bg-white/20 transition-all duration-300">
               {{ 'home.contact' | translate }}
             </button>
           </div>
         </div>
-
-        <div class="lg:w-1/3 grid grid-cols-2 gap-4">
-          <div class="p-6 bg-white/10 backdrop-blur-lg rounded-2xl text-white text-center">
-            <span class="material-symbols-outlined text-4xl mb-3">verified</span>
-            <p class="font-bold text-xl">{{ 'home.verified' | translate }}</p>
-            <p class="text-xs opacity-70">{{ 'home.certificates' | translate }}</p>
+        <div class="flex flex-col gap-4 flex-shrink-0">
+          <div class="flex items-center gap-4 p-5 bg-white/10 backdrop-blur-md rounded-2xl
+                      border border-white/18 min-w-[200px] hover:bg-white/16 transition-colors duration-200">
+            <span class="material-symbols-outlined text-white/90 text-3xl flex-shrink-0"
+                  style="font-variation-settings:'FILL' 1">verified</span>
+            <div>
+              <p class="text-white font-bold text-base">{{ 'home.verified' | translate }}</p>
+              <p class="text-white/55 text-xs mt-0.5">{{ 'home.certificates' | translate }}</p>
+            </div>
           </div>
-          <div class="p-6 bg-white/10 backdrop-blur-lg rounded-2xl text-white text-center">
-            <span class="material-symbols-outlined text-4xl mb-3">schedule</span>
-            <p class="font-bold text-xl">{{ 'home.lifetime' | translate }}</p>
-            <p class="text-xs opacity-70">{{ 'home.access' | translate }}</p>
+          <div class="flex items-center gap-4 p-5 bg-white/10 backdrop-blur-md rounded-2xl
+                      border border-white/18 min-w-[200px] hover:bg-white/16 transition-colors duration-200">
+            <span class="material-symbols-outlined text-white/90 text-3xl flex-shrink-0"
+                  style="font-variation-settings:'FILL' 1">schedule</span>
+            <div>
+              <p class="text-white font-bold text-base">{{ 'home.lifetime' | translate }}</p>
+              <p class="text-white/55 text-xs mt-0.5">{{ 'home.access' | translate }}</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
+
 </main>
 
 
-<footer class="bg-slate-950 text-white py-16 px-8">
-  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+<!-- ═══ FOOTER ═══ -->
+<footer class="bg-[#08211a] text-white pt-16 pb-8 px-6 md:px-12">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-14">
     <div>
-      <span class="text-2xl font-bold text-white mb-6 block font-headline tracking-tight">EduCore</span>
-      <p class="text-slate-400 text-sm mb-6 leading-relaxed">{{ 'footer.desc' | translate }}</p>
-      <div class="flex gap-4">
-        <a class="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center hover:bg-primary transition-colors" href="#">
-          <span class="material-symbols-outlined text-sm">public</span>
+      <span class="text-2xl font-bold text-white mb-5 block font-headline tracking-tight">EduCore</span>
+      <p class="text-white/50 text-sm mb-6 leading-relaxed">{{ 'footer.desc' | translate }}</p>
+      <div class="flex gap-3">
+        <a class="w-10 h-10 rounded-xl bg-white/7 border border-white/10 flex items-center justify-center
+                  hover:bg-primary hover:border-primary transition-all duration-200" href="#">
+          <span class="material-symbols-outlined text-white/70 text-lg">public</span>
         </a>
-        <a class="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center hover:bg-primary transition-colors" href="#">
-          <span class="material-symbols-outlined text-sm">alternate_email</span>
+        <a class="w-10 h-10 rounded-xl bg-white/7 border border-white/10 flex items-center justify-center
+                  hover:bg-primary hover:border-primary transition-all duration-200" href="#">
+          <span class="material-symbols-outlined text-white/70 text-lg">alternate_email</span>
         </a>
-        <a class="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center hover:bg-primary transition-colors" href="#">
-          <span class="material-symbols-outlined text-sm">person</span>
+        <a class="w-10 h-10 rounded-xl bg-white/7 border border-white/10 flex items-center justify-center
+                  hover:bg-primary hover:border-primary transition-all duration-200" href="#">
+          <span class="material-symbols-outlined text-white/70 text-lg">person</span>
         </a>
       </div>
     </div>
-
     <div>
-      <h4 class="font-bold mb-6 text-teal-400 uppercase tracking-widest text-xs">{{ 'footer.explore' | translate }}</h4>
-      <ul class="space-y-4">
-        <li><a class="text-slate-400 hover:text-white transition-colors text-sm" href="#">{{ 'footer.all_courses' | translate }}</a></li>
-        <li><a class="text-slate-400 hover:text-white transition-colors text-sm" href="#">{{ 'footer.teachers' | translate }}</a></li>
-        <li><a class="text-slate-400 hover:text-white transition-colors text-sm" href="#">{{ 'footer.centers' | translate }}</a></li>
-        <li><a class="text-slate-400 hover:text-white transition-colors text-sm" href="#">{{ 'footer.live' | translate }}</a></li>
+      <h4 class="font-bold mb-6 text-primary text-xs uppercase tracking-widest">{{ 'footer.explore' | translate }}</h4>
+      <ul class="space-y-3.5">
+        <li><a class="text-white/50 hover:text-white transition-colors duration-200 text-sm flex items-center gap-1.5 group" href="#">
+          <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 group-hover:text-primary transition-all duration-200">chevron_right</span>
+          {{ 'footer.all_courses' | translate }}</a></li>
+        <li><a class="text-white/50 hover:text-white transition-colors duration-200 text-sm flex items-center gap-1.5 group" href="#">
+          <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 group-hover:text-primary transition-all duration-200">chevron_right</span>
+          {{ 'footer.teachers' | translate }}</a></li>
+        <li><a class="text-white/50 hover:text-white transition-colors duration-200 text-sm flex items-center gap-1.5 group" href="#">
+          <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 group-hover:text-primary transition-all duration-200">chevron_right</span>
+          {{ 'footer.centers' | translate }}</a></li>
+        <li><a class="text-white/50 hover:text-white transition-colors duration-200 text-sm flex items-center gap-1.5 group" href="#">
+          <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 group-hover:text-primary transition-all duration-200">chevron_right</span>
+          {{ 'footer.live' | translate }}</a></li>
       </ul>
     </div>
-
     <div>
-      <h4 class="font-bold mb-6 text-teal-400 uppercase tracking-widest text-xs">{{ 'footer.support' | translate }}</h4>
-      <ul class="space-y-4">
-        <li><a class="text-slate-400 hover:text-white transition-colors text-sm" href="#">{{ 'footer.help' | translate }}</a></li>
-        <li><a class="text-slate-400 hover:text-white transition-colors text-sm" href="#">{{ 'footer.terms' | translate }}</a></li>
-        <li><a class="text-slate-400 hover:text-white transition-colors text-sm" href="#">{{ 'footer.privacy' | translate }}</a></li>
-        <li><a class="text-slate-400 hover:text-white transition-colors text-sm" href="#">{{ 'footer.cookies' | translate }}</a></li>
+      <h4 class="font-bold mb-6 text-primary text-xs uppercase tracking-widest">{{ 'footer.support' | translate }}</h4>
+      <ul class="space-y-3.5">
+        <li><a class="text-white/50 hover:text-white transition-colors duration-200 text-sm flex items-center gap-1.5 group" href="#">
+          <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 group-hover:text-primary transition-all duration-200">chevron_right</span>
+          {{ 'footer.help' | translate }}</a></li>
+        <li><a class="text-white/50 hover:text-white transition-colors duration-200 text-sm flex items-center gap-1.5 group" href="#">
+          <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 group-hover:text-primary transition-all duration-200">chevron_right</span>
+          {{ 'footer.terms' | translate }}</a></li>
+        <li><a class="text-white/50 hover:text-white transition-colors duration-200 text-sm flex items-center gap-1.5 group" href="#">
+          <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 group-hover:text-primary transition-all duration-200">chevron_right</span>
+          {{ 'footer.privacy' | translate }}</a></li>
+        <li><a class="text-white/50 hover:text-white transition-colors duration-200 text-sm flex items-center gap-1.5 group" href="#">
+          <span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 group-hover:text-primary transition-all duration-200">chevron_right</span>
+          {{ 'footer.cookies' | translate }}</a></li>
       </ul>
     </div>
-
     <div>
-      <h4 class="font-bold mb-6 text-teal-400 uppercase tracking-widest text-xs">{{ 'footer.newsletter' | translate }}</h4>
-      <p class="text-slate-400 text-sm mb-4">{{ 'footer.newsletter_desc' | translate }}</p>
-      <div class="flex bg-slate-900 rounded-lg overflow-hidden">
-        <input class="bg-transparent border-none outline-none text-sm p-3 w-full"
+      <h4 class="font-bold mb-6 text-primary text-xs uppercase tracking-widest">{{ 'footer.newsletter' | translate }}</h4>
+      <p class="text-white/50 text-sm mb-4 leading-relaxed">{{ 'footer.newsletter_desc' | translate }}</p>
+      <div class="flex bg-white/6 border border-white/12 rounded-xl overflow-hidden">
+        <input class="bg-transparent border-none outline-none text-sm p-3 w-full text-white placeholder:text-white/35 font-body"
                [placeholder]="'footer.email_placeholder' | translate" type="email" />
-        <button class="bg-primary px-4 text-white hover:bg-primary/90 transition-colors">
-          <span class="material-symbols-outlined">send</span>
+        <button class="bg-primary px-4 text-white hover:bg-primary/80 flex items-center transition-colors duration-200">
+          <span class="material-symbols-outlined text-xl">send</span>
         </button>
       </div>
     </div>
   </div>
-
-  <div class="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
-    <p class="text-slate-500 text-xs uppercase tracking-widest">{{ 'footer.copyright' | translate }}</p>
+  <div class="max-w-7xl mx-auto pt-8 border-t border-white/8 flex flex-col md:flex-row justify-between items-center gap-4">
+    <p class="text-white/30 text-xs uppercase tracking-widest">{{ 'footer.copyright' | translate }}</p>
     <div class="flex gap-8">
-      <a class="text-slate-500 text-xs uppercase tracking-widest hover:text-teal-300" href="#">{{ 'footer.privacy' | translate }}</a>
-      <a class="text-slate-500 text-xs uppercase tracking-widest hover:text-teal-300" href="#">{{ 'footer.terms' | translate }}</a>
+      <a class="text-white/30 text-xs uppercase tracking-widest hover:text-primary transition-colors duration-200" href="#">{{ 'footer.privacy' | translate }}</a>
+      <a class="text-white/30 text-xs uppercase tracking-widest hover:text-primary transition-colors duration-200" href="#">{{ 'footer.terms' | translate }}</a>
     </div>
   </div>
 </footer>

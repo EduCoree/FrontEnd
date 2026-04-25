@@ -64,6 +64,30 @@ module.exports = {
         xl: '3rem',
         full: '9999px',
       },
+      keyframes: {
+        floatA: {
+          '0%, 100%': { transform: 'translateY(0) rotate(2deg)' },
+          '50%': { transform: 'translateY(-12px) rotate(2deg)' },
+        },
+        floatB: {
+          '0%, 100%': { transform: 'translateY(0) rotate(-2deg)' },
+          '50%': { transform: 'translateY(-9px) rotate(-2deg)' },
+        },
+        softPulse: {
+          '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+          '50%': { transform: 'scale(1.03)', opacity: '.92' },
+        },
+        shimmer: {
+          '0%': { transform: 'translateX(-120%) skewX(-20deg)' },
+          '100%': { transform: 'translateX(220%) skewX(-20deg)' },
+        },
+      },
+      animation: {
+        floatA: 'floatA 4s ease-in-out infinite',
+        floatB: 'floatB 3.5s ease-in-out infinite',
+        softPulse: 'softPulse 3s ease-in-out infinite',
+        shimmer: 'shimmer 1.8s ease-out forwards',
+      },
     },
   },
   plugins: [require('flowbite/plugin')],

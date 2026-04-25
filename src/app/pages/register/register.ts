@@ -42,11 +42,9 @@ export class RegisterComponent {
     const { confirmPassword, ...dto } = this.form.value;
 
     this.auth.register(dto).subscribe({
-      next: (user) => {
-        this.auth.saveUser(user);
-        // Send confirmation email after register
-        this.auth.sendConfirmation(user.email).subscribe();
-        this.router.navigate(['/confirm-email'], { queryParams: { email: user.email } });
+      next: (respone) => {
+        this.router.navigate(['/confirm-email'], { queryParams: { email: respone.email } });
+        this.loading.set(false);
       },
       error: () => {
         this.errorMsg.set('Registration failed. Email or username may already be taken.');
