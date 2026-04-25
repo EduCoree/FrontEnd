@@ -36,7 +36,7 @@ import { CourseDetailComponent } from './pages/Courses/course-detail/course-deta
 import { CoursesListComponent } from './pages/Courses/courses-list/courses-list.component';
 import { StudentLayoutComponent } from './layouts/student-layout/student-layout.component';
 import { StudentDashboardComponent } from './pages/student/student-dashboard/student-dashboard.component';
-
+import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard';
 import { AdminCoursesComponent } from './pages/admin-courses/admin-courses';
 import { authGuard } from './core/guards/auth-guard';
 import { roleGuard } from './core/guards/role-guard';
@@ -119,14 +119,14 @@ export const routes: Routes = [
     canActivate: [adminGuard],
     title: 'Student Detail — Admin',
   },
-   {
+  {
     path: 'admin/courses',
     component: AdminCoursesComponent,
     canActivate: [adminGuard],
     title: 'Courses — Admin',
   },
  //Dashboard !!!! do not add guard yet
-// { path: 'admin/dashboard', component: AdminDashboardComponent  },
+{ path: 'admin/dashboard', component: AdminDashboardComponent  },
  
 { path: 'teacher/dashboard/2', component: TeacherDashboardComponent  },
  
@@ -137,68 +137,68 @@ export const routes: Routes = [
     path: 'centers/:id',
     loadComponent: () =>
       import('./pages/centers/center-detail/center-detail/center-detail')
-        .then(m => m.CenterDetail)
+    .then(m => m.CenterDetail)
   },
-
-
+  
+  
   {
-  path: 'centers/:id/edit',
-  loadComponent: () =>
-    import('./pages/centers/center-edit/center-edit/center-edit')
-      .then(m => m.CenterEdit)
-},
-{
-  path: 'centers/:id/delete',
-  loadComponent: () =>
-    import('./pages/centers/center-delete/center-delete')
-      .then(m => m.CenterDelete)
-},
-
-{
-  path: 'centers/:id/logo',
-  loadComponent: () =>
-    import('./pages/centers/center-logo/center-logo')
-      .then(m => m.CenterLogo)
-},
-
+    path: 'centers/:id/edit',
+    loadComponent: () =>
+      import('./pages/centers/center-edit/center-edit/center-edit')
+    .then(m => m.CenterEdit)
+  },
+  {
+    path: 'centers/:id/delete',
+    loadComponent: () =>
+      import('./pages/centers/center-delete/center-delete')
+    .then(m => m.CenterDelete)
+  },
+  
+  {
+    path: 'centers/:id/logo',
+    loadComponent: () =>
+      import('./pages/centers/center-logo/center-logo')
+    .then(m => m.CenterLogo)
+  },
+  
   // Auth Routes
   {
     path: 'login',
     loadComponent: () =>
       import('./pages/login/login')
         .then(m => m.LoginComponent)
-  },
+      },
   {
     path: 'register',
     loadComponent: () =>
       import('./pages/register/register')
         .then(m => m.RegisterComponent)
-  },
-  {
-    path: 'review/create',
-    loadComponent: () =>
-      import('./pages/Quizzes/CreateQuiz/create-quiz/create-quiz')
+      },
+      {
+        path: 'review/create',
+        loadComponent: () =>
+          import('./pages/Quizzes/CreateQuiz/create-quiz/create-quiz')
         .then(m => m.CreateQuizComponent)
-  },
- {
+      },
+      {
   path: 'teacher/dashboard',
   canActivate: [authGuard, roleGuard('Teacher')],
   loadComponent: () =>
     import('./pages/teacher/teacher-dashboard/teacher-dashboard.component')
-      .then(m => m.TeacherDashboardComponent)
+  .then(m => m.TeacherDashboardComponent)
 },
 {
   path: 'teacher/courses',
   canActivate: [authGuard, roleGuard('Teacher')],
   loadComponent: () =>
     import('./pages/teacher/my-courses/my-courses.component')
-      .then(m => m.MyCoursesComponent)
+  .then(m => m.MyCoursesComponent)
 },
-  {
-    path: 'teacher/courses/create',
-    canActivate: [authGuard, roleGuard('Teacher')],
-    loadComponent: () =>
-      import('./pages/teacher/create-course/create-course.component')
+{
+  path: 'teacher/courses/create',
+  canActivate: [authGuard, roleGuard('Teacher')],
+  loadComponent: () =>
+    import('./pages/teacher/create-course/create-course.component')
         .then(m => m.CreateCourseComponent)
   },
   {
@@ -206,23 +206,23 @@ export const routes: Routes = [
     canActivate: [authGuard, roleGuard('Teacher')],
     loadComponent: () =>
       import('./pages/teacher/edit-course/edit-course.component')
-        .then(m => m.EditCourseComponent)
+    .then(m => m.EditCourseComponent)
   },
-{
-  path: 'teacher/courses/:id/sections',
-  canActivate: [authGuard, roleGuard('Teacher')],
-  loadComponent: () =>
-    import('./pages/teacher/course-sections/course-sections.component')
-      .then(m => m.CourseSectionsComponent)
-    },
-
-// Content Delivery: Lesson Manager
-{
+  {
+    path: 'teacher/courses/:id/sections',
+    canActivate: [authGuard, roleGuard('Teacher')],
+    loadComponent: () =>
+      import('./pages/teacher/course-sections/course-sections.component')
+    .then(m => m.CourseSectionsComponent)
+  },
+  
+  // Content Delivery: Lesson Manager
+  {
   path: 'teacher/courses/:courseId/lessons/:lessonId',
   canActivate: [authGuard, roleGuard('Teacher')],
   loadComponent: () =>
     import('./pages/teacher/lesson-manager/lesson-manager.component')
-      .then(m => m.LessonManagerComponent),
+  .then(m => m.LessonManagerComponent),
   title: 'Lesson Manager — EduCore',
 },
 {
@@ -230,37 +230,37 @@ export const routes: Routes = [
   canActivate: [authGuard],
   loadComponent: () =>
     import('./pages/student/student-progress/student-progress.component')
-      .then(m => m.StudentProgressComponent),
+  .then(m => m.StudentProgressComponent),
   title: 'My Progress — EduCore',
 },
 // {
-//   path: 'student/certificates',
-//   canActivate: [authGuard],
-//   loadComponent: () =>
-//     import('./pages/student/my-certificates/my-certificates.component')
-//       .then(m => m.MyCertificatesComponent),
-//   title: 'My Certificates — EduCore',
-// },
-// Content Delivery: Media Page (wired)
-{
-  path: 'teacher/courses/:id/media',
+  //   path: 'student/certificates',
+  //   canActivate: [authGuard],
+  //   loadComponent: () =>
+  //     import('./pages/student/my-certificates/my-certificates.component')
+  //       .then(m => m.MyCertificatesComponent),
+  //   title: 'My Certificates — EduCore',
+  // },
+  // Content Delivery: Media Page (wired)
+  {
+    path: 'teacher/courses/:id/media',
   canActivate: [authGuard, roleGuard('Teacher')],
   loadComponent: () =>
     import('./pages/lessons/course-media/course-media.component')
       .then(m => m.CourseMediaComponent),
-  title: 'Course Media — EduCore',
-},
+      title: 'Course Media — EduCore',
+    },
   {
     path: 'certificates/:certificateId',
     loadComponent: () =>
       import('./pages/public/certificate-detail/certificate-detail.component')
-        .then(m => m.CertificateDetailComponent),
+    .then(m => m.CertificateDetailComponent),
     title: 'Certificate — EduCore',
   },
-
-//hala
-{
-  path: 'admin/teachers',
+  
+  //hala
+  {
+    path: 'admin/teachers',
   component: AdminTeachersComponent,
   title: 'Teachers — Admin',
 },
@@ -282,6 +282,7 @@ export const routes: Routes = [
 },
 
 
+   
 
 
 
@@ -289,6 +290,82 @@ export const routes: Routes = [
 
 
 
+
+// ── Teacher Payouts  ────────────────────────────────────────────
+{
+  path: 'teacher/payout/dashboard',
+  canActivate: [authGuard, roleGuard('Teacher')],
+  loadComponent: () =>
+    import('./pages/teacher/teacher-payout-dashboard/teacher-payout-dashboard')
+      .then(m => m.TeacherPayoutDashboardComponent),
+  title: 'Earnings Dashboard — EduCore',
+},
+{
+  path: 'teacher/payout/earnings',
+  canActivate: [authGuard, roleGuard('Teacher')],
+  loadComponent: () =>
+    import('./pages/teacher/teacher-earnings/teacher-earnings')
+      .then(m => m.TeacherEarningsComponent),
+  title: 'My Earnings — EduCore',
+},
+{
+  path: 'teacher/payout/invoices',
+  canActivate: [authGuard, roleGuard('Teacher')],
+  loadComponent: () =>
+    import('./pages/teacher/teacher-invoices/teacher-invoices')
+      .then(m => m.TeacherInvoicesComponent),
+  title: 'My Invoices — EduCore',
+},
+{
+  path: 'teacher/payout/invoices/:id',
+  canActivate: [authGuard, roleGuard('Teacher')],
+  loadComponent: () =>
+    import('./pages/teacher/teacher-invoice-detail/teacher-invoice-detail')
+      .then(m => m.TeacherInvoiceDetailComponent),
+  title: 'Invoice Detail — EduCore',
+},
+
+// ── Admin Payouts ──────────────────────────────────────────────
+{
+  path: 'admin/payout/dashboard',
+  canActivate: [authGuard, roleGuard('Admin')],
+  loadComponent: () =>
+    import('./pages/admin/admin-payout-dashboard/admin-payout-dashboard')
+      .then(m => m.AdminPayoutDashboardComponent),
+  title: 'Payout Dashboard — Admin',
+},
+{
+  path: 'admin/payout/invoices',
+  canActivate: [authGuard, roleGuard('Admin')],
+  loadComponent: () =>
+    import('./pages/admin/admin-all-invoices/admin-all-invoices')
+      .then(m => m.AdminAllInvoicesComponent),
+  title: 'All Invoices — Admin',
+},
+{
+  path: 'admin/payout/invoices/:id',
+  canActivate: [authGuard, roleGuard('Admin')],
+  loadComponent: () =>
+    import('./pages/admin/admin-invoice-detail/admin-invoice-detail')
+      .then(m => m.AdminInvoiceDetailComponent),
+  title: 'Manage Invoice — Admin',
+},
+{
+  path: 'admin/payout/settings',
+  canActivate: [authGuard, roleGuard('Admin')],
+  loadComponent: () =>
+    import('./pages/admin/admin-payout-settings/admin-payout-settings')
+      .then(m => m.AdminPayoutSettingsComponent),
+  title: 'Payout Settings — Admin',
+},
+{
+  path: 'admin/payout/generate',
+  canActivate: [authGuard, roleGuard('Admin')],
+  loadComponent: () =>
+    import('./pages/admin/admin-generate-invoices/admin-generate-invoices')
+      .then(m => m.AdminGenerateInvoicesComponent),
+  title: 'Generate Invoices — Admin',
+},
 
 
 
@@ -555,7 +632,6 @@ export const routes: Routes = [
         .then(m => m.LessonPlayerComponent),
     title: 'Lesson Player — EduCore',
   },
-
 
 
 

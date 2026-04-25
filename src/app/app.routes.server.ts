@@ -32,5 +32,13 @@ export const serverRoutes: ServerRoute[] = [
   {
     path: '**',
     renderMode: RenderMode.Client
-  }
+  },
+  {
+    path: 'teacher/payout/**',
+    renderMode: RenderMode.Client
+  },
+  {
+    path: 'admin/payout/**',
+    renderMode: RenderMode.Client
+  },
 ];

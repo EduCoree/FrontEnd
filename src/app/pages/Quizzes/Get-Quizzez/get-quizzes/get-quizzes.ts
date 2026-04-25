@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
@@ -28,6 +28,8 @@ export class QuizComponent implements OnInit {
   showEditModal=false;
   selectedQuizId :number|null=null;
   openMenuId: number | null = null;
+   totalPages = signal(1);
+  currentPage = signal(1);
  
   constructor(
     private route: ActivatedRoute,
@@ -61,11 +63,16 @@ get filteredQuizzes(): QuizDto[] {
   }
 
   loadQuizzes(): void {
+    const params = {
+     page: this.currentPage(),
+      pageSize: 5,
+    }
     this.isLoading = true;
     this.errorMessage = '';
-    this.quizService.getQuizzes(this.courseId).subscribe({
-      next: (data) => {
-        this.quizzes = data;
+    this.quizService.getQuizzes(this.courseId,params).subscribe({
+      next: (res) => {
+        this.quizzes = res.data.items
+        this.totalPages.set(res.data.totalPages);
         this.isLoading = false;
         this.cdr.detectChanges();
       },
@@ -119,4 +126,9 @@ onDocumentClick(event: MouseEvent): void {
     this.openMenuId = null;
   }
 }
+  goToPage(page: number): void {
+    if (page < 1 || page > this.totalPages()) return;
+    this.currentPage.set(page);
+    this.loadQuizzes();
+  }
 }

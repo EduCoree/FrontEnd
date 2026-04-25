@@ -87,6 +87,7 @@
                 <th class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider">{{ 'teacherQuizzes.tablePassScore' | translate }}</th>
                 <th class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider">{{ 'teacherQuizzes.tableMaxAttempts' | translate }}</th>
                 <th class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider">{{ 'teacherQuizzes.tableRandomized' | translate }}</th>
+                <th class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider">{{ 'teacherQuizzes.tableStatus' | translate }}</th>
                 <th class="px-8 py-5 text-right"></th>
               </tr>
             </thead>
@@ -114,6 +115,13 @@
                       </span>
                     }
                   </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                  <span [ngClass]="quiz.isPublished ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'"
+                        class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+                    {{ quiz.isPublished ? 'Published' : 'Draft' }}
+                  </span>
+                  </td>
+                  
                   <td class="px-8 py-6 text-right">
                     <div class="flex items-center justify-end gap-2">
                       <button (click)="onOpenBuilder(quiz.id)"
@@ -159,6 +167,35 @@
             </tbody>
           </table>
         </div>
+        <!-- Pagination -->
+    @if (totalPages() > 1) {
+      <div class="flex justify-center items-center gap-2 mt-12 mb-28 md:mb-12">
+
+        <button
+          (click)="goToPage(currentPage() - 1)"
+          [disabled]="currentPage() === 1"
+          class="p-2 rounded-full hover:bg-surface-container-highest disabled:opacity-30 transition-all text-on-surface">
+          <span class="material-symbols-outlined">chevron_left</span>
+        </button>
+
+        <button
+          *ngFor="let page of [].constructor(totalPages()); let i = index"
+          (click)="goToPage(i + 1)"
+          [class]="(i + 1) === currentPage()
+            ? 'w-10 h-10 rounded-full bg-primary text-on-primary font-bold text-sm shadow-md'
+            : 'w-10 h-10 rounded-full hover:bg-surface-container-highest text-on-surface-variant font-bold text-sm transition-all'">
+          {{ i + 1 }}
+        </button>
+
+        <button
+          (click)="goToPage(currentPage() + 1)"
+          [disabled]="currentPage() === totalPages()"
+          class="p-2 rounded-full hover:bg-surface-container-highest disabled:opacity-30 transition-all text-on-surface">
+          <span class="material-symbols-outlined">chevron_right</span>
+        </button>
+
+      </div>
+    }
       }
 
       @if (!isLoading && !errorMessage && quizzes.length === 0) {
@@ -195,6 +232,7 @@
         </button>
       </div>
     </div>
+ 
 
   </main>
 

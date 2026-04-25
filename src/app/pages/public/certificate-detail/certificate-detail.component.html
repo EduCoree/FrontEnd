@@ -1,77 +1,155 @@
-<div class="bg-[#f5f7fa] text-gray-900 min-h-screen font-sans py-12 px-6 flex flex-col items-center justify-center relative">
+<div class="bg-[#F2F7F6] text-gray-900 min-h-screen font-sans py-12 px-6
+            flex flex-col items-center justify-center gap-7">
 
-  <!-- Loading State -->
-  <div *ngIf="isLoading()" class="flex flex-col items-center justify-center gap-4 py-20">
-    <span class="material-symbols-outlined text-teal-500 text-5xl animate-spin">progress_activity</span>
-    <p class="text-sm font-bold text-gray-400">{{ 'certificate.verifying' | translate }}</p>
+  <!-- Loading -->
+  <div *ngIf="isLoading()" class="flex flex-col items-center gap-4 py-20">
+    <span class="material-symbols-outlined text-5xl animate-spin"
+          style="color: var(--color-primary);">progress_activity</span>
+    <p class="text-sm font-bold text-on-surface-variant">
+      {{ 'certificate.verifying' | translate }}
+    </p>
   </div>
 
-  <!-- Error State -->
+  <!-- Error -->
   <div *ngIf="!isLoading() && errorMsg()"
-       class="max-w-md w-full bg-white rounded-3xl border-2 border-dashed border-red-200 p-12 flex flex-col items-center text-center gap-4 shadow-sm animate-[fadeIn_0.5s_ease-out]">
+       class="max-w-md w-full bg-white rounded-3xl border-2 border-dashed border-red-200
+              p-12 flex flex-col items-center text-center gap-4 shadow-sm">
     <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center">
       <span class="material-symbols-outlined text-3xl text-red-400">gpp_bad</span>
     </div>
-    <div class="space-y-1">
-      <h3 class="text-lg font-black text-gray-800">{{ errorMsg() }}</h3>
-      <p class="text-sm text-gray-500">{{ 'certificate.errorDescription' | translate }}</p>
-    </div>
+    <h3 class="text-lg font-black text-on-surface">{{ errorMsg() }}</h3>
+    <p class="text-sm text-on-surface-variant">{{ 'certificate.errorDescription' | translate }}</p>
   </div>
 
-  <!-- Success State -->
-  <div *ngIf="!isLoading() && !errorMsg() && certificate()" class="max-w-2xl w-full mx-auto space-y-8 animate-[fadeIn_0.5s_ease-out]">
+  <!-- Success -->
+  <ng-container *ngIf="!isLoading() && !errorMsg() && certificate()">
 
-    <div class="bg-white border-4 border-teal-500 rounded-3xl p-10 md:p-14 text-center space-y-6 shadow-2xl relative overflow-hidden">
-      <div class="absolute -top-16 -right-16 w-48 h-48 bg-teal-50 rounded-full mix-blend-multiply opacity-50 blur-3xl pointer-events-none"></div>
+    <!-- Certificate Card -->
+    <div class="w-full max-w-2xl bg-white rounded-3xl overflow-hidden
+                shadow-[0_24px_64px_rgba(46,104,88,0.14)]">
 
-      <div class="flex justify-center mb-2">
-        <h1 class="text-2xl font-black text-teal-600 tracking-tight">EduCore</h1>
+      <!-- Top green banner -->
+      <div class="relative flex flex-col items-center gap-3 px-12 py-9 overflow-hidden"
+           style="background: linear-gradient(135deg, #1e4d41 0%, #2e6858 45%, #3d8a76 100%);">
+        <!-- Pattern -->
+        <div class="absolute inset-0 pointer-events-none"
+             style="background-image: repeating-linear-gradient(45deg,
+               rgba(255,255,255,0.04) 0, rgba(255,255,255,0.04) 1px,
+               transparent 0, transparent 50%);
+               background-size: 14px 14px;"></div>
+        <!-- Deco circles -->
+        <div class="absolute -top-14 -right-14 w-48 h-48 rounded-full pointer-events-none"
+             style="background: rgba(255,255,255,0.06);"></div>
+        <div class="absolute -bottom-12 -left-10 w-36 h-36 rounded-full pointer-events-none"
+             style="background: rgba(255,255,255,0.04);"></div>
+
+        <!-- Brand -->
+        <div class="relative z-10 flex items-center gap-2">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center"
+               style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25);">
+            <span class="material-symbols-outlined text-white text-[18px]"
+                  style="font-variation-settings:'FILL' 1">school</span>
+          </div>
+          <span class="text-lg font-extrabold text-white tracking-tight">EduCore</span>
+        </div>
+
+        <!-- Medal icon -->
+        <div class="relative z-10 w-[72px] h-[72px] rounded-full flex items-center justify-center mt-1"
+             style="background: rgba(255,255,255,0.15);
+                    border: 2px solid rgba(255,255,255,0.3);
+                    backdrop-filter: blur(4px);">
+          <span class="material-symbols-outlined text-white text-4xl"
+                style="font-variation-settings:'FILL' 1">workspace_premium</span>
+        </div>
+
+        <p class="relative z-10 text-[10px] font-bold uppercase tracking-[0.25em]"
+           style="color: rgba(255,255,255,0.65);">
+          {{ 'certificate.completionTitle' | translate }}
+        </p>
       </div>
 
-      <h2 class="text-xs uppercase tracking-widest font-bold text-gray-400">
-        {{ 'certificate.completionTitle' | translate }}
-      </h2>
+      <!-- Body -->
+      <div class="relative px-14 py-10 text-center">
 
-      <div class="py-4">
-        <p class="text-sm font-medium text-gray-500">{{ 'certificate.certifies' | translate }}</p>
-        <h3 class="text-3xl md:text-4xl font-extrabold text-gray-800 mt-2 font-serif">
+        <!-- Corner decorations -->
+        <svg class="absolute top-4 left-4 w-10 h-10" viewBox="0 0 40 40" fill="none">
+          <path d="M4 36 L4 4 L36 4" stroke="rgba(46,104,88,0.15)" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <svg class="absolute top-4 right-4 w-10 h-10 scale-x-[-1]" viewBox="0 0 40 40" fill="none">
+          <path d="M4 36 L4 4 L36 4" stroke="rgba(46,104,88,0.15)" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <svg class="absolute bottom-4 left-4 w-10 h-10 scale-y-[-1]" viewBox="0 0 40 40" fill="none">
+          <path d="M4 36 L4 4 L36 4" stroke="rgba(46,104,88,0.15)" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <svg class="absolute bottom-4 right-4 w-10 h-10 scale-[-1]" viewBox="0 0 40 40" fill="none">
+          <path d="M4 36 L4 4 L36 4" stroke="rgba(46,104,88,0.15)" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+
+        <p class="text-sm text-on-surface-variant font-medium mb-2">
+          {{ 'certificate.certifies' | translate }}
+        </p>
+        <h3 class="font-extrabold text-on-surface leading-none mb-6 tracking-tight"
+            style="font-size: 40px; font-family: Georgia, serif;">
           {{ certificate()?.studentName }}
         </h3>
-      </div>
 
-      <div>
-        <p class="text-sm font-medium text-gray-500">{{ 'certificate.completed' | translate }}</p>
-        <h4 class="text-xl md:text-2xl font-black text-teal-700 mt-2 leading-tight">
+        <!-- Divider -->
+        <div class="flex items-center justify-center gap-3 mb-6">
+          <div class="h-px w-12" style="background: rgba(46,104,88,0.15);"></div>
+          <span style="color: #4db6a0; font-size: 14px;">✦</span>
+          <div class="h-px w-12" style="background: rgba(46,104,88,0.15);"></div>
+        </div>
+
+        <p class="text-sm text-on-surface-variant font-medium mb-2">
+          {{ 'certificate.completed' | translate }}
+        </p>
+        <h4 class="text-xl font-extrabold leading-snug mb-10"
+            style="color: var(--color-primary);">
           {{ certificate()?.courseTitle }}
         </h4>
-      </div>
 
-      <div class="pt-8 flex flex-col items-center gap-2">
-        <div class="w-10 h-px bg-gray-200"></div>
-        <p class="text-xs font-bold text-gray-400">
-          {{ 'certificate.issuedOn' | translate }} {{ certificate()?.issuedAt | date:'longDate' }}
-        </p>
-        <p class="text-[10px] text-gray-300 font-mono mt-1">
-          {{ 'certificate.verificationId' | translate }} {{ certificate()?.certificateUuid }}
-        </p>
+        <!-- Footer info -->
+        <div class="border-t pt-6 flex flex-col items-center gap-1.5"
+             style="border-color: rgba(46,104,88,0.08);">
+          <p class="text-xs font-semibold text-on-surface-variant">
+            {{ 'certificate.issuedOn' | translate }}
+            <span class="font-bold" style="color: var(--color-primary);">
+              {{ certificate()?.issuedAt | date:'longDate' }}
+            </span>
+          </p>
+          <p class="text-[10px] font-mono" style="color: #c5d8d4;">
+            {{ 'certificate.verificationId' | translate }} {{ certificate()?.certificateUuid }}
+          </p>
+        </div>
       </div>
     </div>
 
-    <!-- Actions -->
-    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+    <!-- Action Buttons -->
+    <div class="flex flex-col sm:flex-row gap-4 w-full max-w-2xl justify-center">
+
       <a [href]="getDownloadUrl()" target="_blank"
-         class="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3 bg-white text-gray-700 border border-gray-200 rounded-xl text-sm font-bold shadow-sm hover:bg-gray-50 hover:shadow-md transition-all">
+         class="flex-1 sm:flex-none flex items-center justify-center gap-2
+                px-8 py-3.5 rounded-2xl text-sm font-bold transition-all duration-200
+                hover:-translate-y-0.5 hover:shadow-lg"
+         style="background: #fff;
+                color: var(--color-primary);
+                border: 1.5px solid rgba(46,104,88,0.2);
+                box-shadow: 0 2px 12px rgba(46,104,88,0.08);">
         <span class="material-symbols-outlined text-[18px]">download</span>
         {{ 'certificate.download' | translate }}
       </a>
 
       <a [href]="encodedLinkedinShareUrl" target="_blank"
-         class="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3 bg-[#0a66c2] text-white rounded-xl text-sm font-bold shadow-md hover:bg-[#004182] hover:shadow-lg transition-all">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn" class="w-4 h-4 brightness-0 invert">
+         class="flex-1 sm:flex-none flex items-center justify-center gap-2
+                px-8 py-3.5 bg-[#0a66c2] text-white rounded-2xl text-sm font-bold
+                transition-all duration-200 hover:bg-[#004182] hover:-translate-y-0.5"
+         style="box-shadow: 0 4px 16px rgba(10,102,194,0.3);">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png"
+             alt="LinkedIn" class="w-4 h-4 brightness-0 invert" />
         {{ 'certificate.shareLinkedIn' | translate }}
       </a>
-    </div>
 
-  </div>
+    </div>
+  </ng-container>
 
 </div>
