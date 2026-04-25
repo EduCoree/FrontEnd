@@ -51,6 +51,8 @@ import { ErrorPageComponent } from './pages/error-page/error-page';
 import { AvailableQuizzes } from './pages/Quizzes/available-quizzes/available-quizzes';
 import { StudentAgendaComponent } from './pages/student/student-agenda/student-agenda.component';
 import { MyCertificatesComponent } from './pages/student/my-certificates/my-certificates.component';
+import { PaymentHistoryComponent } from './pages/enroll&payment/payment-history/payment-history.component';
+import { AdminPaymentsComponent } from './pages/enroll&payment/admin-payments/admin-payments.component';
 
 export const routes: Routes = [
    // ── Public ────────────────────────────────────────────────────────────────
@@ -272,7 +274,12 @@ export const routes: Routes = [
   component: AdminStudentDetailComponent,
   title: 'Student Detail — Admin',
 },
-
+{
+  path: 'admin/payments',
+  component: AdminPaymentsComponent,
+  canActivate: [adminGuard],
+  title: 'Payments — Admin',
+},
 
 
 
@@ -347,7 +354,8 @@ export const routes: Routes = [
     {path:'quiz-history',component:QuizHistory},
     { path: 'sessions',component:StudentAgendaComponent,title: 'My Schedule — EduCore'},
     { path: 'certificates',component:MyCertificatesComponent,title: 'My Certificates — EduCore'},
-    { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+    { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+    { path: 'payment-history', component: PaymentHistoryComponent },
   ]
 },
 {

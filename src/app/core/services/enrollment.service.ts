@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 import { 
   EnrollmentDto, 
   CheckoutDto, 
-  CheckoutResponseDto 
+  CheckoutResponseDto, 
+  CashPaymentRequestDto
 } from '../models/enrollment.models';
 import { ApiResponse } from '../models/api-response.model';
 import { environment } from '../../../environments/environment';
@@ -46,4 +47,11 @@ export class EnrollmentService {
       {}
     );
   }
+requestCashPayment(courseId: number): Observable<ApiResponse<CashPaymentRequestDto>> {
+  return this.http.post<ApiResponse<CashPaymentRequestDto>>(
+    `${this.baseUrl}/request-cash/${courseId}`,
+    {}
+  );
+}
+
 }

@@ -21,17 +21,17 @@ export interface EnrollmentDto {
   enrolledAt: string;
 }
 
+
 export interface PaymentDto {
   id: number;
   amount: number;
   currency: string;
-  method: string;
+  method: 'Cash' | 'Card' | 'Free';
   status: 'Pending' | 'Completed' | 'Failed' | 'Cancelled';
   reference?: string;
   paidAt?: string;
-  courseTitle?: string;
+  courseTitle: string;
 }
-
 export interface CashPaymentDto {
   studentId: string;
   courseId: number;
@@ -52,4 +52,14 @@ export interface PagedResult<T> {
   totalPages: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
+}
+export interface CashPaymentRequestDto {
+  id: number;
+  studentId: string;
+  studentName: string;
+  courseId: number;
+  courseTitle: string;
+  amount: number;
+  status: 'Pending' | 'Confirmed' | 'Rejected';
+  requestedAt: string;
 }
