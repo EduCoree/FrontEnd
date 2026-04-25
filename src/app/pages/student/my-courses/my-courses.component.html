@@ -1,134 +1,241 @@
-<div class="md:ml-72 pt-16 min-h-screen">
-  <main class="pt-8 pb-12 px-6 md:px-12 min-h-screen">
+<div class="md:ml-72 pt-12 min-h-screen">
+  <main class="pt-8 pb-12 px-6 md:px-12 min-h-screen bg-[#F2F7F6]">
 
-    <header class="mb-12">
+    <!-- ── HEADER ── -->
+    <header class="mb-10">
       <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
-          <span class="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-2 block">
+          <span class="text-xs font-bold uppercase tracking-[0.2em] mb-2 block"
+                style="color: var(--color-primary);">
             {{ 'myCourses.workspace' | translate }}
           </span>
           <h1 class="text-5xl font-extrabold text-on-surface tracking-tight leading-none">
             {{ 'myCourses.title' | translate }}
           </h1>
         </div>
-        <div class="flex gap-2 bg-surface-container-high p-1.5 rounded-full self-start">
+        <div class="flex gap-1.5 p-1.5 rounded-full self-start"
+             style="background: #e2eeea;">
           <button *ngFor="let tab of tabs" (click)="setFilter(tab.value)"
             [class]="filter === tab.value
-              ? 'px-6 py-2 rounded-full bg-surface-container-lowest text-on-surface text-sm font-semibold shadow-sm transition-all duration-300'
-              : 'px-6 py-2 rounded-full hover:bg-surface-container-lowest/50 text-on-surface-variant text-sm font-medium transition-all duration-300'">
+              ? 'px-6 py-2 rounded-full bg-white text-on-surface text-sm font-semibold shadow-sm transition-all duration-300'
+              : 'px-6 py-2 rounded-full text-on-surface-variant text-sm font-medium transition-all duration-300 hover:bg-white/50'">
             {{ tab.label }}
           </button>
         </div>
       </div>
     </header>
 
-    <div *ngIf="isLoading" class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <div class="md:col-span-2 bg-surface-container-low rounded-xl h-72 animate-pulse"></div>
-      <div *ngFor="let i of [1,2,3,4,5]" class="bg-surface-container-low rounded-xl h-72 animate-pulse"></div>
+    <!-- ── LOADING SKELETON ── -->
+    <div *ngIf="isLoading"
+         class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div class="md:col-span-2 bg-white rounded-2xl h-80 animate-pulse"></div>
+      <div *ngFor="let i of [1,2,3,4,5]"
+           class="bg-white rounded-2xl h-72 animate-pulse"></div>
     </div>
 
+    <!-- ── EMPTY STATE ── -->
     <div *ngIf="!isLoading && filteredCourses.length === 0"
-      class="max-w-7xl mx-auto flex flex-col items-center justify-center py-24 text-center">
+         class="max-w-7xl mx-auto flex flex-col items-center justify-center py-24 text-center">
       <span class="material-symbols-outlined text-6xl text-outline-variant mb-4">menu_book</span>
       <h3 class="text-xl font-bold mb-2">{{ 'myCourses.noCoursesTitle' | translate }}</h3>
       <p class="text-on-surface-variant text-sm mb-6">{{ 'myCourses.noCoursesDesc' | translate }}</p>
       <button routerLink="/courses"
-        class="px-8 py-3 bg-primary text-on-primary rounded-full font-bold hover:bg-primary-dim transition-all">
+              class="px-8 py-3 text-white rounded-full font-bold transition-all hover:-translate-y-0.5"
+              style="background: var(--color-primary);">
         {{ 'myCourses.browseCourses' | translate }}
       </button>
     </div>
 
+    <!-- ── COURSES GRID ── -->
     <section *ngIf="!isLoading && filteredCourses.length > 0"
-      class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+             class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
 
+      <!-- Featured Card -->
       <div *ngIf="featuredCourse"
-        class="md:col-span-2 group relative bg-surface-container-lowest rounded-xl overflow-hidden flex flex-col md:flex-row transition-all duration-500 hover:shadow-xl hover:shadow-primary/5"
-        [routerLink]="['/courses', featuredCourse.courseId]">
-        <div class="md:w-1/2 overflow-hidden h-48 md:h-auto">
-          <img [src]="featuredCourse.coverImage || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600'"
+           class="lg:col-span-2 group bg-white rounded-2xl overflow-hidden flex flex-col
+                  border border-outline-variant/10 cursor-pointer
+                  transition-all duration-300 hover:shadow-[0_12px_40px_rgba(46,104,88,0.13)] hover:-translate-y-0.5"
+           [routerLink]="['/courses', featuredCourse.courseId]">
+
+        <!-- Image with overlays -->
+        <div class="relative overflow-hidden" style="height: 220px;">
+          <img [src]="featuredCourse.coverImage || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800'"
                [alt]="featuredCourse.title"
-               class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+               class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          <div class="absolute inset-0"
+               style="background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 55%);"></div>
+          <!-- Badge -->
+          <span class="absolute top-4 left-4 text-white text-[10px] font-black uppercase tracking-widest
+                       px-3 py-1.5 rounded-full"
+                style="background: var(--color-primary);">
+            {{ (featuredCourse.progressPercentage === 100 ? 'myCourses.completed' : 'myCourses.inProgress') | translate }}
+          </span>
+          <!-- Percentage -->
+          <span class="absolute bottom-4 right-4 text-white text-2xl font-extrabold">
+            {{ featuredCourse.progressPercentage }}%
+          </span>
         </div>
-        <div class="p-8 md:w-1/2 flex flex-col justify-between">
+
+        <!-- Body -->
+        <div class="p-7 flex flex-col gap-4 flex-1">
           <div>
-            <div class="flex justify-between items-start mb-4">
-              <span class="px-3 py-1 bg-primary-container text-on-primary-container text-[10px] font-black uppercase tracking-widest rounded-full">
-                {{ (featuredCourse.progressPercentage === 100 ? 'myCourses.completed' : 'myCourses.inProgress') | translate }}
+            <h2 class="text-2xl font-extrabold text-on-surface tracking-tight leading-snug line-clamp-2 mb-3">
+              {{ featuredCourse.title }}
+            </h2>
+            <div class="flex items-center gap-4">
+              <span class="flex items-center gap-1.5 text-xs text-on-surface-variant font-medium">
+                <span class="material-symbols-outlined text-sm">person</span>
+                {{ featuredCourse.teacherName }}
               </span>
-              <span class="text-primary font-bold text-lg">{{ featuredCourse.progressPercentage }}%</span>
+              <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+              <span class="flex items-center gap-1.5 text-xs text-on-surface-variant font-medium">
+                <span class="material-symbols-outlined text-sm">play_lesson</span>
+                {{ featuredCourse.completedLessons }}/{{ featuredCourse.totalLessons }}
+                {{ 'myCourses.lessons' | translate }}
+              </span>
             </div>
-            <h2 class="text-3xl font-extrabold text-on-surface mb-3 tracking-tight line-clamp-2">{{ featuredCourse.title }}</h2>
-            <div class="flex items-center gap-3 mb-4">
-              <span class="material-symbols-outlined text-sm text-on-surface-variant">person</span>
-              <span class="text-xs font-bold text-on-surface/80">{{ featuredCourse.teacherName }}</span>
-            </div>
-            <p class="text-xs text-on-surface-variant">
-              {{ featuredCourse.completedLessons }}/{{ featuredCourse.totalLessons }} {{ 'myCourses.lessons' | translate }}
-            </p>
           </div>
-          <div class="mt-6">
-            <div class="h-2 w-full bg-surface-container-high rounded-full overflow-hidden mb-6">
-              <div class="h-full bg-gradient-to-r from-primary to-primary-dim rounded-full transition-all"
-                [style.width.%]="featuredCourse.progressPercentage"></div>
+
+          <!-- Progress -->
+          <div>
+            <div class="flex justify-between mb-2">
+              <span class="text-xs text-on-surface-variant font-medium">Progress</span>
+              <span class="text-xs font-bold" style="color: var(--color-primary);">
+                {{ featuredCourse.progressPercentage }}%
+              </span>
             </div>
-            <button class="w-full bg-primary text-on-primary py-4 px-6 rounded-full font-bold flex items-center justify-center gap-2 hover:bg-primary-dim transition-all active:scale-95">
-              {{ 'myCourses.resumeLesson' | translate }}
-              <span class="material-symbols-outlined text-sm">arrow_forward</span>
-            </button>
+            <div class="h-2 w-full rounded-full overflow-hidden" style="background: #e2eeea;">
+              <div class="h-full rounded-full transition-all duration-500"
+                   style="background: linear-gradient(90deg, var(--color-primary), #4db6a0);"
+                   [style.width.%]="featuredCourse.progressPercentage"></div>
+            </div>
           </div>
+
+          <!-- Button -->
+          <button class="w-full text-white font-bold py-3.5 px-6 rounded-xl
+                         flex items-center justify-center gap-2 mt-auto
+                         transition-all duration-200 hover:opacity-90 hover:-translate-y-0.5 active:scale-95"
+                  style="background: var(--color-primary); box-shadow: 0 4px 16px rgba(46,104,88,0.28);">
+            {{ 'myCourses.resumeLesson' | translate }}
+            <span class="material-symbols-outlined text-sm">arrow_forward</span>
+          </button>
         </div>
       </div>
 
+      <!-- Small Cards -->
       <div *ngFor="let course of restCourses"
-        class="group bg-surface-container-lowest rounded-xl p-6 transition-all duration-500 hover:shadow-xl hover:shadow-primary/5 flex flex-col border border-transparent hover:border-primary/10 cursor-pointer"
-        [routerLink]="['/courses', course.courseId]">
-        <div class="aspect-video rounded-lg overflow-hidden mb-6">
-          <img [src]="course.coverImage || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600'"
+           class="group bg-white rounded-2xl overflow-hidden flex flex-col
+                  border border-outline-variant/10 cursor-pointer
+                  transition-all duration-300 hover:shadow-[0_10px_36px_rgba(46,104,88,0.12)] hover:-translate-y-0.5"
+           [routerLink]="['/courses', course.courseId]">
+
+        <!-- Image -->
+        <div class="relative overflow-hidden" style="height: 150px;">
+          <img [src]="course.coverImage || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400'"
                [alt]="course.title"
                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+          <div class="absolute inset-0"
+               style="background: linear-gradient(to top, rgba(0,0,0,0.55) 30%, transparent 65%);"></div>
+          <span class="absolute top-2.5 left-2.5 text-white text-[9px] font-bold uppercase tracking-widest
+                       px-2.5 py-1 rounded-full"
+                style="background: rgba(46,104,88,0.85); backdrop-filter: blur(4px);">
+            {{ (course.progressPercentage === 100 ? 'myCourses.completed' : 'myCourses.inProgress') | translate }}
+          </span>
+          <span class="absolute top-2.5 right-3 text-white text-xs font-bold
+                       px-2 py-0.5 rounded-lg"
+                style="background: rgba(0,0,0,0.35); backdrop-filter: blur(3px);">
+            {{ course.progressPercentage }}%
+          </span>
         </div>
-        <div class="flex-grow">
-          <div class="flex justify-between items-center mb-2">
-            <span class="text-[10px] font-black uppercase tracking-widest text-primary/60">
+
+        <!-- Body -->
+        <div class="p-5 flex flex-col gap-3 flex-1">
+          <div class="flex-1">
+            <p class="text-[10px] font-black uppercase tracking-widest mb-1.5"
+               style="color: #4db6a0;">
               {{ course.completedLessons }}/{{ course.totalLessons }} {{ 'myCourses.lessons' | translate }}
-            </span>
-            <span class="text-xs font-bold text-on-surface-variant">{{ course.progressPercentage }}%</span>
+            </p>
+            <h3 class="text-base font-bold text-on-surface leading-snug line-clamp-2 mb-1
+                       group-hover:text-primary transition-colors">
+              {{ course.title }}
+            </h3>
+            <p class="text-xs text-on-surface-variant">
+              {{ 'myCourses.by' | translate }} {{ course.teacherName }}
+            </p>
           </div>
-          <h3 class="text-xl font-extrabold text-on-surface mb-2 tracking-tight group-hover:text-primary transition-colors line-clamp-2">{{ course.title }}</h3>
-          <p class="text-xs text-on-surface-variant mb-4">{{ 'myCourses.by' | translate }} {{ course.teacherName }}</p>
-        </div>
-        <div class="mt-4">
-          <div class="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden mb-4">
-            <div class="h-full bg-primary rounded-full transition-all" [style.width.%]="course.progressPercentage"></div>
+          <!-- Progress -->
+          <div class="h-1.5 w-full rounded-full overflow-hidden" style="background: #e2eeea;">
+            <div class="h-full rounded-full transition-all"
+                 style="background: var(--color-primary);"
+                 [style.width.%]="course.progressPercentage"></div>
           </div>
-          <button class="w-full bg-surface-container text-on-surface font-bold py-3 px-4 rounded-full text-sm hover:bg-primary-container hover:text-on-primary-container transition-colors active:scale-95">
+          <!-- Button -->
+          <button class="w-full font-bold py-2.5 px-4 rounded-xl text-sm
+                         border transition-all duration-200 hover:-translate-y-0.5 active:scale-95"
+                  style="background: rgba(46,104,88,0.07);
+                         color: var(--color-primary);
+                         border-color: rgba(46,104,88,0.15);"
+                  onmouseover="this.style.background='var(--color-primary)'; this.style.color='#fff';"
+                  onmouseout="this.style.background='rgba(46,104,88,0.07)'; this.style.color='var(--color-primary)';">
             {{ 'myCourses.resume' | translate }}
           </button>
         </div>
       </div>
 
-      <div class="group border-2 border-dashed border-outline-variant/30 rounded-xl p-8 flex flex-col items-center justify-center text-center transition-all duration-300 hover:bg-surface-container-high/30 hover:border-primary/30 cursor-pointer"
-        routerLink="/courses">
-        <div class="w-16 h-16 rounded-full bg-surface-container-high flex items-center justify-center mb-4 transition-transform group-hover:scale-110">
-          <span class="material-symbols-outlined text-primary text-3xl">add</span>
+      <!-- Add / Explore Card -->
+      <div class="group lg:col-span-2 border-2 border-dashed rounded-2xl p-8
+                  flex flex-col items-center justify-center text-center
+                  transition-all duration-300 cursor-pointer"
+           style="border-color: rgba(46,104,88,0.2);"
+           routerLink="/courses"
+           onmouseover="this.style.borderColor='var(--color-primary)'; this.style.background='rgba(46,104,88,0.03)';"
+           onmouseout="this.style.borderColor='rgba(46,104,88,0.2)'; this.style.background='transparent';">
+        <div class="w-14 h-14 rounded-full flex items-center justify-center mb-4
+                    transition-transform duration-200 group-hover:scale-110"
+             style="background: rgba(46,104,88,0.09);">
+          <span class="material-symbols-outlined text-3xl" style="color: var(--color-primary);">add</span>
         </div>
-        <h3 class="text-lg font-bold text-on-surface mb-1">{{ 'myCourses.exploreTitle' | translate }}</h3>
-        <p class="text-sm text-on-surface-variant mb-6">{{ 'myCourses.exploreDesc' | translate }}</p>
-        <button class="text-primary font-bold text-sm uppercase tracking-widest hover:underline">
-          {{ 'myCourses.goToLibrary' | translate }}
-        </button>
+        <h3 class="text-base font-bold text-on-surface mb-1.5">
+          {{ 'myCourses.exploreTitle' | translate }}
+        </h3>
+        <p class="text-sm text-on-surface-variant mb-5 max-w-xs leading-relaxed">
+          {{ 'myCourses.exploreDesc' | translate }}
+        </p>
+        <span class="text-xs font-bold uppercase tracking-widest"
+              style="color: var(--color-primary);">
+          {{ 'myCourses.goToLibrary' | translate }} →
+        </span>
       </div>
 
     </section>
 
-    <aside class="max-w-7xl mx-auto mt-20 relative bg-secondary-container/30 rounded-lg p-10 overflow-hidden">
-      <div class="absolute -top-4 -left-4 text-9xl text-secondary/10 font-serif opacity-40 select-none">"</div>
-      <div class="relative z-10 max-w-2xl">
-        <h4 class="text-xl font-bold text-on-secondary-container mb-4">{{ 'myCourses.tipTitle' | translate }}</h4>
-        <p class="text-on-secondary-container/80 leading-relaxed italic">{{ 'myCourses.tipDesc' | translate }}</p>
-        <div class="mt-6 flex items-center gap-4">
-          <div class="h-0.5 w-12 bg-secondary/30"></div>
-          <span class="text-[10px] font-black uppercase tracking-[0.3em] text-secondary">{{ 'myCourses.facultyInsights' | translate }}</span>
+    <!-- ── TIP BANNER ── -->
+    <aside class="max-w-7xl mx-auto mt-8 relative rounded-2xl p-8 overflow-hidden flex items-center gap-6"
+           style="background: linear-gradient(135deg, var(--color-primary) 0%, #3a7f6d 100%);">
+      <!-- Decorative quote -->
+      <div class="absolute -top-5 left-5 text-[140px] leading-none select-none pointer-events-none"
+           style="color: rgba(255,255,255,0.06); font-family: Georgia, serif;">"</div>
+      <!-- Icon -->
+      <div class="relative z-10 w-12 h-12 rounded-xl flex-shrink-0 flex items-center justify-center"
+           style="background: rgba(255,255,255,0.15);">
+        <span class="material-symbols-outlined text-white text-2xl"
+              style="font-variation-settings:'FILL' 1">tips_and_updates</span>
+      </div>
+      <!-- Text -->
+      <div class="relative z-10">
+        <h4 class="text-base font-bold text-white mb-1.5">
+          {{ 'myCourses.tipTitle' | translate }}
+        </h4>
+        <p class="text-sm leading-relaxed italic max-w-2xl"
+           style="color: rgba(255,255,255,0.72);">
+          {{ 'myCourses.tipDesc' | translate }}
+        </p>
+        <div class="flex items-center gap-3 mt-4">
+          <div class="h-px w-10" style="background: rgba(255,255,255,0.3);"></div>
+          <span class="text-[10px] font-black uppercase tracking-[0.25em]"
+                style="color: rgba(255,255,255,0.55);">
+            {{ 'myCourses.facultyInsights' | translate }}
+          </span>
         </div>
       </div>
     </aside>
