@@ -20,6 +20,8 @@ export class EnrollmentModalComponent {
   isLoading = false;
   errorMsg = '';
   showCashContact = false;
+  cashRequestSent = false;
+cashRequestLoading = false;
 
   // Replace these with your actual admin contact numbers
   adminPhone = '+201092046113';
@@ -101,4 +103,18 @@ export class EnrollmentModalComponent {
   close(): void {
     this.closed.emit();
   }
+  requestCash(): void {
+  this.cashRequestLoading = true;
+  this.errorMsg = '';
+  this.enrollmentService.requestCashPayment(this.course.id).subscribe({
+    next: () => {
+      this.cashRequestLoading = false;
+      this.cashRequestSent = true;
+    },
+    error: (err) => {
+      this.cashRequestLoading = false;
+      this.errorMsg = err?.error?.message ?? 'Failed to send request.';
+    }
+  });
+}
 }

@@ -154,64 +154,62 @@
             </div>
           </div>
 
-          <!-- Pay with Cash -->
-          <div
-            class="flex flex-col bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-4 transition-all hover:shadow-md"
-          >
-            <div class="mb-4">
-              <span
-                class="text-[10px] font-bold text-on-surface-variant tracking-widest uppercase block mb-1"
-                >Pathway 02</span
-              >
-              <h4 class="text-xl font-bold text-on-surface">Offline</h4>
-              <p class="text-xs text-on-surface-variant mt-1">
-                Manual enrollment via local payment.
-              </p>
-            </div>
-            <div class="mt-auto pt-4 border-t border-outline-variant/10 space-y-4">
-              <span class="text-2xl font-bold text-primary">${{ course.price }}</span>
-              <div class="space-y-2">
-                <button
-                  (click)="toggleCashContact()"
-                  class="w-full py-3 px-4 rounded-full bg-surface-container text-on-surface font-bold text-sm flex items-center justify-center gap-2 hover:bg-surface-container-high transition-all active:scale-[0.98]"
-                >
-                  <span class="material-symbols-outlined text-lg">payments</span>
-                  Show Admin Contact
-                </button>
+<!-- Pay with Cash -->
+<div class="flex flex-col bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-4 transition-all hover:shadow-md">
+  <div class="mb-4">
+    <span class="text-[10px] font-bold text-on-surface-variant tracking-widest uppercase block mb-1">Pathway 02</span>
+    <h4 class="text-xl font-bold text-on-surface">Offline</h4>
+    <p class="text-xs text-on-surface-variant mt-1">Manual enrollment via cash payment.</p>
+  </div>
+  <div class="mt-auto pt-4 border-t border-outline-variant/10 space-y-4">
+    <span class="text-2xl font-bold text-primary">${{ course.price }}</span>
 
-                <!-- Contact info if toggled -->
-                <div
-                  *ngIf="showCashContact"
-                  class="bg-primary-container/20 p-4 rounded-xl text-center space-y-3"
-                >
-                  <p class="text-xs text-on-surface-variant font-medium">
-                    Contact admin to complete cash enrollment:
-                  </p>
-                  <div class="flex items-center justify-center gap-3 flex-wrap">
-                    <button
-                      type="button"
-                      (click)="openWhatsApp()"
-                      class="flex items-center gap-1 text-primary font-bold text-sm hover:underline"
-                    >
-                      <span class="material-symbols-outlined text-sm">chat</span>
-                      WhatsApp
-                    </button>
-                    <span class="text-outline-variant">|</span>
-                    <button
-                      type="button"
-                      (click)="callAdmin()"
-                      class="flex items-center gap-1 text-primary font-bold text-sm hover:underline"
-                    >
-                      <span class="material-symbols-outlined text-sm">call</span>
-                      {{ adminPhone }}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+    <ng-container *ngIf="!cashRequestSent">
+      <button
+        (click)="requestCash()"
+        [disabled]="cashRequestLoading"
+        class="w-full py-3 px-4 rounded-full bg-surface-container text-on-surface font-bold text-sm flex items-center justify-center gap-2 hover:bg-surface-container-high transition-all active:scale-[0.98] disabled:opacity-50">
+        <span *ngIf="cashRequestLoading" class="material-symbols-outlined animate-spin text-lg">progress_activity</span>
+        <span *ngIf="!cashRequestLoading" class="material-symbols-outlined text-lg">payments</span>
+        {{ cashRequestLoading ? 'Sending...' : 'Request Cash Payment' }}
+      </button>
 
-          <!-- Empty slot for 3-col grid balance -->
+      <!-- Contact info -->
+      <button (click)="toggleCashContact()"
+        class="w-full text-xs text-on-surface-variant hover:text-primary transition-colors font-medium">
+        Or contact admin directly
+      </button>
+
+      <div *ngIf="showCashContact"
+        class="bg-primary-container/20 p-4 rounded-xl text-center space-y-3">
+        <div class="flex items-center justify-center gap-3 flex-wrap">
+          <button type="button" (click)="openWhatsApp()"
+            class="flex items-center gap-1 text-primary font-bold text-sm hover:underline">
+            <span class="material-symbols-outlined text-sm">chat</span>
+            WhatsApp
+          </button>
+          <span class="text-outline-variant">|</span>
+          <button type="button" (click)="callAdmin()"
+            class="flex items-center gap-1 text-primary font-bold text-sm hover:underline">
+            <span class="material-symbols-outlined text-sm">call</span>
+            {{ adminPhone }}
+          </button>
+        </div>
+      </div>
+    </ng-container>
+
+    <div *ngIf="cashRequestSent"
+      class="bg-primary-container/20 p-4 rounded-xl text-center space-y-2">
+      <span class="material-symbols-outlined text-primary text-3xl">check_circle</span>
+      <p class="text-sm font-bold text-primary">Request Sent!</p>
+      <p class="text-xs text-on-surface-variant">
+        The admin will contact you to confirm your payment.
+      </p>
+    </div>
+
+  </div>
+</div>
+
           <div
             class="hidden lg:flex flex-col bg-surface-container/30 border border-dashed border-outline-variant/20 rounded-xl p-4 items-center justify-center text-center"
           >

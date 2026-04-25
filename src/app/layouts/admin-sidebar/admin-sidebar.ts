@@ -29,6 +29,7 @@ export class AdminSidebarComponent {
   { label: 'adminSidebar.students', icon: 'group', route: '/admin/students', exact: false },
   { label: 'adminSidebar.payouts', icon: 'payments', route: '/admin/payout/dashboard', exact: false },
   { label: 'adminSidebar.forumReports', icon: 'flag', route: '/admin/forum/reports', exact: false },
+  { label: 'adminSidebar.payments', icon: 'payments', route: '/admin/payments', exact: false },
 ];
 
   logout() {
