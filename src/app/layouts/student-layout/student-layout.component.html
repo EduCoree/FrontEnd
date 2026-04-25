@@ -1,91 +1,95 @@
 <div class="bg-surface text-on-surface min-h-screen">
 
-  <aside class="hidden md:flex flex-col py-8 gap-2 bg-surface-container h-screen w-72 fixed left-0 top-0 z-40">
-    <div class="px-8 mb-10">
-      <h2 class="text-primary font-extrabold text-xl">EduCore</h2>
-      <p class="text-[10px] font-bold uppercase tracking-[0.1em] text-on-surface-variant mt-1">
-        {{ 'studentSidebar.portal' | translate }}
-      </p>
+  <!-- Sidebar -->
+  <aside [class.w-64]="isOpen()"
+         [class.w-16]="!isOpen()"
+         class="hidden lg:flex flex-col fixed start-0 top-20 h-[calc(100vh-5rem)] bg-surface-container-low border-e border-outline-variant/20 z-50 transition-all duration-300">
+
+    <!-- Header -->
+    <div class="flex items-center gap-3 p-4 border-b border-outline-variant/20"
+         [class.justify-between]="isOpen()"
+         [class.justify-center]="!isOpen()">
+      @if (isOpen()) {
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg bg-primary flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-on-primary text-lg">school</span>
+          </div>
+          <div>
+            <p class="text-sm font-bold text-on-surface">EduCore</p>
+            <p class="text-[10px] text-on-surface-variant">{{ 'studentSidebar.portal' | translate }}</p>
+          </div>
+        </div>
+      }
+      <button (click)="toggle()"
+              class="w-8 h-8 rounded-lg hover:bg-surface-container flex items-center justify-center transition-colors flex-shrink-0">
+        <span class="material-symbols-outlined text-on-surface-variant text-lg">
+          {{ getToggleIcon() }}
+        </span>
+      </button>
     </div>
 
-    <nav class="flex-1 space-y-1 px-4">
-      <a routerLink="/student/dashboard"
-        routerLinkActive="bg-surface-container-lowest text-primary shadow-sm"
-        [routerLinkActiveOptions]="{ exact: true }"
-        class="flex items-center gap-4 py-3 px-6 rounded-full text-on-surface-variant hover:text-primary transition-all">
-        <span class="material-symbols-outlined">dashboard</span>
-        <span class="font-bold uppercase tracking-[0.05em] text-xs">{{ 'studentSidebar.dashboard' | translate }}</span>
-      </a>
-
-      <a routerLink="/student/my-courses"
-        routerLinkActive="bg-surface-container-lowest text-primary shadow-sm"
-        class="flex items-center gap-4 py-3 px-6 rounded-full text-on-surface-variant hover:text-primary transition-all">
-        <span class="material-symbols-outlined">menu_book</span>
-        <span class="font-bold uppercase tracking-[0.05em] text-xs">{{ 'studentSidebar.myCourses' | translate }}</span>
-      </a>
-
-      <a routerLink="/student/quizzes"
-        routerLinkActive="bg-surface-container-lowest text-primary shadow-sm"
-        class="flex items-center gap-4 py-3 px-6 rounded-full text-on-surface-variant hover:text-primary transition-all">
-        <span class="material-symbols-outlined">menu_book</span>
-        <span class="font-bold uppercase tracking-[0.05em] text-xs">{{ 'studentSidebar.myQuizzes' | translate }}</span>
-      </a>
-      <a routerLink="/student/quiz-history"
-        routerLinkActive="bg-surface-container-lowest text-primary shadow-sm"
-        class="flex items-center gap-4 py-3 px-6 rounded-full text-on-surface-variant hover:text-primary transition-all">
-        <span class="material-symbols-outlined">menu_book</span>
-        <span class="font-bold uppercase tracking-[0.05em] text-xs">{{ 'studentSidebar.QuizHistory' | translate }}</span>
-      </a>
-
-      <a routerLink="/student/sessions"
-        routerLinkActive="bg-surface-container-lowest text-primary shadow-sm"
-        class="flex items-center gap-4 py-3 px-6 rounded-full text-on-surface-variant hover:text-primary transition-all">
-        <span class="material-symbols-outlined">podcasts</span>
-        <span class="font-bold uppercase tracking-[0.05em] text-xs">{{ 'studentSidebar.liveSessions' | translate }}</span>
-      </a>
-
-      <a routerLink="/student/certificates"
-        routerLinkActive="bg-surface-container-lowest text-primary shadow-sm"
-        class="flex items-center gap-4 py-3 px-6 rounded-full text-on-surface-variant hover:text-primary transition-all">
-        <span class="material-symbols-outlined">verified</span>
-        <span class="font-bold uppercase tracking-[0.05em] text-xs">{{ 'studentSidebar.certificates' | translate }}</span>
-      </a>
-
-      <a routerLink="/student/messages"
-        routerLinkActive="bg-surface-container-lowest text-primary shadow-sm"
-        class="flex items-center gap-4 py-3 px-6 rounded-full text-on-surface-variant hover:text-primary transition-all">
-        <span class="material-symbols-outlined">chat_bubble</span>
-        <span class="font-bold uppercase tracking-[0.05em] text-xs">{{ 'studentSidebar.messages' | translate }}</span>
-      </a>
+    <!-- Nav -->
+    <nav class="flex-1 p-2 space-y-0.5">
+      @for (item of navItems; track item.route) {
+        <a [routerLink]="item.route"
+           routerLinkActive #rla="routerLinkActive"
+           [routerLinkActiveOptions]="{ exact: !! item.exact }"
+           class="flex items-center gap-3 px-3 py-2 rounded-xl transition-colors group"
+           [class.bg-primary]="rla.isActive"
+           [class.text-on-primary]="rla.isActive"
+           [class.hover:bg-surface-container]="!rla.isActive"
+           [class.text-on-surface-variant]="!rla.isActive"
+           [class.justify-center]="!isOpen()">
+          <span class="material-symbols-outlined text-xl flex-shrink-0"
+                [class.text-on-primary]="rla.isActive"
+                [class.text-primary]="!rla.isActive">
+            {{ item.icon }}
+          </span>
+          @if (isOpen()) {
+            <span class="text-sm font-medium whitespace-nowrap">
+              {{ item.labelKey | translate }}
+            </span>
+          }
+        </a>
+      }
     </nav>
 
-    <div class="px-4 mt-auto space-y-1">
-      <button routerLink="/courses"
-        class="w-full bg-primary text-on-primary py-4 rounded-full font-bold text-sm mb-4 hover:bg-primary-dim transition-all active:scale-95">
-        {{ 'studentSidebar.continueLearning' | translate }}
-      </button>
+    <!-- Footer: Continue Learning + Settings + Support + Logout -->
+   <!-- Footer: Continue Learning + Logout فقط -->
+<div class="p-3 border-t border-outline-variant/20 space-y-1">
 
-      <a routerLink="/student/settings"
-        class="flex items-center gap-4 py-3 px-6 rounded-full text-on-surface-variant hover:text-primary transition-all">
-        <span class="material-symbols-outlined">settings</span>
-        <span class="font-bold uppercase tracking-[0.05em] text-xs">{{ 'studentSidebar.settings' | translate }}</span>
-      </a>
+  @if (isOpen()) {
+    <button routerLink="/courses"
+      class="w-full bg-primary text-on-primary py-2.5 rounded-xl font-bold text-sm mb-2 hover:bg-primary/90 transition-all active:scale-95">
+      {{ 'studentSidebar.continueLearning' | translate }}
+    </button>
+  } @else {
+    <a routerLink="/courses"
+      class="flex items-center justify-center py-2.5 rounded-xl text-primary hover:bg-surface-container transition-colors">
+      <span class="material-symbols-outlined text-xl">play_circle</span>
+    </a>
+  }
 
-      <a routerLink="/student/support"
-        class="flex items-center gap-4 py-3 px-6 rounded-full text-on-surface-variant hover:text-primary transition-all">
-        <span class="material-symbols-outlined">help</span>
-        <span class="font-bold uppercase tracking-[0.05em] text-xs">{{ 'studentSidebar.support' | translate }}</span>
-      </a>
+  <button
+    class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-error hover:bg-error/5 transition-colors"
+    [class.justify-center]="!isOpen()">
+    <span class="material-symbols-outlined text-xl flex-shrink-0">logout</span>
+    @if (isOpen()) {
+      <span class="text-sm font-medium">{{ 'studentSidebar.logout' | translate }}</span>
+    }
+  </button>
 
-      <button
-        class="w-full flex items-center gap-4 py-3 px-6 rounded-full text-error hover:bg-error/5 transition-all">
-        <span class="material-symbols-outlined">logout</span>
-        <span class="font-bold uppercase tracking-[0.05em] text-xs">{{ 'studentSidebar.logout' | translate }}</span>
-      </button>
-    </div>
+</div>
   </aside>
 
-  <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-surface/90 backdrop-blur-xl border-t border-outline-variant/10 px-6 py-3 flex justify-between items-center z-50">
+  <!-- Spacer for sidebar -->
+  <div [class.lg:ms-64]="isOpen()"
+       [class.lg:ms-16]="!isOpen()"
+       class="transition-all duration-300 h-0">
+  </div>
+
+  <!-- Mobile Bottom Nav -->
+  <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-surface/90 backdrop-blur-xl border-t border-outline-variant/10 px-6 py-3 flex justify-between items-center z-50">
     <a routerLink="/student/dashboard" routerLinkActive="text-primary"
       class="flex flex-col items-center gap-1 text-on-surface-variant">
       <span class="material-symbols-outlined">dashboard</span>
