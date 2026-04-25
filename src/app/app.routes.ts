@@ -36,7 +36,7 @@ import { CourseDetailComponent } from './pages/Courses/course-detail/course-deta
 import { CoursesListComponent } from './pages/Courses/courses-list/courses-list.component';
 import { StudentLayoutComponent } from './layouts/student-layout/student-layout.component';
 import { StudentDashboardComponent } from './pages/student/student-dashboard/student-dashboard.component';
-
+import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard';
 import { AdminCoursesComponent } from './pages/admin-courses/admin-courses';
 import { authGuard } from './core/guards/auth-guard';
 import { roleGuard } from './core/guards/role-guard';
@@ -124,7 +124,7 @@ export const routes: Routes = [
     title: 'Courses — Admin',
   },
  //Dashboard !!!! do not add guard yet
-// { path: 'admin/dashboard', component: AdminDashboardComponent  },
+{ path: 'admin/dashboard', component: AdminDashboardComponent  },
  
 { path: 'teacher/dashboard/2', component: TeacherDashboardComponent  },
  
@@ -274,12 +274,6 @@ export const routes: Routes = [
 },
 
 
-//Dashboard !!!! do not add guard yet
-// { path: 'admin/dashboard', component: AdminDashboardComponent  },
-
-{ path: 'teacher/dashboard/2', component: TeacherDashboardComponent  },
-
-// { path: 'student/dashboard/2', component: StudentDashboardComponent },
 
    
 
