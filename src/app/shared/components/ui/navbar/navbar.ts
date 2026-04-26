@@ -1,6 +1,6 @@
 import { NotificationService } from './../../../../core/services/notification.service';
 
-import { ElementRef, HostListener, OnInit } from '@angular/core';
+import { ChangeDetectorRef, ElementRef, HostListener, OnInit } from '@angular/core';
 // src/app/layouts/navbar/navbar.ts
 
 
@@ -32,7 +32,6 @@ export class Navbar {
   isDropdownOpen=false;
   errorMessage: string | null = null;
   eRef = inject(ElementRef);
-
   userProfile$ = this.user.getMe();
   mobileMenuOpen = signal(false);
   currentLang = this.langService.currentLang; 
@@ -109,7 +108,7 @@ export class Navbar {
       {
         next:()=>
         {
-          this.notification.loadNotifications(1)
+          this.notification.loadNotifications(1).subscribe();
           this.isMarkingRead=false;
         },
         error: () => {
@@ -164,6 +163,16 @@ if (notification.metadata) {
       this.router.navigate(['/quiz/intro', notification.entityId]);
         }
         break;
+      case 'Enrollment':
+        this.router.navigate(['/courses', notification.entityId]); // ← course page
+        break;
+      case 'LiveSession':
+        this.router.navigate(['/student/sessions']); // ← course page
+        break;
+      case 'SessionCancelled':
+        this.router.navigate(['/student/sessions']); // ← course page
+        break;
+        
       default:
           this.router.navigate(['/notifications'])
         
@@ -174,6 +183,9 @@ if (notification.metadata) {
     const icons: Record<string, string> = {
       'QuizResult': 'quiz',
       'ForumReply': 'forum',
+      'Enrollment': 'person_add',
+       'LiveSession':'podcasts',
+       'SessionCancelled':'podcasts'
     };
     
     return icons[type] || 'notifications';
