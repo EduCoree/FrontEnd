@@ -9,7 +9,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:7275',
+  apiUrl: 'http://localhost:5051',
 
   // Google Drive Picker
   googleApiKey: 'AIzaSyCvReXB2KMVt6gOD3OBChWg1eAqbZwV2c0',

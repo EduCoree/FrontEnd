@@ -12,6 +12,7 @@ import { QuizComponent } from './pages/Quizzes/Get-Quizzez/get-quizzes/get-quizz
 import { QuizBuilderComponent } from './pages/Quizzes/quiz-builder/quiz-builder';
 import { CreateQuizComponent } from './pages/Quizzes/CreateQuiz/create-quiz/create-quiz';
 import { Home } from './pages/home/home';
+import { CourseWorkspaceComponent } from './pages/student/course-workspace/course-workspace.component';
 
 
 import { Routes } from '@angular/router';
@@ -631,6 +632,12 @@ export const routes: Routes = [
       import('./pages/student/lesson-player/lesson-player.component')
         .then(m => m.LessonPlayerComponent),
     title: 'Lesson Player — EduCore',
+  },
+  {
+    path: 'student/courses/:courseId',
+    canActivate: [authGuard],
+    component: CourseWorkspaceComponent,
+    title: 'Course Workspace — EduCore',
   },
 
 
