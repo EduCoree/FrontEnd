@@ -118,6 +118,15 @@ export class Notification {
           ? this.router.navigate(['/Quiz', notification.entityId, 'result', extra.attemptId])
           : this.router.navigate(['/quiz/intro', notification.entityId]);
         break;
+          case 'Enrollment':
+        this.router.navigate(['/courses', notification.entityId]); // ← course page
+        break;
+      case 'LiveSession':
+        this.router.navigate(['/student/sessions']); 
+        break;
+      case 'SessionCancelled':
+        this.router.navigate(['/student/sessions']); 
+        break;
   
       default:
         console.warn('Unknown notification type:', notification.type);
@@ -162,8 +171,9 @@ export class Notification {
     const map: Record<string, string> = {
       QuizResult:    'quiz',
       ForumReply:    'forum',
-      NewEnrollment: 'person_add',
+      Enrollment: 'person_add',
       LiveSession:   'podcasts',
+      SessionCancelled: 'podcasts'
     };
     return map[type] ?? 'notifications';
   }
@@ -172,8 +182,9 @@ export class Notification {
     const map: Record<string, string> = {
       QuizResult:    'bg-[#E3F2FD]',
       ForumReply:    'bg-tertiary-container/30',
-      NewEnrollment: 'bg-secondary-container',
-      LiveSession:   'bg-error-container/30',
+      Enrollment: 'bg-secondary-container',
+      LiveSession:   'bg-secondary-container',
+      SessionCancelled:  'bg-error-container/30',
     };
     return map[type] ?? 'bg-surface-container';
   }
@@ -182,9 +193,13 @@ export class Notification {
     const map: Record<string, string> = {
       QuizResult:    'text-[#1E88E5]',
       ForumReply:    'text-tertiary',
-      NewEnrollment: 'text-on-secondary-container',
-      LiveSession:   'text-error',
+      Enrollment: 'text-on-secondary-container',
+      LiveSession:  'text-on-secondary-container',
+      SessionCancelled: 'text-error',
+   
+     
     };
+    
     return map[type] ?? 'text-primary';
   }
  
