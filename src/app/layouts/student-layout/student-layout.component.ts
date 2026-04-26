@@ -47,5 +47,6 @@ export class StudentLayoutComponent {
   { route: '/student/messages',     icon: 'chat_bubble',  labelKey: 'studentSidebar.messages' },
   { route: '/student/settings',     icon: 'settings',     labelKey: 'studentSidebar.settings' },
   { route: '/student/support',      icon: 'help',         labelKey: 'studentSidebar.support' },
+  { route: '/student/payment-history',      icon: 'payments',         labelKey: 'studentSidebar.payments' },
 ];
 }
