@@ -1416,7 +1416,8 @@
   "learn": "تعلم",
   "live": "مباشر",
   "certs": "شهادات",
-  "profile": "الملف"
+  "profile": "الملف",
+  "payments": "المدفوعات"
 },
 "adminTopbar": {
   "notifications": "الإشعارات",

@@ -1439,7 +1439,8 @@
   "learn": "Learn",
   "live": "Live",
   "certs": "Certs",
-  "profile": "Profile"
+  "profile": "Profile",
+  "payments": "Payments"
 },
 "adminTopbar": {
   "notifications": "Notifications",
