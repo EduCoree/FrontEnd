@@ -19,6 +19,7 @@ import { TranslateModule } from '@ngx-translate/core';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule , TranslateModule],
   templateUrl: './teacher-sessions.component.html',
+  styleUrl: './teacher-sessions.component.css',
 })
 export class TeacherSessionsComponent implements OnInit {
 
@@ -108,7 +109,11 @@ export class TeacherSessionsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.courseId = Number(this.route.snapshot.paramMap.get('courseId'));
+    // Parent shell route param is :id  (teacher/courses/edit/:id)
+    const parentParams = this.route.parent?.snapshot.paramMap;
+    this.courseId = Number(
+      parentParams?.get('id') ?? this.route.snapshot.paramMap.get('courseId')
+    );
     this.loadSessions();
   }
 
