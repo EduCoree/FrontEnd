@@ -418,6 +418,13 @@ export class EditCourseComponent implements OnInit {
     this.safePreviewUrl.set(null);
   }
 
+  goToLessonManager(): void {
+    const lesson = this.selectedLesson();
+    if (lesson) {
+      this.router.navigate(['/teacher/courses', this.courseId, 'lessons', lesson.id]);
+    }
+  }
+
   // YouTube helpers
   getYouTubeId(url: string): string | null {
     const regex = /(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|v\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;

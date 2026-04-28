@@ -298,9 +298,14 @@
         <h2 class="ec-lp-title">{{ selectedLesson()?.title ?? 'Lesson Editor' }}</h2>
       </div>
     </div>
-    <button class="ec-lp-close" (click)="closeLessonEditor()">
-      <span class="material-symbols-outlined">close</span>
-    </button>
+    <div class="ec-lp-header__actions">
+      <button class="ec-lp-action-btn" (click)="goToLessonManager()" title="Open full lesson manager">
+        <span class="material-symbols-outlined">open_in_new</span>
+      </button>
+      <button class="ec-lp-close" (click)="closeLessonEditor()">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
   </div>
 
   <!-- Flash Messages -->

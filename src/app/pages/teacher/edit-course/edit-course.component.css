@@ -1034,6 +1034,13 @@
   text-overflow: ellipsis;
 }
 
+.ec-lp-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ec-lp-action-btn,
 .ec-lp-close {
   width: 2.25rem;
   height: 2.25rem;
@@ -1049,7 +1056,10 @@
   flex-shrink: 0;
 }
 
+.ec-lp-action-btn:hover,
 .ec-lp-close:hover { background: rgba(255,255,255,0.3); }
+
+.ec-lp-action-btn .material-symbols-outlined,
 .ec-lp-close .material-symbols-outlined { font-size: 1.15rem; }
 
 /* ── Flash Messages ─────────────────────────────────────────── */
