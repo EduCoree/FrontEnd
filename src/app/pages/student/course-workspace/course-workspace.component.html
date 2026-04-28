@@ -88,24 +88,43 @@
         </div>
 
         <!-- ── State: YouTube / Vimeo iframe ──────────────────────────── -->
-        <ng-container *ngIf="activeLesson() && !isVideoLoading() && !videoError() && safeUrl() && (provider() === 'youtube' || provider() === 'vimeo')">
+        <ng-container *ngIf="activeLesson() && !isVideoLoading() && !videoError() && (youtubeVideoId() || vimeoVideoId()) && (provider() === 'youtube' || provider() === 'vimeo')">
           <div class="cw-player-wrap" style="position:absolute;top:0;right:0;bottom:0;left:0;display:flex;flex-direction:column;">
             <!-- Top bar: lesson title + close -->
-            <div class="cw-player-bar" style="flex-shrink:0;">
-              <div class="cw-player-bar__info">
-                <span class="cw-player-bar__dot"></span>
-                <span class="cw-player-bar__label">{{ provider() === 'youtube' ? 'YouTube' : 'Vimeo' }}</span>
-              </div>
+            <div class="cw-player-bar" style="flex-shrink:0;z-index: 10;">
+
               <p class="cw-player-bar__title">{{ activeLesson()!.title }}</p>
               <button class="cw-player-bar__close" (click)="closePlayer()">
                 <span class="material-symbols-outlined">close</span>
               </button>
             </div>
-            <!-- iframe -->
+            <!-- plyr container -->
             <div class="cw-iframe-wrap" style="flex:1;min-height:0;overflow:hidden;">
-              <iframe [src]="safeUrl()" class="cw-iframe" frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-                allowfullscreen></iframe>
+              <div id="plyr-player" 
+                   [attr.data-plyr-provider]="provider()" 
+                   [attr.data-plyr-embed-id]="provider() === 'youtube' ? youtubeVideoId() : vimeoVideoId()">
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- ── State: Google Drive iframe ──────────────────────────── -->
+        <ng-container *ngIf="activeLesson() && !isVideoLoading() && !videoError() && signedUrl() && provider() === 'drive'">
+          <div class="cw-player-wrap" style="position:absolute;top:0;right:0;bottom:0;left:0;display:flex;flex-direction:column;background:black;">
+            <!-- Top bar -->
+            <div class="cw-player-bar" style="flex-shrink:0;z-index:10;background:rgba(0,0,0,0.6);">
+              <p class="cw-player-bar__title text-white">{{ activeLesson()!.title }}</p>
+              <button class="cw-player-bar__close text-white" (click)="closePlayer()">
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <!-- Drive Iframe -->
+            <div class="cw-iframe-wrap" style="flex:1;min-height:0;overflow:hidden;border-radius:12px;">
+              <iframe [src]="safeUrl()" 
+                      style="width:100%;height:100%;border:none;border-radius:0 0 12px 12px;" 
+                      allow="autoplay; fullscreen" 
+                      allowfullscreen>
+              </iframe>
             </div>
           </div>
         </ng-container>
@@ -114,10 +133,7 @@
         <ng-container *ngIf="activeLesson() && !isVideoLoading() && !videoError() && signedUrl() && provider() === 'self'">
           <div class="cw-player-wrap" style="position:absolute;top:0;right:0;bottom:0;left:0;display:flex;flex-direction:column;">
             <div class="cw-player-bar" style="flex-shrink:0;">
-              <div class="cw-player-bar__info">
-                <span class="cw-player-bar__dot"></span>
-                <span class="cw-player-bar__label">Secure Video</span>
-              </div>
+
               <p class="cw-player-bar__title">{{ activeLesson()!.title }}</p>
               <button class="cw-player-bar__close" (click)="closePlayer()">
                 <span class="material-symbols-outlined">close</span>
@@ -138,17 +154,28 @@
         <div class="cw-complete-bar__info">
           <span class="material-symbols-outlined cw-complete-bar__icon">{{getLessonIcon(activeLesson()!.type)}}</span>
           <div>
-            <p class="cw-complete-bar__title">{{ activeLesson()!.title }}</p>
+            <p class="cw-complete-bar__title">
+              {{ activeLesson()!.title }} 
+              <small style="font-size: 8px;">Debug [URL: {{ signedUrl() }}, prov: {{ provider() }}]</small>
+            </p>
             <p class="cw-complete-bar__sub">Watch the full video, then mark as complete</p>
           </div>
         </div>
 
-        <button *ngIf="!isLessonComplete()" class="cw-btn cw-btn--primary" [disabled]="isCompleting()" (click)="markComplete()">
-          <span class="material-symbols-outlined">check_circle</span>
-          {{ isCompleting() ? 'Saving…' : 'Mark Complete' }}
-        </button>
-        <div *ngIf="isLessonComplete()" class="cw-done-badge">
-          <span class="material-symbols-outlined">task_alt</span> Completed
+        <div style="display: flex; gap: 1rem; align-items: center;">
+          <div *ngIf="isLessonComplete()" class="cw-done-badge">
+            <span class="material-symbols-outlined">task_alt</span> Completed
+          </div>
+
+          <button *ngIf="!isLastLesson()" class="cw-btn cw-btn--primary" [disabled]="isCompleting()" (click)="markComplete(true)">
+            <span class="material-symbols-outlined">skip_next</span>
+            {{ isCompleting() ? 'Saving…' : 'Next' }}
+          </button>
+
+          <button *ngIf="isLastLesson() && !isLessonComplete()" class="cw-btn cw-btn--primary" [disabled]="isCompleting()" (click)="markComplete(false)">
+            <span class="material-symbols-outlined">check_circle</span>
+            {{ isCompleting() ? 'Saving…' : 'Mark Complete' }}
+          </button>
         </div>
       </div>
 

@@ -1,7 +1,6 @@
-// src/app/pages/student/course-workspace/course-workspace.component.ts
 import { Component, OnInit, OnDestroy, signal, computed } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { PublicCourseService } from '../../../core/services/public-course.service';
 import { ProgressService } from '../../../core/services/progress';
@@ -9,6 +8,8 @@ import { StudentContentService } from '../../../core/services/student-content';
 import { CourseDetailDto, LessonDto } from '../../../core/models/course';
 import { CourseProgress, ResumeLesson } from '../../../core/models/progress';
 import { TranslateModule } from '@ngx-translate/core';
+
+declare var Plyr: any;
 
 @Component({
   selector: 'app-course-workspace',
@@ -33,6 +34,8 @@ export class CourseWorkspaceComponent implements OnInit, OnDestroy {
   signedUrl        = signal<string | null>(null);
   safeUrl          = signal<SafeResourceUrl | null>(null);
   provider         = signal<string>('');        // 'youtube' | 'vimeo' | 'self'
+  youtubeVideoId   = signal<string | null>(null);
+  vimeoVideoId     = signal<string | null>(null);
   isVideoLoading   = signal(false);
   videoError       = signal('');
   isCompleting     = signal(false);
@@ -40,6 +43,7 @@ export class CourseWorkspaceComponent implements OnInit, OnDestroy {
   expiresAt        = signal<string | null>(null);
   currentPosSecs   = signal(0);
 
+  private plyrInstance: any = null;
   private heartbeatInterval: ReturnType<typeof setInterval> | null = null;
   private expiryInterval:    ReturnType<typeof setInterval> | null = null;
   private isExpired = false;
@@ -56,6 +60,37 @@ export class CourseWorkspaceComponent implements OnInit, OnDestroy {
   totalLessons = computed(() =>
     this.course()?.sections?.reduce((acc, s) => acc + s.lessons.length, 0) ?? 0
   );
+
+  allLessons = computed<LessonDto[]>(() => {
+    const list: LessonDto[] = [];
+    const sections = this.course()?.sections;
+    if (sections) {
+      for (const s of sections) {
+        if (s.lessons) {
+          list.push(...s.lessons);
+        }
+      }
+    }
+    return list;
+  });
+
+  activeLessonIndex = computed<number>(() => {
+    const l = this.activeLesson();
+    if (!l) return -1;
+    return this.allLessons().findIndex(x => x.id === l.id);
+  });
+
+  isLastLesson = computed<boolean>(() => {
+    const idx = this.activeLessonIndex();
+    if (idx === -1) return false;
+    return idx === this.allLessons().length - 1;
+  });
+
+  nextLesson = computed<LessonDto | null>(() => {
+    const idx = this.activeLessonIndex();
+    if (idx === -1 || idx === this.allLessons().length - 1) return null;
+    return this.allLessons()[idx + 1];
+  });
 
   constructor(
     private route:   ActivatedRoute,
@@ -132,6 +167,7 @@ export class CourseWorkspaceComponent implements OnInit, OnDestroy {
     this.isLessonComplete.set(this.isCompleted(lesson.id));
     this.isExpired = false;
     this.currentPosSecs.set(0);
+    this.destroyPlyr();
     this.clearIntervals();
 
     this.studentContentService.getVideoSignedUrl(lesson.id).subscribe({
@@ -144,6 +180,10 @@ export class CourseWorkspaceComponent implements OnInit, OnDestroy {
         this.startExpiryWatcher(res.expiresAt);
         this.startHeartbeat(lesson.id);
         this.isVideoLoading.set(false);
+        
+        if (p === 'youtube' || p === 'vimeo') {
+          setTimeout(() => this.initPlyr(), 0);
+        }
       },
       error: (err) => {
         if (err?.status === 403) {
@@ -158,9 +198,12 @@ export class CourseWorkspaceComponent implements OnInit, OnDestroy {
 
   closePlayer(): void {
     this.clearIntervals();
+    this.destroyPlyr();
     this.activeLesson.set(null);
     this.signedUrl.set(null);
     this.safeUrl.set(null);
+    this.youtubeVideoId.set(null);
+    this.vimeoVideoId.set(null);
     this.videoError.set('');
     this.isExpired = false;
   }
@@ -170,9 +213,18 @@ export class CourseWorkspaceComponent implements OnInit, OnDestroy {
     this.currentPosSecs.set(Math.floor(v.currentTime));
   }
 
-  markComplete(): void {
+  markComplete(goToNext: boolean = false): void {
     const lesson = this.activeLesson();
-    if (!lesson || this.isLessonComplete()) return;
+    if (!lesson) return;
+
+    if (this.isLessonComplete()) {
+      if (goToNext) {
+        const next = this.nextLesson();
+        if (next) this.selectLesson(next);
+      }
+      return;
+    }
+
     this.isCompleting.set(true);
     this.progressService.markLessonComplete(lesson.id).subscribe({
       next: () => {
@@ -180,7 +232,13 @@ export class CourseWorkspaceComponent implements OnInit, OnDestroy {
         this.isCompleting.set(false);
         // refresh progress
         this.progressService.getCourseProgress(this.courseId()).subscribe({
-          next: (p) => this.progress.set(p),
+          next: (p) => {
+             this.progress.set(p);
+             if (goToNext) {
+               const next = this.nextLesson();
+               if (next) this.selectLesson(next);
+             }
+          },
           error: () => {},
         });
       },
@@ -198,16 +256,72 @@ export class CourseWorkspaceComponent implements OnInit, OnDestroy {
   private detectProvider(url: string): string {
     if (/youtube\.com|youtu\.be/.test(url)) return 'youtube';
     if (/vimeo\.com/.test(url)) return 'vimeo';
+    if (/drive\.google\.com/.test(url)) return 'drive';
     return 'self';
   }
 
   private buildSafeUrl(url: string, provider: string): void {
+    this.youtubeVideoId.set(null);
+    this.vimeoVideoId.set(null);
+    
     if (provider === 'youtube') {
       const m = url.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|v\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
-      if (m) this.safeUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube.com/embed/${m[1]}?autoplay=1`));
+      if (m) {
+        this.youtubeVideoId.set(m[1]);
+        this.safeUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube.com/embed/${m[1]}?autoplay=1`));
+      }
     } else if (provider === 'vimeo') {
       const m = url.match(/vimeo\.com\/(\d+)/);
-      if (m) this.safeUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(`https://player.vimeo.com/video/${m[1]}?autoplay=1`));
+      if (m) {
+        this.vimeoVideoId.set(m[1]);
+        this.safeUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(`https://player.vimeo.com/video/${m[1]}?autoplay=1`));
+      }
+    } else if (provider === 'drive') {
+      let previewUrl = url;
+      // Extract from drive.google.com/uc?export=download&id=XYZ
+      const match = url.match(/id=([^&]+)/);
+      if (match) {
+        previewUrl = `https://drive.google.com/file/d/${match[1]}/preview`;
+      } else if (url.includes('/view')) {
+        previewUrl = url.replace('/view', '/preview');
+      }
+      this.safeUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(previewUrl));
+    }
+  }
+
+  private initPlyr(): void {
+    if (typeof window === 'undefined' || typeof Plyr === 'undefined') return;
+
+    this.destroyPlyr();
+    try {
+      this.plyrInstance = new Plyr('#plyr-player', {
+        youtube: { noCookie: false, rel: 0, showinfo: 0, iv_load_policy: 3, modestbranding: 1 },
+        vimeo: { byline: false, portrait: false, title: false, transparent: false, responsive: true }
+      });
+      
+    // Attempt auto-play gracefully if browser allows
+    this.plyrInstance.on('ready', () => {
+      const playPromise = this.plyrInstance?.play();
+      if (playPromise !== undefined && typeof (playPromise as any).catch === 'function') {
+        (playPromise as Promise<void>).catch(() => {});
+      }
+    });
+
+    // Auto-complete lesson and drop the UI nicely
+    this.plyrInstance.on('ended', () => {
+      this.markComplete();
+      // Emitting 'stop' allows the poster CSS hack to cleanly cover the related grids
+      setTimeout(() => this.plyrInstance?.stop(), 100);
+    });
+  } catch(err) {
+    console.error('Failed to load Plyr:', err);
+  }
+  }
+
+  private destroyPlyr(): void {
+    if (this.plyrInstance) {
+      this.plyrInstance.destroy();
+      this.plyrInstance = null;
     }
   }
 

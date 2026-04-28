@@ -311,6 +311,26 @@
   background: #000;
 }
 
+/* ── Plyr overrides ─────────────────────────────────────────── */
+.cw-iframe-wrap ::ng-deep .plyr {
+  height: 100%;
+  width: 100%;
+  --plyr-color-main: #2e6858;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* ── YouTube Related Videos CSS Hack ──────────────────────── */
+/* Youtube API no longer allows rel=0 to hide all related videos.
+   This forces the poster to become visible when paused/ended. */
+.cw-iframe-wrap ::ng-deep .plyr.plyr--youtube.plyr--paused .plyr__poster,
+.cw-iframe-wrap ::ng-deep .plyr.plyr--youtube.plyr--stopped .plyr__poster {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+  background-size: cover;
+}
+
 /* ── Self-hosted video ──────────────────────────────────────── */
 .cw-video {
   flex: 1;
