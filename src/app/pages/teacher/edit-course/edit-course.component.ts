@@ -19,6 +19,7 @@ import {
 import { CourseService } from '../../../core/services/course';
 import { TranslateModule } from '@ngx-translate/core';
 import { CourseSidebar } from '../../../shared/components/ui/sidebar/course-sidebar/course-sidebar';
+import { DrivePickerService } from '../../../core/services/drive-picker.service';
 
 // Extended lesson shape that includes attached media from the sections response
 interface LessonWithMedia extends LessonDto {
@@ -91,7 +92,8 @@ export class EditCourseComponent implements OnInit {
     private categoryService: CategoryService,
     private route: ActivatedRoute,
     private router: Router,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private drivePicker: DrivePickerService
   ) {
     // Course forms
     this.courseForm = this.fb.group({
@@ -556,6 +558,54 @@ export class EditCourseComponent implements OnInit {
       this.lessonErrorMsg.set(msg);
       this.lessonSuccessMsg.set('');
       setTimeout(() => this.lessonErrorMsg.set(''), 3500);
+    }
+  }
+
+  // ─── Google Drive Picker ─────────────────────────────────────────────────
+
+  isDrivePickingPdf = signal(false);
+  isDrivePickingVideo = signal(false);
+
+  /** Open Drive Picker for PDF, auto-fill fileUrl + fileSizeKb */
+  async openDrivePickerForPdf(): Promise<void> {
+    this.isDrivePickingPdf.set(true);
+    try {
+      const file = await this.drivePicker.openPicker('application/pdf');
+      if (file) {
+        this.pdfForm.patchValue({
+          fileUrl: file.url,
+          fileSizeKb: file.sizeBytes ? Math.round(file.sizeBytes / 1024) : null,
+        });
+        this.lessonFlash('success', `"${file.name}" selected from Drive!`);
+      }
+    } catch (e: any) {
+      this.lessonFlash('error', 'Could not open Google Drive. Check your API credentials.');
+    } finally {
+      this.isDrivePickingPdf.set(false);
+    }
+  }
+
+  /** Open Drive Picker for Video (MP4/mov etc) */
+  async openDrivePickerForVideo(): Promise<void> {
+    this.isDrivePickingVideo.set(true);
+    try {
+      const file = await this.drivePicker.openPicker('video/mp4,video/quicktime,video/x-msvideo');
+      if (file) {
+        this.videoForm.patchValue({
+          videoUrl: file.url,
+          videoProvider: 'self',
+        });
+        if (this.videoForm.value.videoProvider === 'youtube') {
+           this.onVideoUrlInput({ target: { value: file.url } } as any);
+        } else {
+           this.safePreviewUrl.set(null); 
+        }
+        this.lessonFlash('success', `"${file.name}" selected from Drive!`);
+      }
+    } catch (e: any) {
+      this.lessonFlash('error', 'Could not open Google Drive. Check your API credentials.');
+    } finally {
+      this.isDrivePickingVideo.set(false);
     }
   }
 }

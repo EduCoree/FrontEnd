@@ -1219,6 +1219,48 @@
   margin-bottom: 1rem;
 }
 
+.ec-lp-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.ec-lp-label-row .ec-label {
+  margin-bottom: 0;
+}
+
+.ec-lp-drive-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #475569;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.ec-lp-drive-btn:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #1e293b;
+}
+
+.ec-lp-drive-icon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+}
+
+.ec-lp-drive-btn .material-symbols-outlined {
+  font-size: 0.85rem;
+}
+
 /* ── Toggle row ─────────────────────────────────────────────── */
 .ec-lp-toggle-row {
   display: flex;

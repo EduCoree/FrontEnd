@@ -445,7 +445,14 @@
         </div>
 
         <div class="ec-field" style="margin-bottom: 1rem">
-          <label class="ec-label">Video URL</label>
+          <div class="ec-lp-label-row">
+            <label class="ec-label">Video URL</label>
+            <button type="button" class="ec-lp-drive-btn" (click)="openDrivePickerForVideo()">
+              <span *ngIf="isDrivePickingVideo()" class="material-symbols-outlined ec-spin">sync</span>
+              <img *ngIf="!isDrivePickingVideo()" src="assets/images/drive-icon.png" alt="Drive" class="ec-lp-drive-icon" onerror="this.style.display='none'"/>
+              Pick from Drive
+            </button>
+          </div>
           <input type="url" formControlName="videoUrl"
             placeholder="https://youtu.be/…"
             class="ec-input"
@@ -493,7 +500,14 @@
 
       <form [formGroup]="pdfForm" (ngSubmit)="savePdf()">
         <div class="ec-field" style="margin-bottom: 1rem">
-          <label class="ec-label">PDF URL</label>
+          <div class="ec-lp-label-row">
+            <label class="ec-label">PDF URL</label>
+            <button type="button" class="ec-lp-drive-btn" (click)="openDrivePickerForPdf()">
+              <span *ngIf="isDrivePickingPdf()" class="material-symbols-outlined ec-spin">sync</span>
+              <img *ngIf="!isDrivePickingPdf()" src="assets/images/drive-icon.png" alt="Drive" class="ec-lp-drive-icon" onerror="this.style.display='none'"/>
+              Pick from Drive
+            </button>
+          </div>
           <input type="url" formControlName="fileUrl"
             placeholder="https://drive.google.com/…"
             class="ec-input"/>
