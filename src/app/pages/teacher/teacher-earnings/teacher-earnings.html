@@ -7,15 +7,18 @@
         <div class="flex items-center gap-3 mb-1">
           <a routerLink="/teacher/payout/dashboard"
              class="text-on-surface-variant hover:text-primary text-sm flex items-center gap-1">
-            <i class="fa-solid fa-arrow-left"></i> Dashboard
+            <i class="fa-solid fa-arrow-left"></i>
+            {{ 'earnings.allEarnings.backToDashboard' | translate }}
           </a>
         </div>
-        <h1 class="text-2xl md:text-3xl font-bold text-on-surface font-headline">My Earnings</h1>
+        <h1 class="text-2xl md:text-3xl font-bold text-on-surface font-headline">
+          {{ 'earnings.allEarnings.title' | translate }}
+        </h1>
         <p class="text-sm text-on-surface-variant mt-1">
           @if (totalCount() > 0) {
-            {{ totalCount() }} earnings recorded
+            {{ totalCount() }} {{ 'earnings.allEarnings.recordsFound' | translate }}
           } @else if (!loading()) {
-            No earnings yet
+            {{ 'earnings.allEarnings.noEarnings' | translate }}
           }
         </p>
       </div>
@@ -26,38 +29,42 @@
       <div class="flex flex-col md:flex-row gap-3 md:items-end">
         <div class="flex-1">
           <label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wide mb-1.5">
-            From Date
+            {{ 'earnings.allEarnings.filters.fromDate' | translate }}
           </label>
           <input
             type="date"
             [ngModel]="fromDate()"
             (ngModelChange)="fromDate.set($event)"
-            class="w-full px-3 py-2 rounded-xl bg-surface ring-1 ring-outline-variant focus:ring-2 focus:ring-primary outline-none text-on-surface"
+            class="w-full px-3 py-2 rounded-xl bg-surface ring-1 ring-outline-variant
+                   focus:ring-2 focus:ring-primary outline-none text-on-surface"
           />
         </div>
         <div class="flex-1">
           <label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wide mb-1.5">
-            To Date
+            {{ 'earnings.allEarnings.filters.toDate' | translate }}
           </label>
           <input
             type="date"
             [ngModel]="toDate()"
             (ngModelChange)="toDate.set($event)"
-            class="w-full px-3 py-2 rounded-xl bg-surface ring-1 ring-outline-variant focus:ring-2 focus:ring-primary outline-none text-on-surface"
+            class="w-full px-3 py-2 rounded-xl bg-surface ring-1 ring-outline-variant
+                   focus:ring-2 focus:ring-primary outline-none text-on-surface"
           />
         </div>
         <div class="flex gap-2">
           <button
             (click)="applyFilters()"
-            class="px-4 py-2 rounded-xl bg-primary text-on-primary hover:bg-primary-dim transition-colors text-sm font-medium">
+            class="px-4 py-2 rounded-xl bg-primary text-on-primary hover:bg-primary-dim
+                   transition-colors text-sm font-medium">
             <i class="fa-solid fa-filter mr-1"></i>
-            Apply
+            {{ 'earnings.allEarnings.filters.apply' | translate }}
           </button>
           @if (fromDate() || toDate()) {
             <button
               (click)="clearFilters()"
-              class="px-4 py-2 rounded-xl bg-surface-container ring-1 ring-outline-variant hover:bg-surface-container-high transition-colors text-sm font-medium text-on-surface">
-              Clear
+              class="px-4 py-2 rounded-xl bg-surface-container ring-1 ring-outline-variant
+                     hover:bg-surface-container-high transition-colors text-sm font-medium text-on-surface">
+              {{ 'earnings.allEarnings.filters.clear' | translate }}
             </button>
           }
         </div>
@@ -68,7 +75,9 @@
     @if (error()) {
       <div class="mb-4 p-4 rounded-2xl bg-error-container text-on-error-container ring-1 ring-error/30">
         <p class="font-semibold">{{ error() }}</p>
-        <button (click)="loadEarnings()" class="mt-2 text-sm underline">Retry</button>
+        <button (click)="loadEarnings()" class="mt-2 text-sm underline">
+          {{ 'common.retry' | translate }}
+        </button>
       </div>
     }
 
@@ -77,17 +86,17 @@
       <app-loading-skeleton variant="row" [count]="5" />
     }
 
-    <!-- Loaded: Empty State -->
+    <!-- Empty State -->
     @if (!loading() && earnings().length === 0 && !error()) {
       <div class="bg-surface-container-lowest rounded-2xl ring-1 ring-outline-variant/40">
         <app-empty-state
           icon="fa-solid fa-coins"
-          title="No earnings found"
-          message="Earnings appear here when students enroll in your paid courses." />
+          [title]="'earnings.allEarnings.empty.title' | translate"
+          [message]="'earnings.allEarnings.empty.message' | translate" />
       </div>
     }
 
-    <!-- Loaded: Table -->
+    <!-- Table -->
     @if (!loading() && earnings().length > 0) {
       <div class="bg-surface-container-lowest rounded-2xl ring-1 ring-outline-variant/40 overflow-hidden">
 
@@ -96,13 +105,27 @@
           <table class="w-full text-sm">
             <thead class="bg-surface-container">
               <tr class="text-left text-xs uppercase tracking-wide text-on-surface-variant">
-                <th class="px-5 py-3 font-semibold">Course</th>
-                <th class="px-5 py-3 font-semibold">Date</th>
-                <th class="px-5 py-3 font-semibold text-right">Gross Amount</th>
-                <th class="px-5 py-3 font-semibold text-right">Rate</th>
-                <th class="px-5 py-3 font-semibold text-right">Your Net</th>
-                <th class="px-5 py-3 font-semibold">Status</th>
-                <th class="px-5 py-3 font-semibold">Invoice</th>
+                <th class="px-5 py-3 font-semibold">
+                  {{ 'earnings.allEarnings.table.course' | translate }}
+                </th>
+                <th class="px-5 py-3 font-semibold">
+                  {{ 'earnings.allEarnings.table.date' | translate }}
+                </th>
+                <th class="px-5 py-3 font-semibold text-right">
+                  {{ 'earnings.allEarnings.table.gross' | translate }}
+                </th>
+                <th class="px-5 py-3 font-semibold text-right">
+                  {{ 'earnings.allEarnings.table.rate' | translate }}
+                </th>
+                <th class="px-5 py-3 font-semibold text-right">
+                  {{ 'earnings.allEarnings.table.net' | translate }}
+                </th>
+                <th class="px-5 py-3 font-semibold">
+                  {{ 'earnings.allEarnings.table.status' | translate }}
+                </th>
+                <th class="px-5 py-3 font-semibold">
+                  {{ 'earnings.allEarnings.table.invoice' | translate }}
+                </th>
               </tr>
             </thead>
             <tbody class="divide-y divide-outline-variant/20">
@@ -113,13 +136,20 @@
                     {{ e.earnedAt | date:'mediumDate' }}
                   </td>
                   <td class="px-5 py-3 text-right">
-                    <app-money-display [amount]="e.grossAmount" [currency]="e.currency" size="sm" [showCurrency]="false" />
+                    <app-money-display
+                      [amount]="e.grossAmount"
+                      [currency]="e.currency"
+                      size="sm"
+                      [showCurrency]="false" />
                   </td>
                   <td class="px-5 py-3 text-right text-on-surface-variant text-xs">
                     {{ e.commissionRate * 100 | number:'1.0-0' }}%
                   </td>
                   <td class="px-5 py-3 text-right font-semibold">
-                    <app-money-display [amount]="e.netAmount" [currency]="e.currency" size="sm" />
+                    <app-money-display
+                      [amount]="e.netAmount"
+                      [currency]="e.currency"
+                      size="sm" />
                   </td>
                   <td class="px-5 py-3">
                     <app-invoice-status-badge [status]="e.status" />
@@ -155,18 +185,29 @@
               </div>
               <div class="grid grid-cols-2 gap-3 text-sm">
                 <div>
-                  <div class="text-xs text-on-surface-variant uppercase">Gross</div>
-                  <app-money-display [amount]="e.grossAmount" [currency]="e.currency" size="sm" [showCurrency]="false" />
+                  <div class="text-xs text-on-surface-variant uppercase">
+                    {{ 'earnings.allEarnings.table.gross' | translate }}
+                  </div>
+                  <app-money-display
+                    [amount]="e.grossAmount"
+                    [currency]="e.currency"
+                    size="sm"
+                    [showCurrency]="false" />
                 </div>
                 <div class="text-right">
-                  <div class="text-xs text-on-surface-variant uppercase">Net Earned</div>
-                  <app-money-display [amount]="e.netAmount" [currency]="e.currency" size="md" />
+                  <div class="text-xs text-on-surface-variant uppercase">
+                    {{ 'earnings.recent.mobile.netEarned' | translate }}
+                  </div>
+                  <app-money-display
+                    [amount]="e.netAmount"
+                    [currency]="e.currency"
+                    size="md" />
                 </div>
               </div>
               @if (e.invoiceNumber) {
                 <a [routerLink]="['/teacher/payout/invoices', e.invoiceId]"
                    class="block mt-3 text-xs text-primary hover:underline">
-                  Invoice: {{ e.invoiceNumber }}
+                  {{ 'earnings.allEarnings.table.invoice' | translate }}: {{ e.invoiceNumber }}
                 </a>
               }
             </div>
@@ -178,14 +219,19 @@
       @if (totalPages() > 1) {
         <div class="mt-4 flex items-center justify-between">
           <div class="text-xs text-on-surface-variant">
-            Page {{ pageNumber() }} of {{ totalPages() }}
-            <span class="hidden md:inline">· {{ totalCount() }} total</span>
+            {{ 'earnings.allEarnings.pagination.page' | translate }} {{ pageNumber() }}
+            {{ 'earnings.allEarnings.pagination.of' | translate }} {{ totalPages() }}
+            <span class="hidden md:inline">
+              · {{ totalCount() }} {{ 'earnings.allEarnings.pagination.total' | translate }}
+            </span>
           </div>
           <div class="flex items-center gap-1">
             <button
               (click)="goToPage(pageNumber() - 1)"
               [disabled]="pageNumber() === 1"
-              class="w-9 h-9 rounded-lg bg-surface-container-lowest ring-1 ring-outline-variant hover:bg-surface-container disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+              class="w-9 h-9 rounded-lg bg-surface-container-lowest ring-1 ring-outline-variant
+                     hover:bg-surface-container disabled:opacity-40 disabled:cursor-not-allowed
+                     transition-colors">
               <i class="fa-solid fa-chevron-left text-xs"></i>
             </button>
             @for (p of pages(); track p) {
@@ -201,12 +247,15 @@
             <button
               (click)="goToPage(pageNumber() + 1)"
               [disabled]="pageNumber() === totalPages()"
-              class="w-9 h-9 rounded-lg bg-surface-container-lowest ring-1 ring-outline-variant hover:bg-surface-container disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+              class="w-9 h-9 rounded-lg bg-surface-container-lowest ring-1 ring-outline-variant
+                     hover:bg-surface-container disabled:opacity-40 disabled:cursor-not-allowed
+                     transition-colors">
               <i class="fa-solid fa-chevron-right text-xs"></i>
             </button>
           </div>
         </div>
       }
     }
+
   </div>
 </div>

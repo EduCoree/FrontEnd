@@ -1,16 +1,15 @@
-
 import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AdminSidebarComponent } from '../../layouts/admin-sidebar/admin-sidebar';
-import { AdminTopbarComponent } from '../../layouts/admin-topbar/admin-topbar';
 import { AdminCourseService } from '../../core/services/admin-course';
 import { CourseSummaryDto, UpdatePricingDto } from '../../core/models/course';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin-courses',
-  imports: [CommonModule, ReactiveFormsModule, AdminSidebarComponent, AdminTopbarComponent , TranslateModule],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, AdminSidebarComponent, TranslateModule],
   templateUrl: './admin-courses.html',
   styleUrl: './admin-courses.css',
 })
@@ -19,17 +18,17 @@ export class AdminCoursesComponent implements OnInit {
   private fb      = inject(FormBuilder);
 
   // ── State signals ────────────────────────────────────────────────────────────
-  courses         = signal<CourseSummaryDto[]>([]);
-  loading         = signal(false);
-  successMsg      = signal('');
-  errorMsg        = signal('');
-  currentPage     = signal(1);
-  totalCount      = signal(0);
-  totalPages      = signal(1);
-  statusFilter    = signal('');
-  searchQuery     = signal('');
+  courses          = signal<CourseSummaryDto[]>([]);
+  loading          = signal(false);
+  successMsg       = signal('');
+  errorMsg         = signal('');
+  currentPage      = signal(1);
+  totalCount       = signal(0);
+  totalPages       = signal(1);
+  statusFilter     = signal('');
+  searchQuery      = signal('');
   showPricingModal = signal(false);
-  selectedCourse  = signal<CourseSummaryDto | null>(null);
+  selectedCourse   = signal<CourseSummaryDto | null>(null);
 
   // ── Computed helpers ─────────────────────────────────────────────────────────
   get publishedCount(): number { return this.courses().filter(c => c.status === 'Published').length; }

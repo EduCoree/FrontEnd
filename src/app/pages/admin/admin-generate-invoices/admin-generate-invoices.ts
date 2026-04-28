@@ -7,6 +7,7 @@ import { AdminPayoutService } from '../../../core/services/admin-payout';
 import { GenerateInvoicesResultDto } from '../../../core/models/payout.model';
 
 import { MoneyDisplayComponent } from '../../../shared/components/money-display/money-display';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin-generate-invoices',
@@ -16,6 +17,7 @@ import { MoneyDisplayComponent } from '../../../shared/components/money-display/
     RouterLink,
     FormsModule,
     MoneyDisplayComponent,
+    TranslateModule
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './admin-generate-invoices.html',

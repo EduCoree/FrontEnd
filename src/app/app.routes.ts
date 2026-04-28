@@ -52,6 +52,7 @@ import { ErrorPageComponent } from './pages/error-page/error-page';
 import { AvailableQuizzes } from './pages/Quizzes/available-quizzes/available-quizzes';
 import { StudentAgendaComponent } from './pages/student/student-agenda/student-agenda.component';
 import { MyCertificatesComponent } from './pages/student/my-certificates/my-certificates.component';
+import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard';
 import { PaymentHistoryComponent } from './pages/enroll&payment/payment-history/payment-history.component';
 import { AdminPaymentsComponent } from './pages/enroll&payment/admin-payments/admin-payments.component';
 
@@ -282,6 +283,13 @@ export const routes: Routes = [
   title: 'Payments — Admin',
 },
 
+
+//Dashboard !!!! do not add guard yet
+{ path: 'admin/dashboard', component: AdminDashboardComponent  },
+
+{ path: 'teacher/dashboard/2', component: TeacherDashboardComponent  },
+
+// { path: 'student/dashboard/2', component: StudentDashboardComponent },
 
    
 

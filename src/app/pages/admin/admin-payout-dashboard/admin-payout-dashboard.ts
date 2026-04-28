@@ -10,6 +10,7 @@ import { AdminPayoutDashboardDto } from '../../../core/models/payout.model';
 import { KpiCardComponent } from '../../../shared/components/kpi-card/kpi-card';
 import { MoneyDisplayComponent } from '../../../shared/components/money-display/money-display';
 import { LoadingSkeletonComponent } from '../../../shared/components/loading-skeleton/loading-skeleton';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin-payout-dashboard',
@@ -22,6 +23,7 @@ import { LoadingSkeletonComponent } from '../../../shared/components/loading-ske
     KpiCardComponent,
     MoneyDisplayComponent,
     LoadingSkeletonComponent,
+    TranslateModule
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './admin-payout-dashboard.html',
