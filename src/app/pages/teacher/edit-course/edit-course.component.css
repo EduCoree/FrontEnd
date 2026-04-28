@@ -760,6 +760,158 @@
   margin-top: 0.05rem;
 }
 
+/* ── Section number badge ───────────────────────────────────── */
+.ec-section__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background: #ede9fe;
+  color: #6366f1;
+  font-size: 0.62rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  margin-right: 0.35rem;
+}
+
+/* ── Improved Lesson Row ────────────────────────────────────── */
+.ec-lesson {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 0.875rem;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.ec-lesson::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: transparent;
+  transition: background 0.2s;
+  border-radius: 3px 0 0 3px;
+}
+
+.ec-lesson:hover {
+  border-color: #c7d2fe;
+  box-shadow: 0 3px 12px rgba(99, 102, 241, 0.1);
+  transform: translateX(2px);
+}
+
+.ec-lesson:hover::before {
+  background: #6366f1;
+}
+
+.ec-lesson__icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: #ede9fe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #6366f1;
+  transition: transform 0.2s;
+}
+
+.ec-lesson__icon--video {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.ec-lesson__icon--pdf {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.ec-lesson:hover .ec-lesson__icon { transform: scale(1.1); }
+
+.ec-lesson__icon .material-symbols-outlined { font-size: 1.1rem; }
+
+.ec-lesson__meta { flex: 1; min-width: 0; }
+
+.ec-lesson__title {
+  font-size: 0.83rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ec-lesson__type {
+  font-size: 0.67rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0.12rem 0 0;
+}
+
+.ec-lesson__badges {
+  display: flex;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+
+.ec-media-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  font-size: 0;
+}
+
+.ec-media-badge .material-symbols-outlined { font-size: 0.85rem; }
+
+.ec-media-badge--video {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.ec-media-badge--pdf {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.ec-lesson__edit-btn {
+  display: none;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 9999px;
+  background: #6366f1;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: opacity 0.15s;
+}
+
+.ec-lesson__edit-btn .material-symbols-outlined { font-size: 0.85rem; }
+
+.ec-lesson:hover .ec-lesson__edit-btn {
+  display: flex;
+}
+
 /* ── Responsive tweaks ──────────────────────────────────────── */
 @media (max-width: 860px) {
   .ec-grid { padding: 1rem; }
@@ -786,4 +938,497 @@
   }
 
   .ec-section__actions { align-self: flex-end; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   INLINE LESSON EDITOR PANEL
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Backdrop ───────────────────────────────────────────────── */
+.ec-panel-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.ec-panel-backdrop--open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ── Panel ──────────────────────────────────────────────────── */
+.ec-lesson-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 101;
+  width: 480px;
+  max-width: 100vw;
+  background: #fff;
+  box-shadow: -8px 0 40px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+  overflow: hidden;
+}
+
+.ec-lesson-panel--open {
+  transform: translateX(0);
+}
+
+/* ── Panel Header ───────────────────────────────────────────── */
+.ec-lp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+  background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+  flex-shrink: 0;
+}
+
+.ec-lp-header__left {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+
+.ec-lp-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  background: rgba(255,255,255,0.2);
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.ec-lp-icon .material-symbols-outlined { font-size: 1.25rem; }
+
+.ec-lp-section {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.7);
+  margin: 0 0 0.15rem;
+}
+
+.ec-lp-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0;
+  max-width: 280px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ec-lp-close {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.ec-lp-close:hover { background: rgba(255,255,255,0.3); }
+.ec-lp-close .material-symbols-outlined { font-size: 1.15rem; }
+
+/* ── Flash Messages ─────────────────────────────────────────── */
+.ec-lp-flash {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.3s, opacity 0.25s, padding 0.25s;
+  margin: 0 1rem;
+  border-radius: 0.625rem;
+  flex-shrink: 0;
+}
+
+.ec-lp-flash--visible {
+  max-height: 3rem;
+  opacity: 1;
+  padding: 0.6rem 0.875rem;
+  margin: 0.75rem 1rem 0;
+}
+
+.ec-lp-flash--success {
+  background: #ecfdf5;
+  border: 1px solid #86efac;
+  color: #15803d;
+}
+
+.ec-lp-flash--error {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  color: #dc2626;
+}
+
+.ec-lp-flash .material-symbols-outlined { font-size: 1rem; }
+
+/* ── Loading ────────────────────────────────────────────────── */
+.ec-lp-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  flex: 1;
+  color: #94a3b8;
+  font-size: 0.875rem;
+}
+
+/* ── Panel Body ─────────────────────────────────────────────── */
+.ec-lp-body {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── Status Row ─────────────────────────────────────────────── */
+.ec-lp-status-row {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.875rem 1.25rem;
+  border-bottom: 1px solid #f1f5f9;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.ec-lp-status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: #f1f5f9;
+  color: #94a3b8;
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s;
+}
+
+.ec-lp-status-chip .material-symbols-outlined { font-size: 0.85rem; }
+
+.ec-lp-status-chip--on {
+  background: #ecfdf5;
+  color: #16a34a;
+  border-color: #86efac;
+}
+
+/* ── Tab Bar ────────────────────────────────────────────────── */
+.ec-lp-tabs {
+  display: flex;
+  border-bottom: 1px solid #e2e8f0;
+  flex-shrink: 0;
+  background: #f8fafc;
+}
+
+.ec-lp-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.875rem 0.5rem;
+  font-size: 0.76rem;
+  font-weight: 700;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  position: relative;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ec-lp-tab .material-symbols-outlined { font-size: 1rem; }
+
+.ec-lp-tab:hover {
+  color: #6366f1;
+  background: #f5f3ff;
+}
+
+.ec-lp-tab--active {
+  color: #6366f1;
+  border-bottom-color: #6366f1;
+  background: #fff;
+}
+
+.ec-lp-tab__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #6366f1;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.625rem;
+}
+
+/* ── Form inside panel ──────────────────────────────────────── */
+.ec-lp-form {
+  padding: 1.25rem 1.25rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.ec-lp-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+/* ── Toggle row ─────────────────────────────────────────────── */
+.ec-lp-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.875rem 1rem;
+  background: #f5f3ff;
+  border: 1px solid #c7d2fe;
+  border-radius: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.ec-lp-toggle-label {
+  font-size: 0.83rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 0.2rem;
+}
+
+.ec-lp-toggle-sub {
+  font-size: 0.7rem;
+  color: #64748b;
+  margin: 0;
+}
+
+/* Custom toggle switch */
+.ec-lp-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.ec-lp-toggle input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.ec-lp-toggle__track {
+  width: 2.75rem;
+  height: 1.5rem;
+  background: #cbd5e1;
+  border-radius: 9999px;
+  position: relative;
+  transition: background 0.2s;
+}
+
+.ec-lp-toggle__track::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  transition: transform 0.2s;
+}
+
+.ec-lp-toggle input:checked ~ .ec-lp-toggle__track {
+  background: #6366f1;
+}
+
+.ec-lp-toggle input:checked ~ .ec-lp-toggle__track::after {
+  transform: translateX(1.25rem);
+}
+
+/* ── Existing media banners ─────────────────────────────────── */
+.ec-lp-existing {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.875rem 1rem;
+  border-radius: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.ec-lp-existing--video {
+  background: #dbeafe;
+  border: 1px solid #93c5fd;
+}
+
+.ec-lp-existing--pdf {
+  background: #fef3c7;
+  border: 1px solid #fcd34d;
+}
+
+.ec-lp-existing__info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.ec-lp-existing__icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.625rem;
+  background: rgba(255,255,255,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ec-lp-existing--video .ec-lp-existing__icon .material-symbols-outlined { color: #1d4ed8; }
+.ec-lp-existing--pdf .ec-lp-existing__icon .material-symbols-outlined { color: #b45309; }
+
+.ec-lp-existing__label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 0.15rem;
+}
+
+.ec-lp-existing__url {
+  font-size: 0.67rem;
+  color: #475569;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+.ec-lp-remove-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: 9999px;
+  background: rgba(239,68,68,0.12);
+  color: #dc2626;
+  border: 1px solid rgba(239,68,68,0.25);
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.ec-lp-remove-btn:hover { background: rgba(239,68,68,0.22); }
+.ec-lp-remove-btn .material-symbols-outlined { font-size: 0.85rem; }
+
+/* ── Video live preview ─────────────────────────────────────── */
+.ec-lp-preview {
+  aspect-ratio: 16/9;
+  border-radius: 0.875rem;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  background: #000;
+  border: 1px solid #e2e8f0;
+}
+
+.ec-lp-preview__frame {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ── Provider buttons ───────────────────────────────────────── */
+.ec-lp-provider-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.ec-lp-provider-btn {
+  padding: 0.6rem 0;
+  border-radius: 0.625rem;
+  border: 1.5px solid #e2e8f0;
+  background: #f8fafc;
+  color: #64748b;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.ec-lp-provider-btn:hover {
+  border-color: #6366f1;
+  color: #6366f1;
+}
+
+.ec-lp-provider-btn--active {
+  background: #ede9fe;
+  border-color: #6366f1;
+  color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* ── Not found ──────────────────────────────────────────────── */
+.ec-lp-not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex: 1;
+  color: #cbd5e1;
+  font-size: 0.875rem;
+}
+
+.ec-lp-not-found .material-symbols-outlined {
+  font-size: 2.5rem;
+}
+
+/* ── Spin animation ─────────────────────────────────────────── */
+.ec-spin {
+  animation: spin 0.9s linear infinite;
+}
+
+/* ── Panel responsive ───────────────────────────────────────── */
+@media (max-width: 540px) {
+  .ec-lesson-panel {
+    width: 100vw;
+  }
 }

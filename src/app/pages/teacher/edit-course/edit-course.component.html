@@ -183,7 +183,10 @@
 
                   <!-- View mode -->
                   <div *ngIf="editingSection?.id !== section.id">
-                    <h3 class="ec-section__name">{{ section.title }}</h3>
+                    <h3 class="ec-section__name">
+                      <span class="ec-section__num">{{ (i + 1).toString().padStart(2, '0') }}</span>
+                      {{ section.title }}
+                    </h3>
                     <span class="ec-badge">
                       <span class="material-symbols-outlined">auto_stories</span>
                       {{ section.lessons?.length || 0 }} {{ 'editCourse.lessons' | translate }}
@@ -217,20 +220,34 @@
 
               <!-- Lesson list -->
               <div class="ec-lessons">
-                <div *ngFor="let lesson of section.lessons" class="ec-lesson">
-                  <div class="ec-lesson__icon">
+                <div *ngFor="let lesson of section.lessons" class="ec-lesson"
+                  (click)="openLessonEditor(lesson, section.title)">
+                  <div class="ec-lesson__icon"
+                    [class.ec-lesson__icon--video]="lesson.type === 'Video'"
+                    [class.ec-lesson__icon--pdf]="lesson.type === 'Pdf'">
                     <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">
-                      {{ lesson.type === 'Video' ? 'play_circle' : lesson.type === 'Pdf' ? 'description' : 'live_tv' }}
+                      {{ lesson.type === 'Video' ? 'play_circle' : lesson.type === 'Pdf' ? 'description' : 'article' }}
                     </span>
                   </div>
                   <div class="ec-lesson__meta">
                     <p class="ec-lesson__title">{{ lesson.title }}</p>
-                    <p class="ec-lesson__type">{{ lesson.type }}</p>
+                    <p class="ec-lesson__type">{{ lesson.type || 'No media' }}</p>
                   </div>
-                  <span class="material-symbols-outlined ec-drag">drag_handle</span>
+                  <div class="ec-lesson__badges">
+                    <span class="ec-media-badge ec-media-badge--video" *ngIf="lesson.type === 'Video'" title="Has Video">
+                      <span class="material-symbols-outlined">videocam</span>
+                    </span>
+                    <span class="ec-media-badge ec-media-badge--pdf" *ngIf="lesson.type === 'Pdf'" title="Has PDF">
+                      <span class="material-symbols-outlined">picture_as_pdf</span>
+                    </span>
+                  </div>
+                  <button class="ec-lesson__edit-btn" (click)="$event.stopPropagation(); openLessonEditor(lesson, section.title)">
+                    <span class="material-symbols-outlined">edit</span>
+                    Edit
+                  </button>
                 </div>
 
-                <button class="ec-add-lesson">
+                <button class="ec-add-lesson" disabled>
                   <span class="material-symbols-outlined">add</span>
                   <span>{{ 'editCourse.addLessonComingSoon' | translate }}</span>
                 </button>
@@ -256,3 +273,253 @@
   <!-- END ec-body -->
 </div>
 <!-- END ec-shell -->
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     INLINE LESSON EDITOR PANEL (slide-in from right)
+     ══════════════════════════════════════════════════════════════════════ -->
+
+<!-- Backdrop -->
+<div class="ec-panel-backdrop"
+  [class.ec-panel-backdrop--open]="lessonPanelOpen()"
+  (click)="closeLessonEditor()">
+</div>
+
+<!-- Panel -->
+<aside class="ec-lesson-panel" [class.ec-lesson-panel--open]="lessonPanelOpen()">
+
+  <!-- Panel Header -->
+  <div class="ec-lp-header">
+    <div class="ec-lp-header__left">
+      <div class="ec-lp-icon">
+        <span class="material-symbols-outlined">edit_note</span>
+      </div>
+      <div>
+        <p class="ec-lp-section">{{ selectedLesson()?.sectionTitle }}</p>
+        <h2 class="ec-lp-title">{{ selectedLesson()?.title ?? 'Lesson Editor' }}</h2>
+      </div>
+    </div>
+    <button class="ec-lp-close" (click)="closeLessonEditor()">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </div>
+
+  <!-- Flash Messages -->
+  <div class="ec-lp-flash ec-lp-flash--success" [class.ec-lp-flash--visible]="lessonSuccessMsg()">
+    <span class="material-symbols-outlined">check_circle</span>
+    {{ lessonSuccessMsg() }}
+  </div>
+  <div class="ec-lp-flash ec-lp-flash--error" [class.ec-lp-flash--visible]="lessonErrorMsg()">
+    <span class="material-symbols-outlined">error</span>
+    {{ lessonErrorMsg() }}
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLessonLoading()" class="ec-lp-loading">
+    <span class="material-symbols-outlined ec-loading__icon">progress_activity</span>
+    <p>Loading lesson…</p>
+  </div>
+
+  <!-- Panel Body -->
+  <div *ngIf="!isLessonLoading() && selectedLesson()" class="ec-lp-body">
+
+    <!-- Status Row -->
+    <div class="ec-lp-status-row">
+      <span class="ec-lp-status-chip" [class.ec-lp-status-chip--on]="hasVideo()">
+        <span class="material-symbols-outlined">{{ hasVideo() ? 'check_circle' : 'radio_button_unchecked' }}</span>
+        Video
+      </span>
+      <span class="ec-lp-status-chip" [class.ec-lp-status-chip--on]="hasPdf()">
+        <span class="material-symbols-outlined">{{ hasPdf() ? 'check_circle' : 'radio_button_unchecked' }}</span>
+        PDF
+      </span>
+      <span class="ec-lp-status-chip" *ngIf="selectedLesson()?.isFreePreview" style="--chip-color: #10b981">
+        <span class="material-symbols-outlined">visibility</span>
+        Free Preview
+      </span>
+    </div>
+
+    <!-- Tab Bar -->
+    <div class="ec-lp-tabs">
+      <button class="ec-lp-tab" [class.ec-lp-tab--active]="activeLessonTab() === 'info'"
+        (click)="activeLessonTab.set('info')">
+        <span class="material-symbols-outlined">edit_note</span>
+        Info
+      </button>
+      <button class="ec-lp-tab" [class.ec-lp-tab--active]="activeLessonTab() === 'video'"
+        (click)="activeLessonTab.set('video')">
+        <span class="material-symbols-outlined">movie</span>
+        Video
+        <span *ngIf="hasVideo()" class="ec-lp-tab__dot"></span>
+      </button>
+      <button class="ec-lp-tab" [class.ec-lp-tab--active]="activeLessonTab() === 'pdf'"
+        (click)="activeLessonTab.set('pdf')">
+        <span class="material-symbols-outlined">description</span>
+        PDF
+        <span *ngIf="hasPdf()" class="ec-lp-tab__dot"></span>
+      </button>
+    </div>
+
+    <!-- ── INFO TAB ── -->
+    <form *ngIf="activeLessonTab() === 'info'" [formGroup]="infoForm" (ngSubmit)="saveInfo()" class="ec-lp-form">
+      <div class="ec-field">
+        <label class="ec-label">Lesson Title</label>
+        <input type="text" formControlName="title" class="ec-input"/>
+        <span *ngIf="infoForm.get('title')?.invalid && infoForm.get('title')?.touched" class="ec-err">
+          Title is required
+        </span>
+      </div>
+
+      <div class="ec-lp-two-col">
+        <div class="ec-field">
+          <label class="ec-label">Duration (seconds)</label>
+          <input type="number" formControlName="durationSeconds" min="0" placeholder="e.g. 300" class="ec-input"/>
+        </div>
+        <div class="ec-field">
+          <label class="ec-label">Sort Order</label>
+          <input type="number" formControlName="sortOrder" min="1" class="ec-input"/>
+        </div>
+      </div>
+
+      <div class="ec-lp-toggle-row">
+        <div>
+          <p class="ec-lp-toggle-label">Free Preview</p>
+          <p class="ec-lp-toggle-sub">Allow non-enrolled students to preview this lesson</p>
+        </div>
+        <label class="ec-lp-toggle">
+          <input type="checkbox" formControlName="isFreePreview"/>
+          <span class="ec-lp-toggle__track"></span>
+        </label>
+      </div>
+
+      <button type="submit" class="ec-btn ec-btn--primary ec-btn--full ec-btn--lg"
+        [disabled]="infoForm.invalid || isSavingLesson()">
+        <span *ngIf="isSavingLesson()" class="material-symbols-outlined ec-spin">progress_activity</span>
+        {{ isSavingLesson() ? 'Saving…' : 'Save Info' }}
+      </button>
+    </form>
+
+    <!-- ── VIDEO TAB ── -->
+    <div *ngIf="activeLessonTab() === 'video'" class="ec-lp-form">
+
+      <!-- Existing video banner -->
+      <div *ngIf="hasVideo()" class="ec-lp-existing ec-lp-existing--video">
+        <div class="ec-lp-existing__info">
+          <div class="ec-lp-existing__icon">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">play_circle</span>
+          </div>
+          <div>
+            <p class="ec-lp-existing__label">Video Attached</p>
+            <p class="ec-lp-existing__url">{{ selectedLesson()?.videoUrl | slice:0:50 }}{{ (selectedLesson()?.videoUrl?.length ?? 0) > 50 ? '…' : '' }}</p>
+          </div>
+        </div>
+        <button (click)="removeVideo()" class="ec-lp-remove-btn">
+          <span class="material-symbols-outlined">delete</span>
+          Remove
+        </button>
+      </div>
+
+      <!-- YouTube live preview -->
+      <div *ngIf="safePreviewUrl()" class="ec-lp-preview">
+        <iframe [src]="safePreviewUrl()"
+          frameborder="0" allowfullscreen
+          class="ec-lp-preview__frame">
+        </iframe>
+      </div>
+
+      <form [formGroup]="videoForm" (ngSubmit)="saveVideo()">
+        <div class="ec-field" style="margin-bottom: 1rem">
+          <label class="ec-label">Provider</label>
+          <div class="ec-lp-provider-grid">
+            <button *ngFor="let p of videoProviders" type="button"
+              (click)="videoForm.patchValue({ videoProvider: p.value })"
+              class="ec-lp-provider-btn"
+              [class.ec-lp-provider-btn--active]="videoForm.value.videoProvider === p.value">
+              {{ p.label }}
+            </button>
+          </div>
+        </div>
+
+        <div class="ec-field" style="margin-bottom: 1rem">
+          <label class="ec-label">Video URL</label>
+          <input type="url" formControlName="videoUrl"
+            placeholder="https://youtu.be/…"
+            class="ec-input"
+            (input)="onVideoUrlInput($event)"/>
+          <span *ngIf="videoForm.get('videoUrl')?.invalid && videoForm.get('videoUrl')?.touched" class="ec-err">
+            A valid URL is required
+          </span>
+        </div>
+
+        <div class="ec-field" style="margin-bottom: 1.25rem">
+          <label class="ec-label">Thumbnail URL <span style="font-weight:500;color:#94a3b8">(optional)</span></label>
+          <input type="url" formControlName="thumbnailUrl"
+            placeholder="https://…"
+            class="ec-input"/>
+        </div>
+
+        <button type="submit" class="ec-btn ec-btn--primary ec-btn--full ec-btn--lg"
+          [disabled]="videoForm.invalid || isSavingLesson()">
+          <span *ngIf="isSavingLesson()" class="material-symbols-outlined ec-spin">progress_activity</span>
+          <span class="material-symbols-outlined">movie</span>
+          {{ isSavingLesson() ? 'Saving…' : (hasVideo() ? 'Update Video' : 'Attach Video') }}
+        </button>
+      </form>
+    </div>
+
+    <!-- ── PDF TAB ── -->
+    <div *ngIf="activeLessonTab() === 'pdf'" class="ec-lp-form">
+
+      <!-- Existing PDF banner -->
+      <div *ngIf="hasPdf()" class="ec-lp-existing ec-lp-existing--pdf">
+        <div class="ec-lp-existing__info">
+          <div class="ec-lp-existing__icon">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">picture_as_pdf</span>
+          </div>
+          <div>
+            <p class="ec-lp-existing__label">PDF Attached</p>
+            <p class="ec-lp-existing__url">{{ selectedLesson()?.pdfUrl | slice:0:50 }}{{ (selectedLesson()?.pdfUrl?.length ?? 0) > 50 ? '…' : '' }}</p>
+          </div>
+        </div>
+        <button (click)="removePdf()" class="ec-lp-remove-btn">
+          <span class="material-symbols-outlined">delete</span>
+          Remove
+        </button>
+      </div>
+
+      <form [formGroup]="pdfForm" (ngSubmit)="savePdf()">
+        <div class="ec-field" style="margin-bottom: 1rem">
+          <label class="ec-label">PDF URL</label>
+          <input type="url" formControlName="fileUrl"
+            placeholder="https://drive.google.com/…"
+            class="ec-input"/>
+          <span *ngIf="pdfForm.get('fileUrl')?.invalid && pdfForm.get('fileUrl')?.touched" class="ec-err">
+            A valid URL is required
+          </span>
+        </div>
+
+        <div class="ec-field" style="margin-bottom: 1.25rem">
+          <label class="ec-label">File Size (KB) <span style="font-weight:500;color:#94a3b8">(optional)</span></label>
+          <input type="number" formControlName="fileSizeKb" min="1"
+            placeholder="e.g. 2048"
+            class="ec-input"/>
+        </div>
+
+        <button type="submit" class="ec-btn ec-btn--primary ec-btn--full ec-btn--lg"
+          [disabled]="pdfForm.invalid || isSavingLesson()">
+          <span *ngIf="isSavingLesson()" class="material-symbols-outlined ec-spin">progress_activity</span>
+          <span class="material-symbols-outlined">description</span>
+          {{ isSavingLesson() ? 'Saving…' : (hasPdf() ? 'Update PDF' : 'Attach PDF') }}
+        </button>
+      </form>
+    </div>
+
+  </div>
+  <!-- END panel body -->
+
+  <!-- Not found -->
+  <div *ngIf="!isLessonLoading() && !selectedLesson()" class="ec-lp-not-found">
+    <span class="material-symbols-outlined">search_off</span>
+    <p>Lesson not found</p>
+  </div>
+
+</aside>
