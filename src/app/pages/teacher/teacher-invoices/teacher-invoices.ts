@@ -10,6 +10,7 @@ import { MoneyDisplayComponent } from '../../../shared/components/money-display/
 import { InvoiceStatusBadgeComponent } from '../../../shared/components/invoice-status-badge/invoice-status-badge';
 import { LoadingSkeletonComponent } from '../../../shared/components/loading-skeleton/loading-skeleton';
 import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-teacher-invoices',
@@ -22,6 +23,8 @@ import { EmptyStateComponent } from '../../../shared/components/empty-state/empt
     InvoiceStatusBadgeComponent,
     LoadingSkeletonComponent,
     EmptyStateComponent,
+    TranslateModule
+
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './teacher-invoices.html',

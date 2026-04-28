@@ -3,7 +3,7 @@
 
     <a routerLink="/admin/payout/invoices"
        class="text-on-surface-variant hover:text-primary text-sm flex items-center gap-1 mb-4">
-      <i class="fa-solid fa-arrow-left"></i> Back to All Invoices
+      <i class="fa-solid fa-arrow-left"></i> {{ 'payout.invoiceDetail.backToInvoices' | translate }}
     </a>
 
     @if (loading()) {
@@ -16,7 +16,7 @@
     @if (error() && !loading()) {
       <div class="p-8 rounded-2xl bg-error-container text-on-error-container ring-1 ring-error/30 text-center">
         <i class="fa-solid fa-circle-exclamation text-4xl mb-3"></i>
-        <h2 class="text-xl font-bold mb-2">Oops!</h2>
+        <h2 class="text-xl font-bold mb-2">{{ 'payout.invoiceDetail.error.title' | translate }}</h2>
         <p>{{ error() }}</p>
       </div>
     }
@@ -28,7 +28,9 @@
         <div class="bg-gradient-to-r from-primary to-primary-dim p-6 text-on-primary">
           <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
             <div>
-              <div class="text-xs uppercase tracking-wider opacity-80 mb-1">Invoice</div>
+              <div class="text-xs uppercase tracking-wider opacity-80 mb-1">
+                {{ 'payout.invoiceDetail.header.invoiceLabel' | translate }}
+              </div>
               <h1 class="text-2xl md:text-3xl font-bold font-headline">{{ inv.invoiceNumber }}</h1>
               <div class="text-sm opacity-90 mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
                 <span class="flex items-center gap-1.5">
@@ -55,9 +57,11 @@
             [disabled]="downloading()"
             class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-surface-container ring-1 ring-outline-variant hover:bg-surface-container-high text-sm font-medium text-on-surface disabled:opacity-60">
             @if (downloading()) {
-              <i class="fa-solid fa-circle-notch fa-spin"></i> Downloading…
+              <i class="fa-solid fa-circle-notch fa-spin"></i>
+              {{ 'payout.invoiceDetail.actions.downloading' | translate }}
             } @else {
-              <i class="fa-solid fa-file-pdf"></i> Download PDF
+              <i class="fa-solid fa-file-pdf"></i>
+              {{ 'payout.invoiceDetail.actions.downloadPdf' | translate }}
             }
           </button>
 
@@ -65,7 +69,8 @@
             <button
               (click)="openPayModal()"
               class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold shadow-sm">
-              <i class="fa-solid fa-money-bill-wave"></i> Mark as Paid
+              <i class="fa-solid fa-money-bill-wave"></i>
+              {{ 'payout.invoiceDetail.actions.markAsPaid' | translate }}
             </button>
           }
 
@@ -73,7 +78,8 @@
             <button
               (click)="openCancelModal()"
               class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-surface-container ring-1 ring-error/30 hover:bg-error-container hover:text-on-error-container text-sm font-medium text-error">
-              <i class="fa-solid fa-ban"></i> Cancel Invoice
+              <i class="fa-solid fa-ban"></i>
+              {{ 'payout.invoiceDetail.actions.cancelInvoice' | translate }}
             </button>
           }
         </div>
@@ -81,19 +87,27 @@
         <!-- Totals -->
         <div class="grid grid-cols-2 md:grid-cols-4 divide-x divide-outline-variant/20">
           <div class="p-4 md:p-5">
-            <div class="text-xs text-on-surface-variant uppercase font-semibold">Enrollments</div>
+            <div class="text-xs text-on-surface-variant uppercase font-semibold">
+              {{ 'payout.invoiceDetail.totals.enrollments' | translate }}
+            </div>
             <div class="text-2xl font-bold text-on-surface mt-1">{{ inv.paidEnrollmentsCount }}</div>
           </div>
           <div class="p-4 md:p-5">
-            <div class="text-xs text-on-surface-variant uppercase font-semibold">Earnings</div>
+            <div class="text-xs text-on-surface-variant uppercase font-semibold">
+              {{ 'payout.invoiceDetail.totals.earnings' | translate }}
+            </div>
             <app-money-display [amount]="inv.earningsTotal" [currency]="inv.currency" size="lg" />
           </div>
           <div class="p-4 md:p-5">
-            <div class="text-xs text-on-surface-variant uppercase font-semibold">Tier Bonus</div>
+            <div class="text-xs text-on-surface-variant uppercase font-semibold">
+              {{ 'payout.invoiceDetail.totals.tierBonus' | translate }}
+            </div>
             <app-money-display [amount]="inv.tierBonus" [currency]="inv.currency" size="lg" />
           </div>
           <div class="p-4 md:p-5 bg-primary-fixed">
-            <div class="text-xs text-on-primary-fixed-variant uppercase font-semibold">Total</div>
+            <div class="text-xs text-on-primary-fixed-variant uppercase font-semibold">
+              {{ 'payout.invoiceDetail.totals.total' | translate }}
+            </div>
             <app-money-display [amount]="inv.totalAmount" [currency]="inv.currency" size="lg" />
           </div>
         </div>
@@ -104,30 +118,38 @@
         <div class="bg-surface-container-lowest rounded-2xl p-5 ring-1 ring-outline-variant/40 mb-6">
           <h2 class="text-base font-semibold text-on-surface mb-3">
             <i class="fa-solid fa-circle-info text-on-surface-variant mr-2"></i>
-            Payment Info
+            {{ 'payout.invoiceDetail.paymentInfo.title' | translate }}
           </h2>
           <dl class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
             @if (inv.paidAt) {
               <div>
-                <dt class="text-xs text-on-surface-variant uppercase font-semibold">Paid On</dt>
+                <dt class="text-xs text-on-surface-variant uppercase font-semibold">
+                  {{ 'payout.invoiceDetail.paymentInfo.paidOn' | translate }}
+                </dt>
                 <dd class="text-on-surface mt-0.5">{{ inv.paidAt | date:'fullDate' }}</dd>
               </div>
             }
             @if (inv.payoutMethod) {
               <div>
-                <dt class="text-xs text-on-surface-variant uppercase font-semibold">Method</dt>
+                <dt class="text-xs text-on-surface-variant uppercase font-semibold">
+                  {{ 'payout.invoiceDetail.paymentInfo.method' | translate }}
+                </dt>
                 <dd class="text-on-surface mt-0.5">{{ inv.payoutMethod }}</dd>
               </div>
             }
             @if (inv.payoutReference) {
               <div>
-                <dt class="text-xs text-on-surface-variant uppercase font-semibold">Reference</dt>
+                <dt class="text-xs text-on-surface-variant uppercase font-semibold">
+                  {{ 'payout.invoiceDetail.paymentInfo.reference' | translate }}
+                </dt>
                 <dd class="text-on-surface mt-0.5 font-mono text-xs">{{ inv.payoutReference }}</dd>
               </div>
             }
             @if (inv.notes) {
               <div class="md:col-span-2">
-                <dt class="text-xs text-on-surface-variant uppercase font-semibold">Notes</dt>
+                <dt class="text-xs text-on-surface-variant uppercase font-semibold">
+                  {{ 'payout.invoiceDetail.paymentInfo.notes' | translate }}
+                </dt>
                 <dd class="text-on-surface mt-0.5 whitespace-pre-wrap">{{ inv.notes }}</dd>
               </div>
             }
@@ -138,18 +160,20 @@
       <!-- Earnings Breakdown -->
       <div class="bg-surface-container-lowest rounded-2xl ring-1 ring-outline-variant/40 overflow-hidden">
         <div class="p-5 border-b border-outline-variant/30">
-          <h2 class="text-lg font-semibold text-on-surface font-headline">Earnings Breakdown</h2>
+          <h2 class="text-lg font-semibold text-on-surface font-headline">
+            {{ 'payout.invoiceDetail.breakdown.title' | translate }}
+          </h2>
         </div>
 
         <div class="overflow-x-auto">
           <table class="w-full text-sm">
             <thead class="bg-surface-container">
               <tr class="text-left text-xs uppercase tracking-wide text-on-surface-variant">
-                <th class="px-5 py-3 font-semibold">#</th>
-                <th class="px-5 py-3 font-semibold">Course</th>
-                <th class="px-5 py-3 font-semibold">Date</th>
-                <th class="px-5 py-3 font-semibold text-right">Gross</th>
-                <th class="px-5 py-3 font-semibold text-right">Net</th>
+                <th class="px-5 py-3 font-semibold">{{ 'payout.invoiceDetail.breakdown.columns.number' | translate }}</th>
+                <th class="px-5 py-3 font-semibold">{{ 'payout.invoiceDetail.breakdown.columns.course' | translate }}</th>
+                <th class="px-5 py-3 font-semibold">{{ 'payout.invoiceDetail.breakdown.columns.date' | translate }}</th>
+                <th class="px-5 py-3 font-semibold text-right">{{ 'payout.invoiceDetail.breakdown.columns.gross' | translate }}</th>
+                <th class="px-5 py-3 font-semibold text-right">{{ 'payout.invoiceDetail.breakdown.columns.net' | translate }}</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-outline-variant/20">
@@ -187,7 +211,7 @@
       <div class="p-5 border-b border-outline-variant/30 flex items-center justify-between">
         <h3 class="text-lg font-bold text-on-surface font-headline flex items-center gap-2">
           <i class="fa-solid fa-money-bill-wave text-emerald-600"></i>
-          Mark as Paid
+          {{ 'payout.invoiceDetail.payModal.title' | translate }}
         </h3>
         <button (click)="closePayModal()" [disabled]="submitting()"
                 class="text-on-surface-variant hover:text-on-surface w-8 h-8 rounded-lg hover:bg-surface-container">
@@ -198,12 +222,16 @@
       <!-- Body -->
       <div class="p-5 space-y-4">
         <p class="text-sm text-on-surface-variant">
-          Confirm payment of <span class="font-bold text-on-surface">{{ inv.totalAmount.toLocaleString() }} {{ inv.currency }}</span>
-          to <span class="font-bold text-on-surface">{{ inv.teacherName ?? inv.teacherId }}</span>.
+          {{ 'payout.invoiceDetail.payModal.confirmText' | translate }}
+          <span class="font-bold text-on-surface">{{ inv.totalAmount.toLocaleString() }} {{ inv.currency }}</span>
+          {{ 'payout.invoiceDetail.payModal.to' | translate }}
+          <span class="font-bold text-on-surface">{{ inv.teacherName ?? inv.teacherId }}</span>.
         </p>
 
         <div>
-          <label class="block text-xs font-semibold text-on-surface-variant uppercase mb-1.5">Payment Method *</label>
+          <label class="block text-xs font-semibold text-on-surface-variant uppercase mb-1.5">
+            {{ 'payout.invoiceDetail.payModal.method' | translate }} *
+          </label>
           <select [ngModel]="payMethod()" (ngModelChange)="payMethod.set($event)"
                   class="w-full px-3 py-2 rounded-xl bg-surface ring-1 ring-outline-variant focus:ring-2 focus:ring-primary outline-none text-sm">
             @for (m of payoutMethods; track m.value) {
@@ -213,16 +241,21 @@
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-on-surface-variant uppercase mb-1.5">Reference (optional)</label>
+          <label class="block text-xs font-semibold text-on-surface-variant uppercase mb-1.5">
+            {{ 'payout.invoiceDetail.payModal.reference' | translate }}
+          </label>
           <input type="text" [ngModel]="payReference()" (ngModelChange)="payReference.set($event)"
-                 placeholder="e.g. Bank txn #12345"
+                 [placeholder]="'payout.invoiceDetail.payModal.referencePlaceholder' | translate"
                  class="w-full px-3 py-2 rounded-xl bg-surface ring-1 ring-outline-variant focus:ring-2 focus:ring-primary outline-none text-sm" />
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-on-surface-variant uppercase mb-1.5">Notes (optional)</label>
+          <label class="block text-xs font-semibold text-on-surface-variant uppercase mb-1.5">
+            {{ 'payout.invoiceDetail.payModal.notes' | translate }}
+          </label>
           <textarea [ngModel]="payNotes()" (ngModelChange)="payNotes.set($event)"
-                    rows="2" placeholder="Any internal notes..."
+                    rows="2"
+                    [placeholder]="'payout.invoiceDetail.payModal.notesPlaceholder' | translate"
                     class="w-full px-3 py-2 rounded-xl bg-surface ring-1 ring-outline-variant focus:ring-2 focus:ring-primary outline-none text-sm resize-none"></textarea>
         </div>
 
@@ -237,14 +270,15 @@
       <div class="p-5 border-t border-outline-variant/30 flex justify-end gap-2">
         <button (click)="closePayModal()" [disabled]="submitting()"
                 class="px-4 py-2 rounded-xl bg-surface-container ring-1 ring-outline-variant hover:bg-surface-container-high text-sm font-medium text-on-surface">
-          Cancel
+          {{ 'payout.invoiceDetail.payModal.cancel' | translate }}
         </button>
         <button (click)="confirmPayment()" [disabled]="submitting()"
                 class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold shadow-sm disabled:opacity-60">
           @if (submitting()) {
-            <i class="fa-solid fa-circle-notch fa-spin mr-1"></i> Processing…
+            <i class="fa-solid fa-circle-notch fa-spin mr-1"></i>
+            {{ 'payout.invoiceDetail.payModal.processing' | translate }}
           } @else {
-            Confirm Payment
+            {{ 'payout.invoiceDetail.payModal.confirm' | translate }}
           }
         </button>
       </div>
@@ -264,7 +298,7 @@
       <div class="p-5 border-b border-outline-variant/30 flex items-center justify-between">
         <h3 class="text-lg font-bold text-on-surface font-headline flex items-center gap-2">
           <i class="fa-solid fa-triangle-exclamation text-error"></i>
-          Cancel Invoice
+          {{ 'payout.invoiceDetail.cancelModal.title' | translate }}
         </h3>
         <button (click)="closeCancelModal()" [disabled]="submitting()"
                 class="text-on-surface-variant hover:text-on-surface w-8 h-8 rounded-lg hover:bg-surface-container">
@@ -274,19 +308,24 @@
 
       <div class="p-5 space-y-4">
         <div class="p-3 rounded-xl bg-amber-50 ring-1 ring-amber-200 text-sm text-amber-900">
-          <p class="font-semibold mb-1"><i class="fa-solid fa-circle-info mr-1"></i> What happens next?</p>
-          <p class="text-xs">
-            Earnings on this invoice will be released back to <strong>Available</strong> status,
-            so they can be re-invoiced in the next run.
+          <p class="font-semibold mb-1">
+            <i class="fa-solid fa-circle-info mr-1"></i>
+            {{ 'payout.invoiceDetail.cancelModal.warningTitle' | translate }}
           </p>
+          <p class="text-xs">{{ 'payout.invoiceDetail.cancelModal.warningText' | translate }}</p>
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-on-surface-variant uppercase mb-1.5">Reason *</label>
+          <label class="block text-xs font-semibold text-on-surface-variant uppercase mb-1.5">
+            {{ 'payout.invoiceDetail.cancelModal.reason' | translate }} *
+          </label>
           <textarea [ngModel]="cancelReason()" (ngModelChange)="cancelReason.set($event)"
-                    rows="3" placeholder="Why are you cancelling this invoice?"
+                    rows="3"
+                    [placeholder]="'payout.invoiceDetail.cancelModal.reasonPlaceholder' | translate"
                     class="w-full px-3 py-2 rounded-xl bg-surface ring-1 ring-outline-variant focus:ring-2 focus:ring-primary outline-none text-sm resize-none"></textarea>
-          <p class="text-xs text-on-surface-variant mt-1">Min 5 characters. This will be saved on the invoice notes.</p>
+          <p class="text-xs text-on-surface-variant mt-1">
+            {{ 'payout.invoiceDetail.cancelModal.reasonHint' | translate }}
+          </p>
         </div>
 
         @if (modalError()) {
@@ -299,14 +338,15 @@
       <div class="p-5 border-t border-outline-variant/30 flex justify-end gap-2">
         <button (click)="closeCancelModal()" [disabled]="submitting()"
                 class="px-4 py-2 rounded-xl bg-surface-container ring-1 ring-outline-variant hover:bg-surface-container-high text-sm font-medium text-on-surface">
-          Keep Invoice
+          {{ 'payout.invoiceDetail.cancelModal.keep' | translate }}
         </button>
         <button (click)="confirmCancel()" [disabled]="submitting()"
                 class="px-4 py-2 rounded-xl bg-error hover:bg-error/90 text-on-error text-sm font-semibold shadow-sm disabled:opacity-60">
           @if (submitting()) {
-            <i class="fa-solid fa-circle-notch fa-spin mr-1"></i> Cancelling…
+            <i class="fa-solid fa-circle-notch fa-spin mr-1"></i>
+            {{ 'payout.invoiceDetail.cancelModal.cancelling' | translate }}
           } @else {
-            Confirm Cancel
+            {{ 'payout.invoiceDetail.cancelModal.confirm' | translate }}
           }
         </button>
       </div>

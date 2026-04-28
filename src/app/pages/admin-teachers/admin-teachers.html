@@ -1,70 +1,124 @@
 <div class="flex min-h-screen bg-[#f8faf9] font-headline">
   <app-admin-sidebar />
 
-  <main class="ms-6 flex-1 min-h-screen">
-    <div class="p-8 space-y-8">
+  <main class="flex-1 min-h-screen flex flex-col overflow-hidden">
 
-      <div class="grid grid-cols-12 gap-6 items-start">
-        <div class="col-span-8">
-          <h2 class="text-3xl font-bold tracking-tight text-[#2d3433] mb-2">
-            {{ 'adminTeachers.title' | translate }}
-          </h2>
-          <p class="text-[#596060]">{{ 'adminTeachers.subtitle' | translate }}</p>
+    <!-- ══════════════════════════════════════════
+         TOP NAV
+    ══════════════════════════════════════════ -->
+    <header class="sticky top-0 z-20 bg-white border-b border-[#eaefee] px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="text-sm font-bold text-[#acb3b2]">Admin</span>
+        <span class="text-[#d0d8d6]">/</span>
+        <span class="text-sm font-bold text-[#2d3433]">{{ 'adminTeachers.title' | translate }}</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#acb3b2] text-[18px]">search</span>
+          <input (input)="onSearch($event)" type="text"
+            [placeholder]="'adminTeachers.search' | translate"
+            class="pl-10 pr-4 py-2 rounded-xl bg-[#f0f5f3] border border-transparent focus:border-[#b2efda] focus:bg-white text-sm text-[#2d3433] placeholder-[#acb3b2] outline-none transition-all w-56" />
         </div>
-        <div class="col-span-4 flex justify-end">
+      
+      </div>
+    </header>
+
+    <div class="p-8 space-y-6">
+
+      <!-- ══════════════════════════════════════════
+           BANNER
+      ══════════════════════════════════════════ -->
+      <div class="relative rounded-2xl overflow-hidden bg-[#2e6959] px-8 py-7 flex items-center justify-between">
+        <div class="absolute right-32 top-1/2 -translate-y-1/2 w-40 h-40 rounded-full border-[24px] border-white/5"></div>
+        <div class="absolute right-16 top-1/2 -translate-y-1/2 w-28 h-28 rounded-full border-[16px] border-white/5"></div>
+        <div class="absolute right-52 bottom-0 w-20 h-20 rounded-full border-[12px] border-white/5"></div>
+        <div>
+          <p class="text-[#b2efda] text-sm font-semibold mb-1 flex items-center gap-2">
+            <span class="material-symbols-outlined text-base">school</span>
+            {{ 'adminTeachers.subtitle' | translate }}
+          </p>
+          <h2 class="text-white text-3xl font-black tracking-tight mb-2">{{ 'adminTeachers.title' | translate }}</h2>
+          <p class="text-white/60 text-sm font-medium">{{ teachers().length }} {{ 'adminTeachers.totalFaculty' | translate }}</p>
+        </div>
+        <div class="flex gap-3 relative z-10">
           <button (click)="openCreate()"
-            class="bg-[#2e6959] text-[#e4fff4] flex items-center gap-2 px-8 py-4 rounded-full font-bold shadow-lg shadow-[#2e6959]/10 hover:bg-[#205d4d] transition-all active:scale-95">
-            <span class="material-symbols-outlined">person_add</span>
+            class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-[#2e6959] text-sm font-bold hover:bg-[#e4fff4] transition-colors shadow-sm">
+            <span class="material-symbols-outlined text-base">person_add</span>
             {{ 'adminTeachers.createTeacher' | translate }}
           </button>
         </div>
       </div>
 
+      <!-- Toast messages -->
       @if (successMsg()) {
-        <div class="flex items-center gap-3 px-5 py-3 bg-[#b2efda]/50 border border-[#2e6959]/20 rounded-xl text-[#2e6959] font-bold text-sm">
+        <div class="flex items-center gap-3 px-5 py-3 bg-[#e4fff4] border border-[#b2efda] rounded-2xl text-[#2e6959] font-semibold text-sm">
           <span class="material-symbols-outlined text-[18px]">check_circle</span>{{ successMsg() }}
         </div>
       }
       @if (errorMsg()) {
-        <div class="flex items-center gap-3 px-5 py-3 bg-[#fa746f]/20 border border-[#a83836]/20 rounded-xl text-[#a83836] font-bold text-sm">
+        <div class="flex items-center gap-3 px-5 py-3 bg-[#fff0ee] border border-[#f5c5bf] rounded-2xl text-[#c0392b] font-semibold text-sm">
           <span class="material-symbols-outlined text-[18px]">error</span>{{ errorMsg() }}
         </div>
       }
 
-      <div class="grid grid-cols-4 gap-6">
-        <div class="ps-8 bg-[#f1f4f3] p-6 rounded-xl space-y-2">
-          <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">
-            {{ 'adminTeachers.totalFaculty' | translate }}
-          </p>
-          <h3 class="text-3xl font-extrabold text-[#2d3433]">{{ teachers().length }}</h3>
+      <!-- ══════════════════════════════════════════
+           KPI CARDS
+      ══════════════════════════════════════════ -->
+      <div class="grid grid-cols-4 gap-4">
+
+        <!-- Total Faculty -->
+        <div class="bg-white rounded-2xl p-5 border border-[#eaefee] hover:border-[#b2efda] hover:shadow-sm transition-all group">
+          <div class="flex items-start justify-between mb-4">
+            <div class="w-10 h-10 rounded-xl bg-[#e4fff4] flex items-center justify-center text-[#2e6959] group-hover:bg-[#b2efda] transition-colors">
+              <span class="material-symbols-outlined text-xl">school</span>
+            </div>
+            <span class="text-[10px] font-black uppercase tracking-widest text-[#acb3b2] bg-[#f8faf9] px-2 py-1 rounded-lg">{{ 'adminDashboard.total' | translate }}</span>
+          </div>
+          <p class="text-[10px] uppercase tracking-widest font-bold text-[#596060] mb-1">{{ 'adminTeachers.totalFaculty' | translate }}</p>
+          <p class="text-3xl font-black text-[#2d3433] tracking-tight">{{ teachers().length }}</p>
         </div>
-        <div class="ps-8 bg-[#b2efda] p-6 rounded-xl space-y-2">
-          <p class="uppercase tracking-widest text-[10px] font-bold text-[#1f5b4c]">
-            {{ 'adminTeachers.active' | translate }}
-          </p>
-          <h3 class="text-3xl font-extrabold text-[#1f5b4c]">{{ activeCount }}</h3>
+
+        <!-- Active -->
+        <div class="bg-white rounded-2xl p-5 border border-[#eaefee] hover:border-[#b2efda] hover:shadow-sm transition-all group">
+          <div class="flex items-start justify-between mb-4">
+            <div class="w-10 h-10 rounded-xl bg-[#e4fff4] flex items-center justify-center text-[#2e6959] group-hover:bg-[#b2efda] transition-colors">
+              <span class="material-symbols-outlined text-xl">check_circle</span>
+            </div>
+            <span class="text-[10px] font-black uppercase tracking-widest text-[#2e6959] bg-[#e4fff4] px-2 py-1 rounded-lg">Live</span>
+          </div>
+          <p class="text-[10px] uppercase tracking-widest font-bold text-[#596060] mb-1">{{ 'adminTeachers.active' | translate }}</p>
+          <p class="text-3xl font-black text-[#2d3433] tracking-tight">{{ activeCount }}</p>
         </div>
-        <div class="ps-8 bg-[#c9e7f7] p-6 rounded-xl space-y-2">
-          <p class="uppercase tracking-widest text-[10px] font-bold text-[#395663]">
-            {{ 'adminTeachers.inactive' | translate }}
-          </p>
-          <h3 class="text-3xl font-extrabold text-[#395663]">{{ inactiveCount }}</h3>
+
+        <!-- Inactive -->
+        <div class="bg-white rounded-2xl p-5 border border-[#eaefee] hover:border-[#c9e7f7] hover:shadow-sm transition-all group">
+          <div class="flex items-start justify-between mb-4">
+            <div class="w-10 h-10 rounded-xl bg-[#e8f4fd] flex items-center justify-center text-[#466370] group-hover:bg-[#c9e7f7] transition-colors">
+              <span class="material-symbols-outlined text-xl">block</span>
+            </div>
+            <span class="text-[10px] font-black uppercase tracking-widest text-[#acb3b2] bg-[#f8faf9] px-2 py-1 rounded-lg">Off</span>
+          </div>
+          <p class="text-[10px] uppercase tracking-widest font-bold text-[#596060] mb-1">{{ 'adminTeachers.inactive' | translate }}</p>
+          <p class="text-3xl font-black text-[#2d3433] tracking-tight">{{ inactiveCount }}</p>
         </div>
-        <div class="ps-8 bg-[#dde4e3] p-6 rounded-xl space-y-2">
-          <p class="uppercase tracking-widest text-[10px] font-bold text-[#596060]">
-            {{ 'adminTeachers.newThisMonth' | translate }}
-          </p>
-          <h3 class="text-3xl font-extrabold text-[#2d3433]">—</h3>
+
+        <!-- Total Courses — accent card -->
+        <div class="bg-[#2e6959] rounded-2xl p-5 border border-transparent hover:shadow-md transition-all relative overflow-hidden">
+          <div class="absolute bottom-0 right-0 w-24 h-24 rounded-full bg-white/5 translate-x-8 translate-y-8"></div>
+          <div class="flex items-start justify-between mb-4">
+            <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center text-[#b2efda]">
+              <span class="material-symbols-outlined text-xl">menu_book</span>
+            </div>
+            <span class="text-[10px] font-black uppercase tracking-widest text-[#b2efda]/60 bg-white/10 px-2 py-1 rounded-lg">Total</span>
+          </div>
+          <p class="text-[10px] uppercase tracking-widest font-bold text-[#b2efda]/70 mb-1">{{ 'adminTeachers.courses' | translate }}</p>
+          <p class="text-3xl font-black text-white tracking-tight">{{ totalCourseCount }}</p>
         </div>
       </div>
 
-      <div class="relative max-w-sm">
-        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[#596060]">search</span>
-        <input (input)="onSearch($event)" type="text"
-          [placeholder]="'adminTeachers.search' | translate"
-          class="w-full bg-[#eaefee] border-none rounded-full py-2.5 pl-12 pr-4 text-sm focus:ring-2 focus:ring-[#2e6959]/20 outline-none" />
-      </div>
-
+      <!-- ══════════════════════════════════════════
+           TEACHERS TABLE
+      ══════════════════════════════════════════ -->
       @if (loading()) {
         <div class="flex justify-center py-20">
           <span class="material-symbols-outlined text-[#2e6959] text-5xl animate-spin">progress_activity</span>
@@ -72,81 +126,101 @@
       }
 
       @if (!loading()) {
-        <div class="bg-[#eaefee] rounded-xl overflow-hidden">
-          <div class="p-6 border-b border-[#acb3b2]/20 flex justify-between items-center">
-            <h3 class="text-xl font-bold text-[#2d3433]">{{ 'adminTeachers.manageMembers' | translate }}</h3>
+        <div class="bg-white rounded-2xl border border-[#eaefee] overflow-hidden">
+
+          <div class="px-6 py-5 border-b border-[#f0f5f3] flex items-center justify-between">
+            <div>
+              <p class="text-sm font-extrabold text-[#2d3433]">{{ 'adminTeachers.manageMembers' | translate }}</p>
+              <p class="text-[10px] uppercase tracking-widest font-bold text-[#acb3b2] mt-0.5">{{ 'adminTeachers.subtitle' | translate }}</p>
+            </div>
           </div>
+
           <div class="overflow-x-auto">
-            <table class="w-full border-collapse">
+            <table class="w-full text-left">
               <thead>
-                <tr class="text-left bg-[#eaefee]/50">
-                  <th class="px-6 py-4 uppercase tracking-widest text-[10px] font-bold text-[#596060]">
-                    {{ 'adminTeachers.profile' | translate }}
-                  </th>
-                  <th class="px-6 py-4 uppercase tracking-widest text-[10px] font-bold text-[#596060] hidden md:table-cell">
-                    {{ 'adminTeachers.email' | translate }}
-                  </th>
-                  <th class="px-6 py-4 uppercase tracking-widest text-[10px] font-bold text-[#596060] hidden lg:table-cell">
-                    {{ 'adminTeachers.courses' | translate }}
-                  </th>
-                  <th class="px-6 py-4 uppercase tracking-widest text-[10px] font-bold text-[#596060]">
-                    {{ 'adminTeachers.status' | translate }}
-                  </th>
-                  <th class="px-6 py-4 uppercase tracking-widest text-[10px] font-bold text-[#596060] text-right">
-                    {{ 'adminTeachers.actions' | translate }}
-                  </th>
+                <tr class="border-b border-[#f0f5f3]">
+                  <th class="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-[#acb3b2]">{{ 'adminTeachers.profile' | translate }}</th>
+                  <th class="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-[#acb3b2] hidden md:table-cell">{{ 'adminTeachers.email' | translate }}</th>
+                  <th class="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-[#acb3b2] hidden lg:table-cell">{{ 'adminTeachers.courses' | translate }}</th>
+                  <th class="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-[#acb3b2]">{{ 'adminTeachers.status' | translate }}</th>
+                  <th class="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-[#acb3b2] text-right">{{ 'adminTeachers.actions' | translate }}</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-[#acb3b2]/10">
+              <tbody class="divide-y divide-[#f0f5f3]">
+
                 @for (teacher of teachers(); track teacher.id) {
-                  <tr class="hover:bg-[#f8faf9] transition-colors group">
-                    <td class="px-6 py-5">
+                  <tr class="group hover:bg-[#fafcfb] transition-colors">
+
+                    <!-- Profile -->
+                    <td class="px-6 py-4">
                       <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-[#2e6959] flex items-center justify-center text-[#e4fff4] text-xs font-bold shrink-0">
+                        <div class="w-10 h-10 rounded-full bg-[#2e6959] flex items-center justify-center text-[#b2efda] text-xs font-black flex-shrink-0">
                           {{ initials(teacher.name) }}
                         </div>
                         <div>
                           <p class="font-bold text-sm text-[#2d3433]">{{ teacher.name }}</p>
-                          <p class="text-[10px] text-[#596060]">&#64;{{ teacher.userName }}</p>
+                          <p class="text-[11px] text-[#acb3b2] font-semibold">&#64;{{ teacher.userName }}</p>
                         </div>
                       </div>
                     </td>
-                    <td class="px-6 py-5 text-sm text-[#596060] hidden md:table-cell">{{ teacher.email }}</td>
-                    <td class="px-6 py-5 hidden lg:table-cell">
-                      <span class="px-3 py-1 bg-[#f1f4f3] rounded-full text-[10px] font-bold uppercase text-[#596060]">
-                        {{ teacher.courseCount }} {{ 'adminTeachers.coursesCount' | translate }}
-                      </span>
+
+                    <!-- Email -->
+                    <td class="px-6 py-4 text-sm text-[#596060] hidden md:table-cell">{{ teacher.email }}</td>
+
+                    <!-- Courses -->
+                    <td class="px-6 py-4 hidden lg:table-cell">
+                      <div class="flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[#acb3b2] text-[14px]">menu_book</span>
+                        <span class="text-sm font-bold text-[#2d3433]">{{ teacher.courseCount }}</span>
+                        <span class="text-[11px] text-[#acb3b2] font-semibold">{{ 'adminTeachers.coursesCount' | translate }}</span>
+                      </div>
                     </td>
-                    <td class="px-6 py-5">
-                      <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase"
-                        [class]="teacher.isActive ? 'bg-[#b2efda] text-[#1f5b4c]' : 'bg-[#dde4e3] text-[#596060]'">
-                        {{ (teacher.isActive ? 'adminTeachers.active' : 'adminTeachers.inactive') | translate }}
-                      </span>
+
+                    <!-- Status -->
+                    <td class="px-6 py-4">
+                      <div class="flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full flex-shrink-0"
+                          [class]="teacher.isActive ? 'bg-[#2e6959] animate-pulse' : 'bg-[#acb3b2]'">
+                        </span>
+                        <span class="text-xs font-bold"
+                          [class]="teacher.isActive ? 'text-[#2e6959]' : 'text-[#acb3b2]'">
+                          {{ (teacher.isActive ? 'adminTeachers.active' : 'adminTeachers.inactive') | translate }}
+                        </span>
+                      </div>
                     </td>
-                    <td class="px-6 py-5 text-right">
-                      <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+
+                    <!-- Actions -->
+                    <td class="px-6 py-4 text-right">
+                      <div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                         <button (click)="openEdit(teacher)"
-                          class="p-2 rounded-full hover:bg-emerald-100 text-emerald-800 transition-colors" title="Edit">
-                          <span class="material-symbols-outlined text-sm">edit</span>
+                          class="p-2 rounded-xl text-[#acb3b2] hover:text-[#2e6959] hover:bg-[#e4fff4] transition-all"
+                          title="Edit">
+                          <span class="material-symbols-outlined text-[18px]">edit</span>
                         </button>
                         <button (click)="toggleActive(teacher)"
-                          class="p-2 rounded-full transition-colors"
-                          [class]="teacher.isActive ? 'hover:bg-[#fa746f]/20 text-[#a83836]' : 'hover:bg-[#b2efda] text-[#2e6959]'"
+                          class="p-2 rounded-xl transition-all"
+                          [class]="teacher.isActive
+                            ? 'text-[#acb3b2] hover:text-[#e05c4b] hover:bg-[#fff0ee]'
+                            : 'text-[#acb3b2] hover:text-[#2e6959] hover:bg-[#e4fff4]'"
                           [title]="(teacher.isActive ? 'adminTeachers.inactive' : 'adminTeachers.active') | translate">
-                          <span class="material-symbols-outlined text-sm">{{ teacher.isActive ? 'block' : 'check_circle' }}</span>
+                          <span class="material-symbols-outlined text-[18px]">
+                            {{ teacher.isActive ? 'block' : 'check_circle' }}
+                          </span>
                         </button>
                       </div>
                     </td>
                   </tr>
                 }
+
                 @empty {
                   <tr>
-                    <td colspan="5" class="px-6 py-20 text-center text-[#596060]">
-                      <span class="material-symbols-outlined text-5xl block mb-3 text-[#acb3b2]">school</span>
-                      {{ 'adminTeachers.noTeachersFound' | translate }}
+                    <td colspan="5" class="text-center py-20">
+                      <span class="material-symbols-outlined text-4xl block mb-3 text-[#d0d8d6]">school</span>
+                      <p class="text-sm font-bold text-[#acb3b2]">{{ 'adminTeachers.noTeachersFound' | translate }}</p>
                     </td>
                   </tr>
                 }
+
               </tbody>
             </table>
           </div>
@@ -157,41 +231,51 @@
   </main>
 </div>
 
-<!-- Create Modal -->
+<!-- ══════════════════════════════════════════
+     CREATE MODAL
+══════════════════════════════════════════ -->
 @if (showCreateModal()) {
-  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-8">
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="text-xl font-bold text-[#2d3433] font-headline">
-          {{ 'adminTeachers.addNewTeacher' | translate }}
-        </h2>
-        <button (click)="showCreateModal.set(false)" class="p-2 rounded-lg hover:bg-[#eaefee] transition-colors">
-          <span class="material-symbols-outlined text-[#596060]">close</span>
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm px-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-8 border border-[#eaefee]">
+
+      <div class="flex items-start justify-between mb-6">
+        <div>
+          <h2 class="text-lg font-black text-[#2d3433] tracking-tight">{{ 'adminTeachers.addNewTeacher' | translate }}</h2>
+          <p class="text-xs font-semibold text-[#acb3b2] mt-1">{{ 'adminTeachers.subtitle' | translate }}</p>
+        </div>
+        <button (click)="showCreateModal.set(false)"
+          class="w-8 h-8 flex items-center justify-center rounded-xl bg-[#f0f5f3] hover:bg-[#e4eeea] transition-colors">
+          <span class="material-symbols-outlined text-[#596060] text-sm">close</span>
         </button>
       </div>
+
       <form [formGroup]="createForm" (ngSubmit)="submitCreate()" class="space-y-4">
         @for (field of [
-          {key:'name',         labelKey:'adminTeachers.fullName',     type:'text'},
-          {key:'userName',     labelKey:'adminTeachers.username',     type:'text'},
-          {key:'email',        labelKey:'adminTeachers.email',        type:'email'},
-          {key:'phoneNumber',  labelKey:'adminTeachers.phone',        type:'tel'},
-          {key:'tempPassword', labelKey:'adminTeachers.tempPassword', type:'password'}
+          {key:'name',         labelKey:'adminTeachers.fullName',     type:'text',     icon:'person'},
+          {key:'userName',     labelKey:'adminTeachers.username',     type:'text',     icon:'alternate_email'},
+          {key:'email',        labelKey:'adminTeachers.email',        type:'email',    icon:'mail'},
+          {key:'phoneNumber',  labelKey:'adminTeachers.phone',        type:'tel',      icon:'phone'},
+          {key:'tempPassword', labelKey:'adminTeachers.tempPassword', type:'password', icon:'lock'}
         ]; track field.key) {
           <div>
-            <label class="uppercase tracking-widest text-[10px] font-bold text-[#596060] block mb-1 px-1">
+            <label class="block text-[10px] font-black uppercase tracking-widest text-[#acb3b2] mb-1.5">
               {{ field.labelKey | translate }}
             </label>
-            <input [formControlName]="field.key" [type]="field.type"
-              class="w-full bg-[#eaefee] border-none rounded-xl py-3 px-4 text-sm focus:ring-1 focus:ring-[#2e6959]/40 outline-none" />
+            <div class="flex items-center gap-2 px-4 py-2.5 bg-[#f8faf9] rounded-xl border border-[#eaefee] focus-within:border-[#b2efda] focus-within:bg-white transition-all">
+              <span class="material-symbols-outlined text-[#acb3b2] text-[17px]">{{ field.icon }}</span>
+              <input [formControlName]="field.key" [type]="field.type"
+                class="bg-transparent border-none focus:ring-0 flex-1 text-sm font-semibold text-[#2d3433] outline-none" />
+            </div>
           </div>
         }
         <div class="flex justify-end gap-3 pt-2">
           <button type="button" (click)="showCreateModal.set(false)"
-            class="px-6 py-2.5 rounded-full border border-[#acb3b2]/30 text-[#596060] font-semibold hover:bg-[#eaefee] transition-colors text-sm">
+            class="px-5 py-2.5 rounded-xl border border-[#eaefee] text-[#596060] font-bold hover:bg-[#f0f5f3] text-sm transition-colors">
             {{ 'adminTeachers.cancel' | translate }}
           </button>
           <button type="submit" [disabled]="createForm.invalid || loading()"
-            class="px-6 py-2.5 bg-[#2e6959] text-[#e4fff4] font-bold rounded-full disabled:opacity-50 text-sm hover:bg-[#205d4d] transition-colors">
+            class="px-5 py-2.5 bg-[#2e6959] text-white font-bold rounded-xl disabled:opacity-50 text-sm flex items-center gap-2 hover:bg-[#1a3d34] transition-colors shadow-sm">
+            <span class="material-symbols-outlined text-[15px]">person_add</span>
             {{ 'adminTeachers.createTeacher' | translate }}
           </button>
         </div>
@@ -200,39 +284,49 @@
   </div>
 }
 
-<!-- Edit Modal -->
+<!-- ══════════════════════════════════════════
+     EDIT MODAL
+══════════════════════════════════════════ -->
 @if (showEditModal()) {
-  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-8">
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="text-xl font-bold text-[#2d3433] font-headline">
-          {{ 'adminTeachers.editTeacher' | translate }}
-        </h2>
-        <button (click)="showEditModal.set(false)" class="p-2 rounded-lg hover:bg-[#eaefee] transition-colors">
-          <span class="material-symbols-outlined text-[#596060]">close</span>
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm px-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-8 border border-[#eaefee]">
+
+      <div class="flex items-start justify-between mb-6">
+        <div>
+          <h2 class="text-lg font-black text-[#2d3433] tracking-tight">{{ 'adminTeachers.editTeacher' | translate }}</h2>
+          <p class="text-xs font-semibold text-[#acb3b2] mt-1 truncate max-w-[280px]">{{ selectedTeacher()?.name }}</p>
+        </div>
+        <button (click)="showEditModal.set(false)"
+          class="w-8 h-8 flex items-center justify-center rounded-xl bg-[#f0f5f3] hover:bg-[#e4eeea] transition-colors">
+          <span class="material-symbols-outlined text-[#596060] text-sm">close</span>
         </button>
       </div>
+
       <form [formGroup]="editForm" (ngSubmit)="submitEdit()" class="space-y-4">
         @for (field of [
-          {key:'name',        labelKey:'adminTeachers.fullName', type:'text'},
-          {key:'phoneNumber', labelKey:'adminTeachers.phone',    type:'tel'},
-          {key:'bio',         labelKey:'adminTeachers.bio',      type:'text'}
+          {key:'name',        labelKey:'adminTeachers.fullName', type:'text', icon:'person'},
+          {key:'phoneNumber', labelKey:'adminTeachers.phone',    type:'tel',  icon:'phone'},
+          {key:'bio',         labelKey:'adminTeachers.bio',      type:'text', icon:'info'}
         ]; track field.key) {
           <div>
-            <label class="uppercase tracking-widest text-[10px] font-bold text-[#596060] block mb-1 px-1">
+            <label class="block text-[10px] font-black uppercase tracking-widest text-[#acb3b2] mb-1.5">
               {{ field.labelKey | translate }}
             </label>
-            <input [formControlName]="field.key" [type]="field.type"
-              class="w-full bg-[#eaefee] border-none rounded-xl py-3 px-4 text-sm focus:ring-1 focus:ring-[#2e6959]/40 outline-none" />
+            <div class="flex items-center gap-2 px-4 py-2.5 bg-[#f8faf9] rounded-xl border border-[#eaefee] focus-within:border-[#b2efda] focus-within:bg-white transition-all">
+              <span class="material-symbols-outlined text-[#acb3b2] text-[17px]">{{ field.icon }}</span>
+              <input [formControlName]="field.key" [type]="field.type"
+                class="bg-transparent border-none focus:ring-0 flex-1 text-sm font-semibold text-[#2d3433] outline-none" />
+            </div>
           </div>
         }
         <div class="flex justify-end gap-3 pt-2">
           <button type="button" (click)="showEditModal.set(false)"
-            class="px-6 py-2.5 rounded-full border border-[#acb3b2]/30 text-[#596060] font-semibold hover:bg-[#eaefee] transition-colors text-sm">
+            class="px-5 py-2.5 rounded-xl border border-[#eaefee] text-[#596060] font-bold hover:bg-[#f0f5f3] text-sm transition-colors">
             {{ 'adminTeachers.cancel' | translate }}
           </button>
           <button type="submit" [disabled]="editForm.invalid || loading()"
-            class="px-6 py-2.5 bg-[#2e6959] text-[#e4fff4] font-bold rounded-full disabled:opacity-50 text-sm hover:bg-[#205d4d] transition-colors">
+            class="px-5 py-2.5 bg-[#2e6959] text-white font-bold rounded-xl disabled:opacity-50 text-sm flex items-center gap-2 hover:bg-[#1a3d34] transition-colors shadow-sm">
+            <span class="material-symbols-outlined text-[15px]">save</span>
             {{ 'adminTeachers.saveChanges' | translate }}
           </button>
         </div>

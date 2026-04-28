@@ -5,13 +5,13 @@
     <header class="mb-6">
       <a routerLink="/admin/payout/dashboard"
          class="text-on-surface-variant hover:text-primary text-sm flex items-center gap-1 mb-1">
-        <i class="fa-solid fa-arrow-left"></i> Dashboard
+        <i class="fa-solid fa-arrow-left"></i> {{ 'payout.generate.backToDashboard' | translate }}
       </a>
       <h1 class="text-2xl md:text-3xl font-bold text-on-surface font-headline">
-        Generate Invoices
+        {{ 'payout.generate.title' | translate }}
       </h1>
       <p class="text-sm text-on-surface-variant mt-1">
-        Manually trigger invoice generation for a specific month
+        {{ 'payout.generate.subtitle' | translate }}
       </p>
     </header>
 
@@ -20,15 +20,16 @@
       <div class="flex items-start gap-3">
         <i class="fa-solid fa-circle-info text-primary text-lg mt-0.5"></i>
         <div class="text-sm text-on-surface">
-          <p class="font-semibold mb-1">When to use this</p>
+          <p class="font-semibold mb-1">{{ 'payout.generate.infoBanner.title' | translate }}</p>
           <ul class="text-xs text-on-surface-variant space-y-0.5 list-disc list-inside">
-            <li>Testing the system without waiting for the monthly cron</li>
-            <li>Backfilling a month that the auto-job missed</li>
-            <li>Regenerating after cancelling some invoices</li>
+            <li>{{ 'payout.generate.infoBanner.item1' | translate }}</li>
+            <li>{{ 'payout.generate.infoBanner.item2' | translate }}</li>
+            <li>{{ 'payout.generate.infoBanner.item3' | translate }}</li>
           </ul>
           <p class="mt-2 text-xs">
             <i class="fa-solid fa-shield-halved mr-1"></i>
-            <strong>Idempotent:</strong> Teachers who already have an invoice for the period are skipped automatically.
+            <strong>{{ 'payout.generate.infoBanner.idempotent' | translate }}</strong>
+            {{ 'payout.generate.infoBanner.idempotentText' | translate }}
           </p>
         </div>
       </div>
@@ -37,11 +38,15 @@
     <!-- Form -->
     @if (!result() && !error()) {
       <div class="bg-surface-container-lowest rounded-2xl p-5 ring-1 ring-outline-variant/40 mb-6">
-        <h2 class="text-base font-semibold text-on-surface mb-4">Select Period</h2>
+        <h2 class="text-base font-semibold text-on-surface mb-4">
+          {{ 'payout.generate.form.title' | translate }}
+        </h2>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
           <div>
-            <label class="block text-xs font-semibold text-on-surface-variant uppercase mb-1.5">Year</label>
+            <label class="block text-xs font-semibold text-on-surface-variant uppercase mb-1.5">
+              {{ 'payout.generate.form.year' | translate }}
+            </label>
             <select [ngModel]="year()" (ngModelChange)="year.set(+$event)"
                     class="w-full px-3 py-2 rounded-xl bg-surface ring-1 ring-outline-variant focus:ring-2 focus:ring-primary outline-none text-on-surface">
               @for (y of yearOptions; track y) {
@@ -50,7 +55,9 @@
             </select>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-on-surface-variant uppercase mb-1.5">Month</label>
+            <label class="block text-xs font-semibold text-on-surface-variant uppercase mb-1.5">
+              {{ 'payout.generate.form.month' | translate }}
+            </label>
             <select [ngModel]="month()" (ngModelChange)="month.set(+$event)"
                     class="w-full px-3 py-2 rounded-xl bg-surface ring-1 ring-outline-variant focus:ring-2 focus:ring-primary outline-none text-on-surface">
               @for (m of monthOptions; track m.value) {
@@ -63,9 +70,11 @@
         <button (click)="generate()" [disabled]="generating()"
                 class="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-primary text-on-primary hover:bg-primary-dim font-semibold shadow-sm disabled:opacity-60 disabled:cursor-wait transition-colors">
           @if (generating()) {
-            <i class="fa-solid fa-circle-notch fa-spin"></i> Generating Invoices…
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+            {{ 'payout.generate.form.submitting' | translate }}
           } @else {
-            <i class="fa-solid fa-bolt"></i> Generate Invoices for {{ monthOptions[month() - 1].label }} {{ year() }}
+            <i class="fa-solid fa-bolt"></i>
+            {{ 'payout.generate.form.submit' | translate }} {{ monthOptions[month() - 1].label }} {{ year() }}
           }
         </button>
       </div>
@@ -77,13 +86,13 @@
         <div class="flex items-start gap-3">
           <i class="fa-solid fa-circle-exclamation text-2xl mt-0.5"></i>
           <div class="flex-1">
-            <h3 class="font-bold mb-1">Generation Failed</h3>
+            <h3 class="font-bold mb-1">{{ 'payout.generate.error.title' | translate }}</h3>
             <p class="text-sm">{{ error() }}</p>
           </div>
         </div>
         <button (click)="reset()"
                 class="mt-3 px-4 py-2 rounded-xl bg-white/30 hover:bg-white/50 text-sm font-medium">
-          Try Again
+          {{ 'payout.generate.error.tryAgain' | translate }}
         </button>
       </div>
     }
@@ -96,9 +105,10 @@
         <div class="flex items-start gap-3">
           <i class="fa-solid fa-circle-check text-emerald-600 text-2xl mt-0.5"></i>
           <div class="flex-1">
-            <h3 class="font-bold text-emerald-900 mb-1">Generation Complete</h3>
+            <h3 class="font-bold text-emerald-900 mb-1">{{ 'payout.generate.result.title' | translate }}</h3>
             <p class="text-sm text-emerald-800">
-              Period: <strong>{{ monthOptions[r.month - 1].label }} {{ r.year }}</strong>
+              {{ 'payout.generate.result.period' | translate }}
+              <strong>{{ monthOptions[r.month - 1].label }} {{ r.year }}</strong>
             </p>
           </div>
         </div>
@@ -107,22 +117,32 @@
       <!-- Stats cards -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
         <div class="bg-surface-container-lowest rounded-2xl p-4 ring-1 ring-outline-variant/40">
-          <div class="text-xs text-on-surface-variant uppercase font-semibold">Created</div>
+          <div class="text-xs text-on-surface-variant uppercase font-semibold">
+            {{ 'payout.generate.result.stats.created' | translate }}
+          </div>
           <div class="text-2xl font-bold text-emerald-600 mt-1">{{ r.invoicesCreated }}</div>
         </div>
         <div class="bg-surface-container-lowest rounded-2xl p-4 ring-1 ring-outline-variant/40">
-          <div class="text-xs text-on-surface-variant uppercase font-semibold">Skipped</div>
+          <div class="text-xs text-on-surface-variant uppercase font-semibold">
+            {{ 'payout.generate.result.stats.skipped' | translate }}
+          </div>
           <div class="text-2xl font-bold text-amber-600 mt-1">{{ r.teachersSkipped }}</div>
-          <p class="text-[10px] text-on-surface-variant mt-1">Already had invoice</p>
+          <p class="text-[10px] text-on-surface-variant mt-1">
+            {{ 'payout.generate.result.stats.skippedHint' | translate }}
+          </p>
         </div>
         <div class="bg-surface-container-lowest rounded-2xl p-4 ring-1 ring-outline-variant/40">
-          <div class="text-xs text-on-surface-variant uppercase font-semibold">Failed</div>
+          <div class="text-xs text-on-surface-variant uppercase font-semibold">
+            {{ 'payout.generate.result.stats.failed' | translate }}
+          </div>
           <div class="text-2xl font-bold mt-1" [class]="r.teachersFailed > 0 ? 'text-rose-600' : 'text-on-surface-variant'">
             {{ r.teachersFailed }}
           </div>
         </div>
         <div class="bg-primary-fixed rounded-2xl p-4">
-          <div class="text-xs text-on-primary-fixed-variant uppercase font-semibold">Total</div>
+          <div class="text-xs text-on-primary-fixed-variant uppercase font-semibold">
+            {{ 'payout.generate.result.stats.total' | translate }}
+          </div>
           <div class="mt-1">
             <app-money-display [amount]="r.totalAmountGenerated" currency="EGP" size="lg" />
           </div>
@@ -134,7 +154,7 @@
         <div class="bg-rose-50 ring-1 ring-rose-200 rounded-2xl p-4 mb-4">
           <h4 class="text-sm font-bold text-rose-900 mb-2">
             <i class="fa-solid fa-triangle-exclamation mr-1"></i>
-            Failed Teachers ({{ r.failedTeacherIds.length }})
+            {{ 'payout.generate.result.failedTeachersTitle' | translate }} ({{ r.failedTeacherIds.length }})
           </h4>
           <div class="space-y-1 text-xs font-mono text-rose-800 max-h-40 overflow-y-auto">
             @for (id of r.failedTeacherIds; track id) {
@@ -144,11 +164,13 @@
         </div>
       }
 
-      <!-- Messages (info / warnings) -->
+      <!-- Messages -->
       @if (r.messages.length > 0) {
         <div class="bg-surface-container-lowest rounded-2xl ring-1 ring-outline-variant/40 mb-4 overflow-hidden">
           <div class="p-4 border-b border-outline-variant/30">
-            <h4 class="text-sm font-bold text-on-surface">Messages</h4>
+            <h4 class="text-sm font-bold text-on-surface">
+              {{ 'payout.generate.result.messagesTitle' | translate }}
+            </h4>
           </div>
           <ul class="divide-y divide-outline-variant/20 max-h-60 overflow-y-auto">
             @for (msg of r.messages; track msg) {
@@ -165,11 +187,13 @@
       <div class="flex flex-col sm:flex-row gap-2">
         <button (click)="reset()"
                 class="flex-1 px-4 py-2.5 rounded-xl bg-surface-container ring-1 ring-outline-variant hover:bg-surface-container-high text-sm font-medium text-on-surface">
-          <i class="fa-solid fa-rotate-right mr-1"></i> Generate Another Month
+          <i class="fa-solid fa-rotate-right mr-1"></i>
+          {{ 'payout.generate.result.actions.generateAnother' | translate }}
         </button>
         <a routerLink="/admin/payout/invoices"
            class="flex-1 px-4 py-2.5 rounded-xl bg-primary text-on-primary hover:bg-primary-dim text-sm font-semibold text-center shadow-sm">
-          <i class="fa-solid fa-list mr-1"></i> View All Invoices
+          <i class="fa-solid fa-list mr-1"></i>
+          {{ 'payout.generate.result.actions.viewAll' | translate }}
         </a>
       </div>
     }

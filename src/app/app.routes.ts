@@ -51,6 +51,7 @@ import { ErrorPageComponent } from './pages/error-page/error-page';
 import { AvailableQuizzes } from './pages/Quizzes/available-quizzes/available-quizzes';
 import { StudentAgendaComponent } from './pages/student/student-agenda/student-agenda.component';
 import { MyCertificatesComponent } from './pages/student/my-certificates/my-certificates.component';
+import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard';
 
 export const routes: Routes = [
    // ── Public ────────────────────────────────────────────────────────────────
@@ -275,7 +276,7 @@ export const routes: Routes = [
 
 
 //Dashboard !!!! do not add guard yet
-// { path: 'admin/dashboard', component: AdminDashboardComponent  },
+{ path: 'admin/dashboard', component: AdminDashboardComponent  },
 
 { path: 'teacher/dashboard/2', component: TeacherDashboardComponent  },
 

@@ -12,6 +12,7 @@ import {
 import { MoneyDisplayComponent } from '../../../shared/components/money-display/money-display';
 import { InvoiceStatusBadgeComponent } from '../../../shared/components/invoice-status-badge/invoice-status-badge';
 import { LoadingSkeletonComponent } from '../../../shared/components/loading-skeleton/loading-skeleton';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin-invoice-detail',
@@ -23,6 +24,7 @@ import { LoadingSkeletonComponent } from '../../../shared/components/loading-ske
     MoneyDisplayComponent,
     InvoiceStatusBadgeComponent,
     LoadingSkeletonComponent,
+    TranslateModule
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './admin-invoice-detail.html',

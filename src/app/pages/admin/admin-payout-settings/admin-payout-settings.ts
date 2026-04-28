@@ -11,6 +11,7 @@ import {
 
 import { LoadingSkeletonComponent } from '../../../shared/components/loading-skeleton/loading-skeleton';
 import { MoneyDisplayComponent } from '../../../shared/components/money-display/money-display';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin-payout-settings',
@@ -21,6 +22,7 @@ import { MoneyDisplayComponent } from '../../../shared/components/money-display/
     FormsModule,
     LoadingSkeletonComponent,
     MoneyDisplayComponent,
+  TranslateModule
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './admin-payout-settings.html',

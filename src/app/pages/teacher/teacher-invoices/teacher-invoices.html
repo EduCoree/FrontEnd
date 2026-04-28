@@ -5,14 +5,17 @@
     <header class="mb-6">
       <a routerLink="/teacher/payout/dashboard"
          class="text-on-surface-variant hover:text-primary text-sm flex items-center gap-1 mb-1">
-        <i class="fa-solid fa-arrow-left"></i> Dashboard
+        <i class="fa-solid fa-arrow-left"></i>
+        {{ 'earnings.invoicesList.backToDashboard' | translate }}
       </a>
-      <h1 class="text-2xl md:text-3xl font-bold text-on-surface font-headline">My Invoices</h1>
+      <h1 class="text-2xl md:text-3xl font-bold text-on-surface font-headline">
+        {{ 'earnings.invoicesList.title' | translate }}
+      </h1>
       <p class="text-sm text-on-surface-variant mt-1">
         @if (totalCount() > 0) {
-          {{ totalCount() }} invoices total
+          {{ totalCount() }} {{ 'earnings.invoicesList.totalInvoices' | translate }}
         } @else if (!loading()) {
-          No invoices yet
+          {{ 'earnings.invoicesList.noInvoices' | translate }}
         }
       </p>
     </header>
@@ -26,7 +29,8 @@
             class="px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors"
             [class]="statusFilter() === opt.value
               ? 'bg-primary text-on-primary'
-              : 'bg-surface-container ring-1 ring-outline-variant text-on-surface-variant hover:bg-surface-container-high'">
+              : 'bg-surface-container ring-1 ring-outline-variant text-on-surface-variant
+                 hover:bg-surface-container-high'">
             {{ opt.label }}
           </button>
         }
@@ -35,9 +39,12 @@
 
     <!-- Error -->
     @if (error()) {
-      <div class="mb-4 p-4 rounded-2xl bg-error-container text-on-error-container ring-1 ring-error/30">
+      <div class="mb-4 p-4 rounded-2xl bg-error-container text-on-error-container
+                  ring-1 ring-error/30">
         <p class="font-semibold">{{ error() }}</p>
-        <button (click)="loadInvoices()" class="mt-2 text-sm underline">Retry</button>
+        <button (click)="loadInvoices()" class="mt-2 text-sm underline">
+          {{ 'common.retry' | translate }}
+        </button>
       </div>
     }
 
@@ -51,23 +58,24 @@
       <div class="bg-surface-container-lowest rounded-2xl ring-1 ring-outline-variant/40">
         <app-empty-state
           icon="fa-solid fa-file-invoice-dollar"
-          title="No invoices yet"
-          message="Your monthly invoices will appear here on the 1st of each month." />
+          [title]="'earnings.invoicesList.empty.title' | translate"
+          [message]="'earnings.invoicesList.empty.message' | translate" />
       </div>
     }
 
-    <!-- Invoices Grid (cards style — works for desktop and mobile) -->
+    <!-- Invoices Grid -->
     @if (!loading() && invoices().length > 0) {
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         @for (inv of invoices(); track inv.id) {
           <a [routerLink]="['/teacher/payout/invoices', inv.id]"
-             class="group bg-surface-container-lowest rounded-2xl ring-1 ring-outline-variant/40 hover:ring-primary hover:shadow-md transition-all duration-200 overflow-hidden">
+             class="group bg-surface-container-lowest rounded-2xl ring-1 ring-outline-variant/40
+                    hover:ring-primary hover:shadow-md transition-all duration-200 overflow-hidden">
 
             <!-- Card Header -->
             <div class="px-5 pt-5 pb-3 flex items-start justify-between">
               <div>
                 <div class="text-xs text-on-surface-variant uppercase tracking-wide font-semibold">
-                  Invoice
+                  {{ 'earnings.invoicesList.invoice' | translate }}
                 </div>
                 <div class="text-base font-bold text-on-surface font-headline">
                   {{ inv.invoiceNumber }}
@@ -88,20 +96,29 @@
             <div class="px-5 py-4 bg-primary-fixed/30 border-t border-outline-variant/20">
               <div class="grid grid-cols-2 gap-3">
                 <div>
-                  <div class="text-xs text-on-surface-variant uppercase">Enrollments</div>
+                  <div class="text-xs text-on-surface-variant uppercase">
+                    {{ 'earnings.invoicesList.enrollments' | translate }}
+                  </div>
                   <div class="text-xl font-bold text-on-surface font-headline">
                     {{ inv.paidEnrollmentsCount }}
                   </div>
                 </div>
                 <div class="text-right">
-                  <div class="text-xs text-on-surface-variant uppercase">Total Earned</div>
-                  <app-money-display [amount]="inv.totalAmount" [currency]="inv.currency" size="lg" />
+                  <div class="text-xs text-on-surface-variant uppercase">
+                    {{ 'earnings.invoicesList.totalEarned' | translate }}
+                  </div>
+                  <app-money-display
+                    [amount]="inv.totalAmount"
+                    [currency]="inv.currency"
+                    size="lg" />
                 </div>
               </div>
               @if (inv.tierBonus > 0) {
                 <div class="mt-3 pt-3 border-t border-outline-variant/20 flex items-center gap-2 text-xs">
                   <i class="fa-solid fa-trophy text-tertiary"></i>
-                  <span class="text-on-surface-variant">Tier bonus included:</span>
+                  <span class="text-on-surface-variant">
+                    {{ 'earnings.invoicesList.tierBonusIncluded' | translate }}:
+                  </span>
                   <span class="font-semibold text-on-surface">
                     +{{ inv.tierBonus.toLocaleString() }} {{ inv.currency }}
                   </span>
@@ -109,19 +126,23 @@
               }
             </div>
 
-            <!-- Footer: View link -->
+            <!-- Footer -->
             <div class="px-5 py-3 flex items-center justify-between text-sm">
               <span class="text-on-surface-variant">
                 @if (inv.paidAt) {
-                  Paid {{ inv.paidAt | date:'mediumDate' }}
+                  {{ 'earnings.invoicesList.paid' | translate }}
+                  {{ inv.paidAt | date:'mediumDate' }}
                 } @else if (inv.issuedAt) {
-                  Issued {{ inv.issuedAt | date:'mediumDate' }}
+                  {{ 'earnings.invoicesList.issued' | translate }}
+                  {{ inv.issuedAt | date:'mediumDate' }}
                 } @else {
-                  Created {{ inv.createdAt | date:'mediumDate' }}
+                  {{ 'earnings.invoicesList.created' | translate }}
+                  {{ inv.createdAt | date:'mediumDate' }}
                 }
               </span>
-              <span class="text-primary font-medium group-hover:gap-2 flex items-center gap-1 transition-all">
-                View
+              <span class="text-primary font-medium group-hover:gap-2 flex items-center gap-1
+                           transition-all">
+                {{ 'earnings.invoicesList.view' | translate }}
                 <i class="fa-solid fa-arrow-right text-xs"></i>
               </span>
             </div>
@@ -133,13 +154,16 @@
       @if (totalPages() > 1) {
         <div class="mt-6 flex items-center justify-between">
           <div class="text-xs text-on-surface-variant">
-            Page {{ pageNumber() }} of {{ totalPages() }}
+            {{ 'earnings.invoicesList.pagination.page' | translate }} {{ pageNumber() }}
+            {{ 'earnings.invoicesList.pagination.of' | translate }} {{ totalPages() }}
           </div>
           <div class="flex items-center gap-1">
             <button
               (click)="goToPage(pageNumber() - 1)"
               [disabled]="pageNumber() === 1"
-              class="w-9 h-9 rounded-lg bg-surface-container-lowest ring-1 ring-outline-variant hover:bg-surface-container disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+              class="w-9 h-9 rounded-lg bg-surface-container-lowest ring-1 ring-outline-variant
+                     hover:bg-surface-container disabled:opacity-40 disabled:cursor-not-allowed
+                     transition-colors">
               <i class="fa-solid fa-chevron-left text-xs"></i>
             </button>
             @for (p of pages(); track p) {
@@ -148,19 +172,23 @@
                 class="w-9 h-9 rounded-lg text-sm font-medium transition-colors"
                 [class]="p === pageNumber()
                   ? 'bg-primary text-on-primary'
-                  : 'bg-surface-container-lowest ring-1 ring-outline-variant hover:bg-surface-container'">
+                  : 'bg-surface-container-lowest ring-1 ring-outline-variant
+                     hover:bg-surface-container'">
                 {{ p }}
               </button>
             }
             <button
               (click)="goToPage(pageNumber() + 1)"
               [disabled]="pageNumber() === totalPages()"
-              class="w-9 h-9 rounded-lg bg-surface-container-lowest ring-1 ring-outline-variant hover:bg-surface-container disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+              class="w-9 h-9 rounded-lg bg-surface-container-lowest ring-1 ring-outline-variant
+                     hover:bg-surface-container disabled:opacity-40 disabled:cursor-not-allowed
+                     transition-colors">
               <i class="fa-solid fa-chevron-right text-xs"></i>
             </button>
           </div>
         </div>
       }
     }
+
   </div>
 </div>
