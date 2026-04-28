@@ -12,6 +12,7 @@ import { QuizComponent } from './pages/Quizzes/Get-Quizzez/get-quizzes/get-quizz
 import { QuizBuilderComponent } from './pages/Quizzes/quiz-builder/quiz-builder';
 import { CreateQuizComponent } from './pages/Quizzes/CreateQuiz/create-quiz/create-quiz';
 import { Home } from './pages/home/home';
+import { CourseWorkspaceComponent } from './pages/student/course-workspace/course-workspace.component';
 
 
 import { Routes } from '@angular/router';
@@ -36,7 +37,7 @@ import { CourseDetailComponent } from './pages/Courses/course-detail/course-deta
 import { CoursesListComponent } from './pages/Courses/courses-list/courses-list.component';
 import { StudentLayoutComponent } from './layouts/student-layout/student-layout.component';
 import { StudentDashboardComponent } from './pages/student/student-dashboard/student-dashboard.component';
-
+import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard';
 import { AdminCoursesComponent } from './pages/admin-courses/admin-courses';
 import { authGuard } from './core/guards/auth-guard';
 import { roleGuard } from './core/guards/role-guard';
@@ -52,6 +53,8 @@ import { AvailableQuizzes } from './pages/Quizzes/available-quizzes/available-qu
 import { StudentAgendaComponent } from './pages/student/student-agenda/student-agenda.component';
 import { MyCertificatesComponent } from './pages/student/my-certificates/my-certificates.component';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard';
+import { PaymentHistoryComponent } from './pages/enroll&payment/payment-history/payment-history.component';
+import { AdminPaymentsComponent } from './pages/enroll&payment/admin-payments/admin-payments.component';
 
 export const routes: Routes = [
    // ── Public ────────────────────────────────────────────────────────────────
@@ -125,7 +128,7 @@ export const routes: Routes = [
     title: 'Courses — Admin',
   },
  //Dashboard !!!! do not add guard yet
-// { path: 'admin/dashboard', component: AdminDashboardComponent  },
+{ path: 'admin/dashboard', component: AdminDashboardComponent  },
  
 { path: 'teacher/dashboard/2', component: TeacherDashboardComponent  },
  
@@ -272,6 +275,12 @@ export const routes: Routes = [
   path: 'admin/students/:id',
   component: AdminStudentDetailComponent,
   title: 'Student Detail — Admin',
+},
+{
+  path: 'admin/payments',
+  component: AdminPaymentsComponent,
+  canActivate: [adminGuard],
+  title: 'Payments — Admin',
 },
 
 
@@ -431,7 +440,8 @@ export const routes: Routes = [
     {path:'quiz-history',component:QuizHistory},
     { path: 'sessions',component:StudentAgendaComponent,title: 'My Schedule — EduCore'},
     { path: 'certificates',component:MyCertificatesComponent,title: 'My Certificates — EduCore'},
-    { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+    { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+    { path: 'payment-history', component: PaymentHistoryComponent },
   ]
 },
 {
@@ -630,6 +640,12 @@ export const routes: Routes = [
       import('./pages/student/lesson-player/lesson-player.component')
         .then(m => m.LessonPlayerComponent),
     title: 'Lesson Player — EduCore',
+  },
+  {
+    path: 'student/courses/:courseId',
+    canActivate: [authGuard],
+    component: CourseWorkspaceComponent,
+    title: 'Course Workspace — EduCore',
   },
 
 

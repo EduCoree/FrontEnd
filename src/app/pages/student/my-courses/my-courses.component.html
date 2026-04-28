@@ -52,18 +52,18 @@
 
       <!-- Featured Card -->
       <div *ngIf="featuredCourse"
-           class="lg:col-span-2 group bg-white rounded-2xl overflow-hidden flex flex-col
-                  border border-outline-variant/10 cursor-pointer
-                  transition-all duration-300 hover:shadow-[0_12px_40px_rgba(46,104,88,0.13)] hover:-translate-y-0.5"
-           [routerLink]="['/courses', featuredCourse.courseId]">
+        class="md:col-span-2 lg:col-span-2 group cursor-pointer rounded-2xl overflow-hidden bg-white border border-gray-100
+               shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col md:flex-row"
+        style="min-height: 280px;"
+        [routerLink]="['/student/courses', featuredCourse.courseId]">
 
-        <!-- Image with overlays -->
-        <div class="relative overflow-hidden" style="height: 220px;">
+        <!-- Image half -->
+        <div class="relative md:w-5/12 overflow-hidden" style="min-height: 200px;">
           <img [src]="featuredCourse.coverImage || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800'"
                [alt]="featuredCourse.title"
-               class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+               class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
           <div class="absolute inset-0"
-               style="background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 55%);"></div>
+               style="background: linear-gradient(135deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.1) 100%);"></div>
           <!-- Badge -->
           <span class="absolute top-4 left-4 text-white text-[10px] font-black uppercase tracking-widest
                        px-3 py-1.5 rounded-full"
@@ -71,24 +71,27 @@
             {{ (featuredCourse.progressPercentage === 100 ? 'myCourses.completed' : 'myCourses.inProgress') | translate }}
           </span>
           <!-- Percentage -->
-          <span class="absolute bottom-4 right-4 text-white text-2xl font-extrabold">
+          <span class="absolute bottom-4 left-4 text-white text-3xl font-extrabold drop-shadow">
             {{ featuredCourse.progressPercentage }}%
           </span>
         </div>
 
-        <!-- Body -->
-        <div class="p-7 flex flex-col gap-4 flex-1">
+        <!-- Body half -->
+        <div class="flex flex-col gap-5 p-7 flex-1 justify-between">
           <div>
-            <h2 class="text-2xl font-extrabold text-on-surface tracking-tight leading-snug line-clamp-2 mb-3">
+            <p class="text-[10px] font-black uppercase tracking-[0.2em] mb-2" style="color: var(--color-primary);">
+              {{ 'myCourses.inProgress' | translate }}
+            </p>
+            <h2 class="text-2xl font-extrabold text-gray-900 tracking-tight leading-snug line-clamp-2 mb-3">
               {{ featuredCourse.title }}
             </h2>
-            <div class="flex items-center gap-4">
-              <span class="flex items-center gap-1.5 text-xs text-on-surface-variant font-medium">
+            <div class="flex items-center gap-4 flex-wrap">
+              <span class="flex items-center gap-1.5 text-xs text-gray-500 font-medium">
                 <span class="material-symbols-outlined text-sm">person</span>
                 {{ featuredCourse.teacherName }}
               </span>
-              <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
-              <span class="flex items-center gap-1.5 text-xs text-on-surface-variant font-medium">
+              <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+              <span class="flex items-center gap-1.5 text-xs text-gray-500 font-medium">
                 <span class="material-symbols-outlined text-sm">play_lesson</span>
                 {{ featuredCourse.completedLessons }}/{{ featuredCourse.totalLessons }}
                 {{ 'myCourses.lessons' | translate }}
@@ -99,7 +102,7 @@
           <!-- Progress -->
           <div>
             <div class="flex justify-between mb-2">
-              <span class="text-xs text-on-surface-variant font-medium">Progress</span>
+              <span class="text-xs text-gray-500 font-medium">Progress</span>
               <span class="text-xs font-bold" style="color: var(--color-primary);">
                 {{ featuredCourse.progressPercentage }}%
               </span>
@@ -113,9 +116,9 @@
 
           <!-- Button -->
           <button class="w-full text-white font-bold py-3.5 px-6 rounded-xl
-                         flex items-center justify-center gap-2 mt-auto
+                         flex items-center justify-center gap-2
                          transition-all duration-200 hover:opacity-90 hover:-translate-y-0.5 active:scale-95"
-                  style="background: var(--color-primary); box-shadow: 0 4px 16px rgba(46,104,88,0.28);">
+                  style="background: #2e6858; box-shadow: 0 4px 16px rgba(46,104,88,0.28);">
             {{ 'myCourses.resumeLesson' | translate }}
             <span class="material-symbols-outlined text-sm">arrow_forward</span>
           </button>
@@ -124,26 +127,25 @@
 
       <!-- Small Cards -->
       <div *ngFor="let course of restCourses"
-           class="group bg-white rounded-2xl overflow-hidden flex flex-col
-                  border border-outline-variant/10 cursor-pointer
-                  transition-all duration-300 hover:shadow-[0_10px_36px_rgba(46,104,88,0.12)] hover:-translate-y-0.5"
-           [routerLink]="['/courses', course.courseId]">
+        class="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100
+               transition-all duration-500 hover:shadow-xl hover:-translate-y-1 flex flex-col cursor-pointer"
+        [routerLink]="['/student/courses', course.courseId]">
 
         <!-- Image -->
-        <div class="relative overflow-hidden" style="height: 150px;">
-          <img [src]="course.coverImage || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400'"
+        <div class="relative overflow-hidden" style="height: 160px;">
+          <img [src]="course.coverImage || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600'"
                [alt]="course.title"
-               class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+               class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
           <div class="absolute inset-0"
                style="background: linear-gradient(to top, rgba(0,0,0,0.55) 30%, transparent 65%);"></div>
-          <span class="absolute top-2.5 left-2.5 text-white text-[9px] font-bold uppercase tracking-widest
+          <span class="absolute top-3 left-3 text-white text-[9px] font-bold uppercase tracking-widest
                        px-2.5 py-1 rounded-full"
                 style="background: rgba(46,104,88,0.85); backdrop-filter: blur(4px);">
             {{ (course.progressPercentage === 100 ? 'myCourses.completed' : 'myCourses.inProgress') | translate }}
           </span>
-          <span class="absolute top-2.5 right-3 text-white text-xs font-bold
+          <span class="absolute top-3 right-3 text-white text-xs font-bold
                        px-2 py-0.5 rounded-lg"
-                style="background: rgba(0,0,0,0.35); backdrop-filter: blur(3px);">
+                style="background: rgba(0,0,0,0.4); backdrop-filter: blur(3px);">
             {{ course.progressPercentage }}%
           </span>
         </div>
@@ -151,39 +153,38 @@
         <!-- Body -->
         <div class="p-5 flex flex-col gap-3 flex-1">
           <div class="flex-1">
-            <p class="text-[10px] font-black uppercase tracking-widest mb-1.5"
-               style="color: #4db6a0;">
+            <p class="text-[10px] font-black uppercase tracking-widest mb-1.5" style="color: #4db6a0;">
               {{ course.completedLessons }}/{{ course.totalLessons }} {{ 'myCourses.lessons' | translate }}
             </p>
-            <h3 class="text-base font-bold text-on-surface leading-snug line-clamp-2 mb-1
+            <h3 class="text-base font-bold text-gray-900 leading-snug line-clamp-2 mb-1
                        group-hover:text-primary transition-colors">
               {{ course.title }}
             </h3>
-            <p class="text-xs text-on-surface-variant">
+            <p class="text-xs text-gray-500">
               {{ 'myCourses.by' | translate }} {{ course.teacherName }}
             </p>
           </div>
-          <!-- Progress -->
+          <!-- Progress bar -->
           <div class="h-1.5 w-full rounded-full overflow-hidden" style="background: #e2eeea;">
             <div class="h-full rounded-full transition-all"
                  style="background: var(--color-primary);"
                  [style.width.%]="course.progressPercentage"></div>
           </div>
-          <!-- Button -->
+          <!-- Resume button -->
           <button class="w-full font-bold py-2.5 px-4 rounded-xl text-sm
                          border transition-all duration-200 hover:-translate-y-0.5 active:scale-95"
                   style="background: rgba(46,104,88,0.07);
-                         color: var(--color-primary);
-                         border-color: rgba(46,104,88,0.15);"
-                  onmouseover="this.style.background='var(--color-primary)'; this.style.color='#fff';"
-                  onmouseout="this.style.background='rgba(46,104,88,0.07)'; this.style.color='var(--color-primary)';">
+                         color: #2e6858;
+                         border-color: rgba(46,104,88,0.2);"
+                  onmouseover="this.style.background='#2e6858'; this.style.color='#fff';"
+                  onmouseout="this.style.background='rgba(46,104,88,0.07)'; this.style.color='#2e6858';">
             {{ 'myCourses.resume' | translate }}
           </button>
         </div>
       </div>
 
       <!-- Add / Explore Card -->
-      <div class="group lg:col-span-2 border-2 border-dashed rounded-2xl p-8
+      <div class="group border-2 border-dashed rounded-2xl p-8
                   flex flex-col items-center justify-center text-center
                   transition-all duration-300 cursor-pointer"
            style="border-color: rgba(46,104,88,0.2);"

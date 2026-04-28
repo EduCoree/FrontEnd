@@ -40,6 +40,7 @@ export class AdminSidebarComponent {
     { label: 'adminSidebar.teachers',      icon: 'person_4',  route: '/admin/teachers',        exact: false },
     { label: 'adminSidebar.students',      icon: 'group',     route: '/admin/students',        exact: false },
     { label: 'adminSidebar.forumReports',  icon: 'flag',      route: '/admin/forum/reports',   exact: false },
+     { label: 'adminSidebar.payments', icon: 'payments', route: '/admin/payments', exact: false },
   ];
 
   logout() {

@@ -3,7 +3,7 @@
 
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { forkJoin, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ProgressService } from '../../../core/services/progress';
@@ -14,7 +14,7 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-student-progress',
   standalone: true,
-  imports: [CommonModule , TranslateModule],
+  imports: [CommonModule, RouterModule, TranslateModule],
   templateUrl: './student-progress.component.html',
 })
 export class StudentProgressComponent implements OnInit {
@@ -23,14 +23,51 @@ export class StudentProgressComponent implements OnInit {
   progressList = signal<CourseProgress[]>([]);
   isLoading    = signal(true);
   errorMsg     = signal('');
+  courseId     = signal<number | null>(null);
+  courseTitle  = signal('');
 
   constructor(
+    private route: ActivatedRoute,
     private progressService: ProgressService,
     private publicCourseService: PublicCourseService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
+    const param = this.route.snapshot.queryParamMap.get('courseId');
+    const courseId = param ? Number(param) : null;
+
+    if (courseId) {
+      this.courseId.set(courseId);
+      this.loadCourseProgress(courseId);
+    } else {
+      this.loadAllProgress();
+    }
+  }
+
+  private loadCourseProgress(courseId: number): void {
+    this.isLoading.set(true);
+
+    forkJoin({
+      progress: this.progressService.getCourseProgress(courseId).pipe(catchError(() => of(null))),
+      course: this.publicCourseService.getCourseById(courseId).pipe(catchError(() => of(null)))
+    }).subscribe({
+      next: ({ progress, course }) => {
+        this.progressList.set(progress ? [progress] : []);
+        if (course) {
+          const c: any = course.data ?? course;
+          this.courseTitle.set(c?.title ?? '');
+        }
+        this.isLoading.set(false);
+      },
+      error: () => {
+        this.errorMsg.set('Failed to load course progress.');
+        this.isLoading.set(false);
+      }
+    });
+  }
+
+  private loadAllProgress(): void {
     const enrolledCourseIds$ = this.publicCourseService.getMyCoursesWithEnrollment().pipe(
       map((res: any) => {
         const courses = res.data || [];

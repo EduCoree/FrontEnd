@@ -33,14 +33,12 @@ export class PaymentService {
   }
 
 // admin get all payments with pagination 
-  getAllPayments(pagination: PaginationParams): Observable<ApiResponse<PagedResult<PaymentDto>>> {
-    const params = new HttpParams()
-      .set('pageNumber', pagination.pageNumber.toString())
-      .set('pageSize', pagination.pageSize.toString());
-
-    return this.http.get<ApiResponse<PagedResult<PaymentDto>>>(
-      this.adminBaseUrl, 
-      { params }
-    );
-  }
+getAllPayments(pagination: PaginationParams): Observable<ApiResponse<PagedResult<PaymentDto>>> {
+  const params = new HttpParams()
+    .set('pageNumber', pagination.pageNumber.toString())
+    .set('pageSize', pagination.pageSize.toString());
+  return this.http.get<ApiResponse<PagedResult<PaymentDto>>>(
+    this.adminBaseUrl, { params }
+  );
+}
 }

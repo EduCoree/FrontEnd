@@ -43,20 +43,11 @@ export class NotificationService {
 
   startConnection(token:string):void
   {
+    this.stopConnection();
     this.hubConnection= new signalR.HubConnectionBuilder()   // build the connection with jwt token
     .withUrl(this.HubUrl,{accessTokenFactory:()=>token})
     .withAutomaticReconnect()
     .build();
-
-    this.hubConnection
-    .start()
-    .then(()=>{
-      console.log("signalR connected");
-      this.loadUnreadCount();    // first thing after login
-    })
-    .catch(err => console.error('SignalR Error:', err));
-
-
     // this function is running as long as the application is running
     this.hubConnection.on('ReceiveNotification', (notification: NotificationDto) => {
       console.log('New notification received!', notification);
@@ -66,6 +57,16 @@ export class NotificationService {
 
       this.unreadCountSubject.next(this.unreadCountSubject.value + 1);  
     });
+    this.hubConnection
+    .start()
+    .then(()=>{
+      console.log("signalR connected");
+      this.loadUnreadCount();    // first thing after login
+    })
+    .catch(err => console.error('SignalR Error:', err));
+
+
+    
   }
      stopConnection(): void {
     if (this.hubConnection) {
@@ -78,6 +79,11 @@ export class NotificationService {
       });
     }
 
+    //   loadNotifications(page = 1): void {
+    // this.getNotifications(page).subscribe(res => {
+    //   this.notificationsSubject.next(res.notifications);
+    //   this.unreadCountSubject.next(res.unreadCount);
+    // });
     /*
   We return the Observable with pipe/tap instead of subscribing inside the service.
   This allows the component to subscribe and handle next/error blocks directly.
@@ -92,9 +98,11 @@ loadNotifications(page: number = 1,pagesize:number=10): Observable<any> {
       // Logic to append or replace
       if (page === 1) {
         this.notificationSubject.next(res.data.notifications);
+        this.unreadCountSubject.next(res.data.unreadCount)
       } else {
         const current = this.notificationSubject.value;
         this.notificationSubject.next([...current, ...res.data.notifications]);
+        this.unreadCountSubject.next(res.data.unreadCount)
       }
     })
   );
