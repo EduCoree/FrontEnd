@@ -1393,7 +1393,21 @@
   "footerLabel": "Sessions — Course Builder",
   "backToMedia": "Back to Media"
 },
+"courseManagement": {
+  "label": "Course Management"
+},
 "teacherProgress": {
+  "pageTitle": "Student Progress",
+  "pageSubtitle": "Real-time student engagement tracking and module completion analytics for this course.",
+  "loading": "Loading student data...",
+  "studentRoster": "Student Roster",
+  "exportCsv": "Export CSV",
+  "selectStudentHint": "Click a student row to view their detailed lesson-by-lesson progress.",
+  "detailedBreakdown": "Detailed Breakdown",
+  "lessonsCompleted": "lessons completed",
+  "curriculumProgress": "Curriculum Progress",
+  "noLessons": "No lessons tracked yet for this student.",
+  "viewFullHistory": "View Full History",
   "lessonBreakdown": "Lesson Breakdown",
   "watchedUpTo": "Watched up to",
   "statusCompleted": "Completed",

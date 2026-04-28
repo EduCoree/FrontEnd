@@ -29,12 +29,7 @@ export class CourseSidebar {
         route: `/teacher/courses/edit/${this.courseId}`, 
         exact: true  
       },
-      { 
-        labelKey: 'Curriculum builder', 
-        icon: 'person_edit', 
-        route: `/teacher/courses/${this.courseId}/sections`, 
-        exact: false 
-      },
+
       { 
         labelKey: 'Quizzes', 
         icon: 'upload', 
@@ -44,13 +39,13 @@ export class CourseSidebar {
       { 
         labelKey: 'Sessions', 
         icon: 'calendar_month', 
-        route: `/teacher/courses/${this.courseId}/sessions`, 
+        route: `/teacher/courses/edit/${this.courseId}/sessions`, 
         exact: false 
       },
       { 
         labelKey: 'Progress', 
         icon: 'trending_up', 
-        route: `/teacher/courses/${this.courseId}/progress`, 
+        route: `/teacher/courses/edit/${this.courseId}/progress`, 
         exact: false 
       },
     ];
