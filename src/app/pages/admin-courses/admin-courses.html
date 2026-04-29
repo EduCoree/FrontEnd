@@ -1,181 +1,261 @@
-<!-- src/app/pages/admin-courses/admin-courses.html -->
-<div class="flex min-h-screen bg-[#F8FAFA]">
+<div class="flex min-h-screen bg-[#f8faf9] font-headline">
   <app-admin-sidebar />
 
-  <main class="ml-12 flex-1 min-h-screen md:pt-0 pt-16">
+  <main class="flex-1 min-h-screen flex flex-col overflow-hidden">
 
-    <!-- Top bar -->
-    <header class="sticky top-0 z-30 bg-[#F8FAFA]/80 backdrop-blur-xl border-b border-slate-200 flex items-center justify-between px-8 py-4">
-      <div class="relative w-full max-w-md">
-        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
-        <input (input)="onSearch($event)" type="text" placeholder="Search courses, teachers, or tags..."
-          class="w-full pl-12 pr-4 py-2.5 rounded-full bg-[#ECEEEE] border-none focus:ring-2 focus:ring-[#2E6858]/20 text-sm placeholder-slate-400" />
+    <!-- ══════════════════════════════════════════
+         TOP NAV  (same as dashboard)
+    ══════════════════════════════════════════ -->
+    <header class="sticky top-0 z-20 bg-white border-b border-[#eaefee] px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="text-sm font-bold text-[#acb3b2]">Admin</span>
+        <span class="text-[#d0d8d6]">/</span>
+        <span class="text-sm font-bold text-[#2d3433]">{{ 'adminCourses.title' | translate }}</span>
+      </div>
+      <!-- Search + actions -->
+      <div class="flex items-center gap-3">
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#acb3b2] text-[18px]">search</span>
+          <input (input)="onSearch($event)" type="text"
+            [placeholder]="'adminCourses.search' | translate"
+            class="pl-10 pr-4 py-2 rounded-xl bg-[#f0f5f3] border border-transparent focus:border-[#b2efda] focus:bg-white text-sm text-[#2d3433] placeholder-[#acb3b2] outline-none transition-all w-56" />
+        </div>
+      
+      
       </div>
     </header>
 
-    <div class="p-8 space-y-8">
+    <div class="p-8 space-y-6">
 
-      <!-- Page header -->
-      <div>
-        <h2 class="text-4xl font-extrabold tracking-tight text-[#191C1D] font-headline mb-2">Course Management</h2>
-        <p class="text-slate-500">Review, publish, and manage pricing for all courses.</p>
+      <!-- ══════════════════════════════════════════
+           BANNER  (same style as dashboard)
+      ══════════════════════════════════════════ -->
+      <div class="relative rounded-2xl overflow-hidden bg-[#2e6959] px-8 py-7 flex items-center justify-between">
+        <div class="absolute right-32 top-1/2 -translate-y-1/2 w-40 h-40 rounded-full border-[24px] border-white/5"></div>
+        <div class="absolute right-16 top-1/2 -translate-y-1/2 w-28 h-28 rounded-full border-[16px] border-white/5"></div>
+        <div class="absolute right-52 bottom-0 w-20 h-20 rounded-full border-[12px] border-white/5"></div>
+        <div>
+          <p class="text-[#b2efda] text-sm font-semibold mb-1 flex items-center gap-2">
+            <span class="material-symbols-outlined text-base">menu_book</span>
+            {{ 'adminCourses.subtitle' | translate }}
+          </p>
+          <h2 class="text-white text-3xl font-black tracking-tight mb-2">{{ 'adminCourses.title' | translate }}</h2>
+          <p class="text-white/60 text-sm font-medium">{{ totalCount() }} {{ 'adminCourses.total' | translate }}</p>
+        </div>
+      
       </div>
 
-      <!-- Toasts -->
+      <!-- Toast messages -->
       @if (successMsg()) {
-        <div class="flex items-center gap-3 px-5 py-3 bg-[#AAF1DA]/40 border border-[#226A58]/20 rounded-xl text-[#226A58] font-semibold text-sm">
+        <div class="flex items-center gap-3 px-5 py-3 bg-[#e4fff4] border border-[#b2efda] rounded-2xl text-[#2e6959] font-semibold text-sm">
           <span class="material-symbols-outlined text-[18px]">check_circle</span>{{ successMsg() }}
         </div>
       }
       @if (errorMsg()) {
-        <div class="flex items-center gap-3 px-5 py-3 bg-[#FFDAD6]/40 border border-[#BA1A1A]/20 rounded-xl text-[#BA1A1A] font-semibold text-sm">
+        <div class="flex items-center gap-3 px-5 py-3 bg-[#fff0ee] border border-[#f5c5bf] rounded-2xl text-[#c0392b] font-semibold text-sm">
           <span class="material-symbols-outlined text-[18px]">error</span>{{ errorMsg() }}
         </div>
       }
 
-      <!-- Filter chips row -->
-      <div class="grid grid-cols-12 gap-6 items-center">
-        <div class="col-span-12 lg:col-span-8 flex gap-2 overflow-x-auto pb-1">
-          @for (s of [
-            {label:'All Courses', value:''},
-            {label:'Published',   value:'Published'},
-            {label:'Draft',       value:'Draft'},
-            {label:'Archived',    value:'Archived'}
-          ]; track s.value) {
-            <button (click)="setStatusFilter(s.value)"
-              class="px-5 py-2 rounded-full text-sm font-bold transition-all whitespace-nowrap"
-              [class]="statusFilter() === s.value
-                ? 'bg-[#2E6858] text-white shadow-sm'
-                : 'bg-[#F2F4F4] text-slate-500 hover:bg-[#E6E8E9]'">
-              {{ s.label }}
-            </button>
-          }
+      <!-- ══════════════════════════════════════════
+           KPI CARDS  (same style as dashboard row 1)
+      ══════════════════════════════════════════ -->
+      <div class="grid grid-cols-4 gap-4">
+
+        <!-- Total -->
+        <div class="bg-white rounded-2xl p-5 border border-[#eaefee] hover:border-[#b2efda] hover:shadow-sm transition-all group">
+          <div class="flex items-start justify-between mb-4">
+            <div class="w-10 h-10 rounded-xl bg-[#e4fff4] flex items-center justify-center text-[#2e6959] group-hover:bg-[#b2efda] transition-colors">
+              <span class="material-symbols-outlined text-xl">menu_book</span>
+            </div>
+            <span class="text-[10px] font-black uppercase tracking-widest text-[#acb3b2] bg-[#f8faf9] px-2 py-1 rounded-lg">{{ 'adminCourses.total' | translate }}</span>
+          </div>
+          <p class="text-[10px] uppercase tracking-widest font-bold text-[#596060] mb-1">{{ 'adminCourses.totalCourses' | translate }}</p>
+          <p class="text-3xl font-black text-[#2d3433] tracking-tight">{{ totalCount() }}</p>
+        </div>
+
+        <!-- Published -->
+        <div class="bg-white rounded-2xl p-5 border border-[#eaefee] hover:border-[#b2efda] hover:shadow-sm transition-all group">
+          <div class="flex items-start justify-between mb-4">
+            <div class="w-10 h-10 rounded-xl bg-[#e4fff4] flex items-center justify-center text-[#2e6959] group-hover:bg-[#b2efda] transition-colors">
+              <span class="material-symbols-outlined text-xl">visibility</span>
+            </div>
+            <span class="text-[10px] font-black uppercase tracking-widest text-[#2e6959] bg-[#e4fff4] px-2 py-1 rounded-lg">Live</span>
+          </div>
+          <p class="text-[10px] uppercase tracking-widest font-bold text-[#596060] mb-1">{{ 'adminCourses.published' | translate }}</p>
+          <p class="text-3xl font-black text-[#2d3433] tracking-tight">{{ publishedCount }}</p>
+        </div>
+
+        <!-- Draft -->
+        <div class="bg-white rounded-2xl p-5 border border-[#eaefee] hover:border-[#fde9c9] hover:shadow-sm transition-all group">
+          <div class="flex items-start justify-between mb-4">
+            <div class="w-10 h-10 rounded-xl bg-[#fef5e7] flex items-center justify-center text-[#8a6d3b] group-hover:bg-[#fde9c9] transition-colors">
+              <span class="material-symbols-outlined text-xl">draft</span>
+            </div>
+            <span class="text-[10px] font-black uppercase tracking-widest text-[#acb3b2] bg-[#f8faf9] px-2 py-1 rounded-lg">WIP</span>
+          </div>
+          <p class="text-[10px] uppercase tracking-widest font-bold text-[#596060] mb-1">{{ 'adminCourses.draft' | translate }}</p>
+          <p class="text-3xl font-black text-[#2d3433] tracking-tight">{{ draftCount }}</p>
+        </div>
+
+        <!-- Archived — accent card -->
+        <div class="bg-[#2e6959] rounded-2xl p-5 border border-transparent hover:shadow-md transition-all relative overflow-hidden">
+          <div class="absolute bottom-0 right-0 w-24 h-24 rounded-full bg-white/5 translate-x-8 translate-y-8"></div>
+          <div class="flex items-start justify-between mb-4">
+            <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center text-[#b2efda]">
+              <span class="material-symbols-outlined text-xl">archive</span>
+            </div>
+            <span class="text-[10px] font-black uppercase tracking-widest text-[#b2efda]/60 bg-white/10 px-2 py-1 rounded-lg">Off</span>
+          </div>
+          <p class="text-[10px] uppercase tracking-widest font-bold text-[#b2efda]/70 mb-1">{{ 'adminCourses.archived' | translate }}</p>
+          <p class="text-3xl font-black text-white tracking-tight">{{ archivedCount }}</p>
         </div>
       </div>
 
-      <!-- Bento stats -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="bg-[#F2F4F4] p-6 rounded-xl space-y-1 relative overflow-hidden group">
-          <span class="material-symbols-outlined absolute -right-3 -bottom-3 text-6xl opacity-5 group-hover:scale-110 transition-transform duration-500">school</span>
-          <p class="uppercase tracking-widest text-[10px] font-bold text-slate-400">Total Courses</p>
-          <h3 class="text-3xl font-extrabold text-[#191C1D]">{{ totalCount() }}</h3>
-        </div>
-        <div class="bg-[#AAF1DA]/30 p-6 rounded-xl space-y-1 relative overflow-hidden group">
-          <span class="material-symbols-outlined absolute -right-3 -bottom-3 text-6xl opacity-5 group-hover:scale-110 transition-transform duration-500">visibility</span>
-          <p class="uppercase tracking-widest text-[10px] font-bold text-[#226A58]">Published</p>
-          <h3 class="text-3xl font-extrabold text-[#226A58]">{{ publishedCount }}</h3>
-        </div>
-        <div class="bg-[#F2F4F4] p-6 rounded-xl space-y-1 relative overflow-hidden group">
-          <span class="material-symbols-outlined absolute -right-3 -bottom-3 text-6xl opacity-5 group-hover:scale-110 transition-transform duration-500">draft</span>
-          <p class="uppercase tracking-widest text-[10px] font-bold text-slate-400">Draft</p>
-          <h3 class="text-3xl font-extrabold text-[#404945]">{{ draftCount }}</h3>
-        </div>
-        <div class="bg-[#FFDAD6]/30 p-6 rounded-xl space-y-1 relative overflow-hidden group">
-          <span class="material-symbols-outlined absolute -right-3 -bottom-3 text-6xl opacity-5 group-hover:scale-110 transition-transform duration-500">archive</span>
-          <p class="uppercase tracking-widest text-[10px] font-bold text-[#BA1A1A]">Archived</p>
-          <h3 class="text-3xl font-extrabold text-[#BA1A1A]">{{ archivedCount }}</h3>
-        </div>
+      <!-- ══════════════════════════════════════════
+           STATUS FILTER TABS
+      ══════════════════════════════════════════ -->
+      <div class="flex gap-2">
+        @for (s of [
+          {labelKey:'adminCourses.all',       value:''},
+          {labelKey:'adminCourses.published',  value:'Published'},
+          {labelKey:'adminCourses.draft',      value:'Draft'},
+          {labelKey:'adminCourses.archived',   value:'Archived'}
+        ]; track s.value) {
+          <button (click)="setStatusFilter(s.value)"
+            class="px-5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap"
+            [class]="statusFilter() === s.value
+              ? 'bg-[#2e6959] text-[#e4fff4] shadow-sm'
+              : 'bg-white text-[#596060] border border-[#eaefee] hover:border-[#b2efda]'">
+            {{ s.labelKey | translate }}
+          </button>
+        }
       </div>
 
-      <!-- Course Table — matches mockup style exactly -->
-      <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+      <!-- ══════════════════════════════════════════
+           COURSES TABLE
+      ══════════════════════════════════════════ -->
+      <div class="bg-white rounded-2xl border border-[#eaefee] overflow-hidden">
+
+        <div class="px-6 py-5 border-b border-[#f0f5f3] flex items-center justify-between">
+          <div>
+            <p class="text-sm font-extrabold text-[#2d3433]">{{ 'adminCourses.title' | translate }}</p>
+            <p class="text-[10px] uppercase tracking-widest font-bold text-[#acb3b2] mt-0.5">{{ 'adminCourses.subtitle' | translate }}</p>
+          </div>
+        </div>
+
         <div class="overflow-x-auto">
-          <table class="w-full text-left border-separate border-spacing-y-2 px-4 py-4">
+          <table class="w-full text-left">
             <thead>
-              <tr class="text-slate-400">
-                <th class="px-4 py-3 text-[10px] font-black uppercase tracking-widest">Course Name</th>
-                <th class="px-4 py-3 text-[10px] font-black uppercase tracking-widest">Teacher</th>
-                <th class="px-4 py-3 text-[10px] font-black uppercase tracking-widest hidden md:table-cell">Category</th>
-                <th class="px-4 py-3 text-[10px] font-black uppercase tracking-widest">Status</th>
-                <th class="px-4 py-3 text-[10px] font-black uppercase tracking-widest">Pricing</th>
-                <th class="px-4 py-3 text-[10px] font-black uppercase tracking-widest hidden lg:table-cell">Students</th>
-                <th class="px-4 py-3 text-[10px] font-black uppercase tracking-widest text-right">Actions</th>
+              <tr class="border-b border-[#f0f5f3]">
+                <th class="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-[#acb3b2]">{{ 'adminCourses.courseName' | translate }}</th>
+                <th class="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-[#acb3b2]">{{ 'adminCourses.teacher' | translate }}</th>
+                <th class="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-[#acb3b2] hidden md:table-cell">{{ 'adminCourses.category' | translate }}</th>
+                <th class="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-[#acb3b2]">{{ 'adminCourses.status' | translate }}</th>
+                <th class="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-[#acb3b2]">{{ 'adminCourses.pricing' | translate }}</th>
+                <th class="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-[#acb3b2] hidden lg:table-cell">{{ 'adminCourses.students' | translate }}</th>
+                <th class="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-[#acb3b2] text-right">{{ 'adminCourses.actions' | translate }}</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="divide-y divide-[#f0f5f3]">
+
               @if (loading()) {
                 <tr>
                   <td colspan="7" class="text-center py-20">
-                    <span class="material-symbols-outlined text-[#7DB8A5] text-5xl animate-spin">progress_activity</span>
+                    <span class="material-symbols-outlined text-[#2e6959] text-5xl animate-spin">progress_activity</span>
                   </td>
                 </tr>
               }
+
               @for (course of courses(); track course.id) {
-                <tr class="group bg-[#F8FAFA] hover:bg-white transition-colors rounded-xl">
-                  <!-- Course Name + Thumbnail -->
-                  <td class="px-4 py-5 rounded-l-xl">
-                    <div class="flex items-center gap-4">
+                <tr class="group hover:bg-[#fafcfb] transition-colors">
+
+                  <!-- Course name -->
+                  <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
                       @if (course.coverImage) {
-                        <img [src]="course.coverImage" class="w-12 h-12 rounded-lg object-cover shrink-0 shadow-sm" />
+                        <img [src]="course.coverImage" class="w-11 h-11 rounded-xl object-cover flex-shrink-0 border border-[#eaefee]" />
                       } @else {
-                        <div class="w-12 h-12 rounded-lg bg-[#ECEEEE] flex items-center justify-center shrink-0">
-                          <span class="material-symbols-outlined text-slate-300 text-[20px]">menu_book</span>
+                        <div class="w-11 h-11 rounded-xl bg-[#1a3d34] flex items-center justify-center text-[#b2efda] flex-shrink-0">
+                          <span class="material-symbols-outlined text-base">menu_book</span>
                         </div>
                       }
-                      <div>
-                        <p class="font-bold text-[#191C1D] text-sm leading-tight">{{ course.title }}</p>
-                        <p class="text-xs text-slate-400 mt-0.5">{{ course.level }}</p>
+                      <div class="min-w-0">
+                        <p class="font-bold text-[#2d3433] text-sm truncate max-w-[180px]">{{ course.title }}</p>
+                        <p class="text-[11px] text-[#acb3b2] font-semibold mt-0.5">{{ course.level }}</p>
                       </div>
                     </div>
                   </td>
 
                   <!-- Teacher -->
-                  <td class="px-4 py-5">
+                  <td class="px-6 py-4">
                     <div class="flex items-center gap-2">
-                      <div class="w-6 h-6 rounded-full bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] flex items-center justify-center text-white text-[10px] font-bold shrink-0">
+                      <div class="w-7 h-7 rounded-full bg-[#2e6959] flex items-center justify-center text-[#b2efda] text-[10px] font-black flex-shrink-0">
                         {{ course.teacherName?.[0] ?? '?' }}
                       </div>
-                      <span class="text-sm font-medium text-[#191C1D]">{{ course.teacherName }}</span>
+                      <span class="text-sm font-semibold text-[#2d3433] truncate max-w-[120px]">{{ course.teacherName }}</span>
                     </div>
                   </td>
 
                   <!-- Category -->
-                  <td class="px-4 py-5 hidden md:table-cell">
-                    <span class="px-3 py-1 bg-[#B2EFDA]/30 text-[#2E6858] rounded-full text-xs font-semibold">
-                     {{ course.categoryName ?? '—' }}
+                  <td class="px-6 py-4 hidden md:table-cell">
+                    <span class="px-3 py-1 bg-[#e4fff4] text-[#2e6959] rounded-lg text-[11px] font-bold">
+                      {{ course.categoryName ?? '—' }}
                     </span>
                   </td>
 
                   <!-- Status -->
-                  <td class="px-4 py-5">
+                  <td class="px-6 py-4">
                     <div class="flex items-center gap-1.5">
-                      <span class="w-2 h-2 rounded-full"
-                        [class]="course.status === 'Published' ? 'bg-[#226A58] animate-pulse'
-                               : course.status === 'Draft'     ? 'bg-slate-400'
-                               :                                  'bg-[#BA1A1A]'">
+                      <span class="w-2 h-2 rounded-full flex-shrink-0"
+                        [class]="course.status === 'Published' ? 'bg-[#2e6959] animate-pulse'
+                               : course.status === 'Draft'     ? 'bg-[#acb3b2]'
+                               :                                  'bg-[#e05c4b]'">
                       </span>
-                      <span class="text-xs font-bold uppercase tracking-tight"
-                        [class]="course.status === 'Published' ? 'text-[#226A58]'
-                               : course.status === 'Draft'     ? 'text-slate-400'
-                               :                                  'text-[#BA1A1A]'">
+                      <span class="text-xs font-bold"
+                        [class]="course.status === 'Published' ? 'text-[#2e6959]'
+                               : course.status === 'Draft'     ? 'text-[#acb3b2]'
+                               :                                  'text-[#e05c4b]'">
                         {{ course.status }}
                       </span>
                     </div>
                   </td>
 
-                  <!-- Price -->
-                  <td class="px-4 py-5 font-bold text-[#191C1D] text-sm">
-                    @if (course.pricingType === 'Free') { Free } @else { ${{ course.price ?? 0 }} }
+                  <!-- Pricing -->
+                  <td class="px-6 py-4">
+                    @if (course.pricingType === 'Free') {
+                      <span class="px-3 py-1 bg-[#e4fff4] text-[#2e6959] rounded-lg text-[11px] font-bold">{{ 'adminCourses.free' | translate }}</span>
+                    } @else {
+                      <span class="text-sm font-black text-[#2d3433]">${{ course.price ?? 0 }}</span>
+                      @if (course.discountedPrice) {
+                        <span class="text-[11px] text-[#acb3b2] line-through ml-1">${{ course.discountedPrice }}</span>
+                      }
+                    }
                   </td>
 
                   <!-- Students -->
-                  <td class="px-4 py-5 text-sm text-slate-500 hidden lg:table-cell">{{ course.totalStudents ?? 0 }}</td>
+                  <td class="px-6 py-4 hidden lg:table-cell">
+                    <div class="flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-[#acb3b2] text-[14px]">group</span>
+                      <span class="text-sm font-bold text-[#2d3433]">{{ course.totalStudents ?? 0 }}</span>
+                    </div>
+                  </td>
 
                   <!-- Actions -->
-                  <td class="px-4 py-5 text-right rounded-r-xl">
+                  <td class="px-6 py-4 text-right">
                     <div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                       <button (click)="openPricing(course)"
-                        class="p-2 rounded-full text-slate-400 hover:text-[#2E6858] hover:bg-[#B2EFDA]/20 transition-all"
-                        title="Edit Pricing">
-                        <span class="material-symbols-outlined text-[20px]">payments</span>
+                        class="p-2 rounded-xl text-[#acb3b2] hover:text-[#2e6959] hover:bg-[#e4fff4] transition-all"
+                        [title]="'adminCourses.editPricing' | translate">
+                        <span class="material-symbols-outlined text-[18px]">payments</span>
                       </button>
                       <button (click)="togglePublish(course)"
-                        class="p-2 rounded-full transition-all"
+                        class="p-2 rounded-xl transition-all"
                         [class]="course.status === 'Published'
-                          ? 'text-slate-400 hover:text-[#BA1A1A] hover:bg-red-50'
-                          : 'text-slate-400 hover:text-[#226A58] hover:bg-[#AAF1DA]/20'"
-                        [title]="course.status === 'Published' ? 'Unpublish' : 'Publish'">
-                        <span class="material-symbols-outlined text-[20px]">
+                          ? 'text-[#acb3b2] hover:text-[#e05c4b] hover:bg-[#fff0ee]'
+                          : 'text-[#acb3b2] hover:text-[#2e6959] hover:bg-[#e4fff4]'"
+                        [title]="(course.status === 'Published' ? 'adminCourses.unpublish' : 'adminCourses.publish') | translate">
+                        <span class="material-symbols-outlined text-[18px]">
                           {{ course.status === 'Published' ? 'visibility_off' : 'publish' }}
                         </span>
                       </button>
@@ -183,110 +263,128 @@
                   </td>
                 </tr>
               }
+
               @empty {
                 @if (!loading()) {
                   <tr>
-                    <td colspan="7" class="text-center py-20 text-slate-400">
-                      <span class="material-symbols-outlined text-5xl block mb-3 text-slate-300">school</span>
-                      No courses found.
+                    <td colspan="7" class="text-center py-20">
+                      <span class="material-symbols-outlined text-4xl block mb-3 text-[#d0d8d6]">menu_book</span>
+                      <p class="text-sm font-bold text-[#acb3b2]">{{ 'adminCourses.noCoursesFound' | translate }}</p>
                     </td>
                   </tr>
                 }
               }
+
             </tbody>
           </table>
         </div>
 
         <!-- Pagination -->
-        <div class="px-8 py-4 bg-[#F8FAFA] border-t border-slate-100 flex justify-between items-center text-xs text-slate-400 font-medium">
-          <span>Showing page {{ currentPage() }} of {{ totalPages() }} — {{ totalCount() }} total</span>
+        <div class="px-6 py-4 border-t border-[#f0f5f3] flex items-center justify-between">
+          <span class="text-xs font-bold text-[#acb3b2]">
+            {{ 'adminCourses.page' | translate }} {{ currentPage() }}
+            {{ 'adminCourses.of' | translate }} {{ totalPages() }} —
+            {{ totalCount() }} {{ 'adminCourses.total' | translate }}
+          </span>
           <div class="flex gap-1">
             <button (click)="load(currentPage() - 1)" [disabled]="currentPage() === 1"
-              class="w-8 h-8 flex items-center justify-center rounded-lg bg-white hover:bg-[#ECEEEE] disabled:opacity-30 transition-all shadow-sm">
-              <span class="material-symbols-outlined text-sm">chevron_left</span>
+              class="w-8 h-8 flex items-center justify-center rounded-xl bg-[#f0f5f3] hover:bg-[#e4eeea] disabled:opacity-30 transition-all">
+              <span class="material-symbols-outlined text-sm text-[#596060]">chevron_left</span>
             </button>
             @for (p of pages(); track p) {
               @if (p <= 5) {
                 <button (click)="load(p)"
-                  class="w-8 h-8 flex items-center justify-center rounded-lg font-bold transition-all"
+                  class="w-8 h-8 flex items-center justify-center rounded-xl text-xs font-bold transition-all"
                   [class]="currentPage() === p
-                    ? 'bg-[#2E6858] text-white shadow-md'
-                    : 'bg-white hover:bg-[#ECEEEE] text-slate-500 shadow-sm'">
+                    ? 'bg-[#2e6959] text-[#e4fff4] shadow-sm'
+                    : 'bg-[#f0f5f3] text-[#596060] hover:bg-[#e4eeea]'">
                   {{ p }}
                 </button>
               }
             }
             <button (click)="load(currentPage() + 1)" [disabled]="currentPage() === totalPages()"
-              class="w-8 h-8 flex items-center justify-center rounded-lg bg-white hover:bg-[#ECEEEE] disabled:opacity-30 transition-all shadow-sm">
-              <span class="material-symbols-outlined text-sm">chevron_right</span>
+              class="w-8 h-8 flex items-center justify-center rounded-xl bg-[#f0f5f3] hover:bg-[#e4eeea] disabled:opacity-30 transition-all">
+              <span class="material-symbols-outlined text-sm text-[#596060]">chevron_right</span>
             </button>
           </div>
         </div>
-      </div>
-
-      <!-- Bottom stats bento (from mockup) -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        @for (stat of [
-          {icon:'trending_up', label:'Total Revenue',   value:'—',     note:'Connect billing API'},
-          {icon:'group',       label:'Active Students', value:'—',     note:'From enrollments'},
-          {icon:'auto_awesome',label:'Avg Rating',      value:'—',     note:'From reviews'}
-        ]; track stat.label) {
-          <div class="bg-white p-8 rounded-xl shadow-sm relative overflow-hidden group">
-            <span class="material-symbols-outlined absolute -right-3 -bottom-3 text-8xl opacity-5 group-hover:scale-110 transition-transform duration-500">{{ stat.icon }}</span>
-            <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4">{{ stat.label }}</h4>
-            <p class="text-3xl font-headline font-black text-[#191C1D]">{{ stat.value }}</p>
-            <p class="text-xs text-slate-400 font-medium mt-2">{{ stat.note }}</p>
-          </div>
-        }
       </div>
 
     </div>
   </main>
 </div>
 
-<!-- Pricing Modal -->
+<!-- ══════════════════════════════════════════
+     PRICING MODAL  (same card style)
+══════════════════════════════════════════ -->
 @if (showPricingModal()) {
-  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
-      <div class="flex items-center justify-between mb-6">
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm px-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 border border-[#eaefee]">
+
+      <div class="flex items-start justify-between mb-6">
         <div>
-          <h2 class="font-headline text-xl font-bold text-[#191C1D]">Edit Pricing</h2>
-          <p class="text-xs text-slate-400 mt-1">{{ selectedCourse()?.title }}</p>
+          <h2 class="text-lg font-black text-[#2d3433] tracking-tight">{{ 'adminCourses.editPricing' | translate }}</h2>
+          <p class="text-xs font-semibold text-[#acb3b2] mt-1 truncate max-w-[260px]">{{ selectedCourse()?.title }}</p>
         </div>
-        <button (click)="showPricingModal.set(false)" class="p-2 rounded-lg hover:bg-[#F2F4F4]">
-          <span class="material-symbols-outlined text-slate-400">close</span>
+        <button (click)="showPricingModal.set(false)"
+          class="w-8 h-8 flex items-center justify-center rounded-xl bg-[#f0f5f3] hover:bg-[#e4eeea] transition-colors">
+          <span class="material-symbols-outlined text-[#596060] text-sm">close</span>
         </button>
       </div>
+
       <form [formGroup]="pricingForm" (ngSubmit)="savePricing()" class="space-y-4">
-        @for (field of [
-          {key:'pricingType', label:'Pricing Type', type:'select', icon:'category'},
-          {key:'price', label:'Price ($)', type:'number', icon:'payments'},
-          {key:'discountedPrice', label:'Discounted Price (optional)', type:'number', icon:'sell'}
-        ]; track field.key) {
-          <div>
-            <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1.5">{{ field.label }}</label>
-            <div class="flex items-center gap-2 px-3 py-2.5 bg-[#F2F4F4] rounded-lg border border-transparent focus-within:border-[#2E6858] focus-within:bg-white transition-all">
-              <span class="material-symbols-outlined text-slate-400 text-[17px]">{{ field.icon }}</span>
-              @if (field.type === 'select') {
-                <select [formControlName]="field.key" class="bg-transparent border-none focus:ring-0 flex-1 text-sm text-[#191C1D]">
-                  <option value="Paid">Paid</option>
-                  <option value="Free">Free</option>
-                </select>
-              } @else {
-                <input [formControlName]="field.key" [type]="field.type" min="0" step="0.01"
-                  class="bg-transparent border-none focus:ring-0 flex-1 text-sm text-[#191C1D]" />
-              }
-            </div>
+
+        <!-- Pricing Type -->
+        <div>
+          <label class="block text-[10px] font-black uppercase tracking-widest text-[#acb3b2] mb-1.5">
+            {{ 'adminCourses.pricingType' | translate }}
+          </label>
+          <div class="flex items-center gap-2 px-4 py-2.5 bg-[#f8faf9] rounded-xl border border-[#eaefee] focus-within:border-[#b2efda] focus-within:bg-white transition-all">
+            <span class="material-symbols-outlined text-[#acb3b2] text-[17px]">category</span>
+            <select formControlName="pricingType"
+              class="bg-transparent border-none focus:ring-0 flex-1 text-sm font-semibold text-[#2d3433] outline-none">
+              <option value="Paid">{{ 'adminCourses.pricing' | translate }}</option>
+              <option value="Free">{{ 'adminCourses.free' | translate }}</option>
+            </select>
           </div>
-        }
+        </div>
+
+        <!-- Price -->
+        <div>
+          <label class="block text-[10px] font-black uppercase tracking-widest text-[#acb3b2] mb-1.5">
+            {{ 'adminCourses.price' | translate }}
+          </label>
+          <div class="flex items-center gap-2 px-4 py-2.5 bg-[#f8faf9] rounded-xl border border-[#eaefee] focus-within:border-[#b2efda] focus-within:bg-white transition-all">
+            <span class="material-symbols-outlined text-[#acb3b2] text-[17px]">payments</span>
+            <input formControlName="price" type="number" min="0" step="0.01"
+              class="bg-transparent border-none focus:ring-0 flex-1 text-sm font-semibold text-[#2d3433] outline-none" />
+          </div>
+        </div>
+
+        <!-- Discounted Price -->
+        <div>
+          <label class="block text-[10px] font-black uppercase tracking-widest text-[#acb3b2] mb-1.5">
+            {{ 'adminCourses.discountedPrice' | translate }}
+          </label>
+          <div class="flex items-center gap-2 px-4 py-2.5 bg-[#f8faf9] rounded-xl border border-[#eaefee] focus-within:border-[#b2efda] focus-within:bg-white transition-all">
+            <span class="material-symbols-outlined text-[#acb3b2] text-[17px]">sell</span>
+            <input formControlName="discountedPrice" type="number" min="0" step="0.01"
+              class="bg-transparent border-none focus:ring-0 flex-1 text-sm font-semibold text-[#2d3433] outline-none" />
+          </div>
+        </div>
+
         <div class="flex justify-end gap-3 pt-2">
           <button type="button" (click)="showPricingModal.set(false)"
-            class="px-5 py-2.5 rounded-lg border border-slate-200 text-slate-500 font-semibold hover:bg-[#F2F4F4] text-sm">Cancel</button>
+            class="px-5 py-2.5 rounded-xl border border-[#eaefee] text-[#596060] font-bold hover:bg-[#f0f5f3] text-sm transition-colors">
+            {{ 'adminCourses.cancel' | translate }}
+          </button>
           <button type="submit" [disabled]="pricingForm.invalid"
-            class="px-5 py-2.5 bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] text-white font-bold rounded-lg disabled:opacity-50 text-sm flex items-center gap-2">
-            <span class="material-symbols-outlined text-[15px]">save</span>Save
+            class="px-5 py-2.5 bg-[#2e6959] text-white font-bold rounded-xl disabled:opacity-50 text-sm flex items-center gap-2 hover:bg-[#1a3d34] transition-colors shadow-sm">
+            <span class="material-symbols-outlined text-[15px]">save</span>
+            {{ 'adminCourses.save' | translate }}
           </button>
         </div>
+
       </form>
     </div>
   </div>

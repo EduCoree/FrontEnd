@@ -1,13 +1,13 @@
-<!-- Teacher Dashboard -->
-<div class="bg-background text-on-surface min-h-screen flex flex-col font-body">
+<!-- <div class="bg-background text-on-surface min-h-screen flex flex-col font-body">
 
-  <!-- الهيدر -->
-<header class="bg-surface/70 backdrop-blur-xl fixed top-0 w-full z-50 ...">
+  <header class="bg-surface/70 backdrop-blur-xl fixed top-0 w-full z-50">
     <div class="flex items-center gap-8">
       <span class="text-2xl font-bold text-primary">EduCore</span>
       <nav class="hidden md:flex gap-8 text-sm font-medium">
-        <a class="text-primary font-bold border-b-2 border-primary">Dashboard</a>
-        <a (click)="goToMyCourses()" class="text-on-surface-variant hover:text-primary transition-colors cursor-pointer">Courses</a>
+        <a class="text-primary font-bold border-b-2 border-primary">{{ 'adminSidebar.dashboard' | translate }}</a>
+        <a (click)="goToMyCourses()" class="text-on-surface-variant hover:text-primary transition-colors cursor-pointer">
+          {{ 'adminSidebar.courses' | translate }}
+        </a>
       </nav>
     </div>
     <div class="flex items-center gap-4">
@@ -20,324 +20,879 @@
     </div>
   </header>
 
-  <div class="flex flex-1 ">
+  <div class="flex flex-1">
 
-    <!-- السايدبار -->
-    <aside class="bg-surface-container h-[calc(100vh-80px)] w-64 fixed left-0 top-20 flex-col p-6 gap-4 hidden md:flex">
+    <aside class="bg-surface-container h-[calc(100vh-80px)] w-64 fixed start-0 top-20 flex-col p-6 gap-4 hidden md:flex">
       <div class="mb-6 px-2">
         <h2 class="text-lg font-black text-primary">EduCore</h2>
-        <p class="text-[10px] text-on-surface-variant normal-case tracking-normal">Teacher Portal</p>
+        <p class="text-[10px] text-on-surface-variant normal-case tracking-normal">{{ 'teacherPortal.title' | translate }}</p>
       </div>
       <nav class="flex flex-col gap-2">
         <a class="flex items-center gap-3 px-4 py-3 bg-white text-primary rounded-full shadow-sm">
           <span class="material-symbols-outlined">home</span>
-          <span>Dashboard</span>
+          <span>{{ 'adminSidebar.dashboard' | translate }}</span>
         </a>
         <a (click)="goToMyCourses()" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface hover:translate-x-1 transition-transform rounded-full cursor-pointer">
           <span class="material-symbols-outlined">school</span>
-          <span>My Courses</span>
+          <span>{{ 'myCourses.title' | translate }}</span>
         </a>
         <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface hover:translate-x-1 transition-transform rounded-full cursor-pointer">
           <span class="material-symbols-outlined">settings</span>
-          <span>Settings</span>
+          <span>{{ 'teacherPortal.settings' | translate }}</span>
         </a>
       </nav>
-
-      <!-- Create Course CTA -->
-      <!-- <div class="mt-auto bg-primary text-on-primary p-6 rounded-xl flex flex-col gap-4">
-        <p class="normal-case tracking-normal text-xs opacity-90">Ready to share your knowledge?</p>
-        <button (click)="goToCreate()"
-          class="bg-white text-primary px-4 py-2 rounded-full font-bold text-xs uppercase tracking-widest hover:scale-105 transition-transform shadow-md">
-          Create New Course
-        </button>
-      </div> -->
     </aside>
 
-    <!-- المحتوى الرئيسي -->
-<main class="flex-1 md:ml-64 px-8 py-6 bg-surface">
-      <!-- العنوان -->
-      <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 ">
+    <main class="flex-1 md:ms-64 px-8 py-6 bg-surface">
+      <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
         <div class="max-w-2xl">
-          <!-- <h1 class="text-4xl font-extrabold tracking-tight text-on-surface mb-2">Teacher Dashboard</h1> -->
           <p class="text-on-surface-variant text-lg">
-            Welcome back, {{ teacherName() }}. 
+            {{ 'teacherPortal.welcomeBack' | translate }}, {{ teacherName() }}.
           </p>
         </div>
         <div class="flex gap-3">
           <button (click)="goToMyCourses()"
             class="px-6 py-3 rounded-full bg-surface-container-high text-on-surface-variant font-bold text-sm uppercase tracking-widest hover:bg-surface-variant transition-colors border border-outline-variant/10">
-            My Courses
+            {{ 'myCourses.title' | translate }}
           </button>
           <button (click)="goToCreate()"
             class="px-8 py-3 rounded-full bg-primary text-on-primary font-bold text-sm uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-105 transition-transform">
-            + Create Course
+            + {{ 'teacherPortal.createCourse' | translate }}
           </button>
         </div>
       </div>
 
-      <!-- Loading -->
       <div *ngIf="isLoading()" class="flex justify-center py-20">
         <span class="material-symbols-outlined text-primary text-4xl animate-spin">progress_activity</span>
       </div>
 
       <div *ngIf="!isLoading()">
 
-        <!-- KPI Cards -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
 
           <div class="bg-surface-container-low p-6 rounded-xl flex flex-col justify-between h-40 border border-outline-variant/10 shadow-sm">
             <div class="flex justify-between items-start">
-              <span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Enrolled Students</span>
+              <span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">{{ 'teacherPortal.enrolledStudents' | translate }}</span>
               <span class="material-symbols-outlined text-primary text-2xl">groups</span>
             </div>
             <div>
               <div class="text-4xl font-black text-on-surface">{{ totalEnrolledStudents() }}</div>
-              <div class="text-[10px] text-primary font-bold mt-1 uppercase tracking-wider">Total across all courses</div>
+              <div class="text-[10px] text-primary font-bold mt-1 uppercase tracking-wider">{{ 'teacherPortal.totalAcrossAll' | translate }}</div>
             </div>
           </div>
 
           <div class="bg-surface-container-low p-6 rounded-xl flex flex-col justify-between h-40 border border-outline-variant/10 shadow-sm">
             <div class="flex justify-between items-start">
-              <span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Total Courses</span>
+              <span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">{{ 'adminCourses.totalCourses' | translate }}</span>
               <span class="material-symbols-outlined text-primary text-2xl">inventory_2</span>
             </div>
             <div>
               <div class="text-4xl font-black text-on-surface">{{ totalCourses() }}</div>
-              <div class="text-[10px] text-on-surface-variant font-medium mt-1 uppercase tracking-wider">Across all categories</div>
+              <div class="text-[10px] text-on-surface-variant font-medium mt-1 uppercase tracking-wider">{{ 'teacherPortal.acrossCategories' | translate }}</div>
             </div>
           </div>
 
           <div class="bg-surface-container-low p-6 rounded-xl flex flex-col justify-between h-40 border border-outline-variant/10 shadow-sm">
             <div class="flex justify-between items-start">
-              <span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Published</span>
+              <span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">{{ 'adminCourses.published' | translate }}</span>
               <span class="material-symbols-outlined text-primary text-2xl">check_circle</span>
             </div>
             <div>
               <div class="text-4xl font-black text-on-surface">{{ publishedCourses() }}</div>
               <div class="text-[10px] text-on-surface-variant font-medium mt-1 uppercase tracking-wider">
-                {{ totalCourses() - publishedCourses() }} items in draft
+                {{ totalCourses() - publishedCourses() }} {{ 'teacherPortal.inDraft' | translate }}
               </div>
             </div>
           </div>
 
           <div class="bg-surface-container-low p-6 rounded-xl flex flex-col justify-between h-40 border border-outline-variant/10 shadow-sm">
             <div class="flex justify-between items-start">
-              <span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Avg. Rating</span>
+              <span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">{{ 'adminDashboard.avgRating' | translate }}</span>
               <span class="material-symbols-outlined text-primary text-2xl">star</span>
             </div>
             <div>
               <div class="text-4xl font-black text-on-surface">
                 {{ averageCourseRating() > 0 ? averageCourseRating() : 'N/A' }}
               </div>
-              <div class="text-[10px] text-primary font-bold mt-1 uppercase tracking-wider">Academic Excellence</div>
+              <div class="text-[10px] text-primary font-bold mt-1 uppercase tracking-wider">{{ 'teacherPortal.academicExcellence' | translate }}</div>
             </div>
           </div>
 
         </div>
 
-        <!-- Dashboard Body -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
 
-          <!-- Main Column -->
           <div class="lg:col-span-2 flex flex-col gap-8">
 
-            <!-- Upcoming Sessions - Placeholder -->
             <section>
               <div class="flex justify-between items-center px-2 mb-4">
-                <h3 class="text-xl font-bold tracking-tight">Upcoming Sessions</h3>
-                
-                <!-- Schedule Dropdown -->
+                <h3 class="text-xl font-bold tracking-tight">{{ 'studentAgenda.title' | translate }}</h3>
                 <div class="relative">
-                  <a (click)="toggleScheduleDropdown()" 
-                     class="text-primary text-xs font-bold uppercase tracking-widest hover:underline cursor-pointer flex items-center gap-1">
-                    Schedule <span class="material-symbols-outlined text-[14px]">expand_more</span>
+                  <a (click)="toggleScheduleDropdown()"
+                    class="text-primary text-xs font-bold uppercase tracking-widest hover:underline cursor-pointer flex items-center gap-1">
+                    {{ 'teacherPortal.schedule' | translate }}
+                    <span class="material-symbols-outlined text-[14px]">expand_more</span>
                   </a>
-                  
-                  <div *ngIf="showScheduleDropdown()" 
-                       class="absolute right-0 mt-2 w-56 bg-white border border-outline-variant/20 shadow-xl rounded-xl z-50 overflow-hidden">
+                  <div *ngIf="showScheduleDropdown()"
+                    class="absolute end-0 mt-2 w-56 bg-white border border-outline-variant/20 shadow-xl rounded-xl z-50 overflow-hidden">
                     <div class="px-3 py-2 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest bg-surface-container-lowest border-b border-outline-variant/10">
-                      Select Course
+                      {{ 'teacherPortal.selectCourse' | translate }}
                     </div>
-                    
-                    <a *ngFor="let course of courses()" 
-                       (click)="goToCourseSessions(course.id)" 
-                       class="block px-4 py-3 text-xs text-on-surface font-bold hover:bg-primary-container hover:text-primary cursor-pointer border-b border-outline-variant/5 last:border-0 truncate transition-colors">
+                    <a *ngFor="let course of courses()"
+                      (click)="goToCourseSessions(course.id)"
+                      class="block px-4 py-3 text-xs text-on-surface font-bold hover:bg-primary-container hover:text-primary cursor-pointer border-b border-outline-variant/5 last:border-0 truncate transition-colors">
                       {{ course.title }}
                     </a>
-                    
                     <div *ngIf="courses().length === 0" class="px-4 py-3 text-xs text-on-surface-variant italic">
-                      No courses available
+                      {{ 'teacherPortal.noCoursesAvailable' | translate }}
                     </div>
                   </div>
                 </div>
               </div>
-              <!-- Loader -->
+
               <div *ngIf="isLoadingSessions()" class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/10 flex justify-center py-10">
                 <span class="material-symbols-outlined text-primary text-3xl animate-spin">progress_activity</span>
               </div>
 
-              <!-- Sessions List -->
               <div *ngIf="!isLoadingSessions() && upcomingSessions().length > 0" class="flex flex-col gap-3">
-                <div *ngFor="let session of upcomingSessions()" 
-                     class="bg-surface-container-lowest p-5 rounded-lg flex items-center gap-4 group border border-outline-variant/10 shadow-sm hover:shadow-md transition-shadow cursor-pointer" 
-                     (click)="goToCourseSessions(session.courseId)">
-                  
+                <div *ngFor="let session of upcomingSessions()"
+                  class="bg-surface-container-lowest p-5 rounded-lg flex items-center gap-4 group border border-outline-variant/10 shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+                  (click)="goToCourseSessions(session.courseId)">
                   <div class="w-12 h-12 bg-primary-container text-primary rounded-lg flex items-center justify-center shrink-0">
                     <span class="material-symbols-outlined">event</span>
                   </div>
-                  
                   <div class="flex-1 min-w-0">
                     <div class="flex items-center gap-2 mb-1">
-                      <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md" 
-                            [ngClass]="{
-                              'bg-indigo-50 text-indigo-700': session.provider === 'Jitsi', 
-                              'bg-blue-50 text-blue-700': session.provider === 'Zoom', 
-                              'bg-purple-50 text-purple-700': session.provider === 'MicrosoftTeams', 
-                              'bg-red-50 text-red-600': session.provider === 'GoogleMeet'
-                            }">
-                        {{ session.provider === 'MicrosoftTeams' ? 'Teams' : session.provider }}
+                      <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md"
+                        [ngClass]="{
+                          'bg-indigo-50 text-indigo-700': session.provider === 'Jitsi',
+                          'bg-blue-50 text-blue-700': session.provider === 'Zoom',
+                          'bg-purple-50 text-purple-700': session.provider === 'MicrosoftTeams',
+                          'bg-red-50 text-red-600': session.provider === 'GoogleMeet'
+                        }">
+                        {{ session.provider === 'MicrosoftTeams' ? ('studentAgenda.teams' | translate) : session.provider }}
                       </span>
-                      <span class="text-xs font-bold text-on-surface-variant truncate border-l border-outline-variant/20 pl-2">{{ session.courseTitle }}</span>
+                      <span class="text-xs font-bold text-on-surface-variant truncate border-s border-outline-variant/20 ps-2">{{ session.courseTitle }}</span>
                     </div>
-                    <h4 class="text-sm font-bold text-on-surface truncate">{{ session.title || 'Live Session' }}</h4>
+                    <h4 class="text-sm font-bold text-on-surface truncate">{{ session.title || ('studentAgenda.defaultSessionTitle' | translate) }}</h4>
                     <p class="text-xs text-on-surface-variant mt-1 flex items-center gap-1">
                       <span class="material-symbols-outlined text-[14px]">schedule</span>
                       {{ session.scheduledAt | date:'medium' }}
                     </p>
                   </div>
-                  
                   <button class="shrink-0 p-2 rounded-full text-on-surface-variant hover:bg-surface-container transition-colors">
                     <span class="material-symbols-outlined text-[20px]">chevron_right</span>
                   </button>
-                  
                 </div>
               </div>
 
-              <!-- Empty State -->
-              <div *ngIf="!isLoadingSessions() && upcomingSessions().length === 0" class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/10 text-center">
+              <div *ngIf="!isLoadingSessions() && upcomingSessions().length === 0"
+                class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/10 text-center">
                 <span class="material-symbols-outlined text-outline text-4xl mb-2 block">event_available</span>
-                <p class="text-sm text-on-surface-variant font-medium">No upcoming sessions</p>
-                <p class="text-xs text-outline mt-1">Schedule a session from your courses to see it here.</p>
+                <p class="text-sm text-on-surface-variant font-medium">{{ 'studentDashboardPage.noSessions' | translate }}</p>
+                <p class="text-xs text-outline mt-1">{{ 'teacherPortal.scheduleHint' | translate }}</p>
               </div>
             </section>
 
-            <!-- Active Courses -->
             <section>
               <div class="flex justify-between items-center px-2 mb-4">
-                <h3 class="text-xl font-bold tracking-tight">Active Courses</h3>
-                <a (click)="goToMyCourses()"
-                  class="text-primary text-xs font-bold uppercase tracking-widest hover:underline cursor-pointer">
-                  View All
+                <h3 class="text-xl font-bold tracking-tight">{{ 'teacherPortal.activeCourses' | translate }}</h3>
+                <a (click)="goToMyCourses()" class="text-primary text-xs font-bold uppercase tracking-widest hover:underline cursor-pointer">
+                  {{ 'home.view_all' | translate }}
                 </a>
               </div>
               <div class="flex flex-col gap-3">
                 <div *ngFor="let course of courses()"
                   class="bg-surface-container-lowest p-5 rounded-lg flex items-center gap-6 group hover:shadow-md transition-shadow border border-outline-variant/10">
-
-                  <!-- صورة الكورس -->
                   <div class="h-20 w-32 rounded-lg bg-surface-container-high overflow-hidden flex-shrink-0">
                     <img *ngIf="course.coverImage" [src]="course.coverImage" [alt]="course.title"
                       class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"/>
-                    <div *ngIf="!course.coverImage"
-                      class="w-full h-full flex items-center justify-center">
+                    <div *ngIf="!course.coverImage" class="w-full h-full flex items-center justify-center">
                       <span class="material-symbols-outlined text-outline">image</span>
                     </div>
                   </div>
-
                   <div class="flex-1">
                     <div class="flex items-center gap-2 mb-1">
-                      <span *ngIf="course.status === 'Published'"
-                        class="bg-primary text-on-primary text-[10px] font-black uppercase px-2 py-0.5 rounded-full">
-                        Published
+                      <span *ngIf="course.status === 'Published'" class="bg-primary text-on-primary text-[10px] font-black uppercase px-2 py-0.5 rounded-full">
+                        {{ 'adminCourses.published' | translate }}
                       </span>
-                      <span *ngIf="course.status === 'Draft'"
-                        class="bg-surface-dim text-on-surface-variant text-[10px] font-black uppercase px-2 py-0.5 rounded-full">
-                        Draft
+                      <span *ngIf="course.status === 'Draft'" class="bg-surface-dim text-on-surface-variant text-[10px] font-black uppercase px-2 py-0.5 rounded-full">
+                        {{ 'adminCourses.draft' | translate }}
                       </span>
-                      <span *ngIf="course.status === 'Archived'"
-                        class="bg-tertiary-container text-on-tertiary-container text-[10px] font-black uppercase px-2 py-0.5 rounded-full">
-                        Archived
+                      <span *ngIf="course.status === 'Archived'" class="bg-tertiary-container text-on-tertiary-container text-[10px] font-black uppercase px-2 py-0.5 rounded-full">
+                        {{ 'adminCourses.archived' | translate }}
                       </span>
                     </div>
                     <h4 class="text-lg font-bold text-on-surface">{{ course.title }}</h4>
                     <div class="flex gap-4 mt-2">
                       <span class="text-xs text-on-surface-variant flex items-center gap-1">
                         <span class="material-symbols-outlined text-sm">person</span>
-                        {{ course.totalStudents || 0 }} Students
+                        {{ course.totalStudents || 0 }} {{ 'courseCard.students' | translate }}
                       </span>
                       <span class="text-xs text-on-surface-variant flex items-center gap-1">
                         <span class="material-symbols-outlined text-sm">menu_book</span>
-                        {{ course.totalLessons || 0 }} Lessons
+                        {{ course.totalLessons || 0 }} {{ 'courseCard.lessons' | translate }}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-1">
+                    <button (click)="goToProgress(course.id)" title="Student Progress"
+                      class="p-3 rounded-full hover:bg-primary-container text-primary transition-colors flex items-center justify-center">
+                      <span class="material-symbols-outlined">trending_up</span>
+                    </button>
+                    <button (click)="goToEdit(course.id)" title="Edit Course"
+                      class="p-3 rounded-full hover:bg-surface-container text-on-surface-variant transition-colors flex items-center justify-center">
+                      <span class="material-symbols-outlined">edit</span>
+                    </button>
+                  </div>
+
+                </div>
+
+                <div *ngIf="courses().length === 0" class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/10 text-center">
+                  <span class="material-symbols-outlined text-outline text-4xl mb-2 block">menu_book</span>
+                  <p class="text-sm text-on-surface-variant font-medium">{{ 'myCourses.noCoursesTitle' | translate }}</p>
+                  <button (click)="goToCreate()" class="mt-4 px-6 py-2 rounded-full bg-primary text-on-primary font-bold text-xs">
+                    {{ 'teacherPortal.createFirstCourse' | translate }}
+                  </button>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div class="flex flex-col gap-8">
+            <div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/10 shadow-sm">
+              <h3 class="text-lg font-bold mb-6 tracking-tight">{{ 'teacherPortal.recentEnrollments' | translate }}</h3>
+              <div class="text-center py-6">
+                <span class="material-symbols-outlined text-outline text-4xl mb-2 block">group_add</span>
+                <p class="text-sm text-on-surface-variant font-medium">{{ 'teacherPortal.enrollmentsHint' | translate }}</p>
+                <p class="text-xs text-outline mt-1">{{ 'teacherPortal.comingSoon' | translate }}</p>
+              </div>
+              <button class="w-full mt-4 py-3 rounded-full bg-white text-primary border border-primary/20 font-bold text-xs uppercase tracking-widest hover:bg-surface transition-colors shadow-sm">
+                {{ 'teacherPortal.viewAllActivity' | translate }}
+              </button>
+            </div>
+
+            <div class="bg-primary-container p-8 rounded-lg relative overflow-hidden border border-primary/10">
+              <span class="material-symbols-outlined absolute -end-4 -bottom-4 text-9xl opacity-10 text-primary rotate-12">format_quote</span>
+              <h4 class="text-primary font-black text-sm uppercase tracking-widest mb-4">{{ 'teacherPortal.instructorTip' | translate }}</h4>
+              <p class="text-on-primary-container text-sm leading-relaxed relative z-10 italic">
+                "{{ 'teacherPortal.tipText' | translate }}"
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <footer class="bg-surface flex flex-col md:flex-row justify-between items-center py-12 px-8 mt-auto w-full border-t border-surface-container text-xs font-medium md:ms-64">
+    <div class="flex items-center gap-6 mb-6 md:mb-0">
+      <span class="text-sm font-bold uppercase text-primary">EduCore</span>
+      <p class="text-on-surface-variant">{{ 'teacherPortal.copyright' | translate }}</p>
+    </div>
+    <nav class="flex gap-8">
+      <a class="text-on-surface-variant hover:text-primary transition-colors">{{ 'footer.privacy' | translate }}</a>
+      <a class="text-on-surface-variant hover:text-primary transition-colors">{{ 'footer.help' | translate }}</a>
+    </nav>
+  </footer>
+
+</div> -->
+
+
+
+
+
+
+
+<div class="bg-[#f4f7f6] text-on-surface min-h-screen flex flex-col font-body">
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="hidden md:flex flex-col fixed start-0 top-0 h-screen w-64
+                bg-white border-e border-outline-variant/20
+                shadow-[2px_0_12px_rgba(0,0,0,0.04)] z-50">
+
+   
+    <div class="px-6 py-6 border-b border-outline-variant/15">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-primary flex items-center justify-center shadow-md shadow-primary/30">
+          <span class="material-symbols-outlined text-white text-xl"
+                style="font-variation-settings:'FILL' 1">school</span>
+        </div>
+        <div>
+          <h2 class="text-base font-black text-on-surface tracking-tight">EduCore</h2>
+          <p class="text-[10px] text-on-surface-variant">{{ 'teacherPortal.title' | translate }}</p>
+        </div>
+      </div>
+    </div>
+
+   
+    <nav class="flex flex-col gap-1 px-4 py-6 flex-1">
+      <p class="text-[10px] font-bold text-on-surface-variant/60 uppercase tracking-widest px-3 mb-2">
+        Main Menu
+      </p>
+      <a class="flex items-center gap-3 px-4 py-3 rounded-2xl
+                bg-primary text-white font-semibold text-sm
+                shadow-md shadow-primary/25 cursor-pointer">
+        <span class="material-symbols-outlined text-[20px]"
+              style="font-variation-settings:'FILL' 1">home</span>
+        <span>{{ 'adminSidebar.dashboard' | translate }}</span>
+      </a>
+      <a (click)="goToMyCourses()"
+         class="flex items-center gap-3 px-4 py-3 rounded-2xl
+                text-on-surface-variant hover:bg-primary/8 hover:text-primary
+                font-semibold text-sm transition-all duration-200 cursor-pointer">
+        <span class="material-symbols-outlined text-[20px]">school</span>
+        <span>{{ 'myCourses.title' | translate }}</span>
+      </a>
+      <a class="flex items-center gap-3 px-4 py-3 rounded-2xl
+                text-on-surface-variant hover:bg-primary/8 hover:text-primary
+                font-semibold text-sm transition-all duration-200 cursor-pointer">
+        <span class="material-symbols-outlined text-[20px]">settings</span>
+        <span>{{ 'teacherPortal.settings' | translate }}</span>
+      </a>
+    </nav>
+
+   
+    <div class="mx-4 mb-6 p-4 bg-gradient-to-br from-primary to-secondary
+                rounded-2xl text-white relative overflow-hidden">
+      <div class="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-white/10"></div>
+      <span class="material-symbols-outlined text-3xl mb-2 block opacity-90"
+            style="font-variation-settings:'FILL' 1">workspace_premium</span>
+      <p class="text-sm font-bold mb-1">Upgrade to Pro</p>
+      <p class="text-[11px] text-white/70 mb-3">Unlock all features & resources</p>
+      <button class="w-full py-2 rounded-xl bg-white text-primary text-xs font-bold
+                     hover:bg-white/90 transition-colors">
+        Upgrade Now
+      </button>
+    </div>
+  </aside>
+
+
+  <div class="md:ms-64 flex flex-col min-h-screen">
+
+    <!-- Top bar -->
+    <header class="bg-white border-b border-outline-variant/20 px-8 h-16
+                   flex items-center justify-between sticky top-0 z-40
+                   shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+      <div>
+        <h1 class="text-lg font-black text-on-surface tracking-tight">Dashboard</h1>
+        <p class="text-xs text-on-surface-variant">
+          {{ 'teacherPortal.welcomeBack' | translate }}, {{ teacherName() }}
+        </p>
+      </div>
+      <div class="flex items-center gap-3">
+        <button (click)="goToCreate()"
+                class="hidden md:flex items-center gap-2 px-5 py-2.5 rounded-xl
+                       bg-primary text-white text-sm font-bold
+                       shadow-md shadow-primary/25
+                       hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/30
+                       transition-all duration-200">
+          <span class="material-symbols-outlined text-[18px]">add</span>
+          {{ 'teacherPortal.createCourse' | translate }}
+        </button>
+        <button class="relative p-2.5 rounded-xl bg-surface-container-low
+                       hover:bg-primary/8 transition-colors">
+          <span class="material-symbols-outlined text-on-surface-variant text-[22px]">notifications</span>
+          <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
+        </button>
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-secondary
+                    flex items-center justify-center text-white text-sm font-bold
+                    ring-2 ring-primary/20 cursor-pointer">
+          <span class="material-symbols-outlined text-[18px]">person</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1 px-8 py-8">
+
+      <div *ngIf="isLoading()" class="flex justify-center py-20">
+        <span class="material-symbols-outlined text-primary text-4xl animate-spin">
+          progress_activity
+        </span>
+      </div>
+
+      <div *ngIf="!isLoading()">
+
+        <!-- Welcome Banner -->
+        <div class="bg-gradient-to-br from-primary via-primary to-secondary
+                    rounded-3xl p-8 mb-8 relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-64 h-full opacity-10">
+            <div class="absolute top-4 right-8 w-32 h-32 rounded-full border-4 border-white"></div>
+            <div class="absolute bottom-4 right-20 w-16 h-16 rounded-full border-2 border-white"></div>
+          </div>
+          <div class="relative z-10">
+            <p class="text-white/70 text-sm mb-1">
+              {{ 'teacherPortal.welcomeBack' | translate }} 👋
+            </p>
+            <h2 class="text-white font-black text-3xl mb-2 tracking-tight">
+              {{ teacherName() }}!
+            </h2>
+            <p class="text-white/70 text-sm max-w-md">
+              Manage your courses, track student progress, and schedule live sessions — all in one place.
+            </p>
+          </div>
+        </div>
+<!-- Chart Section -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+
+  <!-- Line Chart -->
+  <div class="bg-white rounded-2xl border border-outline-variant/15 shadow-sm p-6">
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h3 class="font-bold text-base text-on-surface">Monthly Enrollments</h3>
+        <p class="text-xs text-on-surface-variant mt-0.5">Student activity over time</p>
+      </div>
+      <div class="flex gap-1 bg-surface-container-low rounded-xl p-1">
+        <button class="px-3 py-1.5 rounded-lg bg-white text-primary
+                       text-xs font-bold shadow-sm">
+          Monthly
+        </button>
+        <button class="px-3 py-1.5 rounded-lg text-on-surface-variant
+                       text-xs font-semibold hover:bg-white transition-colors">
+          Weekly
+        </button>
+      </div>
+    </div>
+    <canvas id="enrollmentChart" height="160"></canvas>
+  </div>
+
+  <!-- Donut Chart -->
+  <div class="bg-white rounded-2xl border border-outline-variant/15 shadow-sm p-6">
+    <div class="mb-6">
+      <h3 class="font-bold text-base text-on-surface">Course Status</h3>
+      <p class="text-xs text-on-surface-variant mt-0.5">Distribution overview</p>
+    </div>
+    <div class="flex items-center gap-8">
+      <!-- Donut -->
+      <div class="relative flex-shrink-0">
+        <canvas id="statusChart" width="160" height="160"></canvas>
+        <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+          <span class="text-2xl font-black text-on-surface">{{ totalCourses() }}</span>
+          <span class="text-[10px] text-on-surface-variant font-medium">Total</span>
+        </div>
+      </div>
+      <!-- Legend -->
+      <div class="flex flex-col gap-4 flex-1">
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <div class="flex items-center gap-2">
+              <div class="w-3 h-3 rounded-full bg-primary"></div>
+              <span class="text-sm text-on-surface-variant">Published</span>
+            </div>
+            <span class="text-sm font-bold text-on-surface">{{ publishedCourses() }}</span>
+          </div>
+          <div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+            <div class="h-full bg-primary rounded-full transition-all duration-700"
+                 [style.width]="totalCourses() > 0 ? (publishedCourses() / totalCourses() * 100) + '%' : '0%'">
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <div class="flex items-center gap-2">
+              <div class="w-3 h-3 rounded-full bg-amber-400"></div>
+              <span class="text-sm text-on-surface-variant">Draft</span>
+            </div>
+            <span class="text-sm font-bold text-on-surface">
+              {{ totalCourses() - publishedCourses() }}
+            </span>
+          </div>
+          <div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+            <div class="h-full bg-amber-400 rounded-full transition-all duration-700"
+                 [style.width]="totalCourses() > 0 ? ((totalCourses() - publishedCourses()) / totalCourses() * 100) + '%' : '0%'">
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <div class="flex items-center gap-2">
+              <div class="w-3 h-3 rounded-full bg-surface-container-high"></div>
+              <span class="text-sm text-on-surface-variant">Archived</span>
+            </div>
+            <span class="text-sm font-bold text-on-surface">0</span>
+          </div>
+          <div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+            <div class="h-full bg-surface-container-high rounded-full w-0"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+
+          <div class="bg-white p-5 rounded-2xl border border-outline-variant/15
+                      shadow-sm hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+                <span class="material-symbols-outlined text-blue-500 text-[20px]"
+                      style="font-variation-settings:'FILL' 1">groups</span>
+              </div>
+              <span class="text-[10px] font-bold text-green-500 bg-green-50
+                           px-2 py-0.5 rounded-full">+12%</span>
+            </div>
+            <div class="text-3xl font-black text-on-surface mb-1">
+              {{ totalEnrolledStudents() }}
+            </div>
+            <div class="text-xs text-on-surface-variant font-medium">
+              {{ 'teacherPortal.enrolledStudents' | translate }}
+            </div>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-outline-variant/15
+                      shadow-sm hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                <span class="material-symbols-outlined text-primary text-[20px]"
+                      style="font-variation-settings:'FILL' 1">inventory_2</span>
+              </div>
+              <span class="text-[10px] font-bold text-primary bg-primary/10
+                           px-2 py-0.5 rounded-full">Total</span>
+            </div>
+            <div class="text-3xl font-black text-on-surface mb-1">
+              {{ totalCourses() }}
+            </div>
+            <div class="text-xs text-on-surface-variant font-medium">
+              {{ 'adminCourses.totalCourses' | translate }}
+            </div>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-outline-variant/15
+                      shadow-sm hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center">
+                <span class="material-symbols-outlined text-green-500 text-[20px]"
+                      style="font-variation-settings:'FILL' 1">check_circle</span>
+              </div>
+              <span class="text-[10px] font-bold text-on-surface-variant bg-surface-container
+                           px-2 py-0.5 rounded-full">
+                {{ totalCourses() - publishedCourses() }} draft
+              </span>
+            </div>
+            <div class="text-3xl font-black text-on-surface mb-1">
+              {{ publishedCourses() }}
+            </div>
+            <div class="text-xs text-on-surface-variant font-medium">
+              {{ 'adminCourses.published' | translate }}
+            </div>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-outline-variant/15
+                      shadow-sm hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">
+                <span class="material-symbols-outlined text-amber-500 text-[20px]"
+                      style="font-variation-settings:'FILL' 1">star</span>
+              </div>
+              <span class="text-[10px] font-bold text-amber-500 bg-amber-50
+                           px-2 py-0.5 rounded-full">Rating</span>
+            </div>
+            <div class="text-3xl font-black text-on-surface mb-1">
+              {{ averageCourseRating() > 0 ? averageCourseRating() : '—' }}
+            </div>
+            <div class="text-xs text-on-surface-variant font-medium">
+              {{ 'adminDashboard.avgRating' | translate }}
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Main Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+          <!-- Left: Sessions + Courses -->
+          <div class="lg:col-span-2 flex flex-col gap-6">
+
+            <!-- Upcoming Sessions -->
+            <div class="bg-white rounded-2xl border border-outline-variant/15 shadow-sm overflow-hidden">
+              <div class="flex items-center justify-between px-6 py-4
+                          border-b border-outline-variant/15">
+                <h3 class="font-bold text-base text-on-surface">
+                  {{ 'studentAgenda.title' | translate }}
+                </h3>
+                <div class="relative">
+                  <a (click)="toggleScheduleDropdown()"
+                     class="flex items-center gap-1 text-xs font-bold text-primary
+                            hover:bg-primary/8 px-3 py-1.5 rounded-xl
+                            transition-colors cursor-pointer">
+                    {{ 'teacherPortal.schedule' | translate }}
+                    <span class="material-symbols-outlined text-[14px]">expand_more</span>
+                  </a>
+                  <div *ngIf="showScheduleDropdown()"
+                       class="absolute end-0 mt-2 w-56 bg-white border border-outline-variant/20
+                              shadow-xl rounded-2xl z-50 overflow-hidden">
+                    <div class="px-4 py-2.5 text-[10px] font-bold text-on-surface-variant
+                                uppercase tracking-widest bg-surface-container-low
+                                border-b border-outline-variant/10">
+                      {{ 'teacherPortal.selectCourse' | translate }}
+                    </div>
+                    <a *ngFor="let course of courses()"
+                       (click)="goToCourseSessions(course.id)"
+                       class="block px-4 py-3 text-xs text-on-surface font-semibold
+                              hover:bg-primary/8 hover:text-primary cursor-pointer
+                              border-b border-outline-variant/5 last:border-0 truncate transition-colors">
+                      {{ course.title }}
+                    </a>
+                    <div *ngIf="courses().length === 0"
+                         class="px-4 py-3 text-xs text-on-surface-variant italic">
+                      {{ 'teacherPortal.noCoursesAvailable' | translate }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="p-4">
+                <div *ngIf="isLoadingSessions()" class="flex justify-center py-8">
+                  <span class="material-symbols-outlined text-primary text-3xl animate-spin">
+                    progress_activity
+                  </span>
+                </div>
+
+                <div *ngIf="!isLoadingSessions() && upcomingSessions().length > 0"
+                     class="flex flex-col gap-2">
+                  <div *ngFor="let session of upcomingSessions()"
+                       (click)="goToCourseSessions(session.courseId)"
+                       class="flex items-center gap-4 p-4 rounded-2xl
+                              bg-surface-container-low/60
+                              hover:bg-primary/5 hover:border-primary/20
+                              border border-transparent
+                              cursor-pointer transition-all duration-200 group">
+                    <div class="w-11 h-11 bg-primary/10 text-primary rounded-2xl
+                                flex items-center justify-center flex-shrink-0
+                                group-hover:bg-primary group-hover:text-white
+                                transition-all duration-200">
+                      <span class="material-symbols-outlined text-[20px]"
+                            style="font-variation-settings:'FILL' 1">event</span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <div class="flex items-center gap-2 mb-0.5">
+                        <span class="text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-lg"
+                              [ngClass]="{
+                                'bg-indigo-100 text-indigo-700': session.provider === 'Jitsi',
+                                'bg-blue-100 text-blue-700': session.provider === 'Zoom',
+                                'bg-purple-100 text-purple-700': session.provider === 'MicrosoftTeams',
+                                'bg-red-100 text-red-600': session.provider === 'GoogleMeet'
+                              }">
+                          {{ session.provider === 'MicrosoftTeams' ? 'Teams' : session.provider }}
+                        </span>
+                        <span class="text-xs text-on-surface-variant truncate font-medium">
+                          {{ session.courseTitle }}
+                        </span>
+                      </div>
+                      <h4 class="text-sm font-bold text-on-surface truncate">
+                        {{ session.title || ('studentAgenda.defaultSessionTitle' | translate) }}
+                      </h4>
+                      <p class="text-[11px] text-on-surface-variant mt-0.5 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[13px]">schedule</span>
+                        {{ session.scheduledAt | date:'medium' }}
+                      </p>
+                    </div>
+                    <span class="material-symbols-outlined text-on-surface-variant/40
+                                 group-hover:text-primary transition-colors">
+                      chevron_right
+                    </span>
+                  </div>
+                </div>
+
+                <div *ngIf="!isLoadingSessions() && upcomingSessions().length === 0"
+                     class="text-center py-8">
+                  <span class="material-symbols-outlined text-outline/40 text-4xl mb-2 block">
+                    event_available
+                  </span>
+                  <p class="text-sm text-on-surface-variant font-medium">
+                    {{ 'studentDashboardPage.noSessions' | translate }}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Active Courses -->
+            <div class="bg-white rounded-2xl border border-outline-variant/15 shadow-sm overflow-hidden">
+              <div class="flex items-center justify-between px-6 py-4
+                          border-b border-outline-variant/15">
+                <h3 class="font-bold text-base text-on-surface">
+                  {{ 'teacherPortal.activeCourses' | translate }}
+                </h3>
+                <a (click)="goToMyCourses()"
+                   class="text-xs font-bold text-primary hover:bg-primary/8
+                          px-3 py-1.5 rounded-xl transition-colors cursor-pointer">
+                  {{ 'home.view_all' | translate }}
+                </a>
+              </div>
+
+              <div class="divide-y divide-outline-variant/10">
+                <div *ngFor="let course of courses()"
+                     class="flex items-center gap-4 px-6 py-4
+                            hover:bg-surface-container-low/50 transition-colors group">
+
+                  <!-- Thumbnail -->
+                  <div class="w-14 h-14 rounded-2xl bg-surface-container overflow-hidden flex-shrink-0
+                              ring-1 ring-outline-variant/20">
+                    <img *ngIf="course.coverImage"
+                         [src]="course.coverImage" [alt]="course.title"
+                         class="w-full h-full object-cover
+                                grayscale-[40%] group-hover:grayscale-0
+                                transition-all duration-300" />
+                    <div *ngIf="!course.coverImage"
+                         class="w-full h-full flex items-center justify-center">
+                      <span class="material-symbols-outlined text-outline">image</span>
+                    </div>
+                  </div>
+
+                  <!-- Info -->
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-1">
+                      <span *ngIf="course.status === 'Published'"
+                            class="text-[10px] font-bold px-2 py-0.5 rounded-full
+                                   bg-primary/10 text-primary">
+                        {{ 'adminCourses.published' | translate }}
+                      </span>
+                      <span *ngIf="course.status === 'Draft'"
+                            class="text-[10px] font-bold px-2 py-0.5 rounded-full
+                                   bg-surface-container text-on-surface-variant">
+                        {{ 'adminCourses.draft' | translate }}
+                      </span>
+                      <span *ngIf="course.status === 'Archived'"
+                            class="text-[10px] font-bold px-2 py-0.5 rounded-full
+                                   bg-tertiary-container text-on-tertiary-container">
+                        {{ 'adminCourses.archived' | translate }}
+                      </span>
+                    </div>
+                    <h4 class="text-sm font-bold text-on-surface truncate">{{ course.title }}</h4>
+                    <div class="flex gap-3 mt-1">
+                      <span class="text-[11px] text-on-surface-variant flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[13px]">person</span>
+                        {{ course.totalStudents || 0 }} {{ 'courseCard.students' | translate }}
+                      </span>
+                      <span class="text-[11px] text-on-surface-variant flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[13px]">menu_book</span>
+                        {{ course.totalLessons || 0 }} {{ 'courseCard.lessons' | translate }}
                       </span>
                     </div>
                   </div>
 
-                  <button (click)="goToEdit(course.id)"
-                    class="p-3 rounded-full hover:bg-surface-container text-on-surface-variant">
-                    <span class="material-symbols-outlined">more_vert</span>
-                  </button>
-
+                  <!-- Actions -->
+                  <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button (click)="goToProgress(course.id)"
+                            class="p-2 rounded-xl hover:bg-primary/10 text-primary transition-colors">
+                      <span class="material-symbols-outlined text-[18px]">trending_up</span>
+                    </button>
+                    <button (click)="goToEdit(course.id)"
+                            class="p-2 rounded-xl hover:bg-surface-container text-on-surface-variant transition-colors">
+                      <span class="material-symbols-outlined text-[18px]">edit</span>
+                    </button>
+                  </div>
                 </div>
 
-                <!-- لو مفيش كورسات -->
                 <div *ngIf="courses().length === 0"
-                  class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/10 text-center">
-                  <span class="material-symbols-outlined text-outline text-4xl mb-2 block">menu_book</span>
-                  <p class="text-sm text-on-surface-variant font-medium">No courses yet</p>
+                     class="text-center py-10 px-6">
+                  <span class="material-symbols-outlined text-outline/40 text-4xl mb-2 block">
+                    menu_book
+                  </span>
+                  <p class="text-sm text-on-surface-variant font-medium mb-4">
+                    {{ 'myCourses.noCoursesTitle' | translate }}
+                  </p>
                   <button (click)="goToCreate()"
-                    class="mt-4 px-6 py-2 rounded-full bg-primary text-on-primary font-bold text-xs">
-                    Create your first course
+                          class="px-6 py-2.5 rounded-xl bg-primary text-white text-xs font-bold
+                                 shadow-md shadow-primary/20 hover:-translate-y-0.5 transition-all">
+                    {{ 'teacherPortal.createFirstCourse' | translate }}
                   </button>
                 </div>
-
               </div>
-            </section>
+            </div>
 
           </div>
 
-          <!-- Sidebar Column -->
-          <div class="flex flex-col gap-8">
+          <!-- Right: Activity + Tip -->
+          <div class="flex flex-col gap-6">
 
-            <!-- Recent Enrollments - Placeholder -->
-            <div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/10 shadow-sm">
-              <h3 class="text-lg font-bold mb-6 tracking-tight">Recent Enrollments</h3>
-              <div class="text-center py-6">
-                <span class="material-symbols-outlined text-outline text-4xl mb-2 block">group_add</span>
-                <p class="text-sm text-on-surface-variant font-medium">Recent enrollments will appear here</p>
-                <p class="text-xs text-outline mt-1">Coming soon with Enrollment module</p>
+            <!-- Recent Enrollments -->
+            <div class="bg-white rounded-2xl border border-outline-variant/15 shadow-sm overflow-hidden">
+              <div class="px-6 py-4 border-b border-outline-variant/15">
+                <h3 class="font-bold text-base text-on-surface">
+                  {{ 'teacherPortal.recentEnrollments' | translate }}
+                </h3>
               </div>
-              <button class="w-full mt-4 py-3 rounded-full bg-white text-primary border border-primary/20 font-bold text-xs uppercase tracking-widest hover:bg-surface transition-colors shadow-sm">
-                View All Activity
-              </button>
+              <div class="p-6 text-center">
+                <div class="w-16 h-16 rounded-2xl bg-primary/8 flex items-center justify-center mx-auto mb-3">
+                  <span class="material-symbols-outlined text-primary text-3xl"
+                        style="font-variation-settings:'FILL' 1">group_add</span>
+                </div>
+                <p class="text-sm font-semibold text-on-surface mb-1">
+                  {{ 'teacherPortal.enrollmentsHint' | translate }}
+                </p>
+                <p class="text-xs text-on-surface-variant mb-4">
+                  {{ 'teacherPortal.comingSoon' | translate }}
+                </p>
+                <button class="w-full py-2.5 rounded-xl border border-primary/20
+                               text-primary text-xs font-bold
+                               hover:bg-primary/8 transition-colors">
+                  {{ 'teacherPortal.viewAllActivity' | translate }}
+                </button>
+              </div>
             </div>
 
-            <!-- Instructor Tip -->
-            <div class="bg-primary-container p-8 rounded-lg relative overflow-hidden border border-primary/10">
-              <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-9xl opacity-10 text-primary rotate-12">format_quote</span>
-              <h4 class="text-primary font-black text-sm uppercase tracking-widest mb-4">Instructor Tip</h4>
-              <p class="text-on-primary-container text-sm leading-relaxed relative z-10 italic">
-                "Keep students motivated by providing detailed feedback and updating your course content regularly."
+            <!-- Quick Actions -->
+            <div class="bg-white rounded-2xl border border-outline-variant/15 shadow-sm p-5">
+              <h3 class="font-bold text-sm text-on-surface mb-4">Quick Actions</h3>
+              <div class="flex flex-col gap-2">
+                <button (click)="goToCreate()"
+                        class="flex items-center gap-3 px-4 py-3 rounded-xl
+                               bg-primary/8 text-primary font-semibold text-sm
+                               hover:bg-primary/12 transition-colors text-start">
+                  <span class="material-symbols-outlined text-[18px]">add_circle</span>
+                  {{ 'teacherPortal.createCourse' | translate }}
+                </button>
+                <button (click)="goToMyCourses()"
+                        class="flex items-center gap-3 px-4 py-3 rounded-xl
+                               bg-surface-container-low text-on-surface-variant font-semibold text-sm
+                               hover:bg-surface-container transition-colors text-start">
+                  <span class="material-symbols-outlined text-[18px]">menu_book</span>
+                  {{ 'myCourses.title' | translate }}
+                </button>
+              </div>
+            </div>
+
+            <!-- Tip Card -->
+            <div class="bg-gradient-to-br from-primary to-secondary
+                        p-6 rounded-2xl relative overflow-hidden">
+              <div class="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-white/10"></div>
+              <div class="absolute -bottom-6 -left-2 w-16 h-16 rounded-full bg-white/5"></div>
+              <span class="material-symbols-outlined text-white/30 absolute bottom-2 right-3 text-7xl"
+                    style="font-variation-settings:'FILL' 1">format_quote</span>
+              <p class="text-[10px] font-bold text-white/70 uppercase tracking-widest mb-3">
+                {{ 'teacherPortal.instructorTip' | translate }}
+              </p>
+              <p class="text-white text-sm leading-relaxed relative z-10 italic">
+                "{{ 'teacherPortal.tipText' | translate }}"
               </p>
             </div>
 
           </div>
-
         </div>
       </div>
-
     </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-outline-variant/15 px-8 py-4
+                   flex flex-col md:flex-row justify-between items-center gap-3">
+      <div class="flex items-center gap-4">
+        <span class="text-sm font-black text-primary">EduCore</span>
+        <p class="text-xs text-on-surface-variant">
+          {{ 'teacherPortal.copyright' | translate }}
+        </p>
+      </div>
+      <nav class="flex gap-6">
+        <a class="text-xs text-on-surface-variant hover:text-primary transition-colors cursor-pointer">
+          {{ 'footer.privacy' | translate }}
+        </a>
+        <a class="text-xs text-on-surface-variant hover:text-primary transition-colors cursor-pointer">
+          {{ 'footer.help' | translate }}
+        </a>
+      </nav>
+    </footer>
+
   </div>
-
-  <!-- الفوتر -->
-  <footer class="bg-surface flex flex-col md:flex-row justify-between items-center py-12 px-8 mt-auto w-full border-t border-surface-container text-xs font-medium md:ml-64">
-    <div class="flex items-center gap-6 mb-6 md:mb-0">
-      <span class="text-sm font-bold uppercase text-primary">EduCore</span>
-      <p class="text-on-surface-variant">© 2025 EduCore. Empowering Education.</p>
-    </div>
-    <nav class="flex gap-8">
-      <a class="text-on-surface-variant hover:text-primary transition-colors">Privacy Policy</a>
-      <a class="text-on-surface-variant hover:text-primary transition-colors">Contact Support</a>
-    </nav>
-  </footer>
-
 </div>

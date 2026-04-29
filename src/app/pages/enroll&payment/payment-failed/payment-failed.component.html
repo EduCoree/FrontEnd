@@ -1,0 +1,57 @@
+<main class="min-h-screen bg-surface flex flex-col items-center justify-center px-6 py-20">
+  <!-- Icon -->
+  <div class="w-24 h-24 rounded-full bg-error-container/20 flex items-center justify-center mb-8">
+    <span class="material-symbols-outlined fill-1 text-5xl text-error">credit_card_off</span>
+  </div>
+
+  <!-- Text -->
+  <h1 class="text-4xl md:text-5xl font-extrabold text-on-surface tracking-tight text-center mb-4">
+    Payment Failed
+  </h1>
+  <p class="text-lg text-on-surface-variant text-center max-w-md mb-12 leading-relaxed">
+    We couldn't process your payment. Please try again or contact support.
+  </p>
+
+  <!-- Bento -->
+  <div class="w-full max-w-3xl grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+    <div
+      class="bg-surface-container-low p-6 rounded-xl flex flex-col items-center text-center gap-3"
+    >
+      <span class="material-symbols-outlined text-primary text-3xl">contact_support</span>
+      <p class="text-sm text-on-surface-variant">Our support team is available 24/7 to help.</p>
+    </div>
+    <div
+      class="bg-secondary-container/30 p-6 rounded-xl flex flex-col items-center text-center gap-3"
+    >
+      <span class="material-symbols-outlined text-primary text-3xl">save</span>
+      <p class="text-sm text-on-secondary-container">
+        Your progress is saved. Pick up where you left off.
+      </p>
+    </div>
+    <div
+      class="bg-surface-container-low p-6 rounded-xl flex flex-col items-center text-center gap-3"
+    >
+      <span class="material-symbols-outlined text-primary text-3xl">security</span>
+      <p class="text-sm text-on-surface-variant">
+        We use bank-level encryption to keep your data safe.
+      </p>
+    </div>
+  </div>
+
+  <!-- CTAs -->
+  <div class="flex flex-col sm:flex-row gap-4">
+    <button
+      [routerLink]="['/courses', courseId]"
+      class="px-10 py-4 bg-primary text-on-primary rounded-full font-bold hover:bg-primary-dim transition-all flex items-center gap-2"
+    >
+      Back to Course
+      <span class="material-symbols-outlined">arrow_back</span>
+    </button>
+    <button
+      routerLink="/courses"
+      class="px-10 py-4 bg-surface-container text-on-surface rounded-full font-bold hover:bg-surface-container-high transition-all"
+    >
+      Browse Courses
+    </button>
+  </div>
+</main>

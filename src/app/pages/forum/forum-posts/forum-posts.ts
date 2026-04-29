@@ -6,11 +6,12 @@ import { ForumService } from '../../../core/services/forum.service';
 import { AuthService } from '../../../core/services/auth';
 import { ForumPostDto } from '../../../core/models/forum';
 import { Sidebar } from '../../../shared/components/ui/sidebar/sidebar';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-forum-posts',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, Sidebar],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, Sidebar , TranslateModule],
   templateUrl: './forum-posts.html',
   styleUrl: './forum-posts.css',
 })

@@ -1,15 +1,17 @@
 import { Component, inject, OnInit, signal, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ReviewService } from '../../core/services/review.service';
+import { PublicCourseService } from '../../core/services/public-course.service';
 import { Review, ReviewSummary } from '../../core/models/review.model';
+import { TranslateModule } from '@ngx-translate/core';
 
 type SortType = 'recent' | 'highest' | 'lowest';
 
 @Component({
   selector: 'app-reviews',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule, RouterModule],
   templateUrl: './reviews.html',
   styleUrl: './reviews.css',
 })
@@ -17,10 +19,12 @@ export class Reviews implements OnInit {
 
   private route = inject(ActivatedRoute);
   private reviewService = inject(ReviewService);
+  private courseService = inject(PublicCourseService);
   private fb = inject(FormBuilder);
   private platformId = inject(PLATFORM_ID);
 
   courseId = signal<number>(0);
+  courseTitle = signal<string>('');
   reviews = signal<Review[]>([]);
   summary = signal<ReviewSummary | null>(null);
   loading = signal(true);
@@ -58,7 +62,21 @@ export class Reviews implements OnInit {
     }
     const id = Number(this.route.snapshot.paramMap.get('courseId'));
     this.courseId.set(id);
+    this.loadCourseTitle(id);
     this.loadData();
+  }
+
+  private loadCourseTitle(courseId: number) {
+    this.courseService.getCourseById(courseId).subscribe({
+      next: (res: any) => {
+        const payload = res?.data ?? res;
+        const title = payload?.title ?? payload?.name ?? '';
+        if (title) {
+          this.courseTitle.set(title);
+        }
+      },
+      error: () => {}
+    });
   }
 
   loadData() {
@@ -102,6 +120,14 @@ export class Reviews implements OnInit {
     return [1, 2, 3, 4, 5];
   }
 
+  getReviewerName(review: Review): string {
+    if (review.studentName?.trim()) return review.studentName;
+    return `Student ${review.studentId.slice(0, 8)}`;
+  }
+
+  getReviewCourseTitle(review: Review): string {
+    return review.courseTitle ?? this.courseTitle() ?? `Course ${review.courseId}`;
+  }
 
   setSort(s: SortType) {
     this.sortBy.set(s);
@@ -209,7 +235,14 @@ export class Reviews implements OnInit {
     return `${Math.floor(hrs / 24)}d ago`;
   }
 
-  getInitials(id: string): string {
+  getInitials(id: string, name?: string): string {
+    if (name?.trim()) {
+      return name
+        .split(' ')
+        .map((part) => part.charAt(0).toUpperCase())
+        .slice(0, 2)
+        .join('');
+    }
     return id.slice(0, 2).toUpperCase();
   }
 }

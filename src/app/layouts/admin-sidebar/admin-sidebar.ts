@@ -4,16 +4,18 @@ import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../core/services/auth';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin-sidebar',
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterLink, RouterLinkActive, TranslateModule],
   templateUrl: './admin-sidebar.html',
   styleUrl: './admin-sidebar.css',
 })
 export class AdminSidebarComponent {
-  private auth   = inject(AuthService);
-  private router = inject(Router);
+  private auth      = inject(AuthService);
+  private router    = inject(Router);
+  private translate = inject(TranslateService);
 
   isOpen = signal(true);
 
@@ -21,12 +23,24 @@ export class AdminSidebarComponent {
     this.isOpen.set(!this.isOpen());
   }
 
+  get isRtl(): boolean {
+    return this.translate.currentLang === 'ar';
+  }
+
+  getToggleIcon(): string {
+    const open = this.isOpen();
+    const rtl  = this.isRtl;
+    if (open) return rtl ? 'chevron_right' : 'chevron_left';
+    return rtl ? 'chevron_left' : 'chevron_right';
+  }
+
   navItems = [
-    { label: 'Dashboard', icon: 'dashboard', route: '/admin/dashboard', exact: false },
-    { label: 'Courses',  icon: 'school',   route: '/admin/courses',  exact: false },
-    { label: 'Teachers', icon: 'person_4',  route: '/admin/teachers', exact: false },
-    { label: 'Students', icon: 'group',     route: '/admin/students', exact: false },
-    { label: 'Forum Reports', icon: 'flag', route: '/admin/forum/reports', exact: false },
+    { label: 'adminSidebar.dashboard',    icon: 'dashboard', route: '/admin/dashboard',      exact: false },
+    { label: 'adminSidebar.courses',       icon: 'school',    route: '/admin/courses',         exact: false },
+    { label: 'adminSidebar.teachers',      icon: 'person_4',  route: '/admin/teachers',        exact: false },
+    { label: 'adminSidebar.students',      icon: 'group',     route: '/admin/students',        exact: false },
+    { label: 'adminSidebar.forumReports',  icon: 'flag',      route: '/admin/forum/reports',   exact: false },
+     { label: 'adminSidebar.payments', icon: 'payments', route: '/admin/payments', exact: false },
   ];
 
   logout() {

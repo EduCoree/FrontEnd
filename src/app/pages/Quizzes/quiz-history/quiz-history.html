@@ -1,191 +1,236 @@
-<main class="px-6 py-8 md:px-12 md:py-12 max-w-5xl mx-auto">
+<div class="md:ml-57 pt-16 min-h-screen">
+  <main class="px-6 py-8 md:px-12 md:py-12 max-w-5xl mx-auto">
 
-  <!-- Header -->
-  <header class="mb-10">
-    <h3 class="text-3xl font-extrabold text-on-surface tracking-tight mb-2">My Quiz History</h3>
-    <p class="text-on-surface-variant font-body text-sm uppercase tracking-wider">
-      Academic Performance Tracking
-    </p>
-  </header>
+    <header class="mb-10">
+      <h3 class="text-3xl font-extrabold text-on-surface tracking-tight mb-2">
+        {{ 'quizHistory.title' | translate }}
+      </h3>
+      <p class="text-on-surface-variant font-body text-sm uppercase tracking-wider">
+        {{ 'quizHistory.subtitle' | translate }}
+      </p>
+    </header>
 
-  <!-- Filter Bar -->
-  <section class="bg-surface-container-low p-6 rounded-xl mb-12 flex flex-col md:flex-row gap-4 items-end">
+    <!-- Filters -->
+    <section class="bg-surface-container-low p-6 rounded-xl mb-12 flex flex-col md:flex-row gap-4 items-end">
 
-    <!-- Course Filter -->
-    <div class="w-full md:w-1/3">
-      <label class="block text-xs font-bold text-primary mb-2 uppercase tracking-tighter">All Courses</label>
-      <div class="relative">
+      <!-- Course Filter -->
+      <div class="w-full md:w-1/3">
+        <label class="block text-xs font-bold text-primary mb-2 uppercase tracking-tighter">
+          {{ 'quizHistory.allCourses' | translate }}
+        </label>
         <select
           [(ngModel)]="selectedCourse"
+          (ngModelChange)="onCourseChange()"
+          [disabled]="loadingCourses"
           class="w-full bg-surface-container-lowest border-none rounded-lg py-3 px-4 text-sm text-on-surface appearance-none focus:ring-2 focus:ring-primary-container">
-          <option *ngFor="let course of courseOptions" [value]="course">
-            {{ course }}
-          </option>
+          <option *ngFor="let course of courseOptions" [value]="course">{{ course }}</option>
         </select>
-        <span class="material-symbols-outlined absolute right-3 top-3 pointer-events-none text-outline"></span>
       </div>
-    </div>
- 
-    <!-- Date Range Filter -->
-    <div class="w-full md:w-1/3">
-      <label class="block text-xs font-bold text-primary mb-2 uppercase tracking-tighter">Date Range</label>
-      <div class="relative">
-        <select
-          [(ngModel)]="selectedDateRange"
-          class="w-full bg-surface-container-lowest border-none rounded-lg py-3 px-4 text-sm text-on-surface appearance-none focus:ring-2 focus:ring-primary-container">
-          <option *ngFor="let opt of dateRangeOptions" [value]="opt.value">
-            {{ opt.label }}
-          </option>
-        </select>
-        <span class="material-symbols-outlined absolute right-3 top-3 pointer-events-none text-outline">calendar_today</span>
-      </div>
-    </div>
-    <!-- StatusFilter -->
-    <div class="w-full md:w-1/3 ms-auto">
-      <label class="block text-xs font-bold text-primary mb-2 uppercase tracking-tighter">Status</label>
-      <div class="flex bg-surface-container-highest p-1 rounded-lg">
-        <button
-          (click)="setFilter('All')"
-          class="flex-1 text-xs font-bold py-2 rounded-md transition-all"
-          [class.bg-surface-container-lowest]="activeFilter === 'All'"
-          [class.text-primary]="activeFilter === 'All'"
-          [class.shadow-sm]="activeFilter === 'All'"
-          [class.text-on-surface-variant]="activeFilter !== 'All'">
-          All
-        </button>
-        <button
-          (click)="setFilter('Passed')"
-          class="flex-1 text-xs font-bold py-2 rounded-md transition-all"
-          [class.bg-surface-container-lowest]="activeFilter === 'Passed'"
-          [class.text-primary]="activeFilter === 'Passed'"
-          [class.shadow-sm]="activeFilter === 'Passed'"
-          [class.text-on-surface-variant]="activeFilter !== 'Passed'">
-          Passed
-        </button>
-        <button
-          (click)="setFilter('Failed')"
-          class="flex-1 text-xs font-bold py-2 rounded-md transition-all"
-          [class.bg-surface-container-lowest]="activeFilter === 'Failed'"
-          [class.text-primary]="activeFilter === 'Failed'"
-          [class.shadow-sm]="activeFilter === 'Failed'"
-          [class.text-on-surface-variant]="activeFilter !== 'Failed'">
-          Failed
-        </button>
-      </div>
-    </div>
-  </section>
 
-  <!-- Loading -->
-  @if (loading) {
-    <div class="flex justify-center py-20">
-      <div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-    </div>
-  }
-
-  <!-- Error -->
-  @if (error && !loading) {
-    <div class="flex items-center gap-3 px-5 py-4 bg-error-container text-on-error-container rounded-xl text-sm font-medium mb-6">
-      <span class="material-symbols-outlined">error</span>
-      {{ error }}
-      <button (click)="loadHistory()" class="underline font-bold ml-2">Retry</button>
-    </div>
-  }
-
-  <!-- Empty State -->
-  @if (!loading && !error && filtered.length === 0) {
-    <div class="flex flex-col items-center justify-center p-20 bg-surface-container-lowest rounded-2xl text-center">
-      <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6">
-        <span class="material-symbols-outlined text-4xl text-primary">assignment</span>
-      </div>
-      <h3 class="text-xl font-bold text-on-surface mb-2">No attempts yet</h3>
-      <p class="text-on-surface-variant/70 max-w-xs">
-        {{ activeFilter === 'All' ? 'You have not taken any quizzes yet.' : 'No ' + activeFilter.toLowerCase() + ' attempts found.' }}
-      </p>
-    </div>
-  }
-
-  <!-- Attempts List -->
-  @if (!loading && !error) {
-    <div class="space-y-6">
-      @for (attempt of filtered; track attempt.id) {
-        <div
-          class="group bg-surface-container-lowest rounded-xl p-6 shadow-[0_8px_32px_rgba(125,184,165,0.08)] hover:shadow-[0_8px_32px_rgba(125,184,165,0.15)] transition-all duration-300 flex flex-col md:flex-row md:items-center justify-between gap-6"
-          [class.border-l-4]="true"
-          [class.border-primary]="attempt.passed"
-          [class.border-tertiary]="!attempt.passed">
-
-          <!-- Left Info -->
-          <div class="flex-1">
-            <div class="flex items-center gap-2 mb-2">
-              <span class="text-[10px] font-bold uppercase tracking-widest"
-                [class.text-primary-container]="attempt.passed"
-                [class.text-tertiary]="!attempt.passed">
-                {{ attempt.courseTitle }}
-              </span>
-              <span class="w-1 h-1 bg-outline-variant rounded-full"></span>
-              <span class="text-xs text-on-surface-variant">
-                {{ formatDate(attempt.submittedAt ?? attempt.startedAt) }}
-              </span>
-            </div>
-            <h3 class="text-xl font-bold text-on-surface mb-1">{{ attempt.quizTitle }}</h3>
-            <p class="text-sm text-on-surface-variant">
-               Attempt {{ getAttemptNumber(attempt) }}
-            </p>
-          </div>
-
-          <!-- Right Stats -->
-          <div class="flex items-center gap-8">
-            <div class="text-center">
-              <p class="text-[10px] font-bold uppercase tracking-tighter text-outline mb-1">Score</p>
-              <p class="text-2xl font-black"
-                [class.text-primary]="attempt.passed"
-                [class.text-tertiary]="!attempt.passed">
-                {{ attempt.score }}%
-              </p>
-            </div>
-            <div class="text-center">
-              <p class="text-[10px] font-bold uppercase tracking-tighter text-outline mb-1">Points</p>
-              <p class="text-lg font-bold text-on-surface">
-                {{ attempt.earnedPoints }}/{{ attempt.totalPoints }}
-              </p>
-            </div>
-            <div class="flex flex-col items-end gap-3">
-              @if (attempt.passed) {
-                <span class="px-3 py-1 bg-primary-fixed-dim text-on-primary-container text-[10px] font-bold rounded-full uppercase tracking-widest">
-                  Passed
-                </span>
-              } @else {
-                <span class="px-3 py-1 bg-tertiary-container text-on-tertiary-container text-[10px] font-bold rounded-full uppercase tracking-widest">
-                  Failed
-                </span>
-              }
-              
-               <a [routerLink]="['/Quiz', attempt.quizId, 'result', attempt.id]"
-   class="text-primary text-xs font-bold hover:underline flex items-center gap-1">
-   View Result
-   <span class="material-symbols-outlined text-sm">arrow_forward_ios</span>
-</a>
-            </div>
-          </div>
+      <!-- Date Range Filter -->
+      <div class="w-full md:w-1/3">
+        <label class="block text-xs font-bold text-primary mb-2 uppercase tracking-tighter">
+          {{ 'quizHistory.dateRange' | translate }}
+        </label>
+        <div class="relative">
+          <select
+            [(ngModel)]="selectedDateRange"
+            (ngModelChange)="onDateRangeChange()"
+            class="w-full bg-surface-container-lowest border-none rounded-lg py-3 px-4 text-sm text-on-surface appearance-none focus:ring-2 focus:ring-primary-container">
+            <option *ngFor="let opt of dateRangeOptions" [value]="opt.value">{{ opt.label }}</option>
+          </select>
+          <span class="material-symbols-outlined absolute right-3 top-3 pointer-events-none text-outline">
+            calendar_today
+          </span>
         </div>
-      }
-    </div>
-  }
+      </div>
 
-</main>
+      <!-- Status Filter -->
+      <div class="w-full md:w-1/3 ms-auto">
+        <label class="block text-xs font-bold text-primary mb-2 uppercase tracking-tighter">
+          {{ 'quizHistory.status' | translate }}
+        </label>
+        <div class="flex bg-surface-container-highest p-1 rounded-lg">
+          <button (click)="setFilter('All')"
+            class="flex-1 text-xs font-bold py-2 rounded-md transition-all"
+            [class.bg-surface-container-lowest]="activeFilter === 'All'"
+            [class.text-primary]="activeFilter === 'All'"
+            [class.shadow-sm]="activeFilter === 'All'"
+            [class.text-on-surface-variant]="activeFilter !== 'All'">
+            {{ 'quizHistory.all' | translate }}
+          </button>
+          <button (click)="setFilter('Passed')"
+            class="flex-1 text-xs font-bold py-2 rounded-md transition-all"
+            [class.bg-surface-container-lowest]="activeFilter === 'Passed'"
+            [class.text-primary]="activeFilter === 'Passed'"
+            [class.shadow-sm]="activeFilter === 'Passed'"
+            [class.text-on-surface-variant]="activeFilter !== 'Passed'">
+            {{ 'quizHistory.passed' | translate }}
+          </button>
+          <button (click)="setFilter('Failed')"
+            class="flex-1 text-xs font-bold py-2 rounded-md transition-all"
+            [class.bg-surface-container-lowest]="activeFilter === 'Failed'"
+            [class.text-primary]="activeFilter === 'Failed'"
+            [class.shadow-sm]="activeFilter === 'Failed'"
+            [class.text-on-surface-variant]="activeFilter !== 'Failed'">
+            {{ 'quizHistory.failed' | translate }}
+          </button>
+        </div>
+      </div>
+    </section>
 
-<!-- Bottom Nav Mobile -->
-<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-2 bg-[#FFFFFFCC] backdrop-blur-xl z-50 rounded-t-[24px] shadow-[0_-8px_32px_rgba(125,184,165,0.12)]">
-  <a href="#" class="flex flex-col items-center justify-center text-slate-500 p-3 hover:scale-110 transition-transform">
-    <span class="material-symbols-outlined">book</span>
-    <span class="text-[10px] uppercase tracking-tighter mt-1">Courses</span>
-  </a>
-  <a href="#" class="flex flex-col items-center justify-center text-slate-500 p-3 hover:scale-110 transition-transform">
-    <span class="material-symbols-outlined">videocam</span>
-    <span class="text-[10px] uppercase tracking-tighter mt-1">Live</span>
-  </a>
-  <a href="#" class="flex flex-col items-center justify-center bg-[#7DB8A5]/20 text-[#2E6858] rounded-2xl p-3">
-    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">assignment</span>
-    <span class="text-[10px] uppercase tracking-tighter mt-1 font-bold">Quizzes</span>
-  </a>
-</nav>
+    <!-- Loading -->
+    @if (loading) {
+      <div class="flex justify-center py-20">
+        <div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    }
+
+    <!-- Error -->
+    @if (error && !loading) {
+      <div class="flex items-center gap-3 px-5 py-4 bg-error-container text-on-error-container rounded-xl text-sm font-medium mb-6">
+        <span class="material-symbols-outlined">error</span>
+        {{ error }}
+        <button (click)="loadHistory()" class="underline font-bold ml-2">
+          {{ 'common.error' | translate }}
+        </button>
+      </div>
+    }
+
+    <!-- Empty State -->
+    @if (!loading && !error && attempts.length === 0) {
+      <div class="flex flex-col items-center justify-center p-20 bg-surface-container-lowest rounded-2xl text-center">
+        <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+          <span class="material-symbols-outlined text-4xl text-primary">assignment</span>
+        </div>
+        <h3 class="text-xl font-bold text-on-surface mb-2">
+          {{ 'quizHistory.noAttempts' | translate }}
+        </h3>
+        <p class="text-on-surface-variant/70 max-w-xs">
+          {{ activeFilter === 'All'
+            ? ('quizHistory.noAttemptsAll' | translate)
+            : ('quizHistory.noAttemptsFilter' | translate) }}
+        </p>
+      </div>
+    }
+
+    <!-- Attempts List -->
+    @if (!loading && !error && attempts.length > 0) {
+      <div class="space-y-6">
+        @for (attempt of attempts; track attempt.id) {
+          <div class="group bg-surface-container-lowest rounded-xl p-6 shadow-[0_8px_32px_rgba(125,184,165,0.08)] hover:shadow-[0_8px_32px_rgba(125,184,165,0.15)] transition-all duration-300 flex flex-col md:flex-row md:items-center justify-between gap-6"
+            [class.border-l-4]="true"
+            [class.border-primary]="attempt.passed"
+            [class.border-tertiary]="!attempt.passed">
+
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-[10px] font-bold uppercase tracking-widest"
+                  [class.text-primary]="attempt.passed"
+                  [class.text-tertiary]="!attempt.passed">
+                  {{ attempt.courseTitle }}
+                </span>
+                <span class="w-1 h-1 bg-outline-variant rounded-full"></span>
+                <span class="text-xs text-on-surface-variant">
+                  {{ formatDate(attempt.submittedAt ?? attempt.startedAt) }}
+                </span>
+              </div>
+              <h3 class="text-xl font-bold text-on-surface mb-1">{{ attempt.quizTitle }}</h3>
+              <p class="text-sm text-on-surface-variant">
+                {{ 'quizHistory.attempt' | translate }} {{ getAttemptNumber(attempt) }}
+              </p>
+            </div>
+
+            <div class="flex items-center gap-8">
+              <div class="text-center">
+                <p class="text-[10px] font-bold uppercase tracking-tighter text-outline mb-1">
+                  {{ 'quizHistory.score' | translate }}
+                </p>
+                <p class="text-2xl font-black"
+                  [class.text-primary]="attempt.passed"
+                  [class.text-tertiary]="!attempt.passed">
+                  {{ attempt.score }}%
+                </p>
+              </div>
+
+              <div class="text-center">
+                <p class="text-[10px] font-bold uppercase tracking-tighter text-outline mb-1">
+                  {{ 'quizHistory.points' | translate }}
+                </p>
+                <p class="text-lg font-bold text-on-surface">
+                  {{ attempt.earnedPoints }}/{{ attempt.totalPoints }}
+                </p>
+              </div>
+
+              <div class="flex flex-col items-end gap-3">
+                @if (attempt.passed) {
+                  <span class="px-3 py-1 bg-primary-fixed-dim text-on-primary-container text-[10px] font-bold rounded-full uppercase tracking-widest">
+                    {{ 'quizHistory.passedBadge' | translate }}
+                  </span>
+                } @else {
+                  <span class="px-3 py-1 bg-tertiary-container text-on-tertiary-container text-[10px] font-bold rounded-full uppercase tracking-widest">
+                    {{ 'quizHistory.failedBadge' | translate }}
+                  </span>
+                }
+                <a [routerLink]="['/Quiz', attempt.quizId, 'result', attempt.id]"
+                  class="text-primary text-xs font-bold hover:underline flex items-center gap-1">
+                  {{ 'quizHistory.viewResult' | translate }}
+                  <span class="material-symbols-outlined text-sm">arrow_forward_ios</span>
+                </a>
+              </div>
+            </div>
+
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Pagination -->
+    @if (totalPages() > 1) {
+      <div class="flex justify-center items-center gap-2 mt-12 mb-28 md:mb-12">
+
+        <button
+          (click)="goToPage(currentPage() - 1)"
+          [disabled]="currentPage() === 1"
+          class="p-2 rounded-full hover:bg-surface-container-highest disabled:opacity-30 transition-all text-on-surface">
+          <span class="material-symbols-outlined">chevron_left</span>
+        </button>
+
+        <button
+          *ngFor="let page of [].constructor(totalPages()); let i = index"
+          (click)="goToPage(i + 1)"
+          [class]="(i + 1) === currentPage()
+            ? 'w-10 h-10 rounded-full bg-primary text-on-primary font-bold text-sm shadow-md'
+            : 'w-10 h-10 rounded-full hover:bg-surface-container-highest text-on-surface-variant font-bold text-sm transition-all'">
+          {{ i + 1 }}
+        </button>
+
+        <button
+          (click)="goToPage(currentPage() + 1)"
+          [disabled]="currentPage() === totalPages()"
+          class="p-2 rounded-full hover:bg-surface-container-highest disabled:opacity-30 transition-all text-on-surface">
+          <span class="material-symbols-outlined">chevron_right</span>
+        </button>
+
+      </div>
+    }
+
+  </main>
+
+  <!-- Mobile Nav -->
+  <nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-2 bg-[#FFFFFFCC] backdrop-blur-xl z-50 rounded-t-[24px] shadow-[0_-8px_32px_rgba(125,184,165,0.12)]">
+    <a routerLink="/student/courses" class="flex flex-col items-center justify-center text-slate-500 p-3 hover:scale-110 transition-transform">
+      <span class="material-symbols-outlined">book</span>
+      <span class="text-[10px] uppercase tracking-tighter mt-1">{{ 'quizHistory.courses' | translate }}</span>
+    </a>
+    <a routerLink="/student/live-sessions" class="flex flex-col items-center justify-center text-slate-500 p-3 hover:scale-110 transition-transform">
+      <span class="material-symbols-outlined">videocam</span>
+      <span class="text-[10px] uppercase tracking-tighter mt-1">{{ 'quizHistory.live' | translate }}</span>
+    </a>
+    <a routerLink="/student/quiz-history" class="flex flex-col items-center justify-center bg-[#7DB8A5]/20 text-[#2E6858] rounded-2xl p-3">
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">assignment</span>
+      <span class="text-[10px] uppercase tracking-tighter mt-1 font-bold">{{ 'quizHistory.quizzes' | translate }}</span>
+    </a>
+  </nav>
+
+</div>

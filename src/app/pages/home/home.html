@@ -1,212 +1,604 @@
-<main class=" bg-surface font-body text-on-surface">
+<main class="bg-surface font-body text-on-surface overflow-x-clip">
 
-  <section class="relative px-8 pt-24 pb-32 overflow-hidden max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-    <div class="z-10">
-      <span class="inline-block px-4 py-1.5 rounded-full bg-primary-fixed text-on-primary-fixed-variant text-xs font-bold uppercase tracking-widest mb-6">
-        {{ 'home.badge' | translate }}
-      </span>
+<!-- ═══ HERO ═══ -->
+<section class="relative flex overflow-hidden" style="margin-top: 64px; min-height: calc(100vh - 64px);">
 
-      <h1 class="font-headline text-5xl md:text-6xl lg:text-7xl font-extrabold text-on-surface leading-[1.1] mb-8 tracking-tight">
+  <div class="absolute inset-0 z-0">
+    <img src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?q=80&w=1800&auto=format&fit=crop"
+         alt="hero background"
+         class="w-full h-full object-cover object-top" />
+    <div class="absolute inset-0 bg-black/50"></div>
+    <div class="absolute inset-0 bg-gradient-to-l from-black/5 via-black/35 to-black/65"></div>
+  </div>
+
+  <div class="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 py-16
+              flex flex-col justify-between">
+
+    <div class="max-w-2xl mt-14 mb-28">
+      <h1 class="font-headline text-5xl md:text-6xl lg:text-7xl font-extrabold
+                 text-white leading-[1.08] mb-6 tracking-tight">
         {{ 'home.hero_title' | translate }}
         <span class="text-primary">{{ 'home.hero_highlight' | translate }}</span>
       </h1>
 
-      <p class="text-lg text-on-surface-variant max-w-lg mb-10 leading-relaxed">
+      <p class="text-white/70 text-base md:text-lg max-w-lg mb-10 leading-relaxed">
         {{ 'home.hero_desc' | translate }}
       </p>
 
-      <div class="flex flex-wrap gap-4">
-        <button class="px-8 py-4 bg-gradient-to-br from-[#2e6858] to-[#7db8a5] text-white font-bold rounded-xl shadow-lg shadow-[#7db8a5]/20 flex items-center gap-2 group transition-all">
-          {{ 'home.browse_courses' | translate }}
-          <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
-        </button>
-        <button class="px-8 py-4 bg-transparent border-2 border-outline-variant text-on-surface font-bold rounded-xl hover:bg-surface-container-high transition-colors">
-          {{ 'home.join_teacher' | translate }}
-        </button>
-      </div>
-    </div>
-
-    <div class="relative min-h-[500px] flex items-center justify-center">
-      <div class="absolute inset-0 bg-primary-container/10 rounded-[3rem] rotate-3 -z-10"></div>
-      <div class="absolute inset-0 bg-secondary-container/20 rounded-[3rem] -rotate-3 -z-10"></div>
-      <div class="relative w-full h-[450px] rounded-3xl overflow-hidden shadow-2xl">
-        <img class="w-full h-full object-cover"
-             src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1400&auto=format&fit=crop"
-             alt="students" />
-      </div>
-
-      <div class="absolute -top-8 -right-4 md:-right-8 bg-surface-container-lowest p-5 rounded-2xl shadow-xl animate-bounce-slow max-w-[220px]">
-        <div class="flex items-center gap-3 mb-3">
-          <div class="w-10 h-10 rounded-full bg-primary-container/20 flex items-center justify-center">
-            <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
-          </div>
-          <div>
-            <p class="text-sm font-bold">{{ 'home.top_rated' | translate }}</p>
-            <p class="text-[10px] text-on-surface-variant">{{ 'home.avg_rating' | translate }}</p>
-          </div>
-        </div>
-        <div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
-          <div class="h-full bg-primary w-4/5"></div>
-        </div>
-      </div>
-
-      <div class="absolute -bottom-6 -left-2 md:-left-12 bg-surface-container-lowest p-4 rounded-2xl shadow-xl max-w-[200px]">
-        <div class="flex items-center gap-3">
-          <img class="w-12 h-12 rounded-full object-cover"
-               src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400&auto=format&fit=crop"
-               alt="teacher" />
-          <div>
-            <p class="text-sm font-bold">{{ 'home.join' | translate }}</p>
-            <p class="text-xs text-primary font-semibold">$49.00</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  <section class="bg-surface-container-low py-12 px-8">
-    <div class="max-w-7xl mx-auto flex flex-wrap justify-between gap-8 md:gap-4">
-      <div class="flex-1 min-w-[150px] text-center lg:border-r border-outline-variant/30">
-        <p class="text-3xl font-extrabold text-primary font-headline">500+</p>
-        <p class="text-sm text-on-surface-variant font-medium mt-1">{{ 'home.stat_courses' | translate }}</p>
-      </div>
-      <div class="flex-1 min-w-[150px] text-center lg:border-r border-outline-variant/30">
-        <p class="text-3xl font-extrabold text-primary font-headline">50+</p>
-        <p class="text-sm text-on-surface-variant font-medium mt-1">{{ 'home.stat_centers' | translate }}</p>
-      </div>
-      <div class="flex-1 min-w-[150px] text-center lg:border-r border-outline-variant/30">
-        <p class="text-3xl font-extrabold text-primary font-headline">10,000+</p>
-        <p class="text-sm text-on-surface-variant font-medium mt-1">{{ 'home.stat_students' | translate }}</p>
-      </div>
-      <div class="flex-1 min-w-[150px] text-center">
-        <p class="text-3xl font-extrabold text-primary font-headline">200+</p>
-        <p class="text-sm text-on-surface-variant font-medium mt-1">{{ 'home.stat_instructors' | translate }}</p>
-      </div>
-    </div>
-  </section>
-
- 
-  <section class="py-24 px-8 max-w-7xl mx-auto">
-    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-      <div>
-        <h2 class="font-headline text-4xl font-bold mb-4">{{ 'home.programs_title' | translate }}</h2>
-        <p class="text-on-surface-variant">{{ 'home.programs_desc' | translate }}</p>
-      </div>
-    </div>
-
-    <div *ngIf="isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-      <div *ngFor="let i of [1,2,3,4]" class="bg-surface-container-low rounded-2xl h-80 animate-pulse"></div>
-    </div>
-
-    <div *ngIf="!isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-      <app-course-card *ngFor="let course of courses" [course]="course"></app-course-card>
-    </div>
-
-    <div class="mt-16 text-center">
-      <button routerLink="/courses"
-              class="px-8 py-4 bg-surface-container-low text-primary font-bold rounded-xl hover:bg-primary/5 transition-all">
-        {{ 'home.view_all' | translate }}
+      <button class="group px-8 py-4 bg-primary text-white font-bold rounded-full
+                     shadow-lg shadow-primary/30 uppercase tracking-wider text-sm
+                     flex items-center gap-2 w-fit
+                     transition-all duration-300
+                     hover:bg-primary/90 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/40">
+        {{ 'home.browse_courses' | translate }}
       </button>
     </div>
-  </section>
 
+    <div class="flex-1"></div>
 
-  <section class="px-8 mb-24 max-w-7xl mx-auto">
-    <div class="bg-primary p-12 lg:p-20 rounded-[2.5rem] relative overflow-hidden">
-      <div class="absolute top-0 right-0 w-1/3 h-full bg-white/5 skew-x-[-20deg] translate-x-20"></div>
-      <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12">
-        <div class="max-w-xl">
-          <h2 class="text-white font-headline text-4xl lg:text-5xl font-extrabold leading-tight mb-6">
-            {{ 'home.cta_title' | translate }}
-          </h2>
-          <p class="text-primary-container text-lg mb-8 leading-relaxed">
-            {{ 'home.cta_desc' | translate }}
-          </p>
-          <div class="flex flex-wrap gap-4">
-            <button class="px-8 py-4 bg-white text-primary font-bold rounded-xl hover:shadow-xl transition-all">
-              {{ 'home.get_started' | translate }}
-            </button>
-            <button class="px-8 py-4 bg-primary-container text-on-primary-container font-bold rounded-xl hover:bg-primary-container/90 transition-all">
-              {{ 'home.contact' | translate }}
-            </button>
-          </div>
-        </div>
-
-        <div class="lg:w-1/3 grid grid-cols-2 gap-4">
-          <div class="p-6 bg-white/10 backdrop-blur-lg rounded-2xl text-white text-center">
-            <span class="material-symbols-outlined text-4xl mb-3">verified</span>
-            <p class="font-bold text-xl">{{ 'home.verified' | translate }}</p>
-            <p class="text-xs opacity-70">{{ 'home.certificates' | translate }}</p>
-          </div>
-          <div class="p-6 bg-white/10 backdrop-blur-lg rounded-2xl text-white text-center">
-            <span class="material-symbols-outlined text-4xl mb-3">schedule</span>
-            <p class="font-bold text-xl">{{ 'home.lifetime' | translate }}</p>
-            <p class="text-xs opacity-70">{{ 'home.access' | translate }}</p>
-          </div>
+    <div class="flex flex-wrap items-center gap-0 border-t border-white/15 pt-8">
+      <div class="flex items-baseline gap-3 pe-8 me-8 border-e border-white/20">
+        <span class="font-headline text-4xl font-extrabold text-primary">10</span>
+        <div>
+          <p class="text-white font-bold text-base leading-tight">{{ 'home.stat_years_label' | translate }}</p>
+          <p class="text-white/50 text-xs">{{ 'home.stat_years_desc' | translate }}</p>
         </div>
       </div>
-    </div>
-  </section>
-</main>
-
-
-<footer class="bg-slate-950 text-white py-16 px-8">
-  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
-    <div>
-      <span class="text-2xl font-bold text-white mb-6 block font-headline tracking-tight">EduCore</span>
-      <p class="text-slate-400 text-sm mb-6 leading-relaxed">{{ 'footer.desc' | translate }}</p>
-      <div class="flex gap-4">
-        <a class="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center hover:bg-primary transition-colors" href="#">
-          <span class="material-symbols-outlined text-sm">public</span>
-        </a>
-        <a class="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center hover:bg-primary transition-colors" href="#">
-          <span class="material-symbols-outlined text-sm">alternate_email</span>
-        </a>
-        <a class="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center hover:bg-primary transition-colors" href="#">
-          <span class="material-symbols-outlined text-sm">person</span>
-        </a>
+      <div class="flex items-baseline gap-3 pe-8 me-8 border-e border-white/20">
+        <span class="font-headline text-4xl font-extrabold text-primary">96%</span>
+        <div>
+          <p class="text-white font-bold text-base leading-tight">{{ 'home.stat_recommended_label' | translate }}</p>
+          <p class="text-white/50 text-xs">{{ 'home.stat_recommended_desc' | translate }}</p>
+        </div>
       </div>
-    </div>
-
-    <div>
-      <h4 class="font-bold mb-6 text-teal-400 uppercase tracking-widest text-xs">{{ 'footer.explore' | translate }}</h4>
-      <ul class="space-y-4">
-        <li><a class="text-slate-400 hover:text-white transition-colors text-sm" href="#">{{ 'footer.all_courses' | translate }}</a></li>
-        <li><a class="text-slate-400 hover:text-white transition-colors text-sm" href="#">{{ 'footer.teachers' | translate }}</a></li>
-        <li><a class="text-slate-400 hover:text-white transition-colors text-sm" href="#">{{ 'footer.centers' | translate }}</a></li>
-        <li><a class="text-slate-400 hover:text-white transition-colors text-sm" href="#">{{ 'footer.live' | translate }}</a></li>
-      </ul>
-    </div>
-
-    <div>
-      <h4 class="font-bold mb-6 text-teal-400 uppercase tracking-widest text-xs">{{ 'footer.support' | translate }}</h4>
-      <ul class="space-y-4">
-        <li><a class="text-slate-400 hover:text-white transition-colors text-sm" href="#">{{ 'footer.help' | translate }}</a></li>
-        <li><a class="text-slate-400 hover:text-white transition-colors text-sm" href="#">{{ 'footer.terms' | translate }}</a></li>
-        <li><a class="text-slate-400 hover:text-white transition-colors text-sm" href="#">{{ 'footer.privacy' | translate }}</a></li>
-        <li><a class="text-slate-400 hover:text-white transition-colors text-sm" href="#">{{ 'footer.cookies' | translate }}</a></li>
-      </ul>
-    </div>
-
-    <div>
-      <h4 class="font-bold mb-6 text-teal-400 uppercase tracking-widest text-xs">{{ 'footer.newsletter' | translate }}</h4>
-      <p class="text-slate-400 text-sm mb-4">{{ 'footer.newsletter_desc' | translate }}</p>
-      <div class="flex bg-slate-900 rounded-lg overflow-hidden">
-        <input class="bg-transparent border-none outline-none text-sm p-3 w-full"
-               [placeholder]="'footer.email_placeholder' | translate" type="email" />
-        <button class="bg-primary px-4 text-white hover:bg-primary/90 transition-colors">
-          <span class="material-symbols-outlined">send</span>
-        </button>
+      <div class="flex items-baseline gap-3">
+        <span class="font-headline text-4xl font-extrabold text-primary">10K</span>
+        <div>
+          <p class="text-white font-bold text-base leading-tight">{{ 'home.stat_students_label' | translate }}</p>
+          <p class="text-white/50 text-xs">{{ 'home.stat_students_desc' | translate }}</p>
+        </div>
       </div>
     </div>
   </div>
+</section>
 
-  <div class="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
-    <p class="text-slate-500 text-xs uppercase tracking-widest">{{ 'footer.copyright' | translate }}</p>
+
+<!-- ═══ STATS ═══ -->
+<section class="bg-gradient-to-br from-primary via-primary to-secondary py-12 px-8">
+  <div class="max-w-7xl mx-auto flex flex-wrap justify-between gap-8 md:gap-4">
+    <div class="flex-1 min-w-[140px] text-center">
+      <p class="text-4xl font-extrabold text-white font-headline">500+</p>
+      <p class="text-sm text-white/70 font-medium mt-1">{{ 'home.stat_courses' | translate }}</p>
+    </div>
+    <div class="flex-1 min-w-[140px] text-center lg:border-x border-white/15">
+      <p class="text-4xl font-extrabold text-white font-headline">50+</p>
+      <p class="text-sm text-white/70 font-medium mt-1">{{ 'home.stat_centers' | translate }}</p>
+    </div>
+    <div class="flex-1 min-w-[140px] text-center lg:border-r border-white/15">
+      <p class="text-4xl font-extrabold text-white font-headline">10,000+</p>
+      <p class="text-sm text-white/70 font-medium mt-1">{{ 'home.stat_students' | translate }}</p>
+    </div>
+    <div class="flex-1 min-w-[140px] text-center">
+      <p class="text-4xl font-extrabold text-white font-headline">200+</p>
+      <p class="text-sm text-white/70 font-medium mt-1">{{ 'home.stat_instructors' | translate }}</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ ALL-IN-ONE FEATURES ═══ -->
+<section class="py-24 px-6 md:px-12 bg-[#F2F7F6]">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16">
+      <p class="text-xs font-bold uppercase tracking-[0.22em] mb-5" style="color: var(--color-primary);">
+        {{ 'home.allinone_badge' | translate }}
+      </p>
+      <h2 class="font-headline text-4xl md:text-5xl font-extrabold tracking-tight mb-5 leading-tight">
+        <span class="text-on-surface">{{ 'home.allinone_title' | translate }}</span>
+        <span class="text-primary"> {{ 'home.allinone_highlight' | translate }}</span>
+      </h2>
+      <p class="text-on-surface-variant text-base max-w-md mx-auto leading-relaxed">
+        {{ 'home.allinone_desc' | translate }}
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="group relative bg-white border border-outline-variant/30 rounded-2xl p-8 hover:shadow-[0_12px_40px_rgba(46,104,88,0.12)] hover:-translate-y-1 hover:border-primary/30 transition-all duration-300 overflow-hidden">
+        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-2xl" style="background: radial-gradient(ellipse at 50% 0%, rgba(46,104,88,0.05) 0%, transparent 65%);"></div>
+        <div class="w-14 h-14 rounded-xl mb-7 flex items-center justify-center" style="background: linear-gradient(135deg, var(--color-primary, #2e6858), #4db6a0);">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </div>
+        <h3 class="font-headline font-extrabold text-on-surface text-lg mb-3 leading-snug">{{ 'home.feature_billing_title' | translate }}</h3>
+        <p class="text-on-surface-variant text-sm leading-relaxed">{{ 'home.feature_billing_desc' | translate }}</p>
+        <div class="absolute bottom-0 left-0 h-[2px] w-0 group-hover:w-full transition-all duration-500" style="background: var(--color-primary);"></div>
+      </div>
+
+      <div class="group relative bg-white border border-outline-variant/30 rounded-2xl p-8 hover:shadow-[0_12px_40px_rgba(46,104,88,0.12)] hover:-translate-y-1 hover:border-primary/30 transition-all duration-300 overflow-hidden">
+        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-2xl" style="background: radial-gradient(ellipse at 50% 0%, rgba(46,104,88,0.05) 0%, transparent 65%);"></div>
+        <div class="w-14 h-14 rounded-xl mb-7 flex items-center justify-center" style="background: linear-gradient(135deg, var(--color-primary, #2e6858), #4db6a0);">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
+        </div>
+        <h3 class="font-headline font-extrabold text-on-surface text-lg mb-3 leading-snug">{{ 'home.feature_scheduling_title' | translate }}</h3>
+        <p class="text-on-surface-variant text-sm leading-relaxed">{{ 'home.feature_scheduling_desc' | translate }}</p>
+        <div class="absolute bottom-0 left-0 h-[2px] w-0 group-hover:w-full transition-all duration-500" style="background: var(--color-primary);"></div>
+      </div>
+
+      <div class="group relative bg-white border border-outline-variant/30 rounded-2xl p-8 hover:shadow-[0_12px_40px_rgba(46,104,88,0.12)] hover:-translate-y-1 hover:border-primary/30 transition-all duration-300 overflow-hidden">
+        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-2xl" style="background: radial-gradient(ellipse at 50% 0%, rgba(46,104,88,0.05) 0%, transparent 65%);"></div>
+        <div class="w-14 h-14 rounded-xl mb-7 flex items-center justify-center" style="background: linear-gradient(135deg, var(--color-primary, #2e6858), #4db6a0);">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3 class="font-headline font-extrabold text-on-surface text-lg mb-3 leading-snug">{{ 'home.feature_tracking_title' | translate }}</h3>
+        <p class="text-on-surface-variant text-sm leading-relaxed">{{ 'home.feature_tracking_desc' | translate }}</p>
+        <div class="absolute bottom-0 left-0 h-[2px] w-0 group-hover:w-full transition-all duration-500" style="background: var(--color-primary);"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ VIDEO FEATURES ═══ -->
+<section class="py-20 px-6 md:px-12 bg-white">
+  <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+    <div>
+      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/25 text-primary text-xs font-bold uppercase tracking-widest mb-6">
+        {{ 'home.features_badge' | translate }}
+      </span>
+      <h2 class="font-headline text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-4">
+        <span class="text-on-surface">{{ 'home.features_title_1' | translate }}</span>
+        <span class="text-primary">{{ 'home.features_title_highlight' | translate }}</span>
+      </h2>
+      <p class="text-on-surface-variant leading-relaxed mb-10 max-w-md">{{ 'home.features_desc' | translate }}</p>
+      <div class="flex flex-col gap-4">
+        <div class="flex items-start gap-4 p-4 bg-white rounded-2xl border border-outline-variant/20 shadow-sm hover:border-primary/30 hover:shadow-md transition-all duration-200">
+          <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings:'FILL' 1">groups</span>
+          </div>
+          <div>
+            <p class="font-bold text-sm text-on-surface mb-0.5">{{ 'home.feature1_title' | translate }}</p>
+            <p class="text-xs text-on-surface-variant leading-relaxed">{{ 'home.feature1_desc' | translate }}</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4 p-4 bg-white rounded-2xl border border-outline-variant/20 shadow-sm hover:border-primary/30 hover:shadow-md transition-all duration-200">
+          <div class="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-secondary text-[20px]" style="font-variation-settings:'FILL' 1">move_to_inbox</span>
+          </div>
+          <div>
+            <p class="font-bold text-sm text-on-surface mb-0.5">{{ 'home.feature2_title' | translate }}</p>
+            <p class="text-xs text-on-surface-variant leading-relaxed">{{ 'home.feature2_desc' | translate }}</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4 p-4 bg-white rounded-2xl border border-outline-variant/20 shadow-sm hover:border-primary/30 hover:shadow-md transition-all duration-200">
+          <div class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-amber-600 text-[20px]" style="font-variation-settings:'FILL' 1">bar_chart</span>
+          </div>
+          <div>
+            <p class="font-bold text-sm text-on-surface mb-0.5">{{ 'home.feature3_title' | translate }}</p>
+            <p class="text-xs text-on-surface-variant leading-relaxed">{{ 'home.feature3_desc' | translate }}</p>
+          </div>
+        </div>
+      </div>
+      <a class="inline-flex items-center gap-1.5 mt-8 text-primary font-bold text-sm hover:gap-3 transition-all duration-200 cursor-pointer">
+        {{ 'home.learn_more' | translate }}
+        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+      </a>
+    </div>
+
+    <div class="relative">
+      <div class="absolute -top-6 -left-6 w-24 h-24 rounded-full bg-primary/20 blur-2xl pointer-events-none"></div>
+      <div class="absolute -bottom-6 -right-6 w-32 h-32 rounded-full bg-secondary/15 blur-2xl pointer-events-none"></div>
+      <div class="relative rounded-3xl overflow-hidden shadow-2xl shadow-primary/15 ring-1 ring-primary/10 z-10">
+        <video class="w-full h-auto object-cover rounded-3xl" autoplay loop playsinline>
+          <source src="https://videos.pexels.com/video-files/3195394/3195394-uhd_2560_1440_25fps.mp4" type="video/mp4" />
+        </video>
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div class="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/40 shadow-xl">
+            <span class="material-symbols-outlined text-white text-3xl" style="font-variation-settings:'FILL' 1">play_arrow</span>
+          </div>
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent pointer-events-none"></div>
+      </div>
+      <div class="absolute -bottom-5 -left-5 bg-white p-4 rounded-2xl shadow-xl border border-outline-variant/20 z-20 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center">
+          <span class="material-symbols-outlined text-green-600 text-[20px]" style="font-variation-settings:'FILL' 1">verified</span>
+        </div>
+        <div>
+          <p class="text-sm font-black text-on-surface">98%</p>
+          <p class="text-[10px] text-on-surface-variant">{{ 'home.satisfaction_rate' | translate }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ COURSES ═══ -->
+<section class="py-24 px-6 md:px-12 bg-[#F2F7F6]">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+      <div>
+        <h2 class="font-headline text-4xl font-extrabold mb-2 tracking-tight">
+          <span class="text-on-surface">{{ 'home.programs_title_black' | translate }}</span>
+          <span class="text-primary"> {{ 'home.programs_title_green' | translate }}</span>
+        </h2>
+        <p class="text-on-surface-variant max-w-lg leading-relaxed">{{ 'home.programs_desc' | translate }}</p>
+      </div>
+    </div>
+    <div *ngIf="isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div *ngFor="let i of [1,2,3,4]" class="bg-surface-container-low rounded-2xl h-80 animate-pulse ring-1 ring-outline-variant/20"></div>
+    </div>
+    <div *ngIf="!isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+      <app-course-card *ngFor="let course of courses" [course]="course"></app-course-card>
+    </div>
+    <div class="mt-12 text-center">
+      <button routerLink="/courses" class="group inline-flex items-center gap-2 px-8 py-4 border-2 border-outline-variant text-primary font-bold rounded-2xl hover:bg-primary hover:text-white hover:border-primary transition-all duration-300">
+        {{ 'home.view_all' | translate }}
+        <span class="material-symbols-outlined transition-transform duration-200 group-hover:translate-x-1">arrow_forward</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ WHY EDUCORE ═══ -->
+<section class="py-24 px-6 md:px-12 bg-white ">
+  <div class="max-w-7xl mx-auto">
+
+    <!-- Top: Image + Green block -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 rounded-3xl overflow-hidden mb-8"
+         style="box-shadow: 0 20px 60px rgba(46,104,88,0.15);">
+
+      <!-- Image -->
+      <div class="relative min-h-[420px]">
+        <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=900&auto=format&fit=crop"
+             alt="Why EduCore"
+             class="w-full h-full object-cover object-center" />
+      </div>
+
+      <!-- Green text side -->
+      <div class="flex flex-col justify-center gap-5 px-12 py-14"
+           style="background: #2e6858;">
+        <div class="flex items-center gap-2.5 mb-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-white/60"></span>
+          <p class="text-white/70 text-xs font-bold uppercase tracking-[0.2em]">
+            {{ 'home.why_badge' | translate }}
+          </p>
+        </div>
+        <h2 class="font-headline text-4xl md:text-5xl font-extrabold text-white leading-tight">
+          {{ 'home.why_title' | translate }}
+        </h2>
+        <p class="text-white/65 text-base leading-relaxed max-w-sm">
+          {{ 'home.why_desc' | translate }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Bottom: 4 feature cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <!-- Card 1 -->
+      <div class="flex items-start gap-5 bg-white rounded-2xl p-6
+                  border border-outline-variant/15
+                  hover:shadow-[0_10px_32px_rgba(46,104,88,0.1)] hover:-translate-y-0.5
+                  transition-all duration-200 group">
+        <div class="w-14 h-14 rounded-2xl flex-shrink-0 flex items-center justify-center"
+             style="background: #2e6858;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+               stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+          </svg>
+        </div>
+        <div>
+          <h4 class="font-bold text-base text-on-surface mb-1.5">
+            {{ 'home.why_feat1_title' | translate }}
+          </h4>
+          <p class="text-on-surface-variant text-sm leading-relaxed">
+            {{ 'home.why_feat1_desc' | translate }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="flex items-start gap-5 bg-white rounded-2xl p-6
+                  border border-outline-variant/15
+                  hover:shadow-[0_10px_32px_rgba(46,104,88,0.1)] hover:-translate-y-0.5
+                  transition-all duration-200 group">
+        <div class="w-14 h-14 rounded-2xl flex-shrink-0 flex items-center justify-center"
+             style="background: #2e6858;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+               stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"/>
+            <path d="M8 21h8M12 17v4"/>
+          </svg>
+        </div>
+        <div>
+          <h4 class="font-bold text-base text-on-surface mb-1.5">
+            {{ 'home.why_feat2_title' | translate }}
+          </h4>
+          <p class="text-on-surface-variant text-sm leading-relaxed">
+            {{ 'home.why_feat2_desc' | translate }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="flex items-start gap-5 bg-white rounded-2xl p-6
+                  border border-outline-variant/15
+                  hover:shadow-[0_10px_32px_rgba(46,104,88,0.1)] hover:-translate-y-0.5
+                  transition-all duration-200 group">
+        <div class="w-14 h-14 rounded-2xl flex-shrink-0 flex items-center justify-center"
+             style="background: #2e6858;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+               stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <div>
+          <h4 class="font-bold text-base text-on-surface mb-1.5">
+            {{ 'home.why_feat3_title' | translate }}
+          </h4>
+          <p class="text-on-surface-variant text-sm leading-relaxed">
+            {{ 'home.why_feat3_desc' | translate }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="flex items-start gap-5 bg-white rounded-2xl p-6
+                  border border-outline-variant/15
+                  hover:shadow-[0_10px_32px_rgba(46,104,88,0.1)] hover:-translate-y-0.5
+                  transition-all duration-200 group">
+        <div class="w-14 h-14 rounded-2xl flex-shrink-0 flex items-center justify-center"
+             style="background: #2e6858;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+               stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <div>
+          <h4 class="font-bold text-base text-on-surface mb-1.5">
+            {{ 'home.why_feat4_title' | translate }}
+          </h4>
+          <p class="text-on-surface-variant text-sm leading-relaxed">
+            {{ 'home.why_feat4_desc' | translate }}
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ TESTIMONIALS ═══ -->
+<section class="py-24 px-6 md:px-12 bg-[#F2F7F6]">
+  <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+    <div>
+      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/25 text-primary text-xs font-bold uppercase tracking-widest mb-6">
+        <span class="w-2 h-2 rounded-full bg-primary"></span>
+        {{ 'home.testimonials_badge' | translate }}
+      </span>
+      <h2 class="font-headline text-4xl md:text-5xl font-extrabold tracking-tight leading-tight mb-6">
+        <span class="text-on-surface">{{ 'home.testimonials_title_black' | translate }}</span>
+        <span class="text-primary"> {{ 'home.testimonials_title_green' | translate }}</span>
+      </h2>
+      <p class="text-on-surface-variant leading-relaxed mb-10 max-w-md">{{ 'home.testimonials_desc' | translate }}</p>
+      <button class="px-8 py-4 bg-primary text-white font-bold rounded-2xl shadow-lg shadow-primary/30 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300 uppercase tracking-wider text-sm">
+        {{ 'home.view_testimonials' | translate }}
+      </button>
+      <div class="mt-12 grid grid-cols-2 gap-3">
+        <div class="rounded-[8px] overflow-hidden h-44">
+          <img src="https://templatekits.themewarrior.com/inlingo-new/wp-content/uploads/sites/102/2023/08/9JWKCV-large.jpg" alt="student" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+        </div>
+        <div class="rounded-[8px] overflow-hidden h-44">
+          <img src="https://templatekits.themewarrior.com/inlingo-new/wp-content/uploads/sites/102/2023/08/PCSASS9-large.jpg" alt="student" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-col gap-5">
+      <div class="relative bg-on-surface rounded-2xl p-6 flex gap-5 items-start shadow-xl overflow-hidden">
+        <div class="absolute top-3 right-3 w-5 h-5 grid grid-cols-2 gap-0.5 opacity-40">
+          <div class="bg-primary rounded-[2px]"></div><div class="bg-white/30 rounded-[2px]"></div>
+          <div class="bg-white/30 rounded-[2px]"></div><div class="bg-primary rounded-[2px]"></div>
+        </div>
+        <div class="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 ring-2 ring-white/10">
+          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop" alt="Samantha Williams" class="w-full h-full object-cover" />
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex gap-0.5 mb-3"><span class="text-primary text-base">★★★★★</span></div>
+          <h4 class="font-headline font-extrabold text-white text-base mb-2 leading-snug">Best Courses Ever!</h4>
+          <p class="text-white/60 text-sm leading-relaxed line-clamp-3">The curriculum is incredibly well-structured. I went from beginner to confident in just three months.</p>
+          <div class="mt-4 pt-3 border-t border-white/10">
+            <p class="text-white font-bold text-sm">Samantha Williams</p>
+            <p class="text-white/40 text-xs mt-0.5">Business</p>
+          </div>
+        </div>
+      </div>
+      <div class="relative bg-on-surface rounded-2xl p-6 flex gap-5 items-start shadow-xl overflow-hidden">
+        <div class="absolute top-3 right-3 w-5 h-5 grid grid-cols-2 gap-0.5 opacity-40">
+          <div class="bg-primary rounded-[2px]"></div><div class="bg-white/30 rounded-[2px]"></div>
+          <div class="bg-white/30 rounded-[2px]"></div><div class="bg-primary rounded-[2px]"></div>
+        </div>
+        <div class="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 ring-2 ring-white/10">
+          <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop" alt="James Carter" class="w-full h-full object-cover" />
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex gap-0.5 mb-3"><span class="text-primary text-base">★★★★★</span></div>
+          <h4 class="font-headline font-extrabold text-white text-base mb-2 leading-snug">Best Courses Ever!</h4>
+          <p class="text-white/60 text-sm leading-relaxed line-clamp-3">The instructors are world-class. Each module built on the last — it felt like a real academic journey.</p>
+          <div class="mt-4 pt-3 border-t border-white/10">
+            <p class="text-white font-bold text-sm">James Carter</p>
+            <p class="text-white/40 text-xs mt-0.5">Technology</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ BLOG ═══ -->
+<section class="py-24 px-6 md:px-12 bg-white">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+      <div>
+        <p class="text-xs font-bold uppercase tracking-[0.2em] mb-4" style="color: var(--color-primary);">{{ 'home.blog_badge' | translate }}</p>
+        <h2 class="font-headline text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">
+          <span class="text-on-surface">{{ 'home.blog_title_black' | translate }}</span>
+          <span class="text-primary"> {{ 'home.blog_title_green' | translate }}</span>
+        </h2>
+      </div>
+      <a routerLink="/blog" class="group inline-flex items-center gap-2 px-6 py-3 rounded-xl border-2 text-sm font-bold transition-all duration-300 self-end hover:-translate-y-0.5" style="color: var(--color-primary); border-color: var(--color-primary);">
+        {{ 'home.blog_view_all' | translate }}
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-200 group-hover:translate-x-1" style="stroke: var(--color-primary);"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <article class="group relative rounded-2xl overflow-hidden cursor-pointer" style="height: 380px;">
+        <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=700&auto=format&fit=crop" alt="Blog post 1" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+        <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(0,0,0,0.85) 40%, rgba(0,0,0,0.25) 70%, rgba(0,0,0,0.05) 100%);"></div>
+        <div class="absolute top-3 left-3"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest text-white" style="background: var(--color-primary);">{{ 'home.blog_cat1' | translate }}</span></div>
+        <div class="absolute bottom-0 left-0 right-0 p-5">
+          <div class="flex items-center gap-2 mb-2.5">
+            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=80&auto=format&fit=crop" alt="Author" class="w-6 h-6 rounded-full object-cover" style="border: 1.5px solid rgba(255,255,255,0.4);" />
+            <span class="text-xs font-medium" style="color: rgba(255,255,255,0.85);">Sarah Johnson</span>
+            <span class="text-xs" style="color: rgba(255,255,255,0.4);">·</span>
+            <span class="text-xs" style="color: rgba(255,255,255,0.65);">{{ 'home.blog_date1' | translate }}</span>
+          </div>
+          <h3 class="font-headline font-extrabold text-white text-base leading-snug mb-2 line-clamp-2">{{ 'home.blog_title1' | translate }}</h3>
+          <p class="text-xs leading-relaxed line-clamp-2 mb-3" style="color: rgba(255,255,255,0.72);">{{ 'home.blog_desc1' | translate }}</p>
+          <div class="flex items-center justify-between pt-3" style="border-top: 1px solid rgba(255,255,255,0.15);">
+            <div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background: #7dd3b8;"></span><span class="text-xs font-medium" style="color: #7dd3b8;">{{ 'home.blog_read1' | translate }}</span></div>
+            <div class="w-7 h-7 rounded-full flex items-center justify-center border transition-all duration-300 group-hover:scale-110" style="background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.25);"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke="white"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="group relative rounded-2xl overflow-hidden cursor-pointer" style="height: 380px;">
+        <img src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?q=80&w=700&auto=format&fit=crop" alt="Blog post 2" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+        <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(0,0,0,0.85) 40%, rgba(0,0,0,0.25) 70%, rgba(0,0,0,0.05) 100%);"></div>
+        <div class="absolute top-3 left-3"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest text-white" style="background: var(--color-primary);">{{ 'home.blog_cat2' | translate }}</span></div>
+        <div class="absolute bottom-0 left-0 right-0 p-5">
+          <div class="flex items-center gap-2 mb-2.5">
+            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=80&auto=format&fit=crop" alt="Author" class="w-6 h-6 rounded-full object-cover" style="border: 1.5px solid rgba(255,255,255,0.4);" />
+            <span class="text-xs font-medium" style="color: rgba(255,255,255,0.85);">James Carter</span>
+            <span class="text-xs" style="color: rgba(255,255,255,0.4);">·</span>
+            <span class="text-xs" style="color: rgba(255,255,255,0.65);">{{ 'home.blog_date2' | translate }}</span>
+          </div>
+          <h3 class="font-headline font-extrabold text-white text-base leading-snug mb-2 line-clamp-2">{{ 'home.blog_title2' | translate }}</h3>
+          <p class="text-xs leading-relaxed line-clamp-2 mb-3" style="color: rgba(255,255,255,0.72);">{{ 'home.blog_desc2' | translate }}</p>
+          <div class="flex items-center justify-between pt-3" style="border-top: 1px solid rgba(255,255,255,0.15);">
+            <div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background: #7dd3b8;"></span><span class="text-xs font-medium" style="color: #7dd3b8;">{{ 'home.blog_read2' | translate }}</span></div>
+            <div class="w-7 h-7 rounded-full flex items-center justify-center border transition-all duration-300 group-hover:scale-110" style="background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.25);"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke="white"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="group relative rounded-2xl overflow-hidden cursor-pointer" style="height: 380px;">
+        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=700&auto=format&fit=crop" alt="Blog post 3" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+        <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(0,0,0,0.85) 40%, rgba(0,0,0,0.25) 70%, rgba(0,0,0,0.05) 100%);"></div>
+        <div class="absolute top-3 left-3"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest text-white" style="background: var(--color-primary);">{{ 'home.blog_cat3' | translate }}</span></div>
+        <div class="absolute bottom-0 left-0 right-0 p-5">
+          <div class="flex items-center gap-2 mb-2.5">
+            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=80&auto=format&fit=crop" alt="Author" class="w-6 h-6 rounded-full object-cover" style="border: 1.5px solid rgba(255,255,255,0.4);" />
+            <span class="text-xs font-medium" style="color: rgba(255,255,255,0.85);">Emily Ross</span>
+            <span class="text-xs" style="color: rgba(255,255,255,0.4);">·</span>
+            <span class="text-xs" style="color: rgba(255,255,255,0.65);">{{ 'home.blog_date3' | translate }}</span>
+          </div>
+          <h3 class="font-headline font-extrabold text-white text-base leading-snug mb-2 line-clamp-2">{{ 'home.blog_title3' | translate }}</h3>
+          <p class="text-xs leading-relaxed line-clamp-2 mb-3" style="color: rgba(255,255,255,0.72);">{{ 'home.blog_desc3' | translate }}</p>
+          <div class="flex items-center justify-between pt-3" style="border-top: 1px solid rgba(255,255,255,0.15);">
+            <div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background: #7dd3b8;"></span><span class="text-xs font-medium" style="color: #7dd3b8;">{{ 'home.blog_read3' | translate }}</span></div>
+            <div class="w-7 h-7 rounded-full flex items-center justify-center border transition-all duration-300 group-hover:scale-110" style="background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.25);"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke="white"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ SUPPORT BANNER ═══ -->
+<section class="px-6 md:px-12 bg-[#F2F7F6] pb-24 pt-20">
+  <div class="max-w-7xl mx-auto">
+    <div class="relative rounded-[2rem] overflow-visible flex flex-col lg:flex-row items-center" style="background-color: var(--color-primary, #2e6858); min-height: 240px;">
+      <div class="absolute left-0 top-0 bottom-0 w-64 rounded-s-[2rem] pointer-events-none overflow-hidden"
+           style="background-image: radial-gradient(circle, rgba(255,255,255,0.18) 1.5px, transparent 1.5px); background-size: 22px 22px; background-position: 14px 14px;"></div>
+      <div class="relative z-10 flex-1 flex flex-col justify-center gap-5 px-10 md:px-14 py-14">
+        <h2 class="font-headline text-3xl md:text-4xl lg:text-[2.6rem] font-extrabold text-white leading-tight">
+          {{ 'home.support_title' | translate }}
+        </h2>
+        <p class="text-white/60 text-sm md:text-base leading-relaxed max-w-lg">{{ 'home.support_desc' | translate }}</p>
+        <div>
+          <a href="#" class="inline-block px-7 py-3 text-white font-semibold rounded-full border border-white/30 shadow-md backdrop-blur-sm text-sm hover:-translate-y-0.5 hover:bg-white/25 hover:shadow-lg transition-all duration-300" style="background: rgba(255,255,255,0.15);">
+            {{ 'home.support_cta' | translate }}
+          </a>
+        </div>
+      </div>
+      <div class="relative flex-shrink-0 flex items-end justify-center w-full lg:w-[40%]" style="height: 340px;">
+        <div class="absolute top-0 right-0 w-72 h-72 rounded-full pointer-events-none" style="background: rgba(255,255,255,0.12); transform: translate(20%, -20%);"></div>
+        <img loading="lazy" decoding="async"
+             src="https://shop.creativemox.com/kursol/wp-content/uploads/sites/6/2024/09/img_1.png"
+             alt="Support student"
+             class="absolute bottom-0 z-10 object-contain object-bottom drop-shadow-2xl"
+             style="height: 420px; max-width: 100%; right: 10%;" />
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="bg-[#08211a] text-white pt-16 pb-8 px-6 md:px-12">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-14">
+    <div>
+      <span class="text-2xl font-bold text-white mb-5 block font-headline tracking-tight">EduCore</span>
+      <p class="text-white/50 text-sm mb-6 leading-relaxed">{{ 'footer.desc' | translate }}</p>
+      <div class="flex gap-3">
+        <a class="w-10 h-10 rounded-xl bg-white/7 border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-200" href="#"><span class="material-symbols-outlined text-white/70 text-lg">public</span></a>
+        <a class="w-10 h-10 rounded-xl bg-white/7 border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-200" href="#"><span class="material-symbols-outlined text-white/70 text-lg">alternate_email</span></a>
+        <a class="w-10 h-10 rounded-xl bg-white/7 border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-200" href="#"><span class="material-symbols-outlined text-white/70 text-lg">person</span></a>
+      </div>
+    </div>
+    <div>
+      <h4 class="font-bold mb-6 text-primary text-xs uppercase tracking-widest">{{ 'footer.explore' | translate }}</h4>
+      <ul class="space-y-3.5">
+        <li><a class="text-white/50 hover:text-white transition-colors duration-200 text-sm flex items-center gap-1.5 group" href="#"><span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 group-hover:text-primary transition-all duration-200">chevron_right</span>{{ 'footer.all_courses' | translate }}</a></li>
+        <li><a class="text-white/50 hover:text-white transition-colors duration-200 text-sm flex items-center gap-1.5 group" href="#"><span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 group-hover:text-primary transition-all duration-200">chevron_right</span>{{ 'footer.teachers' | translate }}</a></li>
+        <li><a class="text-white/50 hover:text-white transition-colors duration-200 text-sm flex items-center gap-1.5 group" href="#"><span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 group-hover:text-primary transition-all duration-200">chevron_right</span>{{ 'footer.centers' | translate }}</a></li>
+        <li><a class="text-white/50 hover:text-white transition-colors duration-200 text-sm flex items-center gap-1.5 group" href="#"><span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 group-hover:text-primary transition-all duration-200">chevron_right</span>{{ 'footer.live' | translate }}</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-bold mb-6 text-primary text-xs uppercase tracking-widest">{{ 'footer.support' | translate }}</h4>
+      <ul class="space-y-3.5">
+        <li><a class="text-white/50 hover:text-white transition-colors duration-200 text-sm flex items-center gap-1.5 group" href="#"><span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 group-hover:text-primary transition-all duration-200">chevron_right</span>{{ 'footer.help' | translate }}</a></li>
+        <li><a class="text-white/50 hover:text-white transition-colors duration-200 text-sm flex items-center gap-1.5 group" href="#"><span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 group-hover:text-primary transition-all duration-200">chevron_right</span>{{ 'footer.terms' | translate }}</a></li>
+        <li><a class="text-white/50 hover:text-white transition-colors duration-200 text-sm flex items-center gap-1.5 group" href="#"><span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 group-hover:text-primary transition-all duration-200">chevron_right</span>{{ 'footer.privacy' | translate }}</a></li>
+        <li><a class="text-white/50 hover:text-white transition-colors duration-200 text-sm flex items-center gap-1.5 group" href="#"><span class="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 group-hover:text-primary transition-all duration-200">chevron_right</span>{{ 'footer.cookies' | translate }}</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-bold mb-6 text-primary text-xs uppercase tracking-widest">{{ 'footer.newsletter' | translate }}</h4>
+      <p class="text-white/50 text-sm mb-4 leading-relaxed">{{ 'footer.newsletter_desc' | translate }}</p>
+      <div class="flex bg-white/6 border border-white/12 rounded-xl overflow-hidden">
+        <input class="bg-transparent border-none outline-none text-sm p-3 w-full text-white placeholder:text-white/35 font-body" [placeholder]="'footer.email_placeholder' | translate" type="email" />
+        <button class="bg-primary px-4 text-white hover:bg-primary/80 flex items-center transition-colors duration-200"><span class="material-symbols-outlined text-xl">send</span></button>
+      </div>
+    </div>
+  </div>
+  <div class="max-w-7xl mx-auto pt-8 border-t border-white/8 flex flex-col md:flex-row justify-between items-center gap-4">
+    <p class="text-white/30 text-xs uppercase tracking-widest">{{ 'footer.copyright' | translate }}</p>
     <div class="flex gap-8">
-      <a class="text-slate-500 text-xs uppercase tracking-widest hover:text-teal-300" href="#">{{ 'footer.privacy' | translate }}</a>
-      <a class="text-slate-500 text-xs uppercase tracking-widest hover:text-teal-300" href="#">{{ 'footer.terms' | translate }}</a>
+      <a class="text-white/30 text-xs uppercase tracking-widest hover:text-primary transition-colors duration-200" href="#">{{ 'footer.privacy' | translate }}</a>
+      <a class="text-white/30 text-xs uppercase tracking-widest hover:text-primary transition-colors duration-200" href="#">{{ 'footer.terms' | translate }}</a>
     </div>
   </div>
 </footer>

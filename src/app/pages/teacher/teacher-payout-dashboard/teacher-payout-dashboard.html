@@ -1,0 +1,286 @@
+<div class="min-h-screen bg-surface p-4 md:p-6 lg:p-8">
+  <div class="max-w-7xl mx-auto">
+
+    <!-- Page Header -->
+    <header class="mb-6">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <h1 class="text-2xl md:text-3xl font-bold text-on-surface font-headline">
+            {{ 'earnings.title' | translate }}
+          </h1>
+          <p class="text-sm text-on-surface-variant mt-1">
+            {{ 'earnings.subtitle' | translate }}
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <a routerLink="/teacher/payout/earnings"
+             class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-surface-container-lowest ring-1 ring-outline-variant hover:bg-surface-container transition-colors text-sm font-medium text-on-surface">
+            <i class="fa-solid fa-list"></i>
+            {{ 'earnings.allEarnings' | translate }}
+          </a>
+          <a routerLink="/teacher/payout/invoices"
+             class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-on-primary hover:bg-primary-dim transition-colors text-sm font-medium shadow-sm">
+            <i class="fa-solid fa-file-invoice-dollar"></i>
+            {{ 'earnings.myInvoices' | translate }}
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Error State -->
+    @if (error()) {
+      <div class="mb-6 p-4 rounded-2xl bg-error-container text-on-error-container ring-1 ring-error/30 flex items-start gap-3">
+        <i class="fa-solid fa-circle-exclamation text-lg mt-0.5"></i>
+        <div class="flex-1">
+          <p class="font-semibold">{{ 'earnings.error.title' | translate }}</p>
+          <p class="text-sm opacity-90">{{ error() }}</p>
+        </div>
+        <button (click)="loadDashboard()"
+                class="px-3 py-1.5 rounded-lg bg-white/30 hover:bg-white/50 text-sm font-medium">
+          {{ 'common.retry' | translate }}
+        </button>
+      </div>
+    }
+
+    <!-- Loading State -->
+    @if (loading()) {
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        @for (_ of [1, 2, 3, 4]; track $index) {
+          <app-loading-skeleton variant="card" />
+        }
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2"><app-loading-skeleton variant="chart" /></div>
+        <app-loading-skeleton variant="card" />
+      </div>
+    }
+
+    <!-- Loaded Content -->
+    @if (!loading() && summary() && currentMonth(); as ready) {
+
+      <!-- ─── KPI Row ─── -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+
+        <app-kpi-card
+          [label]="'earnings.kpi.totalEarned' | translate"
+          [value]="summary()!.totalEarned.toLocaleString()"
+          [suffix]="summary()!.currency"
+          [subtitle]="'earnings.kpi.totalEarnedSub' | translate"
+          icon="fa-solid fa-coins"
+          tone="primary" />
+
+        <app-kpi-card
+          [label]="'earnings.kpi.totalPaid' | translate"
+          [value]="summary()!.totalPaid.toLocaleString()"
+          [suffix]="summary()!.currency"
+          [subtitle]="'earnings.kpi.totalPaidSub' | translate"
+          icon="fa-solid fa-circle-check"
+          tone="success" />
+
+        <app-kpi-card
+          [label]="'earnings.kpi.pendingPayout' | translate"
+          [value]="summary()!.totalPending.toLocaleString()"
+          [suffix]="summary()!.currency"
+          [subtitle]="summary()!.totalInvoicesCount + ' ' + ('earnings.kpi.totalInvoices' | translate)"
+          icon="fa-solid fa-clock"
+          tone="warning" />
+
+        <app-kpi-card
+          [label]="'earnings.kpi.thisMonth' | translate"
+          [value]="currentMonth()!.projectedTotal.toLocaleString()"
+          [suffix]="currentMonth()!.currency"
+          [subtitle]="currentMonth()!.paidEnrollmentsCount + ' ' + ('earnings.kpi.paidEnrollments' | translate)"
+          icon="fa-solid fa-calendar-day"
+          tone="info" />
+      </div>
+
+      <!-- ─── Main Grid: Chart + Tier Progress ─── -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+
+        <!-- Chart Section -->
+        <div class="lg:col-span-2 bg-surface-container-lowest rounded-2xl p-5 ring-1 ring-outline-variant/40">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h2 class="text-lg font-semibold text-on-surface font-headline">
+                {{ 'earnings.chart.title' | translate }}
+              </h2>
+              <p class="text-xs text-on-surface-variant">
+                {{ 'earnings.chart.subtitle' | translate }}
+              </p>
+            </div>
+            <div class="text-right">
+              <div class="text-sm text-on-surface-variant">{{ 'earnings.chart.projectedTotal' | translate }}</div>
+              <app-money-display
+                [amount]="currentMonth()!.projectedTotal"
+                [currency]="currentMonth()!.currency"
+                size="lg" />
+            </div>
+          </div>
+
+          @if (chartOptions(); as opts) {
+            <apx-chart
+              [series]="opts.series!"
+              [chart]="opts.chart!"
+              [xaxis]="opts.xaxis!"
+              [yaxis]="opts.yaxis!"
+              [plotOptions]="opts.plotOptions!"
+              [colors]="opts.colors!"
+              [dataLabels]="opts.dataLabels!"
+              [stroke]="opts.stroke!"
+              [legend]="opts.legend!"
+              [grid]="opts.grid!"
+              [tooltip]="opts.tooltip!" />
+          }
+        </div>
+
+        <!-- Tier Progress Section -->
+        <div class="bg-surface-container-lowest rounded-2xl p-5 ring-1 ring-outline-variant/40">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-8 h-8 rounded-xl bg-tertiary-fixed flex items-center justify-center">
+              <i class="fa-solid fa-trophy text-on-tertiary-fixed-variant"></i>
+            </div>
+            <h2 class="text-lg font-semibold text-on-surface font-headline">
+              {{ 'earnings.tier.title' | translate }}
+            </h2>
+          </div>
+
+          @if (currentMonth()!.nextTierThreshold) {
+            <p class="text-sm text-on-surface-variant mb-4">
+              {{ 'earnings.tier.enrollmentsAway.prefix' | translate }}
+              <span class="font-semibold text-primary">{{ currentMonth()!.enrollmentsToNextTier }}</span>
+              {{ 'earnings.tier.enrollmentsAway.suffix' | translate }}
+            </p>
+
+            <!-- Progress Bar -->
+            <div class="mb-4">
+              <div class="flex justify-between text-xs text-on-surface-variant mb-1.5">
+                <span>{{ currentMonth()!.paidEnrollmentsCount }} {{ 'earnings.tier.enrolled' | translate }}</span>
+                <span>{{ currentMonth()!.nextTierThreshold }} {{ 'earnings.tier.target' | translate }}</span>
+              </div>
+              <div class="w-full h-3 bg-surface-container-high rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-primary-container to-primary rounded-full transition-all duration-500"
+                     [style.width.%]="tierProgressPercent()"></div>
+              </div>
+              <div class="text-right text-xs text-on-surface-variant mt-1">
+                {{ tierProgressPercent() | number:'1.0-0' }}% {{ 'earnings.tier.complete' | translate }}
+              </div>
+            </div>
+
+            <!-- Reward preview -->
+            <div class="p-4 rounded-xl bg-primary-fixed ring-1 ring-primary-container/40">
+              <div class="text-xs text-on-primary-fixed-variant uppercase tracking-wide font-semibold mb-1">
+                {{ 'earnings.tier.nextReward' | translate }}
+              </div>
+              <div class="flex items-baseline gap-2">
+                <span class="text-2xl font-bold text-on-primary-fixed">
+                  +{{ currentMonth()!.nextTierBonus!.toLocaleString() }}
+                </span>
+                <span class="text-sm text-on-primary-fixed-variant">{{ currentMonth()!.currency }}</span>
+              </div>
+              <p class="text-xs text-on-primary-fixed-variant mt-1">
+                {{ 'earnings.tier.bonusNote' | translate }}
+              </p>
+            </div>
+          } @else {
+            <!-- Max tier -->
+            <div class="text-center py-4">
+              <i class="fa-solid fa-crown text-4xl text-tertiary mb-3"></i>
+              <h3 class="font-semibold text-on-surface mb-1">{{ 'earnings.tier.topTier.title' | translate }} 🎉</h3>
+              <p class="text-sm text-on-surface-variant mb-3">
+                {{ 'earnings.tier.topTier.subtitle' | translate }}
+              </p>
+              @if (currentMonth()!.projectedTierBonus > 0) {
+                <div class="p-3 rounded-xl bg-emerald-50 ring-1 ring-emerald-200">
+                  <div class="text-xs text-emerald-700 font-semibold uppercase tracking-wide">
+                    {{ 'earnings.tier.earnedBonus' | translate }}
+                  </div>
+                  <div class="text-2xl font-bold text-emerald-800">
+                    +{{ currentMonth()!.projectedTierBonus.toLocaleString() }}
+                    <span class="text-xs font-normal">{{ currentMonth()!.currency }}</span>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- ─── Recent Earnings ─── -->
+      <div class="bg-surface-container-lowest rounded-2xl ring-1 ring-outline-variant/40 overflow-hidden">
+        <div class="flex items-center justify-between p-5 border-b border-outline-variant/30">
+          <div>
+            <h2 class="text-lg font-semibold text-on-surface font-headline">
+              {{ 'earnings.recent.title' | translate }}
+            </h2>
+            <p class="text-xs text-on-surface-variant">{{ 'earnings.recent.subtitle' | translate }}</p>
+          </div>
+          <a routerLink="/teacher/payout/earnings"
+             class="text-sm font-medium text-primary hover:text-primary-dim flex items-center gap-1">
+            {{ 'common.viewAll' | translate }}
+            <i class="fa-solid fa-arrow-right text-xs"></i>
+          </a>
+        </div>
+
+        @if (recentEarnings().length === 0) {
+          <app-empty-state
+            icon="fa-solid fa-coins"
+            [title]="'earnings.recent.empty.title' | translate"
+            [message]="'earnings.recent.empty.message' | translate" />
+        } @else {
+          <!-- Desktop table -->
+          <div class="hidden md:block overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead class="bg-surface-container">
+                <tr class="text-left text-xs uppercase tracking-wide text-on-surface-variant">
+                  <th class="px-5 py-3 font-semibold">{{ 'earnings.recent.table.course' | translate }}</th>
+                  <th class="px-5 py-3 font-semibold">{{ 'earnings.recent.table.date' | translate }}</th>
+                  <th class="px-5 py-3 font-semibold text-right">{{ 'earnings.recent.table.gross' | translate }}</th>
+                  <th class="px-5 py-3 font-semibold text-right">{{ 'earnings.recent.table.net' | translate }}</th>
+                  <th class="px-5 py-3 font-semibold">{{ 'earnings.recent.table.status' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-outline-variant/20">
+                @for (e of recentEarnings(); track e.id) {
+                  <tr class="hover:bg-surface-container/50 transition-colors">
+                    <td class="px-5 py-3 font-medium text-on-surface">{{ e.courseTitle }}</td>
+                    <td class="px-5 py-3 text-on-surface-variant">
+                      {{ e.earnedAt | date:'mediumDate' }}
+                    </td>
+                    <td class="px-5 py-3 text-right">
+                      <app-money-display [amount]="e.grossAmount" [currency]="e.currency" size="sm" [showCurrency]="false" />
+                    </td>
+                    <td class="px-5 py-3 text-right">
+                      <app-money-display [amount]="e.netAmount" [currency]="e.currency" size="sm" />
+                    </td>
+                    <td class="px-5 py-3">
+                      <app-invoice-status-badge [status]="e.status" />
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Mobile cards -->
+          <div class="md:hidden divide-y divide-outline-variant/20">
+            @for (e of recentEarnings(); track e.id) {
+              <div class="p-4">
+                <div class="flex items-start justify-between mb-2">
+                  <div class="flex-1 min-w-0">
+                    <h3 class="font-medium text-on-surface truncate">{{ e.courseTitle }}</h3>
+                    <p class="text-xs text-on-surface-variant">{{ e.earnedAt | date:'mediumDate' }}</p>
+                  </div>
+                  <app-invoice-status-badge [status]="e.status" />
+                </div>
+                <div class="flex items-center justify-between text-sm">
+                  <span class="text-on-surface-variant">{{ 'earnings.recent.mobile.netEarned' | translate }}</span>
+                  <app-money-display [amount]="e.netAmount" [currency]="e.currency" size="md" />
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

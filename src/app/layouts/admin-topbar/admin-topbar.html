@@ -1,4 +1,3 @@
-<!-- src/app/layouts/admin-topbar/admin-topbar.html -->
 <header class="w-full top-0 sticky z-40 bg-[#f8faf9]/70 backdrop-blur-xl flex justify-between items-center px-8 py-4">
   <div class="flex items-center gap-6 flex-1">
     <div class="relative w-full max-w-md">
@@ -10,10 +9,12 @@
     </div>
   </div>
   <div class="flex items-center gap-3">
-    <button class="w-10 h-10 rounded-full flex items-center justify-center text-emerald-700/70 hover:bg-emerald-50 transition-colors">
+    <button class="w-10 h-10 rounded-full flex items-center justify-center text-emerald-700/70 hover:bg-emerald-50 transition-colors"
+      [title]="'adminTopbar.notifications' | translate">
       <span class="material-symbols-outlined">notifications</span>
     </button>
-    <button class="w-10 h-10 rounded-full flex items-center justify-center text-emerald-700/70 hover:bg-emerald-50 transition-colors">
+    <button class="w-10 h-10 rounded-full flex items-center justify-center text-emerald-700/70 hover:bg-emerald-50 transition-colors"
+      [title]="'adminTopbar.help' | translate">
       <span class="material-symbols-outlined">help</span>
     </button>
   </div>

@@ -2,31 +2,29 @@
 <aside
   [class.w-64]="isOpen()"
   [class.w-16]="!isOpen()"
-  class="h-screen fixed left-0 top-0 bg-[#eaefee] flex flex-col z-50 transition-all duration-300 overflow-hidden">
+  class="hidden lg:flex flex-col fixed start-0 top-20 h-[calc(100vh-5rem)] bg-[#F2F4F4] border-e border-[#d5dbd9] z-50 transition-all duration-300">
 
   <!-- Header -->
-  <div
-    class="flex items-center gap-3 p-4 border-b border-emerald-800/10 pt-24"
-    [class.justify-between]="isOpen()"
-    [class.justify-center]="!isOpen()">
-
+  <div class="flex items-center gap-3 p-4 border-b border-[#d5dbd9]"
+       [class.justify-between]="isOpen()"
+       [class.justify-center]="!isOpen()">
     @if (isOpen()) {
       <div class="flex items-center gap-3">
         <div class="w-9 h-9 rounded-lg bg-[#2e6959] flex items-center justify-center flex-shrink-0">
           <span class="material-symbols-outlined text-[#e4fff4] text-lg">school</span>
         </div>
         <div>
-          <p class="text-sm font-bold text-emerald-900">EduCore</p>
-          <p class="text-[10px] text-emerald-800/50 uppercase tracking-widest">Admin Portal</p>
+          <p class="text-sm font-bold text-[#2d3433]">EduCore</p>
+          <p class="text-[10px] text-[#596060] uppercase tracking-widest">
+            {{ 'adminSidebar.adminPortal' | translate }}
+          </p>
         </div>
       </div>
     }
-
-    <button
-      (click)="toggle()"
-      class="w-8 h-8 rounded-lg hover:bg-emerald-800/10 flex items-center justify-center transition-colors flex-shrink-0">
-      <span class="material-symbols-outlined text-emerald-800/60 text-lg">
-        {{ isOpen() ? 'chevron_left' : 'chevron_right' }}
+    <button (click)="toggle()"
+            class="w-8 h-8 rounded-lg hover:bg-[#d5dbd9] flex items-center justify-center transition-colors flex-shrink-0">
+      <span class="material-symbols-outlined text-[#acb3b2] text-lg">
+        {{ getToggleIcon() }}
       </span>
     </button>
   </div>
@@ -34,27 +32,24 @@
   <!-- Nav -->
   <nav class="flex-1 p-3 space-y-1 overflow-y-auto">
     @for (item of navItems; track item.route) {
-      
-        <a [routerLink]="item.route"
-        routerLinkActive #rla="routerLinkActive"
-        [routerLinkActiveOptions]="{ exact: item.exact }"
-        class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group"
-        [class.bg-[#2e6959]]="rla.isActive"
-        [class.text-[#e4fff4]]="rla.isActive"
-        [class.hover:bg-emerald-800/10]="!rla.isActive"
-        [class.text-emerald-800/60]="!rla.isActive"
-        [class.justify-center]="!isOpen()">
-
-        <span
-          class="material-symbols-outlined text-xl flex-shrink-0"
-          [class.text-[#e4fff4]]="rla.isActive"
-          [class.text-emerald-700]="!rla.isActive">
+      <a [routerLink]="item.route"
+         routerLinkActive #rla="routerLinkActive"
+         [routerLinkActiveOptions]="{ exact: item.exact }"
+         class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group"
+         [class.bg-[#2e6959]]="rla.isActive"
+         [class.text-[#e4fff4]]="rla.isActive"
+         [class.shadow-sm]="rla.isActive"
+         [class.hover:bg-[#d5dbd9]]="!rla.isActive"
+         [class.text-[#596060]]="!rla.isActive"
+         [class.justify-center]="!isOpen()">
+        <span class="material-symbols-outlined text-xl flex-shrink-0"
+              [class.text-[#e4fff4]]="rla.isActive"
+              [class.text-[#2e6959]]="!rla.isActive">
           {{ item.icon }}
         </span>
-
         @if (isOpen()) {
           <span class="uppercase tracking-widest text-[10px] font-bold whitespace-nowrap">
-            {{ item.label }}
+            {{ item.label | translate }}
           </span>
         }
       </a>
@@ -62,49 +57,52 @@
   </nav>
 
   <!-- Footer -->
-  <div class="border-t border-emerald-800/10">
+  <div class="border-t border-[#d5dbd9]">
 
-    <!-- Logout -->
+    <!-- Support & Logout -->
     <div class="p-3 space-y-1">
-      
-        <a href="#"
-        class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-emerald-800/60 hover:bg-emerald-800/10 transition-colors"
-        [class.justify-center]="!isOpen()">
-        <span class="material-symbols-outlined text-xl flex-shrink-0 text-emerald-700">contact_support</span>
+      <a href="#"
+         class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[#596060] hover:bg-[#d5dbd9] transition-colors"
+         [class.justify-center]="!isOpen()">
+        <span class="material-symbols-outlined text-xl flex-shrink-0 text-[#2e6959]">contact_support</span>
         @if (isOpen()) {
-          <span class="uppercase tracking-widest text-[10px] font-bold whitespace-nowrap">Support</span>
+          <span class="uppercase tracking-widest text-[10px] font-bold whitespace-nowrap">
+            {{ 'adminSidebar.support' | translate }}
+          </span>
         }
       </a>
 
-      <button
-        (click)="logout()"
-        class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-emerald-800/60 hover:bg-red-50 hover:text-red-700 transition-colors"
-        [class.justify-center]="!isOpen()">
+      <button (click)="logout()"
+              class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[#596060] hover:bg-red-50 hover:text-red-600 transition-colors"
+              [class.justify-center]="!isOpen()">
         <span class="material-symbols-outlined text-xl flex-shrink-0">logout</span>
         @if (isOpen()) {
-          <span class="uppercase tracking-widest text-[10px] font-bold whitespace-nowrap">Logout</span>
+          <span class="uppercase tracking-widest text-[10px] font-bold whitespace-nowrap">
+            {{ 'adminSidebar.logout' | translate }}
+          </span>
         }
       </button>
     </div>
 
     <!-- User -->
     @if (isOpen()) {
-      <div class="p-4 border-t border-emerald-800/10">
+      <div class="p-4 border-t border-[#d5dbd9]">
         <div class="flex items-center gap-3">
           <div class="w-8 h-8 rounded-full bg-[#2e6959] flex items-center justify-center text-[#e4fff4] text-xs font-bold flex-shrink-0">
             {{ userInitials }}
           </div>
           <div class="overflow-hidden">
-            <p class="text-xs font-bold text-emerald-900 truncate">{{ userName }}</p>
-            <p class="text-[10px] text-emerald-800/50 uppercase tracking-widest">Administrator</p>
-            </div>
+            <p class="text-xs font-bold text-[#2d3433] truncate">{{ userName }}</p>
+            <p class="text-[10px] text-[#596060] uppercase tracking-widest">
+              {{ 'adminSidebar.administrator' | translate }}
+            </p>
+          </div>
         </div>
       </div>
     } @else {
-      <div class="p-3 flex justify-center border-t border-emerald-800/10">
-        <div
-          class="w-8 h-8 rounded-full bg-[#2e6959] flex items-center justify-center text-[#e4fff4] text-xs font-bold"
-          [title]="userName">
+      <div class="p-3 flex justify-center border-t border-[#d5dbd9]">
+        <div class="w-8 h-8 rounded-full bg-[#2e6959] flex items-center justify-center text-[#e4fff4] text-xs font-bold"
+             [title]="userName">
           {{ userInitials }}
         </div>
       </div>
@@ -113,9 +111,8 @@
 
 </aside>
 
-<!-- Content offset -->
-<div
-  [class.ml-64]="isOpen()"
-  [class.ml-16]="!isOpen()"
-  class="transition-all duration-300 h-0">
+<!-- Spacer -->
+<div [class.ms-64]="isOpen()"
+     [class.ms-16]="!isOpen()"
+     class="transition-all duration-300 lg:block hidden h-0">
 </div>

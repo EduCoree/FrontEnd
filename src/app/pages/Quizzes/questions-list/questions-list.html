@@ -1,202 +1,162 @@
 <main class="px-6 py-8 md:max-w-4xl md:mx-auto">
-    <!-- Header Section: Editorial Authority -->
-    <section class="mb-10 flex flex-col gap-4 ms-16">
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <div class="flex flex-col">
-                <span
-                    class="inline-flex items-center px-3 py-1 rounded-full bg-primary-fixed-dim text-on-primary-container text-xs font-bold uppercase tracking-widest mb-3 w-fit">
-                    Published
-                </span>
-                <h3 class="text-3xl font-extrabold text-primary tracking-tight leading-tight max-w-lg">Advanced UI
-                    Principles</h3>
-            </div>
-            <div
-                class="flex gap-4 items-center bg-surface-container-lowest p-4 rounded-[12px] shadow-[0_8px_32px_rgba(125,184,165,0.06)]">
-                <div class="text-center px-4">
-                    <p class="text-[10px] uppercase tracking-tighter text-outline font-bold">Total Points</p>
-                    <p class="text-2xl font-bold text-primary">45</p>
-                </div>
-                <div class="w-px h-8 bg-outline-variant/30"></div>
-                <div class="text-center px-4">
-                    <p class="text-[10px] uppercase tracking-tighter text-outline font-bold">Passing Score</p>
-                    <p class="text-2xl font-bold text-primary">85%</p>
-                </div>
-            </div>
+  <section class="mb-10 flex flex-col gap-4 ms-16">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div class="flex flex-col">
+        <span class="inline-flex items-center px-3 py-1 rounded-full bg-primary-fixed-dim text-on-primary-container text-xs font-bold uppercase tracking-widest mb-3 w-fit">
+          {{ 'quizView.published' | translate }}
+        </span>
+        <h3 class="text-3xl font-extrabold text-primary tracking-tight leading-tight max-w-lg">
+          Advanced UI Principles
+        </h3>
+      </div>
+      <div class="flex gap-4 items-center bg-surface-container-lowest p-4 rounded-[12px] shadow-[0_8px_32px_rgba(125,184,165,0.06)]">
+        <div class="text-center px-4">
+          <p class="text-[10px] uppercase tracking-tighter text-outline font-bold">{{ 'quizView.totalPoints' | translate }}</p>
+          <p class="text-2xl font-bold text-primary">45</p>
         </div>
-    </section>
-    <!-- Question List: Layered Surfaces -->
-    <div class="space-y-8">
-        <!-- Question Card 1 -->
-        <article
-            class="bg-surface-container-lowest rounded-xl p-7 shadow-[0_8px_32px_rgba(125,184,165,0.12)] relative overflow-hidden ms-14">
-            <div class="flex justify-between items-start mb-6">
-                <div class="flex flex-wrap gap-2">
-                    <span
-                        class="px-3 py-1 bg-surface-container-low text-primary text-xs font-bold rounded-lg">#01</span>
-                    <span
-                        class="px-3 py-1 bg-surface-container-low text-on-surface-variant text-xs font-medium rounded-lg">Multiple
-                        Choice</span>
-                    <span
-                        class="px-3 py-1 bg-secondary-container text-on-secondary-container text-xs font-bold rounded-lg">10
-                        pts</span>
-                </div>
-                <div class="flex gap-2">
-                    <button
-                        class="p-2 text-outline hover:text-primary transition-colors hover:bg-surface-container-low rounded-lg">
-                        <span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
-                    </button>
-                    <button
-                        class="p-2 text-outline hover:text-error transition-colors hover:bg-error-container/20 rounded-lg">
-                        <span class="material-symbols-outlined text-sm" data-icon="delete">delete</span>
-                    </button>
-                </div>
-            </div>
-            <h3 class="text-lg font-bold text-on-surface mb-6 leading-relaxed">
-                Which principle best describes the use of intentional asymmetry to create visual movement?
-            </h3>
-            <div class="grid gap-3">
-                <div
-                    class="flex items-center gap-3 p-4 rounded-xl border border-transparent bg-surface-container-low text-on-surface-variant text-sm font-medium">
-                    <div class="w-5 h-5 rounded-full border-2 border-outline-variant flex-shrink-0"></div>
-                    <span>Rule of Thirds Alignment</span>
-                </div>
-                <div
-                    class="flex items-center gap-3 p-4 rounded-xl border-2 border-primary/20 bg-primary/5 text-primary text-sm font-bold">
-                    <span class="material-symbols-outlined text-primary text-lg" data-icon="check_circle"
-                        style="font-variation-settings: 'FILL' 1;">check_circle</span>
-                    <span>Dynamic Compositional Balance</span>
-                </div>
-                <div
-                    class="flex items-center gap-3 p-4 rounded-xl border border-transparent bg-surface-container-low text-on-surface-variant text-sm font-medium">
-                    <div class="w-5 h-5 rounded-full border-2 border-outline-variant flex-shrink-0"></div>
-                    <span>Symmetric Equilibrium</span>
-                </div>
-                <div
-                    class="flex items-center gap-3 p-4 rounded-xl border border-transparent bg-surface-container-low text-on-surface-variant text-sm font-medium">
-                    <div class="w-5 h-5 rounded-full border-2 border-outline-variant flex-shrink-0"></div>
-                    <span>Grid-Locked Uniformity</span>
-                </div>
-            </div>
-        </article>
-        <!-- Question Card 2 -->
-        <article
-            class="bg-surface-container-lowest rounded-xl p-7 shadow-[0_8px_32px_rgba(125,184,165,0.12)] relative overflow-hidden ms-14">
-            <div class="flex justify-between items-start mb-6">
-                <div class="flex flex-wrap gap-2">
-                    <span
-                        class="px-3 py-1 bg-surface-container-low text-primary text-xs font-bold rounded-lg">#02</span>
-                    <span
-                        class="px-3 py-1 bg-surface-container-low text-on-surface-variant text-xs font-medium rounded-lg">Multiple
-                        Choice</span>
-                    <span
-                        class="px-3 py-1 bg-secondary-container text-on-secondary-container text-xs font-bold rounded-lg">15
-                        pts</span>
-                </div>
-                <div class="flex gap-2">
-                    <button
-                        class="p-2 text-outline hover:text-primary transition-colors hover:bg-surface-container-low rounded-lg">
-                        <span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
-                    </button>
-                    <button
-                        class="p-2 text-outline hover:text-error transition-colors hover:bg-error-container/20 rounded-lg">
-                        <span class="material-symbols-outlined text-sm" data-icon="delete">delete</span>
-                    </button>
-                </div>
-            </div>
-            <h3 class="text-lg font-bold text-on-surface mb-6 leading-relaxed">
-                What is the primary function of "The Progress Veil" in the Digital Atrium design system?
-            </h3>
-            <div class="grid gap-3">
-                <div
-                    class="flex items-center gap-3 p-4 rounded-xl border-2 border-primary/20 bg-primary/5 text-primary text-sm font-bold">
-                    <span class="material-symbols-outlined text-primary text-lg" data-icon="check_circle"
-                        style="font-variation-settings: 'FILL' 1;">check_circle</span>
-                    <span>Maintaining aesthetic while providing functional feedback</span>
-                </div>
-                <div
-                    class="flex items-center gap-3 p-4 rounded-xl border border-transparent bg-surface-container-low text-on-surface-variant text-sm font-medium">
-                    <div class="w-5 h-5 rounded-full border-2 border-outline-variant flex-shrink-0"></div>
-                    <span>Hiding incomplete content from students</span>
-                </div>
-                <div
-                    class="flex items-center gap-3 p-4 rounded-xl border border-transparent bg-surface-container-low text-on-surface-variant text-sm font-medium">
-                    <div class="w-5 h-5 rounded-full border-2 border-outline-variant flex-shrink-0"></div>
-                    <span>Enforcing linear learning paths only</span>
-                </div>
-            </div>
-        </article>
-        <!-- Question Card 3 -->
-        <article
-            class="bg-surface-container-lowest rounded-xl p-7 shadow-[0_8px_32px_rgba(125,184,165,0.12)] relative overflow-hidden ms-14">
-            <div class="flex justify-between items-start mb-6">
-                <div class="flex flex-wrap gap-2">
-                    <span
-                        class="px-3 py-1 bg-surface-container-low text-primary text-xs font-bold rounded-lg">#03</span>
-                    <span
-                        class="px-3 py-1 bg-surface-container-low text-on-surface-variant text-xs font-medium rounded-lg">Multiple
-                        Choice</span>
-                    <span
-                        class="px-3 py-1 bg-secondary-container text-on-secondary-container text-xs font-bold rounded-lg">20
-                        pts</span>
-                </div>
-                <div class="flex gap-2">
-                    <button
-                        class="p-2 text-outline hover:text-primary transition-colors hover:bg-surface-container-low rounded-lg">
-                        <span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
-                    </button>
-                    <button
-                        class="p-2 text-outline hover:text-error transition-colors hover:bg-error-container/20 rounded-lg">
-                        <span class="material-symbols-outlined text-sm" data-icon="delete">delete</span>
-                    </button>
-                </div>
-            </div>
-            <h3 class="text-lg font-bold text-on-surface mb-6 leading-relaxed">
-                How does the "No-Line" rule achieve boundaries between sections?
-            </h3>
-            <div class="grid gap-3">
-                <div
-                    class="flex items-center gap-3 p-4 rounded-xl border border-transparent bg-surface-container-low text-on-surface-variant text-sm font-medium">
-                    <div class="w-5 h-5 rounded-full border-2 border-outline-variant flex-shrink-0"></div>
-                    <span>Using 0.5pt hair-thin borders</span>
-                </div>
-                <div
-                    class="flex items-center gap-3 p-4 rounded-xl border-2 border-primary/20 bg-primary/5 text-primary text-sm font-bold">
-                    <span class="material-symbols-outlined text-primary text-lg" data-icon="check_circle"
-                        style="font-variation-settings: 'FILL' 1;">check_circle</span>
-                    <span>Intentional background tonal shifts</span>
-                </div>
-                <div
-                    class="flex items-center gap-3 p-4 rounded-xl border border-transparent bg-surface-container-low text-on-surface-variant text-sm font-medium">
-                    <div class="w-5 h-5 rounded-full border-2 border-outline-variant flex-shrink-0"></div>
-                    <span>Exclusively using high-contrast dropshadows</span>
-                </div>
-            </div>
-        </article>
+        <div class="w-px h-8 bg-outline-variant/30"></div>
+        <div class="text-center px-4">
+          <p class="text-[10px] uppercase tracking-tighter text-outline font-bold">{{ 'quizView.passingScore' | translate }}</p>
+          <p class="text-2xl font-bold text-primary">85%</p>
+        </div>
+      </div>
     </div>
+  </section>
+
+  <div class="space-y-8">
+    <article class="bg-surface-container-lowest rounded-xl p-7 shadow-[0_8px_32px_rgba(125,184,165,0.12)] relative overflow-hidden ms-14">
+      <div class="flex justify-between items-start mb-6">
+        <div class="flex flex-wrap gap-2">
+          <span class="px-3 py-1 bg-surface-container-low text-primary text-xs font-bold rounded-lg">#01</span>
+          <span class="px-3 py-1 bg-surface-container-low text-on-surface-variant text-xs font-medium rounded-lg">
+            {{ 'quizView.multipleChoice' | translate }}
+          </span>
+          <span class="px-3 py-1 bg-secondary-container text-on-secondary-container text-xs font-bold rounded-lg">10 pts</span>
+        </div>
+        <div class="flex gap-2">
+          <button class="p-2 text-outline hover:text-primary transition-colors hover:bg-surface-container-low rounded-lg">
+            <span class="material-symbols-outlined text-sm">edit</span>
+          </button>
+          <button class="p-2 text-outline hover:text-error transition-colors hover:bg-error-container/20 rounded-lg">
+            <span class="material-symbols-outlined text-sm">delete</span>
+          </button>
+        </div>
+      </div>
+      <h3 class="text-lg font-bold text-on-surface mb-6 leading-relaxed">
+        Which principle best describes the use of intentional asymmetry to create visual movement?
+      </h3>
+      <div class="grid gap-3">
+        <div class="flex items-center gap-3 p-4 rounded-xl border border-transparent bg-surface-container-low text-on-surface-variant text-sm font-medium">
+          <div class="w-5 h-5 rounded-full border-2 border-outline-variant flex-shrink-0"></div>
+          <span>Rule of Thirds Alignment</span>
+        </div>
+        <div class="flex items-center gap-3 p-4 rounded-xl border-2 border-primary/20 bg-primary/5 text-primary text-sm font-bold">
+          <span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+          <span>Dynamic Compositional Balance</span>
+        </div>
+        <div class="flex items-center gap-3 p-4 rounded-xl border border-transparent bg-surface-container-low text-on-surface-variant text-sm font-medium">
+          <div class="w-5 h-5 rounded-full border-2 border-outline-variant flex-shrink-0"></div>
+          <span>Symmetric Equilibrium</span>
+        </div>
+        <div class="flex items-center gap-3 p-4 rounded-xl border border-transparent bg-surface-container-low text-on-surface-variant text-sm font-medium">
+          <div class="w-5 h-5 rounded-full border-2 border-outline-variant flex-shrink-0"></div>
+          <span>Grid-Locked Uniformity</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="bg-surface-container-lowest rounded-xl p-7 shadow-[0_8px_32px_rgba(125,184,165,0.12)] relative overflow-hidden ms-14">
+      <div class="flex justify-between items-start mb-6">
+        <div class="flex flex-wrap gap-2">
+          <span class="px-3 py-1 bg-surface-container-low text-primary text-xs font-bold rounded-lg">#02</span>
+          <span class="px-3 py-1 bg-surface-container-low text-on-surface-variant text-xs font-medium rounded-lg">
+            {{ 'quizView.multipleChoice' | translate }}
+          </span>
+          <span class="px-3 py-1 bg-secondary-container text-on-secondary-container text-xs font-bold rounded-lg">15 pts</span>
+        </div>
+        <div class="flex gap-2">
+          <button class="p-2 text-outline hover:text-primary transition-colors hover:bg-surface-container-low rounded-lg">
+            <span class="material-symbols-outlined text-sm">edit</span>
+          </button>
+          <button class="p-2 text-outline hover:text-error transition-colors hover:bg-error-container/20 rounded-lg">
+            <span class="material-symbols-outlined text-sm">delete</span>
+          </button>
+        </div>
+      </div>
+      <h3 class="text-lg font-bold text-on-surface mb-6 leading-relaxed">
+        What is the primary function of "The Progress Veil" in the Digital Atrium design system?
+      </h3>
+      <div class="grid gap-3">
+        <div class="flex items-center gap-3 p-4 rounded-xl border-2 border-primary/20 bg-primary/5 text-primary text-sm font-bold">
+          <span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+          <span>Maintaining aesthetic while providing functional feedback</span>
+        </div>
+        <div class="flex items-center gap-3 p-4 rounded-xl border border-transparent bg-surface-container-low text-on-surface-variant text-sm font-medium">
+          <div class="w-5 h-5 rounded-full border-2 border-outline-variant flex-shrink-0"></div>
+          <span>Hiding incomplete content from students</span>
+        </div>
+        <div class="flex items-center gap-3 p-4 rounded-xl border border-transparent bg-surface-container-low text-on-surface-variant text-sm font-medium">
+          <div class="w-5 h-5 rounded-full border-2 border-outline-variant flex-shrink-0"></div>
+          <span>Enforcing linear learning paths only</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="bg-surface-container-lowest rounded-xl p-7 shadow-[0_8px_32px_rgba(125,184,165,0.12)] relative overflow-hidden ms-14">
+      <div class="flex justify-between items-start mb-6">
+        <div class="flex flex-wrap gap-2">
+          <span class="px-3 py-1 bg-surface-container-low text-primary text-xs font-bold rounded-lg">#03</span>
+          <span class="px-3 py-1 bg-surface-container-low text-on-surface-variant text-xs font-medium rounded-lg">
+            {{ 'quizView.multipleChoice' | translate }}
+          </span>
+          <span class="px-3 py-1 bg-secondary-container text-on-secondary-container text-xs font-bold rounded-lg">20 pts</span>
+        </div>
+        <div class="flex gap-2">
+          <button class="p-2 text-outline hover:text-primary transition-colors hover:bg-surface-container-low rounded-lg">
+            <span class="material-symbols-outlined text-sm">edit</span>
+          </button>
+          <button class="p-2 text-outline hover:text-error transition-colors hover:bg-error-container/20 rounded-lg">
+            <span class="material-symbols-outlined text-sm">delete</span>
+          </button>
+        </div>
+      </div>
+      <h3 class="text-lg font-bold text-on-surface mb-6 leading-relaxed">
+        How does the "No-Line" rule achieve boundaries between sections?
+      </h3>
+      <div class="grid gap-3">
+        <div class="flex items-center gap-3 p-4 rounded-xl border border-transparent bg-surface-container-low text-on-surface-variant text-sm font-medium">
+          <div class="w-5 h-5 rounded-full border-2 border-outline-variant flex-shrink-0"></div>
+          <span>Using 0.5pt hair-thin borders</span>
+        </div>
+        <div class="flex items-center gap-3 p-4 rounded-xl border-2 border-primary/20 bg-primary/5 text-primary text-sm font-bold">
+          <span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+          <span>Intentional background tonal shifts</span>
+        </div>
+        <div class="flex items-center gap-3 p-4 rounded-xl border border-transparent bg-surface-container-low text-on-surface-variant text-sm font-medium">
+          <div class="w-5 h-5 rounded-full border-2 border-outline-variant flex-shrink-0"></div>
+          <span>Exclusively using high-contrast dropshadows</span>
+        </div>
+      </div>
+    </article>
+  </div>
 </main>
-<!-- Floating Action Button -->
-<button
-    class="fixed bottom-10 right-8 bg-gradient-to-br from-primary to-primary-container text-white px-6 py-4 rounded-2xl shadow-[0_8px_32px_rgba(46,104,88,0.3)] flex items-center gap-3 hover:scale-105 active:scale-95 transition-all z-50 group">
-    <span class="material-symbols-outlined text-2xl font-bold" data-icon="add">add</span>
-    <span class="font-bold tracking-tight">Add Question</span>
+
+<button class="fixed bottom-10 right-8 bg-gradient-to-br from-primary to-primary-container text-white px-6 py-4 rounded-2xl shadow-[0_8px_32px_rgba(46,104,88,0.3)] flex items-center gap-3 hover:scale-105 active:scale-95 transition-all z-50 group">
+  <span class="material-symbols-outlined text-2xl font-bold">add</span>
+  <span class="font-bold tracking-tight">{{ 'quizView.addQuestion' | translate }}</span>
 </button>
-<!-- BottomNavBar Component -->
-<nav
-    class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-2 bg-[#FFFFFFCC] dark:bg-slate-900/80 backdrop-blur-xl z-40 md:hidden">
-    <a class="flex flex-col items-center justify-center bg-[#7DB8A5]/20 text-[#2E6858] dark:text-[#7DB8A5] rounded-2xl p-3 tap-highlight-none active:scale-90 transition-transform"
-        href="#">
-        <span class="material-symbols-outlined mb-1" data-icon="book"
-            style="font-variation-settings: 'FILL' 1;">book</span>
-        <span class="font-['Inter'] text-[10px] uppercase tracking-tighter font-bold">Courses</span>
-    </a>
-    <a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 p-3 tap-highlight-none active:scale-90 transition-transform"
-        href="#">
-        <span class="material-symbols-outlined mb-1" data-icon="videocam">videocam</span>
-        <span class="font-['Inter'] text-[10px] uppercase tracking-tighter font-medium">Live</span>
-    </a>
-    <a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 p-3 tap-highlight-none active:scale-90 transition-transform"
-        href="#">
-        <span class="material-symbols-outlined mb-1" data-icon="assignment">assignment</span>
-        <span class="font-['Inter'] text-[10px] uppercase tracking-tighter font-medium">Quizzes</span>
-    </a>
+
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-2 bg-[#FFFFFFCC] dark:bg-slate-900/80 backdrop-blur-xl z-40 md:hidden">
+  <a class="flex flex-col items-center justify-center bg-[#7DB8A5]/20 text-[#2E6858] dark:text-[#7DB8A5] rounded-2xl p-3" href="#">
+    <span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">book</span>
+    <span class="font-['Inter'] text-[10px] uppercase tracking-tighter font-bold">{{ 'quizView.courses' | translate }}</span>
+  </a>
+  <a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 p-3" href="#">
+    <span class="material-symbols-outlined mb-1">videocam</span>
+    <span class="font-['Inter'] text-[10px] uppercase tracking-tighter font-medium">{{ 'quizView.live' | translate }}</span>
+  </a>
+  <a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 p-3" href="#">
+    <span class="material-symbols-outlined mb-1">assignment</span>
+    <span class="font-['Inter'] text-[10px] uppercase tracking-tighter font-medium">{{ 'quizView.quizzes' | translate }}</span>
+  </a>
 </nav>

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
@@ -7,12 +7,15 @@ import { QuizDto } from '../../../../core/models/quiz';
 import { CreateQuizComponent } from '../../CreateQuiz/create-quiz/create-quiz';
 import { FormsModule } from '@angular/forms';
 import { CourseSidebar } from "../../../../shared/components/ui/sidebar/course-sidebar/course-sidebar";
+import { EditQuiz } from "../../edit-quiz/edit-quiz";
 import { Sidebar } from "../../../../shared/components/ui/sidebar/sidebar";
+import { TranslateModule } from '@ngx-translate/core';
+
 
 @Component({
   selector: 'app-quiz',
   templateUrl: './get-quizzes.html',
-  imports: [CommonModule, CreateQuizComponent, FormsModule, CourseSidebar, Sidebar, RouterLink],
+  imports: [CommonModule, CreateQuizComponent, FormsModule, CourseSidebar, RouterLink, EditQuiz,TranslateModule,Sidebar],
 })
 export class QuizComponent implements OnInit {
   courseId!: number;
@@ -22,6 +25,11 @@ export class QuizComponent implements OnInit {
    searchTerm = '';
    courseTitle='jndjendije';
   showCreateModal = false;
+  showEditModal=false;
+  selectedQuizId :number|null=null;
+  openMenuId: number | null = null;
+   totalPages = signal(1);
+  currentPage = signal(1);
  
   constructor(
     private route: ActivatedRoute,
@@ -55,11 +63,16 @@ get filteredQuizzes(): QuizDto[] {
   }
 
   loadQuizzes(): void {
+    const params = {
+     page: this.currentPage(),
+      pageSize: 5,
+    }
     this.isLoading = true;
     this.errorMessage = '';
-    this.quizService.getQuizzes(this.courseId).subscribe({
-      next: (data) => {
-        this.quizzes = data;
+    this.quizService.getQuizzes(this.courseId,params).subscribe({
+      next: (res) => {
+        this.quizzes = res.data.items
+        this.totalPages.set(res.data.totalPages);
         this.isLoading = false;
         this.cdr.detectChanges();
       },
@@ -77,11 +90,12 @@ get filteredQuizzes(): QuizDto[] {
   }
 
   onDelete(quizId: number): void {
-    this.quizService.deleteQuiz(this.courseId, quizId).subscribe({
+    this.quizService.deleteQuiz( quizId).subscribe({
       next: () => this.loadQuizzes(),
       error: () => this.errorMessage = 'Failed to delete quiz.'
     });
   }
+
 
   onOpenBuilder(quizId:number)
   {
@@ -90,5 +104,31 @@ get filteredQuizzes(): QuizDto[] {
   ['/teacher/quizzes', quizId, 'builder'],
  
 );
+  }
+  toggleMenu(quizId:number|null)
+  {
+      this.openMenuId = this.openMenuId === quizId ? null : quizId;
+  }
+  onEdit(quizId: number): void {
+    this.selectedQuizId=quizId;
+   this.showEditModal=true;
+   
+}
+onQuizUpdated() {
+  this.showEditModal = false;
+  this.loadQuizzes(); 
+}
+ 
+@HostListener('document:click', ['$event'])
+onDocumentClick(event: MouseEvent): void {
+  const target = event.target as HTMLElement;
+  if (!target.closest('.relative')) {
+    this.openMenuId = null;
+  }
+}
+  goToPage(page: number): void {
+    if (page < 1 || page > this.totalPages()) return;
+    this.currentPage.set(page);
+    this.loadQuizzes();
   }
 }

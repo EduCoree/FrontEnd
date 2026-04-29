@@ -1,7 +1,9 @@
 export interface Review {
   id: number;
   studentId: string;
+  studentName?: string;
   courseId: number;
+  courseTitle?: string;
   rating: number;
   comment?: string;
   createdAt: string;

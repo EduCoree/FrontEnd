@@ -12,6 +12,14 @@ export interface CreateQuizDto {
      isRandomized: boolean;
 
 }
+
+export interface UpdateQuizDto {
+  title?: string;
+  timeLimitMins?: number | null;
+  passScore?: number;
+  maxAttempts?: number;
+  isRandomized?: boolean;
+}
 export interface QuizDto {
   id: number;
   courseId: number;
@@ -20,6 +28,7 @@ export interface QuizDto {
   passScore: number;
   maxAttempts: number;
   isRandomized: boolean;
+  isPublished:boolean;
   questionsCount:number
   totalPoints:number
 }
@@ -80,6 +89,7 @@ export interface QuizDetailsDto {
   passScore: number;
   maxAttempts: number;
   isRandomized: boolean;
+  isPublished:boolean;
   questions: QuestionDto[];
 }
 export interface CreateAnswerOptionDto {
@@ -157,4 +167,18 @@ export interface AttemptHistoryDto {
   passed: boolean;
   startedAt: string;
   submittedAt?: string;
+}
+export interface AvailableQuizDto {
+  id: number;
+  title: string;
+  passScore: number;
+  courseTitle: string;
+}
+
+export interface PagedResult<T> {
+  items: T[];
+  totalCount: number;
+  pageNumber: number;
+  pageSize: number;
+  totalPages: number;
 }

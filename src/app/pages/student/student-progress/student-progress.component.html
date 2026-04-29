@@ -1,77 +1,103 @@
-<!-- src/app/pages/student/student-progress/student-progress.component.html -->
-<!-- Branch: feature/student-progress-certificates-ui -->
-
 <div class="bg-[#f5f7fa] text-gray-900 min-h-screen font-sans p-8 md:p-12">
   <div class="max-w-5xl mx-auto space-y-8">
-    
-    <!-- ── Header ────────────────────────────────────────────────────────────── -->
     <header>
-      <h1 class="text-2xl font-black text-teal-800 tracking-tight">My Progress</h1>
-      <p class="text-sm text-gray-500 mt-1">Track your learning journey across all enrolled courses.</p>
+      <div *ngIf="courseId()" class="flex flex-col gap-3">
+        <button
+          [routerLink]="['/student/courses', courseId()]"
+          class="inline-flex items-center gap-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-xl px-3 py-2 hover:bg-gray-50 transition-colors"
+        >
+          <span class="material-symbols-outlined">arrow_back</span>
+          Back to course
+        </button>
+        <div>
+          <h1 class="text-2xl font-black text-teal-800 tracking-tight">
+            {{ courseTitle() || 'Course #' + courseId() }}
+          </h1>
+          <p class="text-sm text-gray-500 mt-1">{{ 'studentProgress.subtitle' | translate }}</p>
+        </div>
+      </div>
+      <div *ngIf="!courseId()">
+        <h1 class="text-2xl font-black text-teal-800 tracking-tight">
+          {{ 'studentProgress.title' | translate }}
+        </h1>
+        <p class="text-sm text-gray-500 mt-1">{{ 'studentProgress.subtitle' | translate }}</p>
+      </div>
     </header>
 
-    <!-- ── Loading State ────────────────────────────────────────────────────── -->
     <div *ngIf="isLoading()" class="flex justify-center py-20">
-      <span class="material-symbols-outlined text-teal-500 text-4xl animate-spin">progress_activity</span>
+      <span class="material-symbols-outlined text-teal-500 text-4xl animate-spin"
+        >progress_activity</span
+      >
     </div>
 
-    <!-- ── Error State ──────────────────────────────────────────────────────── -->
-    <div *ngIf="!isLoading() && errorMsg()" class="bg-red-50 text-red-600 border border-red-200 p-4 rounded-xl flex items-center gap-3">
+    <div
+      *ngIf="!isLoading() && errorMsg()"
+      class="bg-red-50 text-red-600 border border-red-200 p-4 rounded-xl flex items-center gap-3"
+    >
       <span class="material-symbols-outlined">error</span>
       <span class="text-sm font-bold">{{ errorMsg() }}</span>
     </div>
 
-    <!-- ── Empty State ──────────────────────────────────────────────────────── -->
-    <div *ngIf="!isLoading() && !errorMsg() && progressList().length === 0" 
-         class="bg-white border-2 border-dashed border-gray-200 rounded-3xl py-20 flex flex-col items-center justify-center text-center gap-4">
+    <div
+      *ngIf="!isLoading() && !errorMsg() && progressList().length === 0"
+      class="bg-white border-2 border-dashed border-gray-200 rounded-3xl py-20 flex flex-col items-center justify-center text-center gap-4"
+    >
       <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center">
         <span class="material-symbols-outlined text-2xl text-gray-300">menu_book</span>
       </div>
       <div class="space-y-1">
-        <h3 class="text-base font-bold text-gray-700">No course progress yet</h3>
-        <p class="text-xs text-gray-400">Start watching lessons to track your progress here.</p>
+        <h3 class="text-base font-bold text-gray-700">
+          {{ 'studentProgress.noProgressTitle' | translate }}
+        </h3>
+        <p class="text-xs text-gray-400">{{ 'studentProgress.noProgressDesc' | translate }}</p>
       </div>
     </div>
 
-    <!-- ── Cards Grid ───────────────────────────────────────────────────────── -->
-    <div *ngIf="!isLoading() && progressList().length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      
-      <div *ngFor="let item of progressList()" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-6">
-        
-        <!-- Target Info -->
+    <div
+      *ngIf="!isLoading() && progressList().length > 0"
+      class="grid grid-cols-1 md:grid-cols-2 gap-6"
+    >
+      <div
+        *ngFor="let item of progressList()"
+        class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-6"
+      >
         <div>
-          <!-- Placeholder if title isn't stored in Progress model directly, usually it's fetched alongside course data. We just map courseId for now -> 'Course [courseId]' -->
-          <h2 class="text-lg font-extrabold text-gray-800 truncate">Course #{{ item.courseId }}</h2>
+          <h2 class="text-lg font-extrabold text-gray-800 truncate">
+            {{
+              courseId() ? courseTitle() || 'Course #' + item.courseId : 'Course #' + item.courseId
+            }}
+          </h2>
           <p class="text-xs text-gray-400 mt-1 uppercase tracking-wider font-bold">
-            {{ item.completedLessons }} / {{ item.totalLessons }} lessons completed
+            {{ item.completedLessons }} / {{ item.totalLessons }}
+            {{ 'studentProgress.lessonsCompleted' | translate }}
           </p>
         </div>
-
-        <!-- Progress Bar -->
         <div class="space-y-2">
           <div class="flex items-center justify-between">
-            <span class="text-[10px] font-bold text-teal-600 uppercase tracking-widest">Completion</span>
-            <span class="text-xs font-bold text-gray-700">{{ item.percentComplete | number:'1.0-0' }}%</span>
+            <span class="text-[10px] font-bold text-teal-600 uppercase tracking-widest">
+              {{ 'studentProgress.completion' | translate }}
+            </span>
+            <span class="text-xs font-bold text-gray-700"
+              >{{ item.percentComplete | number: '1.0-0' }}%</span
+            >
           </div>
           <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
-            <div class="bg-teal-500 h-2 rounded-full transition-all duration-700" 
-                 [style.width]="item.percentComplete + '%'">
-            </div>
+            <div
+              class="bg-teal-500 h-2 rounded-full transition-all duration-700"
+              [style.width]="item.percentComplete + '%'"
+            ></div>
           </div>
         </div>
-
-        <!-- Resume Action -->
         <div class="pt-4 border-t border-gray-50 flex justify-end">
-          <button (click)="resumeCourse(item.courseId)"
-                  class="flex items-center gap-2 px-6 py-2.5 bg-teal-50 text-teal-700 border border-teal-100 rounded-xl text-sm font-bold hover:bg-teal-100 transition-colors">
+          <button
+            (click)="resumeCourse(item.courseId)"
+            class="flex items-center gap-2 px-6 py-2.5 bg-teal-50 text-teal-700 border border-teal-100 rounded-xl text-sm font-bold hover:bg-teal-100 transition-colors"
+          >
             <span class="material-symbols-outlined text-[18px]">play_circle</span>
-            Resume Lesson
+            {{ 'studentProgress.resumeLesson' | translate }}
           </button>
         </div>
-
       </div>
-
     </div>
-
   </div>
 </div>

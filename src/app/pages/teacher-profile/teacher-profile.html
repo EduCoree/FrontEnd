@@ -4,7 +4,7 @@
     @if (loading()) {
       <div class="flex flex-col items-center justify-center py-32 gap-4">
         <span class="material-symbols-outlined text-[#7DB8A5] text-5xl animate-spin">progress_activity</span>
-        <p class="text-[#404945] font-medium">Loading teacher profile...</p>
+        <p class="text-[#404945] font-medium">{{ 'teacherProfile.loading' | translate }}</p>
       </div>
     }
 
@@ -17,10 +17,9 @@
 
     @if (teacher() && !loading()) {
 
-      <!-- Hero Banner -->
       <div class="relative bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] rounded-3xl overflow-hidden mb-10 px-8 py-12 md:px-14">
-        <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/4"></div>
-        <div class="absolute bottom-0 left-0 w-40 h-40 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/4"></div>
+        <div class="absolute top-0 end-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/4"></div>
+        <div class="absolute bottom-0 start-0 w-40 h-40 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/4"></div>
 
         <div class="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-8">
           @if (teacher()!.avatarUrl) {
@@ -32,10 +31,10 @@
             </div>
           }
 
-          <div class="text-center md:text-left">
+          <div class="text-center md:text-start">
             <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-white/20 text-white text-xs font-bold uppercase tracking-widest mb-3">
               <span class="material-symbols-outlined text-[14px]">school</span>
-              Instructor
+              {{ 'teacherPortal.instructor' | translate }}
             </span>
             <h1 class="font-headline text-4xl font-extrabold text-white mb-3 tracking-tight">{{ teacher()!.name }}</h1>
             @if (teacher()!.bio) {
@@ -44,27 +43,26 @@
             <div class="flex flex-wrap justify-center md:justify-start gap-6 mt-5">
               <div class="flex items-center gap-2 text-white/90 text-sm font-semibold">
                 <span class="material-symbols-outlined text-[18px]">menu_book</span>
-                {{ teacher()!.courses.length }} Course{{ teacher()!.courses.length !== 1 ? 's' : '' }}
+                {{ teacher()!.courses.length }} {{ teacher()!.courses.length !== 1 ? ('teacherProfile.courses' | translate) : ('teacherProfile.course' | translate) }}
               </div>
               <div class="flex items-center gap-2 text-white/90 text-sm font-semibold">
                 <span class="material-symbols-outlined text-[18px]">group</span>
-                {{ teacher()!.courses | totalStudents }} Students
+                {{ teacher()!.courses | totalStudents }} {{ 'courseCard.students' | translate }}
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Courses -->
       <div>
         <h2 class="font-headline text-2xl font-bold text-[#191C1D] mb-6">
-          Courses by {{ teacher()!.name }}
+          {{ 'teacherProfile.coursesByTeacher' | translate }} {{ teacher()!.name }}
         </h2>
 
         @if (teacher()!.courses.length === 0) {
           <div class="flex flex-col items-center justify-center py-20 bg-white rounded-2xl shadow-[0_8px_32px_rgba(125,184,165,0.08)]">
             <span class="material-symbols-outlined text-[#BFC9C4] text-6xl mb-4">book_2</span>
-            <p class="text-[#707975] font-medium">No courses published yet.</p>
+            <p class="text-[#707975] font-medium">{{ 'teacherProfile.noPublished' | translate }}</p>
           </div>
         }
 
@@ -79,8 +77,8 @@
                     <span class="material-symbols-outlined text-[#BFC9C4] text-5xl">menu_book</span>
                   </div>
                 }
-                <span class="absolute top-3 right-3 bg-white/90 backdrop-blur px-3 py-1 rounded-lg text-[#2E6858] font-bold text-sm shadow">
-                  @if (course.price === 0) { Free } @else { ${{ course.price }} }
+                <span class="absolute top-3 end-3 bg-white/90 backdrop-blur px-3 py-1 rounded-lg text-[#2E6858] font-bold text-sm shadow">
+                  @if (course.price === 0) { {{ 'courseCard.free' | translate }} } @else { ${{ course.price }} }
                 </span>
               </div>
 
@@ -91,11 +89,11 @@
                 <div class="flex items-center justify-between text-xs text-[#707975]">
                   <div class="flex items-center gap-1">
                     <span class="material-symbols-outlined text-[15px]">group</span>
-                    <span>{{ course.enrollmentCount }} enrolled</span>
+                    <span>{{ course.enrollmentCount }} {{ 'teacherProfile.enrolled' | translate }}</span>
                   </div>
                   <button class="flex items-center gap-1 px-3 py-1.5 bg-[#F2F4F4] text-[#2E6858] font-semibold rounded-lg hover:bg-[#2E6858] hover:text-white transition-all text-xs">
                     <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
-                    View
+                    {{ 'teacherProfile.view' | translate }}
                   </button>
                 </div>
               </div>

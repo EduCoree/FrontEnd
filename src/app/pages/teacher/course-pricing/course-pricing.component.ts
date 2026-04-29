@@ -3,11 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CourseService } from '../../../core/services/course';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-course-pricing',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule , TranslateModule],
   templateUrl: './course-pricing.component.html',
   styleUrl: './course-pricing.component.css'
 })

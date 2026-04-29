@@ -1,0 +1,205 @@
+<div class="min-h-screen bg-surface p-4 md:p-6 lg:p-8">
+  <div class="max-w-7xl mx-auto">
+
+    <!-- Header -->
+    <header class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div>
+        <h1 class="text-2xl md:text-3xl font-bold text-on-surface font-headline">
+          {{ 'payout.dashboard.title' | translate }}
+        </h1>
+        <p class="text-sm text-on-surface-variant mt-1">
+          {{ 'payout.dashboard.subtitle' | translate }}
+        </p>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <a routerLink="/admin/payout/settings"
+           class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-surface-container-lowest ring-1 ring-outline-variant hover:bg-surface-container transition-colors text-sm font-medium text-on-surface">
+          <i class="fa-solid fa-gear"></i> {{ 'payout.dashboard.actions.settings' | translate }}
+        </a>
+        <a routerLink="/admin/payout/generate"
+           class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-surface-container-lowest ring-1 ring-outline-variant hover:bg-surface-container transition-colors text-sm font-medium text-on-surface">
+          <i class="fa-solid fa-bolt"></i> {{ 'payout.dashboard.actions.generate' | translate }}
+        </a>
+        <a routerLink="/admin/payout/invoices"
+           class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-on-primary hover:bg-primary-dim transition-colors text-sm font-medium shadow-sm">
+          <i class="fa-solid fa-file-invoice-dollar"></i> {{ 'payout.dashboard.actions.allInvoices' | translate }}
+        </a>
+      </div>
+    </header>
+
+    <!-- Error -->
+    @if (error()) {
+      <div class="mb-6 p-4 rounded-2xl bg-error-container text-on-error-container ring-1 ring-error/30 flex items-start gap-3">
+        <i class="fa-solid fa-circle-exclamation text-lg mt-0.5"></i>
+        <div class="flex-1">
+          <p class="font-semibold">{{ 'payout.dashboard.error.title' | translate }}</p>
+          <p class="text-sm opacity-90">{{ error() }}</p>
+        </div>
+        <button (click)="loadDashboard()"
+                class="px-3 py-1.5 rounded-lg bg-white/30 hover:bg-white/50 text-sm font-medium">
+          {{ 'payout.dashboard.error.retry' | translate }}
+        </button>
+      </div>
+    }
+
+    <!-- Loading -->
+    @if (loading()) {
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        @for (_ of [1,2,3,4]; track $index) {
+          <app-loading-skeleton variant="card" />
+        }
+      </div>
+      <app-loading-skeleton variant="chart" />
+    }
+
+    <!-- Loaded -->
+    @if (!loading() && dashboard(); as d) {
+
+      <!-- KPI Row -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <app-kpi-card
+          [label]="'payout.dashboard.kpi.pendingPayouts.label' | translate"
+          [value]="d.totalPendingPayouts.toLocaleString()"
+          [suffix]="d.currency"
+          [subtitle]="d.pendingInvoicesCount + ' ' + ('payout.dashboard.kpi.pendingPayouts.subtitle' | translate)"
+          icon="fa-solid fa-clock"
+          tone="warning" />
+
+        <app-kpi-card
+          [label]="'payout.dashboard.kpi.teacherEarnings.label' | translate"
+          [value]="d.currentMonthTeacherEarnings.toLocaleString()"
+          [suffix]="d.currency"
+          [subtitle]="'payout.dashboard.kpi.teacherEarnings.subtitle' | translate"
+          icon="fa-solid fa-users"
+          tone="primary" />
+
+        <app-kpi-card
+          [label]="'payout.dashboard.kpi.platformRevenue.label' | translate"
+          [value]="d.currentMonthPlatformRevenue.toLocaleString()"
+          [suffix]="d.currency"
+          [subtitle]="'payout.dashboard.kpi.platformRevenue.subtitle' | translate"
+          icon="fa-solid fa-building-columns"
+          tone="info" />
+
+        <app-kpi-card
+          [label]="'payout.dashboard.kpi.lastMonthPaid.label' | translate"
+          [value]="d.lastMonthPaidToTeachers.toLocaleString()"
+          [suffix]="d.currency"
+          [subtitle]="'payout.dashboard.kpi.lastMonthPaid.subtitle' | translate"
+          icon="fa-solid fa-circle-check"
+          tone="success" />
+      </div>
+
+      <!-- Main grid: Chart + Excel Export -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+
+        <!-- Donut Chart -->
+        <div class="lg:col-span-2 bg-surface-container-lowest rounded-2xl p-5 ring-1 ring-outline-variant/40">
+          <h2 class="text-lg font-semibold text-on-surface font-headline mb-1">
+            {{ 'payout.dashboard.chart.title' | translate }}
+          </h2>
+          <p class="text-xs text-on-surface-variant mb-4">
+            {{ 'payout.dashboard.chart.subtitle' | translate }}
+          </p>
+
+          @if (splitChartOptions(); as opts) {
+            <apx-chart
+              [series]="opts.series!"
+              [chart]="opts.chart!"
+              [labels]="opts.labels!"
+              [colors]="opts.colors!"
+              [legend]="opts.legend!"
+              [plotOptions]="opts.plotOptions!"
+              [dataLabels]="opts.dataLabels!"
+              [tooltip]="opts.tooltip!" />
+          } @else {
+            <div class="h-64 flex flex-col items-center justify-center text-center">
+              <i class="fa-solid fa-chart-pie text-4xl text-on-surface-variant mb-2"></i>
+              <p class="text-on-surface-variant">{{ 'payout.dashboard.chart.empty' | translate }}</p>
+            </div>
+          }
+        </div>
+
+        <!-- Excel Export Card -->
+        <div class="bg-surface-container-lowest rounded-2xl p-5 ring-1 ring-outline-variant/40">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center">
+              <i class="fa-solid fa-file-excel text-emerald-700"></i>
+            </div>
+            <div>
+              <h2 class="text-base font-semibold text-on-surface font-headline">
+                {{ 'payout.dashboard.export.title' | translate }}
+              </h2>
+              <p class="text-xs text-on-surface-variant">{{ 'payout.dashboard.export.subtitle' | translate }}</p>
+            </div>
+          </div>
+
+          <p class="text-sm text-on-surface-variant mb-4">
+            {{ 'payout.dashboard.export.description' | translate }}
+          </p>
+
+          <div class="space-y-3 mb-4">
+            <div>
+              <label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wide mb-1">
+                {{ 'payout.dashboard.export.from' | translate }}
+              </label>
+              <input type="date"
+                     [ngModel]="exportFrom()"
+                     (ngModelChange)="exportFrom.set($event)"
+                     class="w-full px-3 py-2 rounded-xl bg-surface ring-1 ring-outline-variant focus:ring-2 focus:ring-primary outline-none text-sm" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wide mb-1">
+                {{ 'payout.dashboard.export.to' | translate }}
+              </label>
+              <input type="date"
+                     [ngModel]="exportTo()"
+                     (ngModelChange)="exportTo.set($event)"
+                     class="w-full px-3 py-2 rounded-xl bg-surface ring-1 ring-outline-variant focus:ring-2 focus:ring-primary outline-none text-sm" />
+            </div>
+          </div>
+
+          <button
+            (click)="downloadReport()"
+            [disabled]="exporting()"
+            class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm shadow-sm transition-colors disabled:opacity-60 disabled:cursor-wait">
+            @if (exporting()) {
+              <i class="fa-solid fa-circle-notch fa-spin"></i>
+              {{ 'payout.dashboard.export.generating' | translate }}
+            } @else {
+              <i class="fa-solid fa-download"></i>
+              {{ 'payout.dashboard.export.download' | translate }}
+            }
+          </button>
+        </div>
+      </div>
+
+      <!-- Secondary KPI: Current Month Enrollments -->
+      <div class="bg-surface-container-lowest rounded-2xl p-5 ring-1 ring-outline-variant/40">
+        <div class="flex items-center justify-between flex-wrap gap-4">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-xl bg-primary-fixed flex items-center justify-center">
+              <i class="fa-solid fa-graduation-cap text-on-primary-fixed-variant text-xl"></i>
+            </div>
+            <div>
+              <div class="text-xs text-on-surface-variant uppercase font-semibold tracking-wide">
+                {{ 'payout.dashboard.activeTeachers.label' | translate }}
+              </div>
+              <div class="text-2xl font-bold text-on-surface font-headline">
+                {{ d.currentMonthPaidEnrollments }}
+              </div>
+              <div class="text-xs text-on-surface-variant">
+                {{ 'payout.dashboard.activeTeachers.description' | translate }}
+              </div>
+            </div>
+          </div>
+          <a routerLink="/admin/payout/invoices"
+             class="text-sm font-medium text-primary hover:text-primary-dim flex items-center gap-1">
+            {{ 'payout.dashboard.activeTeachers.viewAll' | translate }}
+            <i class="fa-solid fa-arrow-right text-xs"></i>
+          </a>
+        </div>
+      </div>
+    }
+  </div>
+</div>

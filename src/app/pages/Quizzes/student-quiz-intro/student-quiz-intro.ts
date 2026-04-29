@@ -1,15 +1,16 @@
 import { AuthService } from '../../../core/services/auth';
-import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuizService } from '../../../core/services/quiz.service';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { catchError, forkJoin, of } from 'rxjs';
 import { AttemptHistoryDto, QuizAttemptHistoryDto, QuizDto, QuizSummaryDto } from '../../../core/models/quiz';
 import { StudentquizService } from '../../../core/services/studentquiz.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-student-quiz-intro',
-  imports: [CommonModule],
+  imports: [CommonModule , TranslateModule],
   templateUrl: './student-quiz-intro.html',
   styleUrl: './student-quiz-intro.css',
 })
@@ -26,6 +27,9 @@ export class StudentQuizIntro implements OnInit {
 
   starting = false;
   startError: string | null = null;
+
+  currentPage= signal(1);
+  totalPages = signal(1);
 
   constructor(
     private route: ActivatedRoute,
@@ -46,17 +50,21 @@ export class StudentQuizIntro implements OnInit {
   loadData(): void {
     this.loading = true;
     this.error = null;
-
+    const params = {
+     page: this.currentPage(),
+      pageSize: 3,
+    }
     // Load quiz info and history in parallel
   forkJoin({
     quiz: this.studentQuizService.getQuizSummary(this.quizId),
-    history: this.studentQuizService.getQuizHistory(this.quizId).pipe(
-        catchError(() => of({ data: [] }))  // history fails → empty list to not make the all page fails
-    )
+    history: this.studentQuizService.getQuizHistory(this.quizId,params).pipe(
+                 catchError(() => of({ data: { items: [], totalPages:0}})                      
+                 ))
 }).subscribe({
     next: ({ quiz, history }) => {
         this.quiz = quiz.data;
-        this.attempts = history.data;
+        this.attempts = history.data.items;
+        this.totalPages.set(history.data.totalPages);
         this.loading = false;
         this.cdr.detectChanges();
     },
@@ -105,6 +113,11 @@ export class StudentQuizIntro implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+  goToPage(page: number): void {
+    if (page < 1 || page > this.totalPages()) return;
+    this.currentPage.set(page);
+    this.loadData();
   }
 }
 

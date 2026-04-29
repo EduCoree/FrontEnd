@@ -3,12 +3,14 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProgressService } from '../../../core/services/progress';
 import { StudentProgressSummary, StudentLessonDetail } from '../../../core/models/progress';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-teacher-progress',
   standalone: true,
-  imports: [CommonModule],
-  templateUrl: './teacher-progress.component.html'
+  imports: [CommonModule , TranslateModule],
+  templateUrl: './teacher-progress.component.html',
+  styleUrl: './teacher-progress.component.css'
 })
 export class TeacherProgressComponent implements OnInit {
 
@@ -27,7 +29,11 @@ export class TeacherProgressComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('courseId'));
+    // Parent shell route param is :id  (teacher/courses/edit/:id)
+    const parentParams = this.route.parent?.snapshot.paramMap;
+    const id = Number(
+      parentParams?.get('id') ?? this.route.snapshot.paramMap.get('courseId')
+    );
     this.courseId.set(id);
     this.loadStudents();
   }
