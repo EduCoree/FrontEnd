@@ -1,0 +1,139 @@
+<main class="py-12 px-6 md:px-12 min-h-screen bg-surface text-on-surface">
+  <div class="max-w-5xl mx-auto">
+    <div class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <div>
+        <h1 class="text-4xl font-extrabold text-on-surface tracking-tight mb-2">
+          My Course Reviews
+        </h1>
+        <p class="text-on-surface-variant text-lg max-w-2xl">
+          Manage and update your feedback for completed courses.
+        </p>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="flex items-center bg-surface-container rounded-full px-4 py-2 gap-2">
+          <span class="material-symbols-outlined text-outline">search</span>
+          <input
+            [(ngModel)]="searchQuery"
+            class="bg-transparent border-none focus:ring-0 text-sm w-48 text-on-surface"
+            placeholder="Search reviews..."
+            type="text"
+          />
+        </div>
+        <!-- <button class="p-2 rounded-full hover:bg-[#eaefee] transition-colors text-slate-500">
+          <span class="material-symbols-outlined">notifications</span>
+        </button>
+        <div class="w-10 h-10 rounded-full bg-primary-container overflow-hidden border-2 border-primary/20">
+          <img alt="Student profile avatar" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=256&q=80" />
+        </div> -->
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+      <div class="bg-primary-container p-8 rounded-xl flex flex-col justify-between h-40">
+        <span class="material-symbols-outlined text-on-primary-container">stars</span>
+        <div>
+          <div class="text-3xl font-extrabold text-on-primary-container">{{ reviews.length }}</div>
+          <div class="text-sm font-medium text-on-primary-container/80 uppercase tracking-widest">
+            Total Reviews
+          </div>
+        </div>
+      </div>
+      <div class="bg-secondary-container p-8 rounded-xl flex flex-col justify-between h-40">
+        <span class="material-symbols-outlined text-on-secondary-container">trending_up</span>
+        <div>
+          <div class="text-3xl font-extrabold text-on-secondary-container">{{ averageRating }}</div>
+          <div class="text-sm font-medium text-on-secondary-container/80 uppercase tracking-widest">
+            Avg. Rating Given
+          </div>
+        </div>
+      </div>
+      <div
+        class="bg-surface-container-high p-8 rounded-xl flex flex-col justify-between h-40 border border-white/20"
+      >
+        <span class="material-symbols-outlined text-on-surface-variant">check_circle</span>
+        <div>
+          <div class="text-3xl font-extrabold text-on-surface">{{ uniqueCoursesCount }}</div>
+          <div class="text-sm font-medium text-on-surface-variant uppercase tracking-widest">
+            Unique Courses
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="space-y-6">
+      <div *ngIf="isLoading" class="flex items-center justify-center py-16">
+        <div
+          class="w-10 h-10 rounded-full border-2 border-primary border-t-transparent animate-spin"
+        ></div>
+      </div>
+
+      <div
+        *ngIf="error && !isLoading"
+        class="bg-error-container text-on-error-container p-5 rounded-2xl"
+      >
+        {{ error }}
+      </div>
+
+      <div
+        *ngIf="!isLoading && !error && filteredReviews.length === 0"
+        class="bg-surface-container p-10 rounded-3xl text-center"
+      >
+        <p class="text-lg font-semibold text-on-surface">No reviews found.</p>
+        <p class="mt-3 text-sm text-on-surface-variant">
+          Try adjusting your search or write a review for one of your courses.
+        </p>
+      </div>
+
+      <div
+        *ngFor="let review of filteredReviews"
+        class="bg-surface-container-lowest p-8 rounded-xl shadow-sm border border-surface-container transition-all hover:shadow-md"
+      >
+        <div class="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6">
+          <div>
+            <div class="flex items-center gap-3 mb-2">
+              <span
+                class="bg-primary-container text-on-primary-container text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-tighter"
+              >
+                {{ getStatus(review) }}
+              </span>
+              <span class="text-on-surface-variant text-sm font-medium">{{
+                review.createdAt | date: 'mediumDate'
+              }}</span>
+            </div>
+            <h3 class="text-2xl font-bold text-on-surface leading-tight">
+              {{ review.courseName }}
+            </h3>
+          </div>
+          <div class="flex gap-1 items-center">
+            <ng-container *ngFor="let star of getStars(review.rating)">
+              <span class="material-symbols-outlined fill-1 text-[#7DB8A5]">{{
+                star <= review.rating ? 'star' : 'star'
+              }}</span>
+            </ng-container>
+          </div>
+        </div>
+        <div class="relative mb-8">
+          <div
+            class="text-on-surface-variant text-lg italic leading-relaxed pl-6 border-l-4 border-primary-container"
+          >
+            {{ review.comment || 'No review comment provided.' }}
+          </div>
+        </div>
+        <div class="flex items-center justify-end gap-3 pt-6 border-t border-surface-container">
+          <a
+            [routerLink]="['/courses', review.courseId, 'reviews']"
+            class="px-6 py-2 rounded-full border border-primary text-primary font-bold text-sm hover:bg-primary-container transition-colors flex items-center gap-2"
+          >
+            <span class="material-symbols-outlined text-sm">edit</span> Edit Review
+          </a>
+          <button
+            (click)="deleteReview(review)"
+            class="px-6 py-2 rounded-full text-error font-bold text-sm hover:bg-error-container/10 transition-colors flex items-center gap-2"
+          >
+            <span class="material-symbols-outlined text-sm">delete</span> Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
