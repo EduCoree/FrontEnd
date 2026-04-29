@@ -386,6 +386,15 @@ export class CourseWorkspaceComponent implements OnInit, OnDestroy {
 
   goBack(): void { this.router.navigate(['/student/my-courses']); }
 
+  navigateToForum(): void {
+    if (this.activeLesson()) {
+      this.router.navigate(['/lessons', this.activeLesson()!.id, 'forum']);
+    } else {
+      this.errorMsg.set('Please select a lesson from the curriculum first to view its discussion.');
+      setTimeout(() => this.errorMsg.set(''), 3500);
+    }
+  }
+
   resumeCourse(): void {
     const r   = this.resume();
     const cid = this.courseId();

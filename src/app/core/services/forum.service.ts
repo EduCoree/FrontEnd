@@ -12,56 +12,56 @@ import {
 @Injectable({ providedIn: 'root' })
 export class ForumService {
   private http = inject(HttpClient);
-  private base = `${environment.apiUrl}/api/courses`;
+  private base = `${environment.apiUrl}/api/lessons`;
   private adminBase = `${environment.apiUrl}/api/admin/forum`;
 
   // ── Posts ──────────────────────────────────────────────────────────────────
 
-  getPosts(courseId: number, sort: string = 'newest'): Observable<ForumPostDto[]> {
+  getPosts(lessonId: number, sort: string = 'newest'): Observable<ForumPostDto[]> {
     const params = new HttpParams().set('sort', sort);
-    return this.http.get<ForumPostDto[]>(`${this.base}/${courseId}/forum/posts`, { params });
+    return this.http.get<ForumPostDto[]>(`${this.base}/${lessonId}/forum/posts`, { params });
   }
 
-  getPostDetails(courseId: number, postId: number): Observable<ForumPostDetailDto> {
-    return this.http.get<ForumPostDetailDto>(`${this.base}/${courseId}/forum/posts/${postId}`);
+  getPostDetails(lessonId: number, postId: number): Observable<ForumPostDetailDto> {
+    return this.http.get<ForumPostDetailDto>(`${this.base}/${lessonId}/forum/posts/${postId}`);
   }
 
-  createPost(courseId: number, dto: CreatePostDto): Observable<ForumPostDto> {
-    return this.http.post<ForumPostDto>(`${this.base}/${courseId}/forum/posts`, dto);
+  createPost(lessonId: number, dto: CreatePostDto): Observable<ForumPostDto> {
+    return this.http.post<ForumPostDto>(`${this.base}/${lessonId}/forum/posts`, dto);
   }
 
-  updatePost(courseId: number, postId: number, dto: UpdatePostDto): Observable<ForumPostDto> {
-    return this.http.put<ForumPostDto>(`${this.base}/${courseId}/forum/posts/${postId}`, dto);
+  updatePost(lessonId: number, postId: number, dto: UpdatePostDto): Observable<ForumPostDto> {
+    return this.http.put<ForumPostDto>(`${this.base}/${lessonId}/forum/posts/${postId}`, dto);
   }
 
-  deletePost(courseId: number, postId: number): Observable<void> {
-    return this.http.delete<void>(`${this.base}/${courseId}/forum/posts/${postId}`);
+  deletePost(lessonId: number, postId: number): Observable<void> {
+    return this.http.delete<void>(`${this.base}/${lessonId}/forum/posts/${postId}`);
   }
 
   // ── Replies ───────────────────────────────────────────────────────────────
 
-  addReply(courseId: number, postId: number, dto: CreateReplyDto): Observable<any> {
-    return this.http.post<any>(`${this.base}/${courseId}/forum/posts/${postId}/replies`, dto);
+  addReply(lessonId: number, postId: number, dto: CreateReplyDto): Observable<any> {
+    return this.http.post<any>(`${this.base}/${lessonId}/forum/posts/${postId}/replies`, dto);
   }
 
-  updateReply(courseId: number, postId: number, replyId: number, dto: UpdateReplyDto): Observable<any> {
-    return this.http.put<any>(`${this.base}/${courseId}/forum/posts/${postId}/replies/${replyId}`, dto);
+  updateReply(lessonId: number, postId: number, replyId: number, dto: UpdateReplyDto): Observable<any> {
+    return this.http.put<any>(`${this.base}/${lessonId}/forum/posts/${postId}/replies/${replyId}`, dto);
   }
 
-  deleteReply(courseId: number, postId: number, replyId: number): Observable<void> {
-    return this.http.delete<void>(`${this.base}/${courseId}/forum/posts/${postId}/replies/${replyId}`);
+  deleteReply(lessonId: number, postId: number, replyId: number): Observable<void> {
+    return this.http.delete<void>(`${this.base}/${lessonId}/forum/posts/${postId}/replies/${replyId}`);
   }
 
   // ── Upvote ────────────────────────────────────────────────────────────────
 
-  upvotePost(courseId: number, postId: number): Observable<any> {
-    return this.http.post<any>(`${this.base}/${courseId}/forum/posts/${postId}/upvote`, {});
+  upvotePost(lessonId: number, postId: number): Observable<any> {
+    return this.http.post<any>(`${this.base}/${lessonId}/forum/posts/${postId}/upvote`, {});
   }
 
   // ── Report ────────────────────────────────────────────────────────────────
 
-  reportPost(courseId: number, postId: number, dto: ReportPostDto): Observable<any> {
-    return this.http.post<any>(`${this.base}/${courseId}/forum/posts/${postId}/report`, dto);
+  reportPost(lessonId: number, postId: number, dto: ReportPostDto): Observable<any> {
+    return this.http.post<any>(`${this.base}/${lessonId}/forum/posts/${postId}/report`, dto);
   }
 
   // ── Admin ─────────────────────────────────────────────────────────────────
