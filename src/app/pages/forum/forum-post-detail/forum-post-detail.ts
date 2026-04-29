@@ -24,7 +24,6 @@ export class ForumPostDetailComponent implements OnInit {
   private fb = inject(FormBuilder);
 
   // ── State ─────────────────────────────────────────────────────────────────
-  courseId = 0;
   lessonId = 0;
   postId = 0;
   post = signal<ForumPostDetailDto | null>(null);
@@ -81,7 +80,6 @@ export class ForumPostDetailComponent implements OnInit {
 
   // ── Lifecycle ─────────────────────────────────────────────────────────────
   ngOnInit() {
-    this.courseId = Number(this.route.snapshot.paramMap.get('courseId'));
     this.lessonId = Number(this.route.snapshot.paramMap.get('lessonId'));
     this.postId = Number(this.route.snapshot.paramMap.get('postId'));
     this.loadPost();
@@ -132,7 +130,7 @@ export class ForumPostDetailComponent implements OnInit {
     this.forumService.deletePost(this.lessonId, this.postId).subscribe({
       next: () => {
         this.showDeletePostModal.set(false);
-        this.router.navigate(['/courses', this.courseId, 'lessons', this.lessonId, 'forum']);
+        this.router.navigate(['/lessons', this.lessonId, 'forum']);
       },
       error: () => this.flashError('Failed to delete post.'),
     });
@@ -260,7 +258,7 @@ export class ForumPostDetailComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/courses', this.courseId, 'lessons', this.lessonId, 'forum']);
+    this.router.navigate(['/lessons', this.lessonId, 'forum']);
   }
 
   private flash(msg: string) {

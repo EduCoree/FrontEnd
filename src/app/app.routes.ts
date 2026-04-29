@@ -547,7 +547,7 @@ export const routes: Routes = [
 
 // ── Forum ────────────────────────────────────────────────────────────────
 {
-  path: 'courses/:courseId/lessons/:lessonId/forum',
+  path: 'lessons/:lessonId/forum',
   canActivate: [authGuard],
   loadComponent: () =>
     import('./pages/forum/forum-posts/forum-posts')
@@ -555,7 +555,7 @@ export const routes: Routes = [
   title: 'Forum — EduCore',
 },
 {
-  path: 'courses/:courseId/lessons/:lessonId/forum/:postId',
+  path: 'lessons/:lessonId/forum/:postId',
   canActivate: [authGuard],
   loadComponent: () =>
     import('./pages/forum/forum-post-detail/forum-post-detail')

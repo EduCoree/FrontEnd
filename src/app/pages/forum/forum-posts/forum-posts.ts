@@ -23,7 +23,6 @@ export class ForumPostsComponent implements OnInit {
   private fb = inject(FormBuilder);
 
   // ── State ─────────────────────────────────────────────────────────────────
-  courseId = 0;
   lessonId = 0;
   posts = signal<ForumPostDto[]>([]);
   loading = signal(false);
@@ -64,7 +63,6 @@ export class ForumPostsComponent implements OnInit {
 
   // ── Lifecycle ─────────────────────────────────────────────────────────────
   ngOnInit() {
-    this.courseId = Number(this.route.snapshot.paramMap.get('courseId'));
     this.lessonId = Number(this.route.snapshot.paramMap.get('lessonId'));
     this.loadPosts();
   }
@@ -193,7 +191,7 @@ export class ForumPostsComponent implements OnInit {
 
   // ── Navigation ────────────────────────────────────────────────────────────
   goToPost(postId: number) {
-    this.router.navigate(['/courses', this.courseId, 'lessons', this.lessonId, 'forum', postId]);
+    this.router.navigate(['/lessons', this.lessonId, 'forum', postId]);
   }
 
   // ── Helpers ───────────────────────────────────────────────────────────────

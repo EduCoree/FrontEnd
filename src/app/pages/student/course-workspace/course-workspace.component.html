@@ -369,7 +369,7 @@
         </div>
 
         <nav class="cw-sidebar__nav">
-          <a class="cw-nav-link" [routerLink]="['/courses', courseId(), 'forum']">
+          <a class="cw-nav-link" style="cursor: pointer;" (click)="navigateToForum()">
             <span class="material-symbols-outlined">forum</span> Discussion
           </a>
           <a class="cw-nav-link" [routerLink]="['/courses', courseId(), 'reviews']">
@@ -444,7 +444,7 @@
         </div>
 
         <div class="cw-sidebar__footer">
-          <button class="cw-forum-btn" [routerLink]="['/courses', courseId(), 'forum']">
+          <button class="cw-forum-btn" (click)="navigateToForum()">
             <span class="material-symbols-outlined">forum</span>
             Join Discussion
           </button>
