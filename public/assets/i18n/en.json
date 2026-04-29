@@ -1615,6 +1615,81 @@
     "page": "Page",
     "of": "of"
   }
+,
+"courseManagement": {
+  "label": "Course Management"
+},
+"teacherProgress": {
+  "pageTitle": "Student Progress",
+  "pageSubtitle": "Real-time student engagement tracking and module completion analytics for this course.",
+  "loading": "Loading student data...",
+  "studentRoster": "Student Roster",
+  "exportCsv": "Export CSV",
+  "selectStudentHint": "Click a student row to view their detailed lesson-by-lesson progress.",
+  "detailedBreakdown": "Detailed Breakdown",
+  "lessonsCompleted": "lessons completed",
+  "curriculumProgress": "Curriculum Progress",
+  "noLessons": "No lessons tracked yet for this student.",
+  "viewFullHistory": "View Full History",
+  "lessonBreakdown": "Lesson Breakdown",
+  "watchedUpTo": "Watched up to",
+  "statusCompleted": "Completed",
+  "statusInProgress": "In Progress",
+  "statusNotStarted": "Not Started",
+  "studentName": "Student Name",
+  "completed": "Completed",
+  "footerLabel": "Progress — Course Builder",
+  "backToSessions": "Back to Sessions",
+  "done": "Done",
+  "noStudents": "No enrolled students yet",
+  "noStudentsHint": "Students who enroll in this course will appear here."
+},
+"teacherDashboard": {
+  "subtitle": "Your courses, students, and upcoming sessions.",
+  "scheduledSessions": "Your scheduled live sessions",
+  "latestStudents": "Latest students joining your courses",
+  "noEnrollments": "No recent enrollments."
+},
+"teacherProfile": {
+  "loading": "Loading teacher profile...",
+  "courses": "Courses",
+  "course": "Course",
+  "coursesByTeacher": "Courses by",
+  "noPublished": "No courses published yet.",
+  "enrolled": "enrolled",
+  "view": "View"
+},
+"studentSidebar": {
+  "portal": "Student Portal",
+  "dashboard": "Dashboard",
+  "myCourses": "My Courses",
+  "myQuizzes":"My Quizzes",
+  "QuizHistory":"Quiz History",
+  "liveSessions": "Live Sessions",
+  "certificates": "Certificates",
+  "messages": "Messages",
+  "continueLearning": "Continue Learning",
+  "settings": "Settings",
+  "support": "Support",
+  "logout": "Logout",
+  "dash": "Dash",
+  "learn": "Learn",
+  "live": "Live",
+  "certs": "Certs",
+  "profile": "Profile",
+  "payments": "Payments"
+},
+"adminTopbar": {
+  "notifications": "Notifications",
+  "help": "Help"
+},
+"teacherSidebar": {
+  "teacherPortal": "Teacher Portal",
+  "courseInfo": "Course Information",
+  "curriculumBuilder": "Curriculum Builder",
+  "quizzes": "Quizzes",
+  "createNewCourse": "Create New Course",
+  "logout": "Logout"
 }
   },
    "payout": {
@@ -1859,4 +1934,5 @@
       }
     }
   }
+}
 }

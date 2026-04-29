@@ -285,6 +285,7 @@
         </div>
       </div>
 
+
       <!-- Course meta -->
       <div class="cw-meta">
         <span class="cw-module-label">{{ course()?.categoryName }}</span>
@@ -345,10 +346,11 @@
           </div>
         </div>
       </div>
+
     </section>
 
-    <!-- ── RIGHT: Sidebar ────────────────────────────────────────────────── -->
-    <aside class="cw-sidebar">
+    <!-- ── LEFT: Sidebar (Course Content) ────────────────────────────────────────────────── -->
+    <aside class="cw-sidebar cw-sidebar--left">
       <div class="cw-sidebar__inner">
         <div class="cw-sidebar__header">
           <div class="cw-sidebar__header-row">
@@ -367,7 +369,7 @@
         </div>
 
         <nav class="cw-sidebar__nav">
-          <a class="cw-nav-link" [routerLink]="['/courses', courseId(), 'forum']">
+          <a class="cw-nav-link" style="cursor: pointer;" (click)="navigateToForum()">
             <span class="material-symbols-outlined">forum</span> Discussion
           </a>
           <a class="cw-nav-link" [routerLink]="['/courses', courseId(), 'reviews']">
@@ -442,11 +444,23 @@
         </div>
 
         <div class="cw-sidebar__footer">
-          <button class="cw-forum-btn" [routerLink]="['/courses', courseId(), 'forum']">
+          <button class="cw-forum-btn" (click)="navigateToForum()">
             <span class="material-symbols-outlined">forum</span>
             Join Discussion
           </button>
         </div>
+      </div>
+    </aside>
+
+    <!-- ── RIGHT: Sidebar (AI Tool) ──────────────────────────────────────── -->
+    <aside class="cw-sidebar cw-sidebar--right">
+      <div
+        *ngIf="activeLesson() && !isVideoLoading() && !videoError() && signedUrl()"
+        class="cw-ai-panel-wrap"
+      >
+        <app-lesson-ai-panel
+          [lessonId]="activeLesson()!.id"
+          [courseId]="courseId()" />
       </div>
     </aside>
   </div>

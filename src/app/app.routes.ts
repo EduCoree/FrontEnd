@@ -237,6 +237,54 @@ export const routes: Routes = [
       pathMatch: 'full'
     }
   ]
+  },
+  {
+    path: 'teacher/courses/edit/:id',
+    canActivate: [authGuard, roleGuard('Teacher')],
+    loadComponent: () =>
+      import('./pages/teacher/edit-course/edit-course.component')
+        .then(m => m.EditCourseComponent),
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () =>
+          import('./pages/teacher/course-info/course-info.component')
+            .then(m => m.CourseInfoComponent),
+        title: 'Edit Course — EduCore',
+      },
+      {
+        path: 'sessions',
+        loadComponent: () =>
+          import('./pages/teacher/teacher-sessions/teacher-sessions.component')
+            .then(m => m.TeacherSessionsComponent),
+        title: 'Live Sessions — EduCore',
+      },
+      {
+        path: 'progress',
+        loadComponent: () =>
+          import('./pages/teacher/teacher-progress/teacher-progress.component')
+            .then(m => m.TeacherProgressComponent),
+        title: 'Student Progress — EduCore',
+      },
+    ]
+  },
+  {
+    path: 'teacher/courses/:id/sections',
+    canActivate: [authGuard, roleGuard('Teacher')],
+    loadComponent: () =>
+      import('./pages/teacher/course-sections/course-sections.component')
+    .then(m => m.CourseSectionsComponent)
+  },
+  
+  // Content Delivery: Lesson Manager
+  {
+  path: 'teacher/courses/:courseId/lessons/:lessonId',
+  canActivate: [authGuard, roleGuard('Teacher')],
+  loadComponent: () =>
+    import('./pages/teacher/lesson-manager/lesson-manager.component')
+  .then(m => m.LessonManagerComponent),
+  title: 'Lesson Manager — EduCore',
 },
 {
   path: 'student/progress',
@@ -535,7 +583,7 @@ export const routes: Routes = [
 
 // ── Forum ────────────────────────────────────────────────────────────────
 {
-  path: 'courses/:courseId/forum',
+  path: 'lessons/:lessonId/forum',
   canActivate: [authGuard],
   loadComponent: () =>
     import('./pages/forum/forum-posts/forum-posts')
@@ -543,7 +591,7 @@ export const routes: Routes = [
   title: 'Forum — EduCore',
 },
 {
-  path: 'courses/:courseId/forum/:postId',
+  path: 'lessons/:lessonId/forum/:postId',
   canActivate: [authGuard],
   loadComponent: () =>
     import('./pages/forum/forum-post-detail/forum-post-detail')
@@ -559,71 +607,6 @@ export const routes: Routes = [
   title: 'Forum Reports — Admin',
 },
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//obad
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ,
-//   {
-//     path: 'centers/:centerId/categories',
-//     loadComponent: () =>
-//       import('./pages/')
-//         .then(m => m.CategoriesComponent)
-//   }
-
-// Content Delivery: Teacher Live Sessions
-{
-  path: 'teacher/courses/:courseId/sessions',
-  canActivate: [authGuard],
-  loadComponent: () =>
-    import('./pages/teacher/teacher-sessions/teacher-sessions.component')
-      .then(m => m.TeacherSessionsComponent),
-  title: 'Live Sessions — EduCore',
-},
-
-// Content Delivery: Student Session Agenda
-// {
-//   path: 'student/sessions',
-//   canActivate: [authGuard],
-//   loadComponent: () =>
-//     import('./pages/student/student-agenda/student-agenda.component')
-//       .then(m => m.StudentAgendaComponent),
-//   title: 'My Schedule — EduCore',
-// },
-
 // Content Delivery: Student Video Watch (Signed URL)
 {
   path: 'student/courses/:courseId/lessons/:lessonId/watch',
@@ -634,17 +617,9 @@ export const routes: Routes = [
   title: 'Watch Lesson — EduCore',
 },
 
-// Content Delivery: Teacher Progress
+// NOTE: Teacher Sessions and Teacher Progress are now CHILD routes of
+// teacher/courses/edit/:id — see the parent route definition above.
 {
-  path: 'teacher/courses/:courseId/progress',
-  canActivate: [authGuard],
-  loadComponent: () =>
-    import('./pages/teacher/teacher-progress/teacher-progress.component')
-      .then(m => m.TeacherProgressComponent),
-  title: 'Student Progress — EduCore',
-}
-  ,
-  {
     path: 'student/courses/:courseId/lessons/:lessonId/player',
     canActivate: [authGuard],
     loadComponent: () =>

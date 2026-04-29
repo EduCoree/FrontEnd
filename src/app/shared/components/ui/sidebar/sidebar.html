@@ -28,26 +28,28 @@
   <!-- Nav -->
   <nav class="flex-1 p-3 space-y-1 overflow-y-auto">
     @for (item of navItems; track item.route) {
-      <a [routerLink]="item.route"
-         routerLinkActive #rla="routerLinkActive"
-         [routerLinkActiveOptions]="{ exact: item.exact }"
-         class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors group"
-         [class.bg-primary]="rla.isActive"
-         [class.text-on-primary]="rla.isActive"
-         [class.hover:bg-surface-container]="!rla.isActive"
-         [class.text-on-surface-variant]="!rla.isActive"
-         [class.justify-center]="!isOpen()">
-        <span class="material-symbols-outlined text-xl flex-shrink-0"
-              [class.text-on-primary]="rla.isActive"
-              [class.text-primary]="!rla.isActive">
-          {{ item.icon }}
-        </span>
-        @if (isOpen()) {
-          <span class="text-sm font-medium whitespace-nowrap">
-            {{ item.labelKey | translate }}
+      @if (!item.requiresAdmin || isAdmin) {
+        <a [routerLink]="item.route"
+           routerLinkActive #rla="routerLinkActive"
+           [routerLinkActiveOptions]="{ exact: item.exact }"
+           class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors group"
+           [class.bg-primary]="rla.isActive"
+           [class.text-on-primary]="rla.isActive"
+           [class.hover:bg-surface-container]="!rla.isActive"
+           [class.text-on-surface-variant]="!rla.isActive"
+           [class.justify-center]="!isOpen()">
+          <span class="material-symbols-outlined text-xl flex-shrink-0"
+                [class.text-on-primary]="rla.isActive"
+                [class.text-primary]="!rla.isActive">
+            {{ item.icon }}
           </span>
-        }
-      </a>
+          @if (isOpen()) {
+            <span class="text-sm font-medium whitespace-nowrap">
+              {{ item.labelKey | translate }}
+            </span>
+          }
+        </a>
+      }
     }
   </nav>
 

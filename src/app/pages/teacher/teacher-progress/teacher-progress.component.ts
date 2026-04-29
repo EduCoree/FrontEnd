@@ -9,7 +9,8 @@ import { TranslateModule } from '@ngx-translate/core';
   selector: 'app-teacher-progress',
   standalone: true,
   imports: [CommonModule , TranslateModule],
-  templateUrl: './teacher-progress.component.html'
+  templateUrl: './teacher-progress.component.html',
+  styleUrl: './teacher-progress.component.css'
 })
 export class TeacherProgressComponent implements OnInit {
 
@@ -28,7 +29,11 @@ export class TeacherProgressComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('courseId'));
+    // Parent shell route param is :id  (teacher/courses/edit/:id)
+    const parentParams = this.route.parent?.snapshot.paramMap;
+    const id = Number(
+      parentParams?.get('id') ?? this.route.snapshot.paramMap.get('courseId')
+    );
     this.courseId.set(id);
     this.loadStudents();
   }
