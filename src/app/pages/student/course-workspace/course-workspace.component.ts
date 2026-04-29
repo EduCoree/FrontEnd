@@ -8,13 +8,14 @@ import { StudentContentService } from '../../../core/services/student-content';
 import { CourseDetailDto, LessonDto } from '../../../core/models/course';
 import { CourseProgress, ResumeLesson } from '../../../core/models/progress';
 import { TranslateModule } from '@ngx-translate/core';
+import { LessonAiPanelComponent } from '../lesson-player/lesson-ai-panel/lesson-ai-panel.component';
 
 declare var Plyr: any;
 
 @Component({
   selector: 'app-course-workspace',
   standalone: true,
-  imports: [CommonModule, RouterModule, TranslateModule],
+  imports: [CommonModule, RouterModule, TranslateModule, LessonAiPanelComponent],
   templateUrl: './course-workspace.component.html',
   styleUrl:    './course-workspace.component.css',
 })
