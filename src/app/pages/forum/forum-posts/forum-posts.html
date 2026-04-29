@@ -152,10 +152,20 @@
                 </button>
               }
             </div>
-          }
-        </div>
-      }
-    </div>
+            <h3 class="text-xl font-bold text-on-surface mb-2">No discussions yet</h3>
+            <p class="text-sm text-on-surface-variant mb-6 max-w-sm">Be the first to start a conversation in this lesson forum.</p>
+            @if (isLoggedIn()) {
+              <button (click)="openCreatePost()"
+                class="px-6 py-3 bg-gradient-to-br from-[#2E6858] to-[#7DB8A5] text-white font-bold rounded-xl flex items-center gap-2">
+                <span class="material-symbols-outlined text-lg">add</span>
+                Start a Discussion
+              </button>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
   </main>
 </div>
 
