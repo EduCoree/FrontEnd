@@ -126,7 +126,7 @@ export class Reviews implements OnInit {
   }
 
   getReviewCourseTitle(review: Review): string {
-    return review.courseTitle ?? this.courseTitle() ?? `Course ${review.courseId}`;
+    return review.courseName ?? this.courseTitle() ?? `Course ${review.courseId}`;
   }
 
   setSort(s: SortType) {
