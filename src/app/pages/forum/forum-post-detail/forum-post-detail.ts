@@ -6,13 +6,10 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { ForumService } from '../../../core/services/forum.service';
 import { AuthService } from '../../../core/services/auth';
 import { ForumPostDetailDto, ForumReplyDto } from '../../../core/models/forum';
-
-import { Sidebar } from '../../../shared/components/ui/sidebar/sidebar';
-
 @Component({
   selector: 'app-forum-post-detail',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, Sidebar , TranslateModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './forum-post-detail.html',
   styleUrl: './forum-post-detail.css',
 })
