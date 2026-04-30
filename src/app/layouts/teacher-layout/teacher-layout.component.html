@@ -42,6 +42,15 @@
         <span class="material-symbols-outlined text-[20px]">school</span>
         <span>{{ 'myCourses.title' | translate }}</span>
       </a>
+      <a
+        routerLink="/teacher/payout/dashboard"
+        routerLinkActive="bg-primary text-white shadow-md shadow-primary/25"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex items-center gap-3 px-4 py-3 rounded-2xl text-on-surface-variant hover:bg-primary/8 hover:text-primary font-semibold text-sm transition-all duration-200"
+      >
+        <span class="material-symbols-outlined text-[20px]">school</span>
+        <span>{{ 'teacherPortal.payoutDashboard' | translate }}</span>
+      </a>
 
       <a
         routerLink="/teacher/reviews"

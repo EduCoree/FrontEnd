@@ -11,6 +11,7 @@ import { InvoiceStatusBadgeComponent } from '../../../shared/components/invoice-
 import { LoadingSkeletonComponent } from '../../../shared/components/loading-skeleton/loading-skeleton';
 import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state';
 import { TranslateModule } from '@ngx-translate/core';
+import { AdminSidebarComponent } from "../../../layouts/admin-sidebar/admin-sidebar";
 
 @Component({
   selector: 'app-admin-all-invoices',
@@ -23,8 +24,9 @@ import { TranslateModule } from '@ngx-translate/core';
     InvoiceStatusBadgeComponent,
     LoadingSkeletonComponent,
     EmptyStateComponent,
-    TranslateModule
-  ],
+    TranslateModule,
+    AdminSidebarComponent
+],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './admin-all-invoices.html',
 })
