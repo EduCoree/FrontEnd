@@ -4,25 +4,29 @@
     <!-- Header -->
     <section class="flex flex-col md:flex-row justify-between items-end gap-8">
       <div class="space-y-2">
-        <span class="text-xs uppercase tracking-[0.1em] text-on-surface-variant font-bold">Student Portal</span>
-        <h1 class="text-5xl font-extrabold tracking-tight text-on-surface">Payment History</h1>
+        <span class="text-xs uppercase tracking-[0.1em] text-on-surface-variant font-bold">{{
+          'paymentHistory.portalLabel' | translate }}</span>
+        <h1 class="text-5xl font-extrabold tracking-tight text-on-surface">{{ 'paymentHistory.pageTitle' | translate }}
+        </h1>
         <p class="text-on-surface-variant max-w-md text-lg">
-          A curated overview of your educational investments.
+          {{ 'paymentHistory.pageSubtitle' | translate }}
         </p>
       </div>
 
       <!-- Total Investment Card -->
-      <div class="bg-primary-container p-8 rounded-xl min-w-[280px] flex flex-col justify-between relative overflow-hidden">
+      <div
+        class="bg-primary-container p-8 rounded-xl min-w-[280px] flex flex-col justify-between relative overflow-hidden">
         <div class="z-10">
           <p class="text-xs uppercase tracking-widest font-bold text-on-primary-container opacity-70 mb-1">
-            Total Investment
+            {{ 'paymentHistory.totalInvestment' | translate }}
           </p>
           <p class="text-4xl font-black text-on-primary-container">
             {{ totalSpent | number:'1.2-2' }}
             <span class="text-xl font-medium">EGP</span>
           </p>
         </div>
-        <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-9xl text-on-primary-container opacity-10 rotate-12">
+        <span
+          class="material-symbols-outlined absolute -right-4 -bottom-4 text-9xl text-on-primary-container opacity-10 rotate-12">
           account_balance_wallet
         </span>
       </div>
@@ -34,13 +38,12 @@
       <!-- Main Transaction List -->
       <div class="lg:col-span-2 space-y-6">
         <div class="flex justify-between items-center px-2">
-          <h3 class="text-xl font-bold text-on-surface">Recent Transactions</h3>
+          <h3 class="text-xl font-bold text-on-surface">{{ 'paymentHistory.recentTransactions' | translate }}</h3>
         </div>
 
         <!-- Loading -->
         <div *ngIf="isLoading" class="space-y-3">
-          <div *ngFor="let i of [1,2,3]"
-            class="bg-surface-container-low rounded-xl h-24 animate-pulse">
+          <div *ngFor="let i of [1,2,3]" class="bg-surface-container-low rounded-xl h-24 animate-pulse">
           </div>
         </div>
 
@@ -48,17 +51,16 @@
         <div *ngIf="!isLoading && payments.length === 0"
           class="bg-surface-container-low rounded-xl p-16 flex flex-col items-center text-center">
           <span class="material-symbols-outlined text-6xl text-outline-variant mb-4">receipt_long</span>
-          <h3 class="text-xl font-bold mb-2">No payments yet</h3>
-          <p class="text-on-surface-variant text-sm mb-6">Your payment history will appear here.</p>
+          <h3 class="text-xl font-bold mb-2">{{ 'paymentHistory.noPaymentsYet' | translate }}</h3>
+          <p class="text-on-surface-variant text-sm mb-6">{{ 'paymentHistory.paymentHistoryEmpty' | translate }}</p>
           <button routerLink="/courses"
             class="px-8 py-3 bg-primary text-on-primary rounded-full font-bold hover:bg-primary-dim transition-all">
-            Browse Courses
+            {{ 'paymentHistory.browseCourses' | translate }}
           </button>
         </div>
 
         <!-- Transactions -->
-        <div *ngIf="!isLoading && payments.length > 0"
-          class="bg-surface-container-low rounded-xl p-4 space-y-3">
+        <div *ngIf="!isLoading && payments.length > 0" class="bg-surface-container-low rounded-xl p-4 space-y-3">
           <div *ngFor="let payment of payments"
             class="bg-surface-container-lowest p-6 rounded-lg flex items-center justify-between hover:shadow-md transition-shadow">
 
@@ -85,7 +87,8 @@
               <p class="text-xl font-black text-on-surface">
                 {{ payment.amount | number:'1.2-2' }} {{ payment.currency }}
               </p>
-              <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mt-2"
+              <span
+                class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mt-2"
                 [class]="getStatusClass(payment.status)">
                 <span class="w-1.5 h-1.5 rounded-full" [class]="getStatusDotClass(payment.status)"></span>
                 {{ payment.status }}
@@ -104,9 +107,9 @@
           <div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-tertiary/10"></div>
           <div class="absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
             <span class="material-symbols-outlined text-5xl text-primary mb-4">security</span>
-            <h5 class="text-lg font-bold text-on-surface">Secure Transactions</h5>
+            <h5 class="text-lg font-bold text-on-surface">{{ 'paymentHistory.secureTransactions' | translate }}</h5>
             <p class="text-sm text-on-surface-variant mt-2">
-              All payments are encrypted via Paymob infrastructure.
+              {{ 'paymentHistory.secureTransactionsDescription' | translate }}
             </p>
           </div>
         </div>

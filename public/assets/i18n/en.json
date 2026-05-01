@@ -9,7 +9,11 @@
     "signup": "Sign Up",
     "search": "Search courses...",
     "profile": "My Profile",
-    "logout": "Logout"
+    "logout": "Logout",
+   
+    "live": "Live",
+    "quizzes": "Quizzes",
+    "history": "History"
   },
   "center": {
     "title": "Training Center",
@@ -64,6 +68,17 @@
     "basedOn": "Based on",
     "reviews": "reviews",
     "saving": "Saving..."
+  },
+  "teacherReviews": {
+    "studentFeedback": "Student Feedback",
+    "manageReviews": "Manage and moderate reviews across all your published courses.",
+    "courseFilter": "Course Filter",
+    "allCourses": "All Courses",
+    "ratingFilter": "Rating Filter",
+    "all": "All",
+    "fourStarsPlus": "4★+",
+    "critical": "Critical",
+    "globalAverage": "Global Average"
   },
   "common": {
     "cancel": "Cancel",
@@ -528,7 +543,9 @@
     "forumReports": "Forum Reports",
     "support": "Support",
     "logout": "Logout",
-    "administrator": "Administrator"
+    "administrator": "Administrator",
+    "payouts": "Payouts",
+    "payments":"Payments"
   },
   "confirmEmail": {
     "verifying": {
@@ -1026,13 +1043,18 @@
     "haveAccount": "Already have an account?"
   },
   "reviewss": {
+    "heading": "course reviews",
     "breadcrumb": "Reviews",
     "course": "Course #",
     "topRated": "TOP RATED COURSE",
     "overallRating": "Overall Rating",
     "basedOn": "Based on",
     "reviewsCount": "reviews",
+    "description": "manage and update your feedback for completed courses",
     "star": "star",
+    "totalReviews":"Total Reviews",
+    "avgRatingGiven":"Average Rating Given",
+    "uniqueCourses":"Unique Courses Reviewed",
     "stars": "stars",
     "searchPlaceholder": "Search reviews...",
     "writeReview": "Write Review",
@@ -1053,6 +1075,29 @@
     "deleting": "Deleting...",
     "yesDelete": "Yes, Delete",
     "cancel": "Cancel"
+  },
+   "paymentHistory": {
+    "portalLabel": "Student Portal",
+    "pageTitle": "Payment History",
+    "pageSubtitle": "Track all your course payments and transactions in one place.",
+    "totalInvestment": "Total Investment",
+    "recentTransactions": "Recent Transactions",
+    "noPaymentsYet": "No Payments Yet",
+    "paymentHistoryEmpty": "You haven't made any payments yet. Start learning by enrolling in a course.",
+    "browseCourses": "Browse Courses",
+    "secureTransactions": "Secure Transactions",
+    "secureTransactionsDescription": "All your payments are encrypted and processed through a secure and trusted payment gateway."
+  },
+  "myQuizzes": {
+    "title": "My Quizzes",
+    "subtitle": "Browse and take quizzes for your enrolled courses",
+    "allCourses": "All Courses",
+    "noQuizzesTitle": "No quizzes available",
+    "noQuizzesSubtitle": "Try selecting a different course",
+    "passScore": "Pass {{value}}%",
+    "requiredToPass": "Required to pass",
+    "viewQuiz": "View Quiz",
+    "retry": "Retry"
   },
   "lessonPlayer": {
     "brand": "EduCore",
@@ -1075,6 +1120,36 @@
     "secureSignedAccess": "Secure Signed Access",
     "secureSignedDesc": "This video is served via a time-limited signed URL. Your access is valid until",
     "refreshIfExpires": "Refresh the page if it expires."
+  },
+    "payments": {
+    "title": "Payments & Transactions",
+    "subtitle": "Manage all payments and cash enrollment requests",
+    "totalRevenue": "Total Revenue",
+    "completedPayments": "Completed payments",
+    "pendingCashRequests": "Pending Cash Requests",
+    "actionRequired": "ACTION REQUIRED",
+    "tabs": {
+      "allPayments": "All Payments",
+      "cashRequests": "Cash Requests"
+    },
+    "table": {
+      "date": "Date",
+      "course": "Course",
+      "amount": "Amount",
+      "method": "Method",
+      "status": "Status",
+      "free": "Free"
+    },
+    "emptyPayments": "No payments found.",
+    "emptyCash": "No cash requests found.",
+    "card": {
+      "amount": "Amount",
+      "requestDate": "Request Date",
+      "confirm": "Confirm",
+      "reject": "Reject",
+      "paymentProcessed": "Payment Processed",
+      "requestRejected": "Request Rejected"
+    }
   },
   "myCertificates": {
     "title": "My Certificates",
@@ -1443,54 +1518,11 @@
     "pageTitle": "Live Sessions",
 "pageSubtitle": "Oversee your virtual classrooms and upcoming student interactions.",
 "loadingSessions": "Loading sessions…",
-"happeningNow": "Happening Now",
-"joinSession": "Join Session",
-"completed": "Completed",
-"defaultSessionTitle": "Live Session",
-"providerTeams": "Teams",
-"insightTitle": "Academic Insight",
-"insightText": "Live sessions are the heartbeat of the atelier experience. Enable recordings for all sessions so students can revisit complex discussions at their own pace."
 
-  },
-  "teacherProgress": {
-    "lessonBreakdown": "Lesson Breakdown",
-    "watchedUpTo": "Watched up to",
-    "statusCompleted": "Completed",
-    "statusInProgress": "In Progress",
-    "statusNotStarted": "Not Started",
-    "studentName": "Student Name",
-    "pageTitle": "Student Progress",
-    "pageSubtitle": "Monitor enrolled students' progress and lesson completion.",
-    "loading": "Loading student progress...",
-    "exportCsv": "Export CSV",
-    "selectStudentHint": "Select a student to view detailed progress and lesson activity.",
-    "detailedBreakdown": "Detailed progress breakdown",
-    "lessonsCompleted": "lessons completed",
-    "curriculumProgress": "Curriculum progress",
-    "noLessons": "No lessons are available yet for this student.",
-    "viewFullHistory": "View Full History",
-    "completed": "Completed",
-    "footerLabel": "Progress — Course Builder",
-    "backToSessions": "Back to Sessions",
-    "done": "Done",
-    "noStudents": "No enrolled students yet",
-   
-      "pageTitle": "Student Progress",
-    "pageSubtitle": "Track and monitor your students' learning journey",
-    "loading": "Loading progress data...",
-    "studentRoster": "Student Roster",
-    "exportCsv": "Export CSV",
-  
-    "noStudentsHint": "Students will appear here once they enroll in this course.",
-  
-    
-    "selectStudentHint": "Select a student from the list to view their detailed lesson progress.",
-    "detailedBreakdown": "Detailed Breakdown",
-    "lessonsCompleted": "lessons completed",
-    "curriculumProgress": "Curriculum Progress",
-   
-    "noLessons": "No lessons available for this course yet.",
-    "viewFullHistory": "View Full History"
+"defaultSessionTitle": "Live Session",
+"providerTeams": "Teams"
+
+
   },
   "teacherDashboard": {
     "subtitle": "Your courses, students, and upcoming sessions.",
@@ -1525,7 +1557,8 @@
     "learn": "Learn",
     "live": "Live",
     "certs": "Certs",
-    "profile": "Profile"
+    "profile": "Profile",
+    "payments":"Payments"
   },
   "adminTopbar": {
     "notifications": "Notifications",
@@ -2063,7 +2096,59 @@
   "termsNote": "By enrolling, you agree to our Terms of Service and Academic Integrity Policy."
 }
 
-  
+  ,
+   "payout": {
+    "dashboard": {
+      "title": "Payout Dashboard",
+      "subtitle": "Overview of instructor earnings and platform revenue",
+      "actions": {
+        "settings": "Settings",
+        "generate": "Generate Payouts",
+        "allInvoices": "All Invoices"
+      },
+      "error": {
+        "title": "Something went wrong",
+        "retry": "Retry"
+      },
+      "kpi": {
+        "pendingPayouts": {
+          "label": "Pending Payouts",
+          "subtitle": "pending invoices"
+        },
+        "teacherEarnings": {
+          "label": "Teacher Earnings",
+          "subtitle": "This month"
+        },
+        "platformRevenue": {
+          "label": "Platform Revenue",
+          "subtitle": "This month"
+        },
+        "lastMonthPaid": {
+          "label": "Last Month Paid",
+          "subtitle": "Paid to teachers"
+        }
+      },
+      "chart": {
+        "title": "Revenue Split",
+        "subtitle": "Teacher earnings vs platform revenue",
+        "empty": "No data available for the selected period"
+      },
+      "export": {
+        "title": "Export Report",
+        "subtitle": "Download Excel report",
+        "description": "Select a date range to export a detailed payout report as an Excel file.",
+        "from": "From",
+        "to": "To",
+        "generating": "Generating...",
+        "download": "Download Report"
+      },
+      "activeTeachers": {
+        "label": "Paid Enrollments This Month",
+        "description": "Total enrollments with completed payments in the current month",
+        "viewAll": "View All Invoices"
+      }
+    }
+  }
 
  
 

@@ -4,12 +4,14 @@ import { AdminSidebarComponent } from '../../../layouts/admin-sidebar/admin-side
 import { PaymentService } from '../../../core/services/payment.service';
 import { CashPaymentRequestDto, PaymentDto } from '../../../core/models/enrollment.models';
 import { AdminCashRequestService } from '../../../core/services/AdminCashRequest.Service';
+import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-admin-payments',
   standalone: true,
-  imports: [CommonModule,   AdminSidebarComponent],
+  imports: [CommonModule,   AdminSidebarComponent , TranslateModule],
   templateUrl: './admin-payments.component.html',
 })
+
 export class AdminPaymentsComponent implements OnInit {
   private paymentService = inject(PaymentService);
   private cashRequestService = inject(AdminCashRequestService);
