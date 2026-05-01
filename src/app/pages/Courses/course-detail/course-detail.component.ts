@@ -72,17 +72,20 @@ export class CourseDetailComponent implements OnInit {
 closeEnrollmentModal(): void {
   this.showEnrollmentModal = false;
 }
-  goToLesson(lessonId: number, type: string): void {
+  handleLessonClick(lesson: any): void {
     if (!this.course) return;
     
-    // We navigate to the student workspace player if it's a video
-    if (type.toLowerCase() === 'video') {
-      this.router.navigate(['/student/courses', this.course.id, 'lessons', lessonId, 'player']);
-    } else if (type.toLowerCase() === 'quiz') {
-      // Navigate to the quiz intro page
-      // Assuming lesson title might contain quiz ID or there's an endpoint to get the quiz ID from lesson ID.
-      // For now, if we have a generic player or we show a flash message:
-      this.router.navigate(['/student/courses', this.course.id, 'lessons', lessonId, 'player']);
+    // If not a free preview, prompt enrollment
+    if (!lesson.isFreePreview) {
+      this.openEnrollmentModal();
+      return;
+    }
+
+    // We navigate to the student workspace player if it's a free preview
+    if (lesson.type.toLowerCase() === 'video') {
+      this.router.navigate(['/student/courses', this.course.id, 'lessons', lesson.id, 'player']);
+    } else if (lesson.type.toLowerCase() === 'quiz') {
+      this.router.navigate(['/student/courses', this.course.id, 'lessons', lesson.id, 'player']);
     }
   }
 }
