@@ -23,8 +23,14 @@
         </button>
       </div>
     </div>
-    <iframe [src]="safeJitsiUrl()" class="flex-1 w-full border-0"
-      allow="camera; microphone; fullscreen; display-capture; autoplay" allowfullscreen></iframe>
+    <div class="flex-1 w-full bg-black relative">
+      <app-jitsi-player 
+        [roomName]="jitsiRoomName()"
+        [userName]="currentUser()?.name || 'Student'"
+        [userEmail]="currentUser()?.email || ''"
+        (leftMeeting)="leaveJitsiSession()">
+      </app-jitsi-player>
+    </div>
   </div>
 
   <div *ngIf="!jitsiRoomName()">
