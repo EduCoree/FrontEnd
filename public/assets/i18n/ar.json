@@ -9,7 +9,40 @@
     "signup": "إنشاء حساب",
     "search": "ابحث عن كورسات...",
     "profile": "ملفي الشخصي",
-    "logout": "تسجيل الخروج"
+    "logout": "تسجيل الخروج",
+
+    "live": "مباشر",
+    "quizzes": "الاختبارات",
+    "history": "السجل"
+  },  "payments": {
+    "title": "المدفوعات والمعاملات",
+    "subtitle": "إدارة جميع المدفوعات وطلبات التسجيل النقدي",
+    "totalRevenue": "إجمالي الإيرادات",
+    "completedPayments": "المدفوعات المكتملة",
+    "pendingCashRequests": "طلبات الدفع النقدي المعلقة",
+    "actionRequired": "يتطلب إجراء",
+    "tabs": {
+      "allPayments": "جميع المدفوعات",
+      "cashRequests": "الطلبات النقدية"
+    },
+    "table": {
+      "date": "التاريخ",
+      "course": "الكورس",
+      "amount": "المبلغ",
+      "method": "طريقة الدفع",
+      "status": "الحالة",
+      "free": "مجاني"
+    },
+    "emptyPayments": "لا توجد مدفوعات.",
+    "emptyCash": "لا توجد طلبات نقدية.",
+    "card": {
+      "amount": "المبلغ",
+      "requestDate": "تاريخ الطلب",
+      "confirm": "تأكيد",
+      "reject": "رفض",
+      "paymentProcessed": "تمت معالجة الدفع",
+      "requestRejected": "تم رفض الطلب"
+    }
   },
   "center": {
     "title": "مركز التدريب",
@@ -64,6 +97,17 @@
     "basedOn": "بناءً على",
     "reviews": "تقييم",
     "saving": "جارٍ الحفظ..."
+  },
+  "teacherReviews": {
+    "studentFeedback": "تعليقات الطلاب",
+    "manageReviews": "إدارة ومراقبة التعليقات عبر جميع الكورسات المنشورة الخاصة بك.",
+    "courseFilter": "فلتر الكورس",
+    "allCourses": "جميع الكورسات",
+    "ratingFilter": "فلتر التقييم",
+    "all": "الكل",
+    "fourStarsPlus": "4 نجوم+",
+    "critical": "حرج",
+    "globalAverage": "المتوسط العام"
   },
   "common": {
     "cancel": "إلغاء",
@@ -526,7 +570,9 @@
     "forumReports": "تقارير المنتدى",
     "support": "الدعم",
     "logout": "تسجيل الخروج",
-    "administrator": "مدير النظام"
+    "administrator": "مدير النظام",
+    "payments": "المدفوعات",
+    "payouts": "المدفوعات النقدية"
   },
   "confirmEmail": {
     "verifying": {
@@ -1033,6 +1079,14 @@
     "star": "نجمة",
     "stars": "نجوم",
     "searchPlaceholder": "ابحث في التقييمات...",
+    "heading": "تقييمات الكورسات الخاصة بي",
+    "description": "إدارة وتحديث ملاحظاتك عن الكورسات المكتملة.",
+    "totalReviews": "إجمالي التقييمات",
+    "avgRatingGiven": "متوسط التقييم الممنوح",
+    "uniqueCourses": "الكورسات الفريدة",
+    "noReviewsFound": "لم يتم العثور على تقييمات.",
+    "trySearchOrWrite": "حاول تعديل البحث أو كتابة تقييم لإحدى كورساتك.",
+    "noCommentProvided": "لم يتم توفير تعليق للتقييم.",
     "writeReview": "اكتب تقييماً",
     "noReviews": "لا توجد تقييمات بعد",
     "beFirst": "كن أول من يكتب تقييماً",
@@ -1439,56 +1493,13 @@
     "pageTitle": "الجلسات المباشرة",
 "pageSubtitle": "جدول جلساتك المباشرة وتسجيلاتها.",
 "loadingSessions": "جارٍ تحميل الجلسات...",
-"happeningNow": "يحدث الآن",
-"joinSession": "انضم للجلسة",
-"completed": "مكتمل",
+
 "defaultSessionTitle": "جلسة مباشرة",
-"providerTeams": "فريق الخدمات",
-"insightTitle": "رؤى أكاديمية",
-"insightText": "الجلسات المباشرة هي نبض تجربة atelier. فعّل التسجيلات لكل الجلسات حتى يتمكن الطلاب من إعادة زيارة النقاشات المعقدة بحسب سرعتهم."
+"providerTeams": "فريق الخدمات"
+
 
   },
-  "teacherProgress": {
-    "quizzes": "الاختبارات",
-    "progress": "التقدم",
-    "lessonBreakdown": "تفاصيل الدروس",
-    "watchedUpTo": "شاهد حتى",
-    "statusCompleted": "مكتمل",
-    "statusInProgress": "قيد التعلم",
-    "statusNotStarted": "لم يبدأ",
-    "studentName": "اسم الطالب",
-    "pageTitle": "تقدم الطالب",
-    "pageSubtitle": "تابع تقدم الطلاب المسجلين وتتبع إكمال الدروس.",
-    "loading": "جارٍ تحميل تقدم الطلاب...",
-    "exportCsv": "تصدير CSV",
-    "selectStudentHint": "اختر طالبًا لعرض التقدم التفصيلي وأنشطة الدروس.",
-    "detailedBreakdown": "تفاصيل التقدم",
-    "lessonsCompleted": "دروس مكتملة",
-    "curriculumProgress": "تقدم المنهج",
-    "noLessons": "لا توجد دروس متاحة لهذا الطالب بعد.",
-    "viewFullHistory": "عرض السجل الكامل",
-    "completed": "مكتمل",
-    "footerLabel": "التقدم — منشئ الكورس",
-    "backToSessions": "العودة للجلسات",
-    "done": "تم",
-    "noStudents": "لا يوجد طلاب مسجّلون بعد",
-    
-    "pageTitle": "تقدم الطلاب",
-    "pageSubtitle": "تابع ورصد مسيرة تعلم طلابك",
-    "loading": "جارٍ تحميل بيانات التقدم...",
-    "studentRoster": "قائمة الطلاب",
-    "exportCsv": "تصدير CSV",
-  
-    "noStudentsHint": "سيظهر الطلاب هنا بمجرد تسجيلهم في هذا الكورس.",
-    
-    "selectStudentHint": "اختر طالبًا من القائمة لعرض تفاصيل تقدمه في الدروس.",
-    "detailedBreakdown": "تفاصيل التقدم",
-    "lessonsCompleted": "درس مكتمل",
-    "curriculumProgress": "تقدم المنهج",
-   
-    "noLessons": "لا توجد دروس متاحة لهذا الكورس حتى الآن.",
-    "viewFullHistory": "عرض السجل الكامل"
-  },
+
   "teacherDashboard": {
     "subtitle": "كورساتك وطلابك وجلساتك القادمة.",
     "scheduledSessions": "جلساتك المباشرة المجدولة",
@@ -1503,6 +1514,18 @@
     "noPublished": "لا توجد كورسات منشورة بعد.",
     "enrolled": "مسجّل",
     "view": "عرض"
+  },
+    "paymentHistory": {
+    "portalLabel": "بوابة الطالب",
+    "pageTitle": "سجل المدفوعات",
+    "pageSubtitle": "تتبع جميع مدفوعاتك وعملياتك المالية في مكان واحد.",
+    "totalInvestment": "إجمالي الإنفاق",
+    "recentTransactions": "المعاملات الأخيرة",
+    "noPaymentsYet": "لا توجد مدفوعات بعد",
+    "paymentHistoryEmpty": "لم تقم بأي مدفوعات حتى الآن. ابدأ رحلتك التعليمية بالتسجيل في كورس.",
+    "browseCourses": "تصفح الكورسات",
+    "secureTransactions": "معاملات آمنة",
+    "secureTransactionsDescription": "جميع مدفوعاتك مشفرة وتتم معالجتها عبر بوابة دفع آمنة وموثوقة."
   },
   "studentSidebar": {
     "portal": "بوابة الطالب",
@@ -1522,7 +1545,8 @@
     "learn": "تعلّم",
     "live": "مباشر",
     "certs": "شهادات",
-    "profile": "الملف"
+    "profile": "الملف",
+    "payments": "المدفوعات"
   },
   "adminTopbar": {
     "notifications": "الإشعارات",
@@ -1623,6 +1647,19 @@
     "of": "من",
     "total": "إجمالي"
   }
+},
+
+"paymentHistory": {
+  "portalLabel": "بوابة الطالب",
+  "pageTitle": "سجل الدفع",
+  "pageSubtitle": "نظرة عامة مختارة على استثماراتك التعليمية.",
+  "totalInvestment": "إجمالي الاستثمار",
+  "recentTransactions": "المعاملات الأخيرة",
+  "noPaymentsYet": "لا توجد مدفوعات بعد",
+  "paymentHistoryEmpty": "سيظهر سجل الدفع هنا.",
+  "browseCourses": "تصفح الكورسات",
+  "secureTransactions": "معاملات آمنة",
+  "secureTransactionsDescription": "جميع المدفوعات مشفرة عبر بنية Paymob التحتية."
 },
 
 "invoiceDetail": {
@@ -2652,6 +2689,17 @@
   "contactAdmin": "أو تواصل مع الإدارة مباشرة",
   "adminWillContact": "سيتواصل معك المسؤول لتأكيد الدفع.",
   "termsNote": "بالتسجيل، أنت توافق على شروط الخدمة وسياسة النزاهة الأكاديمية."
-}
+},
+  "myQuizzes": {
+    "title": "اختباراتي",
+    "subtitle": "تصفح وأدِّ الاختبارات الخاصة بالكورسات المسجل فيها",
+    "allCourses": "كل الكورسات",
+    "noQuizzesTitle": "لا توجد اختبارات متاحة",
+    "noQuizzesSubtitle": "جرب اختيار كورس مختلف",
+    "passScore": "للنجاح {{value}}%",
+    "requiredToPass": "مطلوب للنجاح",
+    "viewQuiz": "عرض الاختبار",
+    "retry": "إعادة المحاولة"
+  }
  
 }
