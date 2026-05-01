@@ -1,6 +1,7 @@
-<div class="bg-[#f4f7f6] text-on-surface min-h-screen font-body">
+<div class="bg-[#f4f7f6] text-on-surface min-h-screen font-body" [attr.dir]="isRtl ? 'rtl' : 'ltr'">
   <aside
-    class="hidden md:flex flex-col fixed start-0 top-0 h-screen w-64 bg-white border-e border-outline-variant/20 shadow-[2px_0_12px_rgba(0,0,0,0.04)] z-50"
+    *ngIf="!isEditCourseRoute"
+    class="teacher-layout-sidebar hidden md:flex flex-col fixed ltr:start-0 rtl:end-0 top-0 h-screen w-64 bg-white border-e border-outline-variant/20 shadow-[2px_0_12px_rgba(0,0,0,0.04)] z-50"
   >
     <div class="px-6 py-6 border-b border-outline-variant/15">
       <div class="flex items-center gap-3">
@@ -20,7 +21,7 @@
       <p
         class="text-[10px] font-bold text-on-surface-variant/60 uppercase tracking-widest px-3 mb-2"
       >
-        Main Menu
+        {{ 'teacherLayout.mainMenu' | translate }}
       </p>
 
       <a
@@ -59,7 +60,7 @@
         class="flex items-center gap-3 px-4 py-3 rounded-2xl text-on-surface-variant hover:bg-primary/8 hover:text-primary font-semibold text-sm transition-all duration-200"
       >
         <span class="material-symbols-outlined text-[20px]">rate_review</span>
-        <span>Student Feedback</span>
+        <span>{{ 'teacherLayout.studentFeedback' | translate }}</span>
       </a>
 
       <a
@@ -89,7 +90,10 @@
     </div>
   </aside>
 
-  <div class="md:ms-64 flex flex-col min-h-screen">
+  <div
+    class="teacher-layout-content flex flex-col min-h-screen"
+    [ngClass]="{ 'md:ms-64 rtl:md:me-64': !isEditCourseRoute }"
+  >
     <router-outlet></router-outlet>
   </div>
 </div>
