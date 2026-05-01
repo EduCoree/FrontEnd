@@ -74,7 +74,9 @@
     "loading": "Loading...",
     "error": "An error occurred",
     "retry": "Retry",
-    "viewAll": "View All"
+    "viewAll": "View All",
+    "edit": "Edit",
+"remove": "Remove"
   },
   "home": {
     "badge": "Premium Learning",
@@ -154,7 +156,7 @@
     "allinone_badge": "All-In-One",
     "allinone_title": "All-In-One",
     "allinone_highlight": "Cloud Software.",
-    "allinone_desc": "TOTC is one powerful online software suite that combines all the tools needed to run a successful school or office.",
+    "allinone_desc": "EduCore is one powerful online software suite that combines all the tools needed to run a successful school or office.",
     "feature_billing_title": "Online Billing, Invoicing, & Contracts",
     "feature_billing_desc": "Simple and secure control of your organization's financial and legal transactions. Send customized invoices and contracts.",
     "feature_scheduling_title": "Easy Scheduling & Attendance Tracking",
@@ -162,8 +164,8 @@
     "feature_tracking_title": "Customer Tracking",
     "feature_tracking_desc": "Automate and track emails to individuals or groups. Skilline's built-in system helps organize your organization.",
     "whatis_title": "What is",
-    "whatis_highlight": "TOTC?",
-    "whatis_desc": "TOTC is a platform that allows educators to create online classes whereby they can store the course materials online, manage assignments, quizzes and exams, monitor due dates, grade results and provide students with feedback all in one place.",
+    "whatis_highlight": "EduCore?",
+    "whatis_desc": "EduCore is a platform that allows educators to create online classes whereby they can store the course materials online, manage assignments, quizzes and exams, monitor due dates, grade results and provide students with feedback all in one place.",
     "for_instructors_label": "For Instructors",
     "for_students_label": "For Students",
     "start_class_btn": "Start a class today",
@@ -326,7 +328,16 @@
     "updateLogo": "Update Logo",
     "categories": "Categories",
     "adminUser": "Admin User",
-    "superAdmin": "Super Admin"
+    "superAdmin": "Super Admin",
+      "subtitle": "Dashboard",
+  
+  "adminRole": "General Manager",
+  "nav": {
+    "courseInfo": "Course Information",
+    "quizzes": "Quizzes",
+    "sessions": "Sessions",
+    "progress": "Progress"
+  }
   },
   "adminCourses": {
     "title": "Course Management",
@@ -1111,6 +1122,7 @@
     "joinTooltip": "Available 15 minutes before start",
     "availableHint": "Available 15 min\nbefore start",
     "teams": "Teams"
+      
   },
   "studentDashboard": {
     "welcomeBack": "Welcome back",
@@ -1138,6 +1150,7 @@
     "completion": "Completion",
     "lessonsCompleted": "Lessons completed",
     "resumeLesson": "Resume lesson"
+    
   },
   "videoWatch": {
     "brand": "EduCore",
@@ -1426,7 +1439,18 @@
     "recordingUrlError": "A valid URL starting with http:// or https:// is required.",
     "saveRecording": "Save Recording",
     "footerLabel": "Sessions — Course Builder",
-    "backToMedia": "Back to Media"
+    "backToMedia": "Back to Media",
+    "pageTitle": "Live Sessions",
+"pageSubtitle": "Oversee your virtual classrooms and upcoming student interactions.",
+"loadingSessions": "Loading sessions…",
+"happeningNow": "Happening Now",
+"joinSession": "Join Session",
+"completed": "Completed",
+"defaultSessionTitle": "Live Session",
+"providerTeams": "Teams",
+"insightTitle": "Academic Insight",
+"insightText": "Live sessions are the heartbeat of the atelier experience. Enable recordings for all sessions so students can revisit complex discussions at their own pace."
+
   },
   "teacherProgress": {
     "lessonBreakdown": "Lesson Breakdown",
@@ -1450,7 +1474,23 @@
     "backToSessions": "Back to Sessions",
     "done": "Done",
     "noStudents": "No enrolled students yet",
-    "noStudentsHint": "Students who enroll in this course will appear here."
+   
+      "pageTitle": "Student Progress",
+    "pageSubtitle": "Track and monitor your students' learning journey",
+    "loading": "Loading progress data...",
+    "studentRoster": "Student Roster",
+    "exportCsv": "Export CSV",
+  
+    "noStudentsHint": "Students will appear here once they enroll in this course.",
+  
+    
+    "selectStudentHint": "Select a student from the list to view their detailed lesson progress.",
+    "detailedBreakdown": "Detailed Breakdown",
+    "lessonsCompleted": "lessons completed",
+    "curriculumProgress": "Curriculum Progress",
+   
+    "noLessons": "No lessons available for this course yet.",
+    "viewFullHistory": "View Full History"
   },
   "teacherDashboard": {
     "subtitle": "Your courses, students, and upcoming sessions.",
@@ -1959,5 +1999,72 @@
       }
     }
   }
+},
+  "COURSE": {
+    "LOADING": "Loading your course…",
+    "BACK_TO_MY_COURSES": "← Back to My Courses",
+    "MY_COURSES": "My Courses",
+    "IN_PROGRESS": "In Progress",
+    "ENROLLED": "Enrolled",
+    "RESUME_HINT": "Resume where you left off",
+    "START_HINT": "Start first lesson",
+    "LESSONS": "lessons",
+    "VIDEO_LOADING": "Loading",
+    "REFRESH": "Refresh",
+    "CLOSE": "Close",
+    "VIDEO_NOT_SUPPORTED": "Your browser does not support the video tag.",
+    "WATCH_FULL_VIDEO": "Watch the full video, then mark as complete",
+    "COMPLETED": "Completed",
+    "SAVING": "Saving…",
+    "NEXT": "Next",
+    "MARK_COMPLETE": "Mark Complete",
+    "INSTRUCTOR": "Instructor",
+    "INSTRUCTOR_TIP": "Follow the curriculum in order for the best learning experience. Click any lesson in the sidebar to play it instantly.",
+    "SECTIONS": "Sections",
+    "LEVEL": "Level",
+    "COMPLETE": "Complete",
+    "COURSE_CONTENT": "Course Content",
+    "RESUME": "Resume",
+    "START": "Start",
+    "DISCUSSION": "Discussion",
+    "REVIEWS": "Reviews",
+    "MY_PROGRESS": "My Progress",
+    "JOIN_DISCUSSION": "Join Discussion"
+  },
+   "courseManagement": {
+    "label": "Course Management"
+  }
+ ,
+ "enrollment": {
+  "confirmEnrollment": "Confirm Enrollment",
+  "enrollingIn": "You're enrolling in",
+  "certificate": "Certificate Included",
+  "selectPathway": "Select your pathway",
+  "pathway01": "Pathway 01",
+  "pathway02": "Pathway 02",
+  "recommended": "Recommended",
+  "freeCourse": "Free Course",
+  "freeEnrollment": "Free Enrollment",
+  "freeDesc": "Full access to all course materials at no cost.",
+  "free": "Free",
+  "enrollFree": "Enroll for Free",
+  "enrolling": "Enrolling...",
+  "digitalAccess": "Digital Access",
+  "digitalDesc": "Full access including exams and certificate.",
+  "payCard": "Pay with Card",
+  "processing": "Processing...",
+  "offline": "Offline",
+  "offlineDesc": "Manual enrollment via cash payment.",
+  "requestCash": "Request Cash",
+  "sending": "Sending...",
+  "requestSent": "Request Sent!",
+  "contactAdmin": "Or contact admin directly",
+  "adminWillContact": "The admin will contact you to confirm your payment.",
+  "termsNote": "By enrolling, you agree to our Terms of Service and Academic Integrity Policy."
 }
+
+  
+
+ 
+
 }

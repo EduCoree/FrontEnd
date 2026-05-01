@@ -26,10 +26,10 @@ export class CourseSidebar {
   constructor(private route: ActivatedRoute) {
     // Read the edit route ID from whichever active route level provides it.
     this.courseId =
-      this.route.snapshot.paramMap.get('id') ||
-      this.route.snapshot.paramMap.get('courseId') ||
-      this.route.parent?.snapshot.paramMap.get('id') ||
-      this.route.parent?.snapshot.paramMap.get('courseId') ||
+      this.route.snapshot.paramMap.get('id') 
+      this.route.snapshot.paramMap.get('courseId') 
+      this.route.parent?.snapshot.paramMap.get('id') 
+      this.route.parent?.snapshot.paramMap.get('courseId') 
       null;
   }
 
@@ -40,25 +40,25 @@ export class CourseSidebar {
       {
         labelKey: 'courseBuilder.courseInfo',
         icon: 'business',
-        route: `/teacher/courses/edit/${this.courseId}/info`,
+        route: /teacher/courses/edit/${this.courseId}/info,
         exact: true
       },
       {
         labelKey: 'teacherProgress.quizzes',
         icon: 'upload',
-        route: `/teacher/courses/edit/${this.courseId}/quizzes`,
+        route: /teacher/courses/edit/${this.courseId}/quizzes,
         exact: false
       },
       {
         labelKey: 'teacherSessions.sessions',
         icon: 'calendar_month',
-        route: `/teacher/courses/edit/${this.courseId}/sessions`,
+        route: /teacher/courses/edit/${this.courseId}/sessions,
         exact: false
       },
       {
         labelKey: 'teacherProgress.progress',
         icon: 'trending_up',
-        route: `/teacher/courses/edit/${this.courseId}/progress`,
+        route: /teacher/courses/edit/${this.courseId}/progress,
         exact: false
       },
     ];
