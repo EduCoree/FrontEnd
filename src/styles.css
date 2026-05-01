@@ -105,3 +105,17 @@ h1, h2, h3, h4, h5, h6,
 [dir="rtl"] .space-y-4 > * + * {
   margin-top: 1rem;
 }
+
+.teacher-layout-sidebar {
+  inset-inline-start: 0;
+  inset-inline-end: auto;
+}
+
+[dir="rtl"] .teacher-layout-sidebar {
+  inset-inline-end: 0;
+  inset-inline-start: auto;
+}
+
+.teacher-layout-content {
+  margin-inline-start: 0;
+}

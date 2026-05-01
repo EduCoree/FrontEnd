@@ -1,13 +1,19 @@
 <div class="min-h-screen flex">
-  <app-course-sidebar></app-course-sidebar>
+  @if (showSidebar) {
+    <app-course-sidebar></app-course-sidebar>
+  }
 
   <!-- Main Content -->
   <main class="flex-1 w-full md:ml-4 p-6 md:p-10">
-
     <nav class="flex items-center gap-2 mb-8 text-on-surface-variant/60">
-      <a routerLink="/teacher/courses" class="flex items-center gap-1 hover:text-primary transition-colors group">
+      <a
+        routerLink="/teacher/courses"
+        class="flex items-center gap-1 hover:text-primary transition-colors group"
+      >
         <span class="material-symbols-outlined text-xl">arrow_back</span>
-        <span class="text-sm font-semibold uppercase tracking-wider">{{ 'teacherQuizzes.myCourses' | translate }}</span>
+        <span class="text-sm font-semibold uppercase tracking-wider">{{
+          'teacherQuizzes.myCourses' | translate
+        }}</span>
       </a>
     </nav>
 
@@ -18,14 +24,18 @@
         </h1>
         <p class="text-sm font-bold text-primary uppercase tracking-[0.2em]">{{ courseTitle }}</p>
       </div>
-      <button (click)="showCreateModal = true"
-        class="flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-br from-primary to-primary-container text-white rounded-lg font-bold shadow-[0_8px_32px_rgba(46,104,88,0.2)] hover:opacity-90 transition-all active:scale-95">
+      <button
+        (click)="showCreateModal = true"
+        class="flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-br from-primary to-primary-container text-white rounded-lg font-bold shadow-[0_8px_32px_rgba(46,104,88,0.2)] hover:opacity-90 transition-all active:scale-95"
+      >
         <span class="material-symbols-outlined">add</span>
         {{ 'teacherQuizzes.createNewQuiz' | translate }}
       </button>
     </div>
 
-    <div class="bg-surface-container-lowest rounded-2xl p-6 shadow-[0_8px_32px_rgba(125,184,165,0.08)] border border-outline-variant/30 mb-6">
+    <div
+      class="bg-surface-container-lowest rounded-2xl p-6 shadow-[0_8px_32px_rgba(125,184,165,0.08)] border border-outline-variant/30 mb-6"
+    >
       <div class="flex items-center justify-between mb-6">
         <h2 class="text-lg font-bold text-on-surface flex items-center gap-2">
           <span class="material-symbols-outlined text-primary">analytics</span>
@@ -34,38 +44,59 @@
       </div>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div class="px-8 py-4 bg-surface-container-low rounded-xl">
-          <div class="text-[10px] font-bold text-on-surface-variant uppercase mb-1">{{ 'teacherQuizzes.totalQuizzes' | translate }}</div>
+          <div class="text-[10px] font-bold text-on-surface-variant uppercase mb-1">
+            {{ 'teacherQuizzes.totalQuizzes' | translate }}
+          </div>
           <div class="text-2xl font-extrabold text-primary">{{ quizzes.length }}</div>
         </div>
         <div class="px-8 py-4 bg-surface-container-low rounded-xl">
-          <div class="text-[10px] font-bold text-on-surface-variant uppercase mb-1">{{ 'teacherQuizzes.avgPassScore' | translate }}</div>
+          <div class="text-[10px] font-bold text-on-surface-variant uppercase mb-1">
+            {{ 'teacherQuizzes.avgPassScore' | translate }}
+          </div>
           <div class="text-2xl font-extrabold text-on-surface">{{ avgPassScore }}%</div>
         </div>
         <div class="px-8 py-4 bg-surface-container-low rounded-xl">
-          <div class="text-[10px] font-bold text-on-surface-variant uppercase mb-1">{{ 'teacherQuizzes.randomized' | translate }}</div>
+          <div class="text-[10px] font-bold text-on-surface-variant uppercase mb-1">
+            {{ 'teacherQuizzes.randomized' | translate }}
+          </div>
           <div class="text-2xl font-extrabold text-on-surface">{{ randomizedCount }}</div>
         </div>
         <div class="px-8 py-4 bg-surface-container-low rounded-xl">
-          <div class="text-[10px] font-bold text-on-surface-variant uppercase mb-1">{{ 'teacherQuizzes.noTimeLimit' | translate }}</div>
+          <div class="text-[10px] font-bold text-on-surface-variant uppercase mb-1">
+            {{ 'teacherQuizzes.noTimeLimit' | translate }}
+          </div>
           <div class="text-2xl font-extrabold text-on-surface">{{ noLimitCount }}</div>
         </div>
       </div>
     </div>
 
-    <div class="bg-surface-container-lowest rounded-2xl shadow-[0_8px_32px_rgba(125,184,165,0.08)] overflow-hidden border border-outline-variant/30 mb-10">
-      <div class="p-6 border-b border-outline-variant/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <h3 class="font-bold text-on-surface">{{ 'teacherQuizzes.activeAssessments' | translate }}</h3>
+    <div
+      class="bg-surface-container-lowest rounded-2xl shadow-[0_8px_32px_rgba(125,184,165,0.08)] overflow-hidden border border-outline-variant/30 mb-10"
+    >
+      <div
+        class="p-6 border-b border-outline-variant/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+      >
+        <h3 class="font-bold text-on-surface">
+          {{ 'teacherQuizzes.activeAssessments' | translate }}
+        </h3>
         <div class="relative">
-          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/60 text-sm">search</span>
-          <input [(ngModel)]="searchTerm"
+          <span
+            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/60 text-sm"
+            >search</span
+          >
+          <input
+            [(ngModel)]="searchTerm"
             class="pl-9 pr-4 py-2 bg-surface-container-low border-none rounded-lg text-sm w-full sm:w-64 focus:ring-primary/20"
             [placeholder]="'teacherQuizzes.searchPlaceholder' | translate"
-            type="text"/>
+            type="text"
+          />
         </div>
       </div>
 
       @if (errorMessage) {
-        <div class="flex items-center gap-3 px-6 py-4 bg-error-container text-on-error-container text-sm font-medium">
+        <div
+          class="flex items-center gap-3 px-6 py-4 bg-error-container text-on-error-container text-sm font-medium"
+        >
           <span class="material-symbols-outlined text-[20px]">error</span>
           {{ errorMessage }}
         </div>
@@ -73,7 +104,9 @@
 
       @if (isLoading) {
         <div class="flex justify-center py-16">
-          <span class="material-symbols-outlined animate-spin text-primary text-4xl">progress_activity</span>
+          <span class="material-symbols-outlined animate-spin text-primary text-4xl"
+            >progress_activity</span
+          >
         </div>
       }
 
@@ -82,12 +115,36 @@
           <table class="w-full text-left border-collapse">
             <thead>
               <tr class="bg-surface-container-low/30">
-                <th class="px-8 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider">{{ 'teacherQuizzes.tableTitle' | translate }}</th>
-                <th class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider">{{ 'teacherQuizzes.tableTimeLimit' | translate }}</th>
-                <th class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider">{{ 'teacherQuizzes.tablePassScore' | translate }}</th>
-                <th class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider">{{ 'teacherQuizzes.tableMaxAttempts' | translate }}</th>
-                <th class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider">{{ 'teacherQuizzes.tableRandomized' | translate }}</th>
-                <th class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider">{{ 'teacherQuizzes.tableStatus' | translate }}</th>
+                <th
+                  class="px-8 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider"
+                >
+                  {{ 'teacherQuizzes.tableTitle' | translate }}
+                </th>
+                <th
+                  class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider"
+                >
+                  {{ 'teacherQuizzes.tableTimeLimit' | translate }}
+                </th>
+                <th
+                  class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider"
+                >
+                  {{ 'teacherQuizzes.tablePassScore' | translate }}
+                </th>
+                <th
+                  class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider"
+                >
+                  {{ 'teacherQuizzes.tableMaxAttempts' | translate }}
+                </th>
+                <th
+                  class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider"
+                >
+                  {{ 'teacherQuizzes.tableRandomized' | translate }}
+                </th>
+                <th
+                  class="px-6 py-5 text-xs font-bold text-on-surface-variant uppercase tracking-wider"
+                >
+                  {{ 'teacherQuizzes.tableStatus' | translate }}
+                </th>
                 <th class="px-8 py-5 text-right"></th>
               </tr>
             </thead>
@@ -98,68 +155,94 @@
                     <div class="font-bold text-on-surface">{{ quiz.title }}</div>
                   </td>
                   <td class="px-6 py-6 font-medium text-on-surface-variant">
-                    {{ quiz.timeLimitMins ? quiz.timeLimitMins + ' ' + ('teacherQuizzes.mins' | translate) : ('teacherQuizzes.noLimit' | translate) }}
+                    {{
+                      quiz.timeLimitMins
+                        ? quiz.timeLimitMins + ' ' + ('teacherQuizzes.mins' | translate)
+                        : ('teacherQuizzes.noLimit' | translate)
+                    }}
                   </td>
-                  <td class="px-6 py-6 font-medium text-on-surface-variant">{{ quiz.passScore }}%</td>
                   <td class="px-6 py-6 font-medium text-on-surface-variant">
-                    {{ quiz.maxAttempts ?? ('teacherQuizzes.unlimited' | translate) }}
+                    {{ quiz.passScore }}%
+                  </td>
+                  <td class="px-6 py-6 font-medium text-on-surface-variant">
+                    {{
+                      quiz.maxAttempts !== null && quiz.maxAttempts !== undefined
+                        ? quiz.maxAttempts
+                        : ('teacherQuizzes.unlimited' | translate)
+                    }}
                   </td>
                   <td class="px-6 py-6">
                     @if (quiz.isRandomized) {
-                      <span class="px-3 py-1 bg-primary-fixed-dim text-on-primary-container text-[11px] font-bold rounded-full uppercase tracking-tighter">
+                      <span
+                        class="px-3 py-1 bg-primary-fixed-dim text-on-primary-container text-[11px] font-bold rounded-full uppercase tracking-tighter"
+                      >
                         {{ 'teacherQuizzes.yes' | translate }}
                       </span>
                     } @else {
-                      <span class="px-3 py-1 bg-surface-dim text-on-surface-variant text-[11px] font-bold rounded-full uppercase tracking-tighter">
+                      <span
+                        class="px-3 py-1 bg-surface-dim text-on-surface-variant text-[11px] font-bold rounded-full uppercase tracking-tighter"
+                      >
                         {{ 'teacherQuizzes.no' | translate }}
                       </span>
                     }
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                  <span [ngClass]="quiz.isPublished ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'"
-                        class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                    {{ quiz.isPublished ? 'Published' : 'Draft' }}
-                  </span>
+                    <span
+                      [ngClass]="
+                        quiz.isPublished
+                          ? 'bg-green-100 text-green-700'
+                          : 'bg-gray-100 text-gray-600'
+                      "
+                      class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider"
+                    >
+                      {{ quiz.isPublished ? 'Published' : 'Draft' }}
+                    </span>
                   </td>
-                  
+
                   <td class="px-8 py-6 text-right">
                     <div class="flex items-center justify-end gap-2">
-                      <button (click)="onOpenBuilder(quiz.id)"
-                        class="builder flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-primary rounded-lg transition-all text-xs font-bold">
+                      <button
+                        (click)="onOpenBuilder(quiz.id)"
+                        class="builder flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-primary rounded-lg transition-all text-xs font-bold"
+                      >
                         <span class="material-symbols-outlined text-[18px]">edit</span>
                         {{ 'teacherQuizzes.openBuilder' | translate }}
                       </button>
                       <!-- More actions dropdown -->
-    <div class="relative">
-      <button
-        (click)="toggleMenu(quiz.id)"
-        class="p-2 text-slate-400 hover:text-primary hover:bg-surface-container-low rounded-lg transition-colors">
-        <span class="material-symbols-outlined">more_vert</span>
-      </button>
- 
-      @if (openMenuId === quiz.id) {
-        <div class="absolute right-0 top-full mt-1 w-40 bg-white rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-outline-variant/20 z-50 overflow-hidden">
- 
-          <button
-            (click)="onEdit(quiz.id)"
-            class="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-on-surface hover:bg-surface-container-low transition-colors text-left">
-            <span class="material-symbols-outlined text-[18px] text-primary">tune</span>
-            Edit Quiz
-          </button>
- 
-          <div class="h-px bg-outline-variant/20 mx-3"></div>
- 
-          <button
-            (click)="onDelete(quiz.id);"
-            class="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-error hover:bg-error-container/20 transition-colors text-left">
-            <span class="material-symbols-outlined text-[18px]">delete</span>
-            Delete Quiz
-          </button>
- 
-        </div>
-      }
-    </div>
- 
+                      <div class="relative">
+                        <button
+                          (click)="toggleMenu(quiz.id)"
+                          class="p-2 text-slate-400 hover:text-primary hover:bg-surface-container-low rounded-lg transition-colors"
+                        >
+                          <span class="material-symbols-outlined">more_vert</span>
+                        </button>
+
+                        @if (openMenuId === quiz.id) {
+                          <div
+                            class="absolute right-0 top-full mt-1 w-40 bg-white rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-outline-variant/20 z-50 overflow-hidden"
+                          >
+                            <button
+                              (click)="onEdit(quiz.id)"
+                              class="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-on-surface hover:bg-surface-container-low transition-colors text-left"
+                            >
+                              <span class="material-symbols-outlined text-[18px] text-primary"
+                                >tune</span
+                              >
+                              Edit Quiz
+                            </button>
+
+                            <div class="h-px bg-outline-variant/20 mx-3"></div>
+
+                            <button
+                              (click)="onDelete(quiz.id)"
+                              class="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-error hover:bg-error-container/20 transition-colors text-left"
+                            >
+                              <span class="material-symbols-outlined text-[18px]">delete</span>
+                              Delete Quiz
+                            </button>
+                          </div>
+                        }
+                      </div>
                     </div>
                   </td>
                 </tr>
@@ -168,34 +251,37 @@
           </table>
         </div>
         <!-- Pagination -->
-    @if (totalPages() > 1) {
-      <div class="flex justify-center items-center gap-2 mt-12 mb-28 md:mb-12">
+        @if (totalPages() > 1) {
+          <div class="flex justify-center items-center gap-2 mt-12 mb-28 md:mb-12">
+            <button
+              (click)="goToPage(currentPage() - 1)"
+              [disabled]="currentPage() === 1"
+              class="p-2 rounded-full hover:bg-surface-container-highest disabled:opacity-30 transition-all text-on-surface"
+            >
+              <span class="material-symbols-outlined">chevron_left</span>
+            </button>
 
-        <button
-          (click)="goToPage(currentPage() - 1)"
-          [disabled]="currentPage() === 1"
-          class="p-2 rounded-full hover:bg-surface-container-highest disabled:opacity-30 transition-all text-on-surface">
-          <span class="material-symbols-outlined">chevron_left</span>
-        </button>
+            <button
+              *ngFor="let page of [].constructor(totalPages()); let i = index"
+              (click)="goToPage(i + 1)"
+              [class]="
+                i + 1 === currentPage()
+                  ? 'w-10 h-10 rounded-full bg-primary text-on-primary font-bold text-sm shadow-md'
+                  : 'w-10 h-10 rounded-full hover:bg-surface-container-highest text-on-surface-variant font-bold text-sm transition-all'
+              "
+            >
+              {{ i + 1 }}
+            </button>
 
-        <button
-          *ngFor="let page of [].constructor(totalPages()); let i = index"
-          (click)="goToPage(i + 1)"
-          [class]="(i + 1) === currentPage()
-            ? 'w-10 h-10 rounded-full bg-primary text-on-primary font-bold text-sm shadow-md'
-            : 'w-10 h-10 rounded-full hover:bg-surface-container-highest text-on-surface-variant font-bold text-sm transition-all'">
-          {{ i + 1 }}
-        </button>
-
-        <button
-          (click)="goToPage(currentPage() + 1)"
-          [disabled]="currentPage() === totalPages()"
-          class="p-2 rounded-full hover:bg-surface-container-highest disabled:opacity-30 transition-all text-on-surface">
-          <span class="material-symbols-outlined">chevron_right</span>
-        </button>
-
-      </div>
-    }
+            <button
+              (click)="goToPage(currentPage() + 1)"
+              [disabled]="currentPage() === totalPages()"
+              class="p-2 rounded-full hover:bg-surface-container-highest disabled:opacity-30 transition-all text-on-surface"
+            >
+              <span class="material-symbols-outlined">chevron_right</span>
+            </button>
+          </div>
+        }
       }
 
       @if (!isLoading && !errorMessage && quizzes.length === 0) {
@@ -203,10 +289,16 @@
           <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
             <span class="material-symbols-outlined text-3xl text-primary">list_alt</span>
           </div>
-          <h3 class="text-lg font-bold text-on-surface mb-2">{{ 'teacherQuizzes.noQuizzesTitle' | translate }}</h3>
-          <p class="text-on-surface-variant/70 mb-6 max-w-xs text-sm">{{ 'teacherQuizzes.noQuizzesDesc' | translate }}</p>
-          <button (click)="showCreateModal = true"
-            class="flex items-center gap-2 px-6 py-3 bg-gradient-to-br from-primary to-primary-container text-white rounded-lg font-bold">
+          <h3 class="text-lg font-bold text-on-surface mb-2">
+            {{ 'teacherQuizzes.noQuizzesTitle' | translate }}
+          </h3>
+          <p class="text-on-surface-variant/70 mb-6 max-w-xs text-sm">
+            {{ 'teacherQuizzes.noQuizzesDesc' | translate }}
+          </p>
+          <button
+            (click)="showCreateModal = true"
+            class="flex items-center gap-2 px-6 py-3 bg-gradient-to-br from-primary to-primary-container text-white rounded-lg font-bold"
+          >
             <span class="material-symbols-outlined">add</span>
             {{ 'teacherQuizzes.createNewQuiz' | translate }}
           </button>
@@ -216,24 +308,35 @@
 
     <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
       <div class="md:col-span-2 relative h-64 rounded-2xl overflow-hidden group">
-        <img alt="Analytics" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEeTuKDo-RSlfj1zHC8ZSDPbeFPF5OHXZnfmb_Iw0f7Ly-Qwu5UgkvC-xXzTPGm2bLQYec7zCUzlFvrhPKg-vdQJzCU5fp9ZVcQHkov9qvuPr0vTRIR9ubkImdC1--gAwRRPHvy31Am94DOEYPB5E0mCCo-t7KAA-HtkEl-oucQKofIkRzwtVcLCPR_6MwgACsuINCZfFNfLtnUZegcyNTiApgvsCTZxyoSbfWO7cDGp23tN86vOs68lrPCL6bhgi5ZOkpe517Tpw"/>
-        <div class="absolute inset-0 bg-gradient-to-t from-primary/90 to-transparent p-8 flex flex-col justify-end">
-          <h3 class="text-white text-2xl font-bold mb-2">{{ 'teacherQuizzes.analyticsDashboardTitle' | translate }}</h3>
-          <p class="text-white/80 text-sm max-w-md">{{ 'teacherQuizzes.analyticsDashboardDesc' | translate }}</p>
+        <img
+          alt="Analytics"
+          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEeTuKDo-RSlfj1zHC8ZSDPbeFPF5OHXZnfmb_Iw0f7Ly-Qwu5UgkvC-xXzTPGm2bLQYec7zCUzlFvrhPKg-vdQJzCU5fp9ZVcQHkov9qvuPr0vTRIR9ubkImdC1--gAwRRPHvy31Am94DOEYPB5E0mCCo-t7KAA-HtkEl-oucQKofIkRzwtVcLCPR_6MwgACsuINCZfFNfLtnUZegcyNTiApgvsCTZxyoSbfWO7cDGp23tN86vOs68lrPCL6bhgi5ZOkpe517Tpw"
+        />
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-primary/90 to-transparent p-8 flex flex-col justify-end"
+        >
+          <h3 class="text-white text-2xl font-bold mb-2">
+            {{ 'teacherQuizzes.analyticsDashboardTitle' | translate }}
+          </h3>
+          <p class="text-white/80 text-sm max-w-md">
+            {{ 'teacherQuizzes.analyticsDashboardDesc' | translate }}
+          </p>
         </div>
       </div>
       <div class="bg-surface-container-high p-8 rounded-2xl flex flex-col justify-center">
         <span class="material-symbols-outlined text-4xl text-primary mb-4">auto_awesome</span>
         <h3 class="text-xl font-bold mb-3">{{ 'teacherQuizzes.aiGeneratorTitle' | translate }}</h3>
-        <p class="text-sm text-on-surface-variant mb-6 leading-relaxed">{{ 'teacherQuizzes.aiGeneratorDesc' | translate }}</p>
-        <button class="w-fit px-5 py-2 bg-white text-primary font-bold rounded-lg text-sm shadow-sm hover:shadow-md transition-all">
+        <p class="text-sm text-on-surface-variant mb-6 leading-relaxed">
+          {{ 'teacherQuizzes.aiGeneratorDesc' | translate }}
+        </p>
+        <button
+          class="w-fit px-5 py-2 bg-white text-primary font-bold rounded-lg text-sm shadow-sm hover:shadow-md transition-all"
+        >
           {{ 'teacherQuizzes.tryAiTools' | translate }}
         </button>
       </div>
     </div>
- 
-
   </main>
 
   @if (showCreateModal) {
@@ -248,15 +351,14 @@
     </div>
   }
   @if (showEditModal && selectedQuizId) {
-  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-    <div class="w-full max-w-lg mx-4">
-      <app-edit-quiz
-        [quizId]="selectedQuizId"
-        (updated)="onQuizUpdated()"
-        (cancelled)="showEditModal = false"
-      />
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+      <div class="w-full max-w-lg mx-4">
+        <app-edit-quiz
+          [quizId]="selectedQuizId"
+          (updated)="onQuizUpdated()"
+          (cancelled)="showEditModal = false"
+        />
+      </div>
     </div>
-  </div>
-}
-
+  }
 </div>

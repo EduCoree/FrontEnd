@@ -8,14 +8,13 @@ import { CreateQuizComponent } from '../../CreateQuiz/create-quiz/create-quiz';
 import { FormsModule } from '@angular/forms';
 import { CourseSidebar } from "../../../../shared/components/ui/sidebar/course-sidebar/course-sidebar";
 import { EditQuiz } from "../../edit-quiz/edit-quiz";
-import { Sidebar } from "../../../../shared/components/ui/sidebar/sidebar";
 import { TranslateModule } from '@ngx-translate/core';
 
 
 @Component({
   selector: 'app-quiz',
   templateUrl: './get-quizzes.html',
-  imports: [CommonModule, CreateQuizComponent, FormsModule, CourseSidebar, RouterLink, EditQuiz,TranslateModule,Sidebar],
+  imports: [CommonModule, CreateQuizComponent, FormsModule, CourseSidebar, RouterLink, EditQuiz, TranslateModule],
 })
 export class QuizComponent implements OnInit {
   courseId!: number;
@@ -39,8 +38,18 @@ export class QuizComponent implements OnInit {
     
   ) {}
 
+  get showSidebar(): boolean {
+    return !this.router.url.includes('/teacher/courses/edit/');
+  }
+
   ngOnInit(): void {
-    this.courseId = Number(this.route.snapshot.paramMap.get('courseId'));
+    const courseIdParam =
+      this.route.snapshot.paramMap.get('courseId') ||
+      this.route.snapshot.paramMap.get('id') ||
+      this.route.parent?.snapshot.paramMap.get('courseId') ||
+      this.route.parent?.snapshot.paramMap.get('id');
+
+    this.courseId = courseIdParam ? Number(courseIdParam) : 0;
     this.loadQuizzes();
   }
    get avgPassScore(): number {

@@ -2,16 +2,15 @@
      LIVE SESSIONS — fits inside the ec-body of edit-course shell
      ══════════════════════════════════════════════════════════ -->
 <div class="sessions-page">
-
   <!-- ── Page Header ─────────────────────────────────────────── -->
   <div class="sp-header">
     <div class="sp-header__text">
-      <h1 class="sp-title">Live Sessions</h1>
-      <p class="sp-subtitle">Oversee your virtual classrooms and upcoming student interactions.</p>
+      <h1 class="sp-title">{{ 'teacherSessions.liveSessions' | translate }}</h1>
+      <p class="sp-subtitle">{{ 'teacherSessions.subtitle' | translate }}</p>
     </div>
     <button class="sp-schedule-btn" (click)="openScheduleModal()">
       <span class="material-symbols-outlined">add</span>
-      Schedule Session
+      {{ 'teacherSessions.scheduleSession' | translate }}
     </button>
   </div>
 
@@ -26,293 +25,382 @@
   <!-- ── Loading ──────────────────────────────────────────────── -->
   <div *ngIf="isLoading()" class="sp-loading">
     <span class="material-symbols-outlined sp-loading__icon">progress_activity</span>
-    <span>Loading sessions…</span>
-  </div>
-
-  <div *ngIf="!isLoading()" class="sp-content">
-
-    <!-- ── Empty State ───────────────────────────────────────── -->
-    <div *ngIf="sessions().length === 0" class="sp-empty">
-      <div class="sp-empty__icon-wrap">
-        <span class="material-symbols-outlined">calendar_month</span>
-      </div>
-      <h3 class="sp-empty__title">{{ 'teacherSessions.noSessionsTitle' | translate }}</h3>
-      <p class="sp-empty__hint">{{ 'teacherSessions.noSessionsHint' | translate }}</p>
-      <button class="sp-schedule-btn sp-schedule-btn--outline" (click)="openScheduleModal()">
-        <span class="material-symbols-outlined">add_circle</span>
-        {{ 'teacherSessions.scheduleFirst' | translate }}
-      </button>
-    </div>
-
-    <!-- ══ SECTION: Happening Now ════════════════════════════════ -->
-    <section *ngIf="currentSessions().length > 0" class="sp-section">
-      <div class="sp-section__label sp-section__label--live">
-        <span class="sp-live-dot"></span>
-        <span>Happening Now</span>
-      </div>
-
-      <!-- Live Session Card -->
-      <div *ngFor="let session of currentSessions()" class="sp-live-card">
-        <div class="sp-live-card__info">
-          <!-- Provider badge -->
-          <span class="sp-provider-badge"
-            [class.sp-provider-badge--zoom]="session.provider === 'Zoom'"
-            [class.sp-provider-badge--teams]="session.provider === 'MicrosoftTeams'"
-            [class.sp-provider-badge--meet]="session.provider === 'GoogleMeet'"
-            [class.sp-provider-badge--jitsi]="session.provider === 'Jitsi'">
-            {{ session.provider === 'MicrosoftTeams' ? 'Teams' : session.provider }}
-          </span>
-          <div class="sp-live-card__meta">
-            <h3 class="sp-live-card__title">{{ session.title ?? 'Live Session' }}</h3>
-            <p class="sp-live-card__time">
-              <span class="material-symbols-outlined">schedule</span>
-              {{ session.scheduledAt | date:'medium' }}
-            </p>
-          </div>
+    <span>{{ 'teacherSessions.loading' | translate }}</span>
+    <div *ngIf="!isLoading()" class="sp-content">
+      <!-- ── Empty State ───────────────────────────────────────── -->
+      <div *ngIf="sessions().length === 0" class="sp-empty">
+        <div class="sp-empty__icon-wrap">
+          <span class="material-symbols-outlined">calendar_month</span>
         </div>
-        <button class="sp-join-btn" (click)="joinSession(session)">
-          Join Session
-          <span class="material-symbols-outlined">arrow_forward</span>
+        <h3 class="sp-empty__title">{{ 'teacherSessions.noSessionsTitle' | translate }}</h3>
+        <p class="sp-empty__hint">{{ 'teacherSessions.noSessionsHint' | translate }}</p>
+        <button class="sp-schedule-btn sp-schedule-btn--outline" (click)="openScheduleModal()">
+          <span class="material-symbols-outlined">add_circle</span>
+          {{ 'teacherSessions.scheduleFirst' | translate }}
         </button>
       </div>
-    </section>
 
-    <!-- ══ SECTION: Upcoming Sessions ════════════════════════════ -->
-    <section *ngIf="upcomingSessions().length > 0" class="sp-section">
-      <div class="sp-section__label">
-        <span>{{ 'teacherSessions.upcoming' | translate }}</span>
-        <div class="sp-section__divider"></div>
-      </div>
-
-      <div class="sp-upcoming-list">
-        <div *ngFor="let session of upcomingSessions()" class="sp-upcoming-item">
-          <div class="sp-upcoming-item__left">
-            <!-- Date badge -->
-            <div class="sp-date-badge">
-              <span class="sp-date-badge__month">{{ session.scheduledAt | date:'MMM' }}</span>
-              <span class="sp-date-badge__day">{{ session.scheduledAt | date:'d' }}</span>
-            </div>
-            <!-- Info -->
-            <div class="sp-upcoming-item__info">
-              <!-- Provider -->
-              <span class="sp-provider-badge sp-provider-badge--sm"
-                [class.sp-provider-badge--zoom]="session.provider === 'Zoom'"
-                [class.sp-provider-badge--teams]="session.provider === 'MicrosoftTeams'"
-                [class.sp-provider-badge--meet]="session.provider === 'GoogleMeet'"
-                [class.sp-provider-badge--jitsi]="session.provider === 'Jitsi'">
-                {{ session.provider === 'MicrosoftTeams' ? 'Teams' : session.provider }}
-              </span>
-              <h4 class="sp-upcoming-item__title">{{ session.title ?? ('studentAgenda.defaultSessionTitle' | translate) }}</h4>
-              <p class="sp-upcoming-item__time">
-                <span class="material-symbols-outlined">schedule</span>
-                {{ session.scheduledAt | date:'shortTime' }}
-              </p>
-            </div>
-          </div>
-          <div class="sp-upcoming-item__actions">
-            <button class="sp-icon-btn sp-icon-btn--edit" (click)="openEditModal(session)" title="Edit">
-              <span class="material-symbols-outlined">edit</span>
-            </button>
-            <button class="sp-icon-btn sp-icon-btn--cancel" (click)="cancelSession(session.id)" title="Cancel">
-              <span class="material-symbols-outlined">cancel</span>
-            </button>
-          </div>
+      <!-- ══ SECTION: Happening Now ════════════════════════════════ -->
+      <section *ngIf="currentSessions().length > 0" class="sp-section">
+        <div class="sp-section__label sp-section__label--live">
+          <span class="sp-live-dot"></span>
+          <span>{{ 'teacherSessions.happeningNow' | translate }}</span>
         </div>
-      </div>
-    </section>
 
-    <!-- ══ SECTION: Past Sessions ═════════════════════════════════ -->
-    <section *ngIf="pastSessions().length > 0" class="sp-section sp-section--past">
-      <div class="sp-section__label">
-        <span>{{ 'teacherSessions.past' | translate }}</span>
-        <div class="sp-section__divider"></div>
-      </div>
-
-      <div class="sp-past-grid">
-        <div *ngFor="let session of pastSessions()" class="sp-past-card">
-          <div>
-            <span class="sp-past-card__date">
-              Completed {{ session.scheduledAt | date:'MMM d' }}
-            </span>
+        <!-- Live Session Card -->
+        <div *ngFor="let session of currentSessions()" class="sp-live-card">
+          <div class="sp-live-card__info">
             <!-- Provider badge -->
-            <span class="sp-provider-badge sp-provider-badge--sm"
+            <span
+              class="sp-provider-badge"
               [class.sp-provider-badge--zoom]="session.provider === 'Zoom'"
               [class.sp-provider-badge--teams]="session.provider === 'MicrosoftTeams'"
               [class.sp-provider-badge--meet]="session.provider === 'GoogleMeet'"
-              [class.sp-provider-badge--jitsi]="session.provider === 'Jitsi'">
+              [class.sp-provider-badge--jitsi]="session.provider === 'Jitsi'"
+            >
               {{ session.provider === 'MicrosoftTeams' ? 'Teams' : session.provider }}
             </span>
-            <h4 class="sp-past-card__title">{{ session.title ?? ('studentAgenda.defaultSessionTitle' | translate) }}</h4>
+            <div class="sp-live-card__meta">
+              <h3 class="sp-live-card__title">{{ session.title ?? 'Live Session' }}</h3>
+              <p class="sp-live-card__time">
+                <span class="material-symbols-outlined">schedule</span>
+                {{ session.scheduledAt | date: 'medium' }}
+              </p>
+            </div>
           </div>
-          <div class="sp-past-card__footer">
-            <a *ngIf="session.recordingUrl" [href]="session.recordingUrl" target="_blank" class="sp-past-card__link">
-              <span class="material-symbols-outlined">play_circle</span>
-              {{ 'teacherSessions.viewRecording' | translate }}
-            </a>
-            <button *ngIf="!session.recordingUrl" class="sp-past-card__link sp-past-card__link--add"
-              (click)="openRecordingModal(session.id)">
-              <span class="material-symbols-outlined">video_library</span>
-              {{ 'teacherSessions.addRecording' | translate }}
-            </button>
-            <button class="sp-past-card__delete" (click)="cancelSession(session.id)" title="Remove">
-              <span class="material-symbols-outlined">delete</span>
-            </button>
+          <button class="sp-join-btn" (click)="joinSession(session)">
+            {{ 'teacherSessions.joinSession' | translate }}
+            <span class="material-symbols-outlined">arrow_forward</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ══ SECTION: Upcoming Sessions ════════════════════════════ -->
+      <section *ngIf="upcomingSessions().length > 0" class="sp-section">
+        <div class="sp-section__label">
+          <span>{{ 'teacherSessions.upcoming' | translate }}</span>
+          <div class="sp-section__divider"></div>
+        </div>
+
+        <div class="sp-upcoming-list">
+          <div *ngFor="let session of upcomingSessions()" class="sp-upcoming-item">
+            <div class="sp-upcoming-item__left">
+              <!-- Date badge -->
+              <div class="sp-date-badge">
+                <span class="sp-date-badge__month">{{ session.scheduledAt | date: 'MMM' }}</span>
+                <span class="sp-date-badge__day">{{ session.scheduledAt | date: 'd' }}</span>
+              </div>
+              <!-- Info -->
+              <div class="sp-upcoming-item__info">
+                <!-- Provider -->
+                <span
+                  class="sp-provider-badge sp-provider-badge--sm"
+                  [class.sp-provider-badge--zoom]="session.provider === 'Zoom'"
+                  [class.sp-provider-badge--teams]="session.provider === 'MicrosoftTeams'"
+                  [class.sp-provider-badge--meet]="session.provider === 'GoogleMeet'"
+                  [class.sp-provider-badge--jitsi]="session.provider === 'Jitsi'"
+                >
+                  {{ session.provider === 'MicrosoftTeams' ? 'Teams' : session.provider }}
+                </span>
+                <h4 class="sp-upcoming-item__title">
+                  {{ session.title ?? ('studentAgenda.defaultSessionTitle' | translate) }}
+                </h4>
+                <p class="sp-upcoming-item__time">
+                  <span class="material-symbols-outlined">schedule</span>
+                  {{ session.scheduledAt | date: 'shortTime' }}
+                </p>
+              </div>
+            </div>
+            <div class="sp-upcoming-item__actions">
+              <button
+                class="sp-icon-btn sp-icon-btn--edit"
+                (click)="openEditModal(session)"
+                title="{{ 'teacherSessions.edit' | translate }}"
+              >
+                <span class="material-symbols-outlined">edit</span>
+              </button>
+              <button
+                class="sp-icon-btn sp-icon-btn--cancel"
+                (click)="cancelSession(session.id)"
+                title="{{ 'teacherSessions.cancel' | translate }}"
+              >
+                <span class="material-symbols-outlined">cancel</span>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- ══ Footer Insight Card ════════════════════════════════════ -->
-    <div class="sp-insight" *ngIf="sessions().length > 0">
-      <div class="sp-insight__icon-wrap">
-        <span class="material-symbols-outlined">auto_awesome</span>
+      <!-- ══ SECTION: Past Sessions ═════════════════════════════════ -->
+      <section *ngIf="pastSessions().length > 0" class="sp-section sp-section--past">
+        <div class="sp-section__label">
+          <span>{{ 'teacherSessions.past' | translate }}</span>
+          <div class="sp-section__divider"></div>
+        </div>
+
+        <div class="sp-past-grid">
+          <div *ngFor="let session of pastSessions()" class="sp-past-card">
+            <div>
+              <span class="sp-past-card__date">
+                {{ 'teacherSessions.completed' | translate }}
+                {{ session.scheduledAt | date: 'MMM d' }}
+              </span>
+              <!-- Provider badge -->
+              <span
+                class="sp-provider-badge sp-provider-badge--sm"
+                [class.sp-provider-badge--zoom]="session.provider === 'Zoom'"
+                [class.sp-provider-badge--teams]="session.provider === 'MicrosoftTeams'"
+                [class.sp-provider-badge--meet]="session.provider === 'GoogleMeet'"
+                [class.sp-provider-badge--jitsi]="session.provider === 'Jitsi'"
+              >
+                {{ session.provider === 'MicrosoftTeams' ? 'Teams' : session.provider }}
+              </span>
+              <h4 class="sp-past-card__title">
+                {{ session.title ?? ('studentAgenda.defaultSessionTitle' | translate) }}
+              </h4>
+            </div>
+            <div class="sp-past-card__footer">
+              <a
+                *ngIf="session.recordingUrl"
+                [href]="session.recordingUrl"
+                target="_blank"
+                class="sp-past-card__link"
+              >
+                <span class="material-symbols-outlined">play_circle</span>
+                {{ 'teacherSessions.viewRecording' | translate }}
+              </a>
+              <button
+                *ngIf="!session.recordingUrl"
+                class="sp-past-card__link sp-past-card__link--add"
+                (click)="openRecordingModal(session.id)"
+              >
+                <span class="material-symbols-outlined">video_library</span>
+                {{ 'teacherSessions.addRecording' | translate }}
+              </button>
+              <button
+                class="sp-past-card__delete"
+                (click)="cancelSession(session.id)"
+                title="{{ 'teacherSessions.remove' | translate }}"
+              >
+                <span class="material-symbols-outlined">delete</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ Footer Insight Card ════════════════════════════════════ -->
+      <div class="sp-insight" *ngIf="sessions().length > 0">
+        <div class="sp-insight__icon-wrap">
+          <span class="material-symbols-outlined">auto_awesome</span>
+        </div>
+        <div class="sp-insight__body">
+          <h4 class="sp-insight__title">{{ 'teacherSessions.insightTitle' | translate }}</h4>
+          <p class="sp-insight__text">
+            {{ 'teacherSessions.insightText' | translate }}
+          </p>
+        </div>
+        <span class="sp-insight__quote">"</span>
       </div>
-      <div class="sp-insight__body">
-        <h4 class="sp-insight__title">Academic Insight</h4>
-        <p class="sp-insight__text">
-          Live sessions are the heartbeat of the atelier experience. Enable recordings for all sessions so students can revisit complex discussions at their own pace.
-        </p>
-      </div>
-      <span class="sp-insight__quote">"</span>
     </div>
-
+    <!-- END sp-content -->
   </div>
-  <!-- END sp-content -->
+  <!-- END sessions-page -->
 
-</div>
-<!-- END sessions-page -->
-
-
-<!-- ══════════════════ MODAL: Schedule / Edit ══════════════════ -->
-<div *ngIf="showModal()" class="sp-modal-backdrop" (click)="closeModal()">
-  <div class="sp-modal" (click)="$event.stopPropagation()">
-
-    <div class="sp-modal__header">
-      <div class="sp-modal__header-icon">
-        <span class="material-symbols-outlined">calendar_add_on</span>
+  <!-- ══════════════════ MODAL: Schedule / Edit ══════════════════ -->
+  <div *ngIf="showModal()" class="sp-modal-backdrop" (click)="closeModal()">
+    <div class="sp-modal" (click)="$event.stopPropagation()">
+      <div class="sp-modal__header">
+        <div class="sp-modal__header-icon">
+          <span class="material-symbols-outlined">calendar_add_on</span>
+        </div>
+        <div>
+          <h2 class="sp-modal__title">
+            {{
+              editingSession()
+                ? ('teacherSessions.editSession' | translate)
+                : ('teacherSessions.scheduleSession' | translate)
+            }}
+          </h2>
+          <p class="sp-modal__subtitle">{{ 'teacherSessions.fillDetails' | translate }}</p>
+        </div>
+        <button class="sp-modal__close" (click)="closeModal()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
       </div>
-      <div>
-        <h2 class="sp-modal__title">
-          {{ editingSession() ? ('teacherSessions.editSession' | translate) : ('teacherSessions.scheduleSession' | translate) }}
-        </h2>
-        <p class="sp-modal__subtitle">{{ 'teacherSessions.fillDetails' | translate }}</p>
-      </div>
-      <button class="sp-modal__close" (click)="closeModal()">
-        <span class="material-symbols-outlined">close</span>
-      </button>
+
+      <form [formGroup]="sessionForm" (ngSubmit)="submitSessionForm()" class="sp-modal__form">
+        <!-- Title -->
+        <div class="sp-field">
+          <label class="sp-label">{{ 'teacherSessions.sessionTitle' | translate }}</label>
+          <input
+            formControlName="title"
+            type="text"
+            [placeholder]="'teacherSessions.sessionTitlePlaceholder' | translate"
+            class="sp-input"
+            [class.sp-input--error]="
+              sessionForm.get('title')?.invalid && sessionForm.get('title')?.touched
+            "
+          />
+          <p
+            *ngIf="sessionForm.get('title')?.invalid && sessionForm.get('title')?.touched"
+            class="sp-field__error"
+          >
+            {{ 'teacherSessions.titleError' | translate }}
+          </p>
+        </div>
+
+        <!-- Provider -->
+        <div class="sp-field">
+          <label class="sp-label">{{ 'teacherSessions.provider' | translate }}</label>
+          <select formControlName="provider" class="sp-input sp-select">
+            <option *ngFor="let p of providers" [value]="p.value">{{ p.label }}</option>
+          </select>
+        </div>
+
+        <!-- Meeting URL (non-Jitsi) -->
+        <div *ngIf="!isJitsi()" class="sp-field">
+          <label class="sp-label">{{ 'teacherSessions.meetingUrl' | translate }}</label>
+          <input
+            formControlName="meetingUrl"
+            type="url"
+            placeholder="https://zoom.us/j/..."
+            class="sp-input"
+            [class.sp-input--error]="
+              sessionForm.get('meetingUrl')?.invalid && sessionForm.get('meetingUrl')?.touched
+            "
+          />
+          <p
+            *ngIf="sessionForm.get('meetingUrl')?.invalid && sessionForm.get('meetingUrl')?.touched"
+            class="sp-field__error"
+          >
+            {{ 'teacherSessions.meetingUrlError' | translate }}
+          </p>
+        </div>
+
+        <!-- Jitsi note -->
+        <div *ngIf="isJitsi()" class="sp-info-note">
+          <span class="material-symbols-outlined">info</span>
+          <span>{{ 'teacherSessions.jitsiNote' | translate }}</span>
+        </div>
+
+        <!-- Scheduled At -->
+        <div class="sp-field">
+          <label class="sp-label">{{ 'teacherSessions.scheduledAt' | translate }}</label>
+          <input
+            formControlName="scheduledAt"
+            type="datetime-local"
+            class="sp-input"
+            [class.sp-input--error]="
+              sessionForm.get('scheduledAt')?.invalid && sessionForm.get('scheduledAt')?.touched
+            "
+          />
+          <p
+            *ngIf="
+              sessionForm.get('scheduledAt')?.invalid && sessionForm.get('scheduledAt')?.touched
+            "
+            class="sp-field__error"
+          >
+            {{ 'teacherSessions.scheduledAtError' | translate }}
+          </p>
+        </div>
+
+        <!-- Description -->
+        <div class="sp-field">
+          <label class="sp-label">{{ 'teacherSessions.description' | translate }}</label>
+          <textarea
+            formControlName="description"
+            rows="3"
+            [placeholder]="'teacherSessions.descriptionPlaceholder' | translate"
+            class="sp-input sp-textarea"
+          ></textarea>
+        </div>
+
+        <!-- Actions -->
+        <div class="sp-modal__actions">
+          <button type="button" class="sp-btn sp-btn--ghost" (click)="closeModal()">
+            {{ 'common.cancel' | translate }}
+          </button>
+          <button
+            type="submit"
+            class="sp-btn sp-btn--primary"
+            [disabled]="sessionForm.invalid || isSaving()"
+          >
+            <span *ngIf="isSaving()" class="material-symbols-outlined sp-spin"
+              >progress_activity</span
+            >
+            {{
+              isSaving()
+                ? ('common.saving' | translate)
+                : editingSession()
+                  ? ('common.save' | translate)
+                  : ('teacherSessions.scheduleSession' | translate)
+            }}
+          </button>
+        </div>
+      </form>
     </div>
-
-    <form [formGroup]="sessionForm" (ngSubmit)="submitSessionForm()" class="sp-modal__form">
-
-      <!-- Title -->
-      <div class="sp-field">
-        <label class="sp-label">{{ 'teacherSessions.sessionTitle' | translate }}</label>
-        <input formControlName="title" type="text"
-          [placeholder]="'teacherSessions.sessionTitlePlaceholder' | translate"
-          class="sp-input"
-          [class.sp-input--error]="sessionForm.get('title')?.invalid && sessionForm.get('title')?.touched" />
-        <p *ngIf="sessionForm.get('title')?.invalid && sessionForm.get('title')?.touched" class="sp-field__error">
-          {{ 'teacherSessions.titleError' | translate }}
-        </p>
-      </div>
-
-      <!-- Provider -->
-      <div class="sp-field">
-        <label class="sp-label">{{ 'teacherSessions.provider' | translate }}</label>
-        <select formControlName="provider" class="sp-input sp-select">
-          <option *ngFor="let p of providers" [value]="p.value">{{ p.label }}</option>
-        </select>
-      </div>
-
-      <!-- Meeting URL (non-Jitsi) -->
-      <div *ngIf="!isJitsi()" class="sp-field">
-        <label class="sp-label">{{ 'teacherSessions.meetingUrl' | translate }}</label>
-        <input formControlName="meetingUrl" type="url"
-          placeholder="https://zoom.us/j/..."
-          class="sp-input"
-          [class.sp-input--error]="sessionForm.get('meetingUrl')?.invalid && sessionForm.get('meetingUrl')?.touched" />
-        <p *ngIf="sessionForm.get('meetingUrl')?.invalid && sessionForm.get('meetingUrl')?.touched" class="sp-field__error">
-          {{ 'teacherSessions.meetingUrlError' | translate }}
-        </p>
-      </div>
-
-      <!-- Jitsi note -->
-      <div *ngIf="isJitsi()" class="sp-info-note">
-        <span class="material-symbols-outlined">info</span>
-        <span>{{ 'teacherSessions.jitsiNote' | translate }}</span>
-      </div>
-
-      <!-- Scheduled At -->
-      <div class="sp-field">
-        <label class="sp-label">{{ 'teacherSessions.scheduledAt' | translate }}</label>
-        <input formControlName="scheduledAt" type="datetime-local"
-          class="sp-input"
-          [class.sp-input--error]="sessionForm.get('scheduledAt')?.invalid && sessionForm.get('scheduledAt')?.touched" />
-        <p *ngIf="sessionForm.get('scheduledAt')?.invalid && sessionForm.get('scheduledAt')?.touched" class="sp-field__error">
-          {{ 'teacherSessions.scheduledAtError' | translate }}
-        </p>
-      </div>
-
-      <!-- Description -->
-      <div class="sp-field">
-        <label class="sp-label">{{ 'teacherSessions.description' | translate }}</label>
-        <textarea formControlName="description" rows="3"
-          [placeholder]="'teacherSessions.descriptionPlaceholder' | translate"
-          class="sp-input sp-textarea"></textarea>
-      </div>
-
-      <!-- Actions -->
-      <div class="sp-modal__actions">
-        <button type="button" class="sp-btn sp-btn--ghost" (click)="closeModal()">
-          {{ 'common.cancel' | translate }}
-        </button>
-        <button type="submit" class="sp-btn sp-btn--primary" [disabled]="sessionForm.invalid || isSaving()">
-          <span *ngIf="isSaving()" class="material-symbols-outlined sp-spin">progress_activity</span>
-          {{ isSaving() ? ('common.saving' | translate) : (editingSession() ? ('common.save' | translate) : ('teacherSessions.scheduleSession' | translate)) }}
-        </button>
-      </div>
-    </form>
   </div>
-</div>
 
-
-<!-- ══════════════════ MODAL: Add Recording ══════════════════ -->
-<div *ngIf="showRecordingModal()" class="sp-modal-backdrop" (click)="closeRecordingModal()">
-  <div class="sp-modal sp-modal--sm" (click)="$event.stopPropagation()">
-
-    <div class="sp-modal__header">
-      <div class="sp-modal__header-icon">
-        <span class="material-symbols-outlined">video_library</span>
+  <!-- ══════════════════ MODAL: Add Recording ══════════════════ -->
+  <div *ngIf="showRecordingModal()" class="sp-modal-backdrop" (click)="closeRecordingModal()">
+    <div class="sp-modal sp-modal--sm" (click)="$event.stopPropagation()">
+      <div class="sp-modal__header">
+        <div class="sp-modal__header-icon">
+          <span class="material-symbols-outlined">video_library</span>
+        </div>
+        <div>
+          <h2 class="sp-modal__title">{{ 'teacherSessions.addRecording' | translate }}</h2>
+          <p class="sp-modal__subtitle">{{ 'teacherSessions.pasteRecordingUrl' | translate }}</p>
+        </div>
+        <button class="sp-modal__close" (click)="closeRecordingModal()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
       </div>
-      <div>
-        <h2 class="sp-modal__title">{{ 'teacherSessions.addRecording' | translate }}</h2>
-        <p class="sp-modal__subtitle">{{ 'teacherSessions.pasteRecordingUrl' | translate }}</p>
-      </div>
-      <button class="sp-modal__close" (click)="closeRecordingModal()">
-        <span class="material-symbols-outlined">close</span>
-      </button>
+
+      <form [formGroup]="recordingForm" (ngSubmit)="submitRecordingForm()" class="sp-modal__form">
+        <div class="sp-field">
+          <label class="sp-label">{{ 'teacherSessions.recordingUrl' | translate }}</label>
+          <input
+            formControlName="recordingUrl"
+            type="url"
+            placeholder="https://www.youtube.com/watch?v=..."
+            class="sp-input"
+            [class.sp-input--error]="
+              recordingForm.get('recordingUrl')?.invalid &&
+              recordingForm.get('recordingUrl')?.touched
+            "
+          />
+          <p
+            *ngIf="
+              recordingForm.get('recordingUrl')?.invalid &&
+              recordingForm.get('recordingUrl')?.touched
+            "
+            class="sp-field__error"
+          >
+            {{ 'teacherSessions.recordingUrlError' | translate }}
+          </p>
+        </div>
+        <div class="sp-modal__actions">
+          <button type="button" class="sp-btn sp-btn--ghost" (click)="closeRecordingModal()">
+            {{ 'common.cancel' | translate }}
+          </button>
+          <button
+            type="submit"
+            class="sp-btn sp-btn--primary"
+            [disabled]="recordingForm.invalid || isSaving()"
+          >
+            <span *ngIf="isSaving()" class="material-symbols-outlined sp-spin"
+              >progress_activity</span
+            >
+            {{
+              isSaving()
+                ? ('common.saving' | translate)
+                : ('teacherSessions.saveRecording' | translate)
+            }}
+          </button>
+        </div>
+      </form>
     </div>
-
-    <form [formGroup]="recordingForm" (ngSubmit)="submitRecordingForm()" class="sp-modal__form">
-      <div class="sp-field">
-        <label class="sp-label">{{ 'teacherSessions.recordingUrl' | translate }}</label>
-        <input formControlName="recordingUrl" type="url"
-          placeholder="https://www.youtube.com/watch?v=..."
-          class="sp-input"
-          [class.sp-input--error]="recordingForm.get('recordingUrl')?.invalid && recordingForm.get('recordingUrl')?.touched" />
-        <p *ngIf="recordingForm.get('recordingUrl')?.invalid && recordingForm.get('recordingUrl')?.touched" class="sp-field__error">
-          {{ 'teacherSessions.recordingUrlError' | translate }}
-        </p>
-      </div>
-      <div class="sp-modal__actions">
-        <button type="button" class="sp-btn sp-btn--ghost" (click)="closeRecordingModal()">
-          {{ 'common.cancel' | translate }}
-        </button>
-        <button type="submit" class="sp-btn sp-btn--primary" [disabled]="recordingForm.invalid || isSaving()">
-          <span *ngIf="isSaving()" class="material-symbols-outlined sp-spin">progress_activity</span>
-          {{ isSaving() ? ('common.saving' | translate) : ('teacherSessions.saveRecording' | translate) }}
-        </button>
-      </div>
-    </form>
   </div>
 </div>
