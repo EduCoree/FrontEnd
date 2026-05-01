@@ -91,7 +91,7 @@
             >…
           </p>
         </div>
-<!-- ── State: Video Error ──────────────────────────────────────── -->
+        <!-- ── State: Video Error ──────────────────────────────────────── -->
         <div *ngIf="activeLesson() && !isVideoLoading() && videoError()" class="cw-video-error">
           <span class="material-symbols-outlined">{{ isVideoExpired ? 'timer_off' : 'lock' }}</span>
           <p>{{ videoError() }}</p>
@@ -109,8 +109,8 @@
             activeLesson() &&
             !isVideoLoading() &&
             !videoError() &&
-            (youtubeVideoId()  vimeoVideoId()) &&
-            (provider() === 'youtube'  provider() === 'vimeo')
+            (youtubeVideoId() || vimeoVideoId()) &&
+            (provider() === 'youtube' || provider() === 'vimeo')
           "
         >
           <div
@@ -193,7 +193,7 @@
             </div>
           </div>
         </ng-container>
-<!-- ── State: Self-hosted <video> ─────────────────────────────── -->
+        <!-- ── State: Self-hosted <video> ─────────────────────────────── -->
         <ng-container
           *ngIf="
             activeLesson() &&
@@ -283,14 +283,13 @@
         </div>
       </div>
 
-
       <!-- Course meta -->
       <div class="cw-meta">
         <span class="cw-module-label">{{ course()?.categoryName }}</span>
         <h1 class="cw-title">{{ course()?.title }}</h1>
         <p class="cw-desc">{{ course()?.description }}</p>
       </div>
-<!-- Instructor note card -->
+      <!-- Instructor note card -->
       <div class="cw-note-card">
         <span class="cw-note-card__quote">"</span>
         <div class="cw-note-card__body">
@@ -343,7 +342,6 @@
           </div>
         </div>
       </div>
-
     </section>
 
     <!-- ── LEFT: Sidebar (Course Content) ────────────────────────────────────────────────── -->
@@ -366,7 +364,7 @@
         </div>
 
         <nav class="cw-sidebar__nav">
-          <a class="cw-nav-link" style="cursor: pointer;" (click)="navigateToForum()">
+          <a class="cw-nav-link" style="cursor: pointer" (click)="navigateToForum()">
             <span class="material-symbols-outlined">forum</span> Discussion
           </a>
           <a class="cw-nav-link" [routerLink]="['/courses', courseId(), 'reviews']">
@@ -380,7 +378,7 @@
             <span class="material-symbols-outlined">trending_up</span> My Progress
           </a>
         </nav>
-<!-- Curriculum -->
+        <!-- Curriculum -->
         <div class="cw-curriculum">
           <div *ngFor="let section of course()?.sections" class="cw-section">
             <button class="cw-section__header" (click)="toggleSection(section.id)">
@@ -454,9 +452,7 @@
         *ngIf="activeLesson() && !isVideoLoading() && !videoError() && signedUrl()"
         class="cw-ai-panel-wrap"
       >
-        <app-lesson-ai-panel
-          [lessonId]="activeLesson()!.id"
-          [courseId]="courseId()" />
+        <app-lesson-ai-panel [lessonId]="activeLesson()!.id" [courseId]="courseId()" />
       </div>
     </aside>
   </div>

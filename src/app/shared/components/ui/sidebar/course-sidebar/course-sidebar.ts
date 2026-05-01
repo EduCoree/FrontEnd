@@ -7,7 +7,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
   selector: 'app-course-sidebar',
   imports: [CommonModule, RouterLink, RouterLinkActive, TranslateModule],
   templateUrl: './course-sidebar.html',
-  styleUrl: './course-sidebar.css',
+  styleUrls: ['./course-sidebar.css'],
 })
 export class CourseSidebar {
   private translate = inject(TranslateService);
@@ -26,40 +26,41 @@ export class CourseSidebar {
   constructor(private route: ActivatedRoute) {
     // Read the edit route ID from whichever active route level provides it.
     this.courseId =
-      this.route.snapshot.paramMap.get('id') 
-      this.route.snapshot.paramMap.get('courseId') 
-      this.route.parent?.snapshot.paramMap.get('id') 
-      this.route.parent?.snapshot.paramMap.get('courseId') 
+      this.route.snapshot.paramMap.get('id') ||
+      this.route.snapshot.paramMap.get('courseId') ||
+      this.route.parent?.snapshot.paramMap.get('id') ||
+      this.route.parent?.snapshot.paramMap.get('courseId') ||
       null;
   }
 
-  // Use a 'get' property so the routes are calculated 
+  // Use a 'get' property so the routes are calculated
   // every time they are accessed, ensuring the ID is ready.
   get navItems() {
+    const courseId = this.courseId || '';
     return [
       {
         labelKey: 'courseBuilder.courseInfo',
         icon: 'business',
-        route: /teacher/courses/edit/${this.courseId}/info,
-        exact: true
+        route: `/teacher/courses/edit/${courseId}/info`,
+        exact: true,
       },
       {
         labelKey: 'teacherProgress.quizzes',
         icon: 'upload',
-        route: /teacher/courses/edit/${this.courseId}/quizzes,
-        exact: false
+        route: `/teacher/courses/edit/${courseId}/quizzes`,
+        exact: false,
       },
       {
         labelKey: 'teacherSessions.sessions',
         icon: 'calendar_month',
-        route: /teacher/courses/edit/${this.courseId}/sessions,
-        exact: false
+        route: `/teacher/courses/edit/${courseId}/sessions`,
+        exact: false,
       },
       {
         labelKey: 'teacherProgress.progress',
         icon: 'trending_up',
-        route: /teacher/courses/edit/${this.courseId}/progress,
-        exact: false
+        route: `/teacher/courses/edit/${courseId}/progress`,
+        exact: false,
       },
     ];
   }
