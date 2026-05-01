@@ -3,14 +3,14 @@
   <!-- ══ LOADING ══════════════════════════════════════════════════════════ -->
   <div *ngIf="isLoading()" class="cw-loading">
     <span class="material-symbols-outlined cw-loading__icon">progress_activity</span>
-    <p>{{ 'COURSE.LOADING' | translate }}</p>
+    <p>Loading your course…</p>
   </div>
 
   <!-- ══ ERROR ════════════════════════════════════════════════════════════ -->
   <div *ngIf="!isLoading() && errorMsg()" class="cw-error">
     <span class="material-symbols-outlined cw-error__icon">error_outline</span>
     <p>{{ errorMsg() }}</p>
-    <button class="cw-btn cw-btn--outline" (click)="goBack()">{{ 'COURSE.BACK_TO_MY_COURSES' | translate }}</button>
+    <button class="cw-btn cw-btn--outline" (click)="goBack()">← Back to My Courses</button>
   </div>
 
   <!-- ══ MAIN LAYOUT ═══════════════════════════════════════════════════════ -->
@@ -21,7 +21,7 @@
       <div class="cw-backbar">
         <button class="cw-back-btn" (click)="goBack()">
           <span class="material-symbols-outlined">arrow_back</span>
-          {{ 'COURSE.MY_COURSES' | translate }}
+          My Courses
         </button>
         <span class="cw-brand">EduCore</span>
       </div>
@@ -44,8 +44,10 @@
             <div class="cw-hero__top-row">
               <div class="cw-live-badge">
                 <span class="cw-live-badge__dot" *ngIf="resume()"></span>
-                <span class="material-symbols-outlined cw-live-badge__star" *ngIf="!resume()">star</span>
-                {{ (resume() ? 'COURSE.IN_PROGRESS' : 'COURSE.ENROLLED') | translate }}
+                <span class="material-symbols-outlined cw-live-badge__star" *ngIf="!resume()"
+                  >star</span
+                >
+                {{ resume() ? 'In Progress' : 'Enrolled' }}
               </div>
             </div>
 
@@ -58,7 +60,7 @@
                 >
               </button>
               <p class="cw-play-hint">
-                {{ (resume() ? 'COURSE.RESUME_HINT' : 'COURSE.START_HINT') | translate }}
+                {{ resume() ? 'Resume where you left off' : 'Start first lesson' }}
               </p>
             </div>
 
@@ -68,10 +70,12 @@
                   <div class="cw-progress-bar__fill" [style.width.%]="progressPct"></div>
                 </div>
                 <div class="cw-progress-bar__labels">
-                  <span>
-                    {{ progress()?.completedLessons ?? 0 }}/{{ progress()?.totalLessons ?? totalLessons() }}
-                    {{ 'COURSE.LESSONS' | translate }}
-                  </span>
+                  <span
+                    >{{ progress()?.completedLessons ?? 0 }}/{{
+                      progress()?.totalLessons ?? totalLessons()
+                    }}
+                    lessons</span
+                  >
                   <span>{{ progressPct }}%</span>
                 </div>
               </div>
@@ -83,19 +87,19 @@
         <div *ngIf="activeLesson() && isVideoLoading()" class="cw-video-loading">
           <span class="material-symbols-outlined cw-loading__icon">progress_activity</span>
           <p>
-            {{ 'COURSE.VIDEO_LOADING' | translate }} <strong>{{ activeLesson()!.title }}</strong>…
+            Loading <strong>{{ activeLesson()!.title }}</strong
+            >…
           </p>
         </div>
-
-        <!-- ── State: Video Error ──────────────────────────────────────── -->
+<!-- ── State: Video Error ──────────────────────────────────────── -->
         <div *ngIf="activeLesson() && !isVideoLoading() && videoError()" class="cw-video-error">
           <span class="material-symbols-outlined">{{ isVideoExpired ? 'timer_off' : 'lock' }}</span>
           <p>{{ videoError() }}</p>
           <div class="cw-video-error__actions">
             <button class="cw-btn cw-btn--primary" *ngIf="isVideoExpired" (click)="refreshVideo()">
-              <span class="material-symbols-outlined">refresh</span> {{ 'COURSE.REFRESH' | translate }}
+              <span class="material-symbols-outlined">refresh</span> Refresh
             </button>
-            <button class="cw-btn cw-btn--ghost" (click)="closePlayer()">{{ 'COURSE.CLOSE' | translate }}</button>
+            <button class="cw-btn cw-btn--ghost" (click)="closePlayer()">Close</button>
           </div>
         </div>
 
@@ -105,13 +109,21 @@
             activeLesson() &&
             !isVideoLoading() &&
             !videoError() &&
-            (youtubeVideoId() || vimeoVideoId()) &&
-            (provider() === 'youtube' || provider() === 'vimeo')
+            (youtubeVideoId()  vimeoVideoId()) &&
+            (provider() === 'youtube'  provider() === 'vimeo')
           "
         >
           <div
             class="cw-player-wrap"
-            style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; flex-direction: column;"
+            style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              bottom: 0;
+              left: 0;
+              display: flex;
+              flex-direction: column;
+            "
           >
             <!-- Top bar: lesson title + close -->
             <div class="cw-player-bar" style="flex-shrink: 0; z-index: 10">
@@ -125,7 +137,9 @@
               <div
                 id="plyr-player"
                 [attr.data-plyr-provider]="provider()"
-                [attr.data-plyr-embed-id]="provider() === 'youtube' ? youtubeVideoId() : vimeoVideoId()"
+                [attr.data-plyr-embed-id]="
+                  provider() === 'youtube' ? youtubeVideoId() : vimeoVideoId()
+                "
               ></div>
             </div>
           </div>
@@ -143,28 +157,43 @@
         >
           <div
             class="cw-player-wrap"
-            style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; flex-direction: column; background: black;"
+            style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              bottom: 0;
+              left: 0;
+              display: flex;
+              flex-direction: column;
+              background: black;
+            "
           >
             <!-- Top bar -->
-            <div class="cw-player-bar" style="flex-shrink: 0; z-index: 10; background: rgba(0,0,0,0.6)">
+            <div
+              class="cw-player-bar"
+              style="flex-shrink: 0; z-index: 10; background: rgba(0, 0, 0, 0.6)"
+            >
               <p class="cw-player-bar__title text-white">{{ activeLesson()!.title }}</p>
               <button class="cw-player-bar__close text-white" (click)="closePlayer()">
                 <span class="material-symbols-outlined">close</span>
               </button>
             </div>
             <!-- Drive Iframe -->
-            <div class="cw-iframe-wrap" style="flex: 1; min-height: 0; overflow: hidden; border-radius: 12px">
+            <div
+              class="cw-iframe-wrap"
+              style="flex: 1; min-height: 0; overflow: hidden; border-radius: 12px"
+            >
               <iframe
                 [src]="safeUrl()"
                 style="width: 100%; height: 100%; border: none; border-radius: 0 0 12px 12px"
                 allow="autoplay; fullscreen"
                 allowfullscreen
-              ></iframe>
+              >
+              </iframe>
             </div>
           </div>
         </ng-container>
-
-        <!-- ── State: Self-hosted <video> ─────────────────────────────── -->
+<!-- ── State: Self-hosted <video> ─────────────────────────────── -->
         <ng-container
           *ngIf="
             activeLesson() &&
@@ -176,7 +205,15 @@
         >
           <div
             class="cw-player-wrap"
-            style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; flex-direction: column;"
+            style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              bottom: 0;
+              left: 0;
+              display: flex;
+              flex-direction: column;
+            "
           >
             <div class="cw-player-bar" style="flex-shrink: 0">
               <p class="cw-player-bar__title">{{ activeLesson()!.title }}</p>
@@ -192,7 +229,7 @@
               style="flex: 1; min-height: 0"
               autoplay
             >
-              {{ 'COURSE.VIDEO_NOT_SUPPORTED' | translate }}
+              Your browser does not support the video tag.
             </video>
           </div>
         </ng-container>
@@ -211,15 +248,17 @@
           <div>
             <p class="cw-complete-bar__title">
               {{ activeLesson()!.title }}
-              <small style="font-size: 8px">Debug [URL: {{ signedUrl() }}, prov: {{ provider() }}]</small>
+              <small style="font-size: 8px"
+                >Debug [URL: {{ signedUrl() }}, prov: {{ provider() }}]</small
+              >
             </p>
-            <p class="cw-complete-bar__sub">{{ 'COURSE.WATCH_FULL_VIDEO' | translate }}</p>
+            <p class="cw-complete-bar__sub">Watch the full video, then mark as complete</p>
           </div>
         </div>
 
         <div style="display: flex; gap: 1rem; align-items: center">
           <div *ngIf="isLessonComplete()" class="cw-done-badge">
-            <span class="material-symbols-outlined">task_alt</span> {{ 'COURSE.COMPLETED' | translate }}
+            <span class="material-symbols-outlined">task_alt</span> Completed
           </div>
 
           <button
@@ -229,7 +268,7 @@
             (click)="markComplete(true)"
           >
             <span class="material-symbols-outlined">skip_next</span>
-            {{ (isCompleting() ? 'COURSE.SAVING' : 'COURSE.NEXT') | translate }}
+            {{ isCompleting() ? 'Saving…' : 'Next' }}
           </button>
 
           <button
@@ -239,10 +278,11 @@
             (click)="markComplete(false)"
           >
             <span class="material-symbols-outlined">check_circle</span>
-            {{ (isCompleting() ? 'COURSE.SAVING' : 'COURSE.MARK_COMPLETE') | translate }}
+            {{ isCompleting() ? 'Saving…' : 'Mark Complete' }}
           </button>
         </div>
       </div>
+
 
       <!-- Course meta -->
       <div class="cw-meta">
@@ -250,8 +290,7 @@
         <h1 class="cw-title">{{ course()?.title }}</h1>
         <p class="cw-desc">{{ course()?.description }}</p>
       </div>
-
-      <!-- Instructor note card -->
+<!-- Instructor note card -->
       <div class="cw-note-card">
         <span class="cw-note-card__quote">"</span>
         <div class="cw-note-card__body">
@@ -263,9 +302,12 @@
             >
           </div>
           <div>
-            <p class="cw-note-card__label">{{ 'COURSE.INSTRUCTOR' | translate }}</p>
+            <p class="cw-note-card__label">Instructor</p>
             <p class="cw-note-card__name">{{ course()?.teacherName }}</p>
-            <p class="cw-note-card__tip">{{ 'COURSE.INSTRUCTOR_TIP' | translate }}</p>
+            <p class="cw-note-card__tip">
+              "Follow the curriculum in order for the best learning experience. Click any lesson in
+              the sidebar to play it instantly."
+            </p>
           </div>
         </div>
       </div>
@@ -276,69 +318,69 @@
           <span class="material-symbols-outlined cw-stat__icon">menu_book</span>
           <div>
             <p class="cw-stat__val">{{ totalLessons() }}</p>
-            <p class="cw-stat__lbl">{{ 'COURSE.LESSONS' | translate }}</p>
+            <p class="cw-stat__lbl">Lessons</p>
           </div>
         </div>
         <div class="cw-stat">
           <span class="material-symbols-outlined cw-stat__icon">layers</span>
           <div>
             <p class="cw-stat__val">{{ course()?.sections?.length ?? 0 }}</p>
-            <p class="cw-stat__lbl">{{ 'COURSE.SECTIONS' | translate }}</p>
+            <p class="cw-stat__lbl">Sections</p>
           </div>
         </div>
         <div class="cw-stat">
           <span class="material-symbols-outlined cw-stat__icon">signal_cellular_alt</span>
           <div>
             <p class="cw-stat__val">{{ course()?.level }}</p>
-            <p class="cw-stat__lbl">{{ 'COURSE.LEVEL' | translate }}</p>
+            <p class="cw-stat__lbl">Level</p>
           </div>
         </div>
         <div class="cw-stat">
           <span class="material-symbols-outlined cw-stat__icon">task_alt</span>
           <div>
             <p class="cw-stat__val">{{ progressPct }}%</p>
-            <p class="cw-stat__lbl">{{ 'COURSE.COMPLETE' | translate }}</p>
+            <p class="cw-stat__lbl">Complete</p>
           </div>
         </div>
       </div>
+
     </section>
 
-    <!-- ── RIGHT: Sidebar ────────────────────────────────────────────────── -->
-    <aside class="cw-sidebar">
+    <!-- ── LEFT: Sidebar (Course Content) ────────────────────────────────────────────────── -->
+    <aside class="cw-sidebar cw-sidebar--left">
       <div class="cw-sidebar__inner">
         <div class="cw-sidebar__header">
           <div class="cw-sidebar__header-row">
-            <h2 class="cw-sidebar__title">{{ 'COURSE.COURSE_CONTENT' | translate }}</h2>
+            <h2 class="cw-sidebar__title">Course Content</h2>
             <button class="cw-btn cw-btn--primary cw-btn--sm" (click)="resumeCourse()">
               <span class="material-symbols-outlined">play_arrow</span>
-              {{ (resume() ? 'COURSE.RESUME' : 'COURSE.START') | translate }}
+              {{ resume() ? 'Resume' : 'Start' }}
             </button>
           </div>
           <div class="cw-sidebar__progress">
             <div class="cw-sidebar__prog-bar">
               <div class="cw-sidebar__prog-fill" [style.width.%]="progressPct"></div>
             </div>
-            <span class="cw-sidebar__prog-lbl">{{ progressPct }}% {{ 'COURSE.COMPLETE' | translate }}</span>
+            <span class="cw-sidebar__prog-lbl">{{ progressPct }}% complete</span>
           </div>
         </div>
 
         <nav class="cw-sidebar__nav">
-          <a class="cw-nav-link" [routerLink]="['/courses', courseId(), 'forum']">
-            <span class="material-symbols-outlined">forum</span> {{ 'COURSE.DISCUSSION' | translate }}
+          <a class="cw-nav-link" style="cursor: pointer;" (click)="navigateToForum()">
+            <span class="material-symbols-outlined">forum</span> Discussion
           </a>
           <a class="cw-nav-link" [routerLink]="['/courses', courseId(), 'reviews']">
-            <span class="material-symbols-outlined">rate_review</span> {{ 'COURSE.REVIEWS' | translate }}
+            <span class="material-symbols-outlined">rate_review</span> Reviews
           </a>
           <a
             class="cw-nav-link"
             [routerLink]="['/student/progress']"
             [queryParams]="{ courseId: courseId() }"
           >
-            <span class="material-symbols-outlined">trending_up</span> {{ 'COURSE.MY_PROGRESS' | translate }}
+            <span class="material-symbols-outlined">trending_up</span> My Progress
           </a>
         </nav>
-
-        <!-- Curriculum -->
+<!-- Curriculum -->
         <div class="cw-curriculum">
           <div *ngFor="let section of course()?.sections" class="cw-section">
             <button class="cw-section__header" (click)="toggleSection(section.id)">
@@ -398,17 +440,31 @@
         </div>
 
         <div class="cw-sidebar__footer">
-          <button class="cw-forum-btn" [routerLink]="['/courses', courseId(), 'forum']">
+          <button class="cw-forum-btn" (click)="navigateToForum()">
             <span class="material-symbols-outlined">forum</span>
-            {{ 'COURSE.JOIN_DISCUSSION' | translate }}
+            Join Discussion
           </button>
         </div>
+      </div>
+    </aside>
+
+    <!-- ── RIGHT: Sidebar (AI Tool) ──────────────────────────────────────── -->
+    <aside class="cw-sidebar cw-sidebar--right">
+      <div
+        *ngIf="activeLesson() && !isVideoLoading() && !videoError() && signedUrl()"
+        class="cw-ai-panel-wrap"
+      >
+        <app-lesson-ai-panel
+          [lessonId]="activeLesson()!.id"
+          [courseId]="courseId()" />
       </div>
     </aside>
   </div>
 
   <!-- Mobile FAB -->
   <button class="cw-fab" (click)="resumeCourse()">
-    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">play_arrow</span>
+    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1"
+      >play_arrow</span
+    >
   </button>
 </div>

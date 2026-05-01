@@ -8,7 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-my-courses',
   standalone: true,
-  imports: [CommonModule, RouterLink , TranslateModule],
+  imports: [CommonModule, RouterLink, TranslateModule],
   templateUrl: './my-courses.component.html',
   styleUrl: './my-courses.component.css'
 })

@@ -1,9 +1,9 @@
 export interface Review {
   id: number;
   studentId: string;
-  studentName?: string;
+  studentName: string;
   courseId: number;
-  courseTitle?: string;
+  courseName: string;  
   rating: number;
   comment?: string;
   createdAt: string;
@@ -23,4 +23,11 @@ export interface CreateReviewDto {
 export interface UpdateReviewDto {
   rating: number;
   comment?: string;
+}
+
+
+export interface ReviewSummary {
+  averageRating: number;
+  totalReviews: number;
+  distribution: { [key: number]: number };
 }

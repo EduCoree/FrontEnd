@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
@@ -10,57 +10,59 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
   styleUrl: './course-sidebar.css',
 })
 export class CourseSidebar {
+  private translate = inject(TranslateService);
   isOpen = signal(true);
   courseId: string | null = null;
 
-  private translate = inject(TranslateService);
+  get toggleIcon(): string {
+    const open = this.isOpen();
+    const isRtl = this.translate.currentLang === 'ar';
+    if (open) {
+      return isRtl ? 'chevron_right' : 'chevron_left';
+    }
+    return isRtl ? 'chevron_left' : 'chevron_right';
+  }
 
   constructor(private route: ActivatedRoute) {
+    // Read the edit route ID from whichever active route level provides it.
     this.courseId =
-      this.route.snapshot.params['id'] ||
-      this.route.snapshot.params['courseId'];
+      this.route.snapshot.paramMap.get('id') 
+      this.route.snapshot.paramMap.get('courseId') 
+      this.route.parent?.snapshot.paramMap.get('id') 
+      this.route.parent?.snapshot.paramMap.get('courseId') 
+      null;
   }
 
-  isRtl(): boolean {
-    return this.translate.currentLang === 'ar';
-  }
-
-  getToggleIcon(): string {
-    const open = this.isOpen();
-    const rtl  = this.isRtl();
-    if (open)  return rtl ? 'chevron_right' : 'chevron_left';
-    return rtl ? 'chevron_left'  : 'chevron_right';
-  }
-
+  // Use a 'get' property so the routes are calculated 
+  // every time they are accessed, ensuring the ID is ready.
   get navItems() {
     return [
       {
-        labelKey: 'sidebar.nav.courseInfo',
+        labelKey: 'courseBuilder.courseInfo',
         icon: 'business',
-        route: `/teacher/courses/edit/${this.courseId}`,
-        exact: true,
+        route: /teacher/courses/edit/${this.courseId}/info,
+        exact: true
       },
       {
-        labelKey: 'sidebar.nav.quizzes',
+        labelKey: 'teacherProgress.quizzes',
         icon: 'upload',
-        route: `/teacher/courses/${this.courseId}/quizzes`,
-        exact: false,
+        route: /teacher/courses/edit/${this.courseId}/quizzes,
+        exact: false
       },
       {
-        labelKey: 'sidebar.nav.sessions',
+        labelKey: 'teacherSessions.sessions',
         icon: 'calendar_month',
-        route: `/teacher/courses/edit/${this.courseId}/sessions`,
-        exact: false,
+        route: /teacher/courses/edit/${this.courseId}/sessions,
+        exact: false
       },
       {
-        labelKey: 'sidebar.nav.progress',
+        labelKey: 'teacherProgress.progress',
         icon: 'trending_up',
-        route: `/teacher/courses/edit/${this.courseId}/progress`,
-        exact: false,
+        route: /teacher/courses/edit/${this.courseId}/progress,
+        exact: false
       },
     ];
   }
-
   toggle() {
     this.isOpen.set(!this.isOpen());
   }

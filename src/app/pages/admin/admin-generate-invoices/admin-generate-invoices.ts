@@ -8,6 +8,7 @@ import { GenerateInvoicesResultDto } from '../../../core/models/payout.model';
 
 import { MoneyDisplayComponent } from '../../../shared/components/money-display/money-display';
 import { TranslateModule } from '@ngx-translate/core';
+import { AdminSidebarComponent } from "../../../layouts/admin-sidebar/admin-sidebar";
 
 @Component({
   selector: 'app-admin-generate-invoices',
@@ -17,8 +18,9 @@ import { TranslateModule } from '@ngx-translate/core';
     RouterLink,
     FormsModule,
     MoneyDisplayComponent,
-    TranslateModule
-  ],
+    TranslateModule,
+    AdminSidebarComponent
+],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './admin-generate-invoices.html',
 })

@@ -40,13 +40,14 @@ export class StudentLayoutComponent {
  navItems: NavItem[] = [
   { route: '/student/dashboard',    icon: 'dashboard',    labelKey: 'studentSidebar.dashboard',    exact: true },
   { route: '/student/my-courses',   icon: 'menu_book',    labelKey: 'studentSidebar.myCourses' },
+  { route: '/student/reviews',      icon: 'rate_review',  labelKey: 'studentSidebar.reviews' },
   { route: '/student/quizzes',      icon: 'quiz',         labelKey: 'studentSidebar.myQuizzes' },
   { route: '/student/quiz-history', icon: 'history',      labelKey: 'studentSidebar.QuizHistory' },
   { route: '/student/sessions',     icon: 'podcasts',     labelKey: 'studentSidebar.liveSessions' },
   { route: '/student/certificates', icon: 'verified',     labelKey: 'studentSidebar.certificates' },
-  { route: '/student/messages',     icon: 'chat_bubble',  labelKey: 'studentSidebar.messages' },
+    { route: '/student/payment-history',      icon: 'payments',         labelKey: 'studentSidebar.payments' },
   { route: '/student/settings',     icon: 'settings',     labelKey: 'studentSidebar.settings' },
   { route: '/student/support',      icon: 'help',         labelKey: 'studentSidebar.support' },
-  { route: '/student/payment-history',      icon: 'payments',         labelKey: 'studentSidebar.payments' },
+
 ];
 }
