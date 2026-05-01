@@ -133,7 +133,11 @@ export class CourseWorkspaceComponent implements OnInit, OnDestroy {
 
     this.progressService.getCourseProgress(courseId).subscribe({
       next: (p) => this.progress.set(p),
-      error: () => {},
+      error: (err) => {
+        if (err?.status === 403) {
+          this.errorMsg.set('You must be enrolled to access this workspace.');
+        }
+      },
     });
 
     this.progressService.getResumeLesson(courseId).subscribe({
