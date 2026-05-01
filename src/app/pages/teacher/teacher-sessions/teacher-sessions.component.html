@@ -6,12 +6,12 @@
   <!-- ── Page Header ─────────────────────────────────────────── -->
   <div class="sp-header">
     <div class="sp-header__text">
-      <h1 class="sp-title">Live Sessions</h1>
-      <p class="sp-subtitle">Oversee your virtual classrooms and upcoming student interactions.</p>
+      <h1 class="sp-title">{{ 'teacherSessions.pageTitle' | translate }}</h1>
+      <p class="sp-subtitle">{{ 'teacherSessions.pageSubtitle' | translate }}</p>
     </div>
     <button class="sp-schedule-btn" (click)="openScheduleModal()">
       <span class="material-symbols-outlined">add</span>
-      Schedule Session
+      {{ 'teacherSessions.scheduleSession' | translate }}
     </button>
   </div>
 
@@ -26,7 +26,7 @@
   <!-- ── Loading ──────────────────────────────────────────────── -->
   <div *ngIf="isLoading()" class="sp-loading">
     <span class="material-symbols-outlined sp-loading__icon">progress_activity</span>
-    <span>Loading sessions…</span>
+    <span>{{ 'teacherSessions.loadingSessions' | translate }}</span>
   </div>
 
   <div *ngIf="!isLoading()" class="sp-content">
@@ -48,7 +48,7 @@
     <section *ngIf="currentSessions().length > 0" class="sp-section">
       <div class="sp-section__label sp-section__label--live">
         <span class="sp-live-dot"></span>
-        <span>Happening Now</span>
+        <span>{{ 'teacherSessions.happeningNow' | translate }}</span>
       </div>
 
       <!-- Live Session Card -->
@@ -60,10 +60,10 @@
             [class.sp-provider-badge--teams]="session.provider === 'MicrosoftTeams'"
             [class.sp-provider-badge--meet]="session.provider === 'GoogleMeet'"
             [class.sp-provider-badge--jitsi]="session.provider === 'Jitsi'">
-            {{ session.provider === 'MicrosoftTeams' ? 'Teams' : session.provider }}
+            {{ session.provider === 'MicrosoftTeams' ? ('teacherSessions.providerTeams' | translate) : session.provider }}
           </span>
           <div class="sp-live-card__meta">
-            <h3 class="sp-live-card__title">{{ session.title ?? 'Live Session' }}</h3>
+            <h3 class="sp-live-card__title">{{ session.title ?? ('teacherSessions.defaultSessionTitle' | translate) }}</h3>
             <p class="sp-live-card__time">
               <span class="material-symbols-outlined">schedule</span>
               {{ session.scheduledAt | date:'medium' }}
@@ -71,7 +71,7 @@
           </div>
         </div>
         <button class="sp-join-btn" (click)="joinSession(session)">
-          Join Session
+          {{ 'teacherSessions.joinSession' | translate }}
           <span class="material-symbols-outlined">arrow_forward</span>
         </button>
       </div>
@@ -100,7 +100,7 @@
                 [class.sp-provider-badge--teams]="session.provider === 'MicrosoftTeams'"
                 [class.sp-provider-badge--meet]="session.provider === 'GoogleMeet'"
                 [class.sp-provider-badge--jitsi]="session.provider === 'Jitsi'">
-                {{ session.provider === 'MicrosoftTeams' ? 'Teams' : session.provider }}
+                {{ session.provider === 'MicrosoftTeams' ? ('teacherSessions.providerTeams' | translate) : session.provider }}
               </span>
               <h4 class="sp-upcoming-item__title">{{ session.title ?? ('studentAgenda.defaultSessionTitle' | translate) }}</h4>
               <p class="sp-upcoming-item__time">
@@ -110,10 +110,10 @@
             </div>
           </div>
           <div class="sp-upcoming-item__actions">
-            <button class="sp-icon-btn sp-icon-btn--edit" (click)="openEditModal(session)" title="Edit">
+            <button class="sp-icon-btn sp-icon-btn--edit" (click)="openEditModal(session)" [title]="'common.edit' | translate">
               <span class="material-symbols-outlined">edit</span>
             </button>
-            <button class="sp-icon-btn sp-icon-btn--cancel" (click)="cancelSession(session.id)" title="Cancel">
+            <button class="sp-icon-btn sp-icon-btn--cancel" (click)="cancelSession(session.id)" [title]="'common.cancel' | translate">
               <span class="material-symbols-outlined">cancel</span>
             </button>
           </div>
@@ -132,7 +132,7 @@
         <div *ngFor="let session of pastSessions()" class="sp-past-card">
           <div>
             <span class="sp-past-card__date">
-              Completed {{ session.scheduledAt | date:'MMM d' }}
+              {{ 'teacherSessions.completed' | translate }} {{ session.scheduledAt | date:'MMM d' }}
             </span>
             <!-- Provider badge -->
             <span class="sp-provider-badge sp-provider-badge--sm"
@@ -140,7 +140,7 @@
               [class.sp-provider-badge--teams]="session.provider === 'MicrosoftTeams'"
               [class.sp-provider-badge--meet]="session.provider === 'GoogleMeet'"
               [class.sp-provider-badge--jitsi]="session.provider === 'Jitsi'">
-              {{ session.provider === 'MicrosoftTeams' ? 'Teams' : session.provider }}
+              {{ session.provider === 'MicrosoftTeams' ? ('teacherSessions.providerTeams' | translate) : session.provider }}
             </span>
             <h4 class="sp-past-card__title">{{ session.title ?? ('studentAgenda.defaultSessionTitle' | translate) }}</h4>
           </div>
@@ -154,7 +154,7 @@
               <span class="material-symbols-outlined">video_library</span>
               {{ 'teacherSessions.addRecording' | translate }}
             </button>
-            <button class="sp-past-card__delete" (click)="cancelSession(session.id)" title="Remove">
+            <button class="sp-past-card__delete" (click)="cancelSession(session.id)" [title]="'common.remove' | translate">
               <span class="material-symbols-outlined">delete</span>
             </button>
           </div>
@@ -168,10 +168,8 @@
         <span class="material-symbols-outlined">auto_awesome</span>
       </div>
       <div class="sp-insight__body">
-        <h4 class="sp-insight__title">Academic Insight</h4>
-        <p class="sp-insight__text">
-          Live sessions are the heartbeat of the atelier experience. Enable recordings for all sessions so students can revisit complex discussions at their own pace.
-        </p>
+        <h4 class="sp-insight__title">{{ 'teacherSessions.insightTitle' | translate }}</h4>
+        <p class="sp-insight__text">{{ 'teacherSessions.insightText' | translate }}</p>
       </div>
       <span class="sp-insight__quote">"</span>
     </div>

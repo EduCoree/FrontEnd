@@ -74,7 +74,9 @@
     "loading": "جارٍ التحميل...",
     "error": "حدث خطأ",
     "retry": "إعادة المحاولة",
-    "viewAll": "عرض الكل"
+    "viewAll": "عرض الكل",
+    "edit": "تعديل",
+"remove": "حذف"
   },
   "home": {
     "badge": "تعلّم متميز",
@@ -154,7 +156,7 @@
     "allinone_badge": "الكل في واحد",
     "allinone_title": "برنامج سحابي",
     "allinone_highlight": "متكامل.",
-    "allinone_desc": "TOTC هو برنامج إدارة متكامل يجمع كل الأدوات اللازمة لإدارة مدرسة أو مكتب ناجح.",
+    "allinone_desc": "EduCore هو برنامج إدارة متكامل يجمع كل الأدوات اللازمة لإدارة مدرسة أو مكتب ناجح.",
     "feature_billing_title": "الفوترة والعقود الإلكترونية",
     "feature_billing_desc": "تحكم بسيط وآمن في معاملاتك المالية والقانونية. أرسل فواتير وعقوداً مخصصة.",
     "feature_scheduling_title": "جدولة سهلة وتتبع الحضور",
@@ -162,8 +164,8 @@
     "feature_tracking_title": "تتبع العملاء",
     "feature_tracking_desc": "أتمتة وتتبع الرسائل للأفراد أو المجموعات. يساعد النظام المدمج في تنظيم مؤسستك.",
     "whatis_title": "ما هو",
-    "whatis_highlight": "TOTC؟",
-    "whatis_desc": "TOTC منصة تتيح للمعلمين إنشاء فصول دراسية عبر الإنترنت لتخزين المواد وإدارة المهام والاختبارات ومتابعة المواعيد وتصحيح النتائج وتقديم التغذية الراجعة في مكان واحد.",
+    "whatis_highlight": "EduCore؟",
+    "whatis_desc": "EduCore منصة تتيح للمعلمين إنشاء فصول دراسية عبر الإنترنت لتخزين المواد وإدارة المهام والاختبارات ومتابعة المواعيد وتصحيح النتائج وتقديم التغذية الراجعة في مكان واحد.",
     "for_instructors_label": "للمدربين",
     "for_students_label": "للطلاب",
     "start_class_btn": "ابدأ فصلاً اليوم",
@@ -325,8 +327,17 @@
     "editCenter": "تعديل المركز",
     "updateLogo": "تحديث الشعار",
     "categories": "التصنيفات",
-    "adminUser": "مستخدم الإدارة",
-    "superAdmin": "المدير العام"
+   
+    "superAdmin": "المدير العام",
+     "subtitle": "لوحة الإدارة",
+  "adminUser": "مستخدم الإدارة",
+  "adminRole": "المدير العام",
+  "nav": {
+    "courseInfo": "معلومات الكورس",
+    "quizzes": "الاختبارات",
+    "sessions": "الجلسات",
+    "progress": "التقدم"
+  }
   },
   "adminCourses": {
     "title": "إدارة الكورسات",
@@ -1411,7 +1422,18 @@
     "recordingUrlError": "رابط صحيح يبدأ بـ http:// أو https:// مطلوب.",
     "saveRecording": "حفظ التسجيل",
     "footerLabel": "الجلسات — منشئ الكورس",
-    "backToMedia": "العودة للوسائط"
+    "backToMedia": "العودة للوسائط",
+    "pageTitle": "الجلسات المباشرة",
+"pageSubtitle": "جدول جلساتك المباشرة وتسجيلاتها.",
+"loadingSessions": "جارٍ تحميل الجلسات...",
+"happeningNow": "يحدث الآن",
+"joinSession": "انضم للجلسة",
+"completed": "مكتمل",
+"defaultSessionTitle": "جلسة مباشرة",
+"providerTeams": "فريق الخدمات",
+"insightTitle": "رؤى أكاديمية",
+"insightText": "الجلسات المباشرة هي نبض تجربة atelier. فعّل التسجيلات لكل الجلسات حتى يتمكن الطلاب من إعادة زيارة النقاشات المعقدة بحسب سرعتهم."
+
   },
   "teacherProgress": {
     "lessonBreakdown": "تفاصيل الدروس",
@@ -1425,7 +1447,22 @@
     "backToSessions": "العودة للجلسات",
     "done": "تم",
     "noStudents": "لا يوجد طلاب مسجّلون بعد",
-    "noStudentsHint": "الطلاب الذين يسجّلون في هذا الكورس سيظهرون هنا."
+    
+    "pageTitle": "تقدم الطلاب",
+    "pageSubtitle": "تابع ورصد مسيرة تعلم طلابك",
+    "loading": "جارٍ تحميل بيانات التقدم...",
+    "studentRoster": "قائمة الطلاب",
+    "exportCsv": "تصدير CSV",
+  
+    "noStudentsHint": "سيظهر الطلاب هنا بمجرد تسجيلهم في هذا الكورس.",
+    
+    "selectStudentHint": "اختر طالبًا من القائمة لعرض تفاصيل تقدمه في الدروس.",
+    "detailedBreakdown": "تفاصيل التقدم",
+    "lessonsCompleted": "درس مكتمل",
+    "curriculumProgress": "تقدم المنهج",
+   
+    "noLessons": "لا توجد دروس متاحة لهذا الكورس حتى الآن.",
+    "viewFullHistory": "عرض السجل الكامل"
   },
   "teacherDashboard": {
     "subtitle": "كورساتك وطلابك وجلساتك القادمة.",
@@ -2528,5 +2565,67 @@
         "saving": "جارٍ الحفظ…"
       }
     }
-  }
+  },
+  "COURSE": {
+    "LOADING": "جارٍ تحميل الدورة…",
+    "BACK_TO_MY_COURSES": "← العودة إلى دوراتي",
+    "MY_COURSES": "دوراتي",
+    "IN_PROGRESS": "قيد التقدم",
+    "ENROLLED": "مسجّل",
+    "RESUME_HINT": "استكمال من حيث توقفت",
+    "START_HINT": "بدء الدرس الأول",
+    "LESSONS": "دروس",
+    "VIDEO_LOADING": "جارٍ تحميل",
+    "REFRESH": "تحديث",
+    "CLOSE": "إغلاق",
+    "VIDEO_NOT_SUPPORTED": "متصفحك لا يدعم تشغيل الفيديو.",
+    "WATCH_FULL_VIDEO": "شاهد الفيديو بالكامل، ثم ضع علامة اكتمال",
+    "COMPLETED": "مكتمل",
+    "SAVING": "جارٍ الحفظ…",
+    "NEXT": "التالي",
+    "MARK_COMPLETE": "تحديد كمكتمل",
+    "INSTRUCTOR": "المدرب",
+    "INSTRUCTOR_TIP": "اتبع المنهج بالترتيب للحصول على أفضل تجربة تعليمية. انقر على أي درس في الشريط الجانبي لتشغيله فوراً.",
+    "SECTIONS": "الأقسام",
+    "LEVEL": "المستوى",
+    "COMPLETE": "مكتمل",
+    "COURSE_CONTENT": "محتوى الدورة",
+    "RESUME": "استكمال",
+    "START": "بدء",
+    "DISCUSSION": "النقاشات",
+    "REVIEWS": "التقييمات",
+    "MY_PROGRESS": "تقدمي",
+    "JOIN_DISCUSSION": "انضم للنقاش"
+  },
+   "courseManagement": {
+    "label": "إدارة الكورس"
+  },
+  "enrollment": {
+  "confirmEnrollment": "تأكيد التسجيل",
+  "enrollingIn": "أنت تسجل في",
+  "certificate": "شهادة مضمنة",
+  "selectPathway": "اختر طريقة التسجيل",
+  "pathway01": "المسار 01",
+  "pathway02": "المسار 02",
+  "recommended": "موصى به",
+  "freeCourse": "كورس مجاني",
+  "freeEnrollment": "تسجيل مجاني",
+  "freeDesc": "وصول كامل لجميع مواد الكورس بدون تكلفة.",
+  "free": "مجاناً",
+  "enrollFree": "سجّل مجاناً",
+  "enrolling": "جارٍ التسجيل...",
+  "digitalAccess": "وصول رقمي",
+  "digitalDesc": "وصول كامل يشمل الاختبارات والشهادة.",
+  "payCard": "ادفع بالبطاقة",
+  "processing": "جارٍ المعالجة...",
+  "offline": "دفع نقدي",
+  "offlineDesc": "تسجيل يدوي عبر الدفع النقدي.",
+  "requestCash": "اطلب دفع نقدي",
+  "sending": "جارٍ الإرسال...",
+  "requestSent": "تم الإرسال!",
+  "contactAdmin": "أو تواصل مع الإدارة مباشرة",
+  "adminWillContact": "سيتواصل معك المسؤول لتأكيد الدفع.",
+  "termsNote": "بالتسجيل، أنت توافق على شروط الخدمة وسياسة النزاهة الأكاديمية."
+}
+ 
 }

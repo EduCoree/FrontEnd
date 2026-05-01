@@ -1,6 +1,10 @@
 <aside [class.w-64]="isOpen()"
        [class.w-16]="!isOpen()"
-       class="hidden lg:flex flex-col fixed left-0 top-20 h-[calc(100vh-5rem)] bg-surface-container-low border-r border-outline-variant/20 z-50 transition-all duration-300">
+       class="hidden lg:flex flex-col fixed top-20 h-[calc(100vh-5rem)] bg-surface-container-low border-outline-variant/20 z-50 transition-all duration-300"
+       [class.left-0]="!isRtl()"
+       [class.right-0]="isRtl()"
+       [class.border-r]="!isRtl()"
+       [class.border-l]="isRtl()">
 
   <!-- Header -->
   <div class="flex items-center gap-3 p-4 border-b border-outline-variant/20"
@@ -20,7 +24,7 @@
     <button (click)="toggle()"
             class="w-8 h-8 rounded-lg hover:bg-surface-container flex items-center justify-center transition-colors flex-shrink-0">
       <span class="material-symbols-outlined text-on-surface-variant text-lg">
-        {{ isOpen() ? 'chevron_left' : 'chevron_right' }}
+        {{ getToggleIcon() }}
       </span>
     </button>
   </div>
@@ -44,7 +48,7 @@
         </span>
         @if (isOpen()) {
           <span class="text-sm font-medium whitespace-nowrap">
-            {{ item.labelKey | translate }} <!-- ✅ -->
+            {{ item.labelKey | translate }}
           </span>
         }
       </a>
@@ -67,7 +71,10 @@
   }
 </aside>
 
-<div [class.ml-64]="isOpen()"
-     [class.ml-16]="!isOpen()"
+<!-- Spacer -->
+<div [class.ml-64]="isOpen() && !isRtl()"
+     [class.ml-16]="!isOpen() && !isRtl()"
+     [class.mr-64]="isOpen() && isRtl()"
+     [class.mr-16]="!isOpen() && isRtl()"
      class="transition-all duration-300 lg:block hidden h-0">
 </div>
