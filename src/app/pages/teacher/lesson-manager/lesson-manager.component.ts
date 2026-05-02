@@ -159,13 +159,24 @@ export class LessonManagerComponent implements OnInit {
         const wantsFreePreview = !!this.infoForm.value.isFreePreview;
         const currentFreePreview = this.lesson()?.isFreePreview ?? false;
 
-        if (wantsFreePreview !== currentFreePreview) {
-          this.courseService.toggleFreePreview(this.courseId, this.lessonId, { isFreePreview: wantsFreePreview }).subscribe();
-        }
+        const finish = () => {
+          this.isSaving.set(false);
+          this.flash('success', 'Lesson info saved!');
+          this.loadLesson();
+        };
 
-        this.isSaving.set(false);
-        this.flash('success', 'Lesson info saved!');
-        this.loadLesson();
+        if (wantsFreePreview !== currentFreePreview) {
+          this.courseService.toggleFreePreview(this.courseId, this.lessonId, { isFreePreview: wantsFreePreview }).subscribe({
+            next: finish,
+            error: () => {
+              this.isSaving.set(false);
+              this.flash('error', 'Lesson saved but failed to update free preview.');
+              this.loadLesson();
+            }
+          });
+        } else {
+          finish();
+        }
       },
       error: () => { this.isSaving.set(false); this.flash('error', 'Failed to save lesson info.'); }
     });

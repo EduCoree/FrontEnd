@@ -244,7 +244,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
             padding: 8,
             cornerRadius: 8,
             displayColors: false,
-            callbacks: { label: (ctx) => `$${ctx.parsed.y}` },
+            callbacks: { label: (ctx: any) => `$${ctx.parsed.y}` },
           },
         },
       } as ChartConfiguration['options'],

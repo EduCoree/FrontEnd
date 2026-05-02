@@ -134,7 +134,11 @@ export class CourseWorkspaceComponent implements OnInit, OnDestroy {
 
     this.progressService.getCourseProgress(courseId).subscribe({
       next: (p) => this.progress.set(p),
-      error: () => {},
+      error: (err) => {
+        if (err?.status === 403) {
+          this.errorMsg.set('You must be enrolled to access this workspace.');
+        }
+      },
     });
 
     this.progressService.getResumeLesson(courseId).subscribe({
@@ -146,20 +150,12 @@ export class CourseWorkspaceComponent implements OnInit, OnDestroy {
   // ── Inline Video Player ───────────────────────────────────────────────────────
 
   selectLesson(lesson: LessonDto): void {
-    if (lesson.type?.toLowerCase() === 'pdf') {
-      window.open(
-        `/student/courses/${this.courseId()}/lessons/${lesson.id}/watch`,
-        '_blank'
-      );
-      return;
-    }
-
     if (lesson.type?.toLowerCase() === 'quiz') {
       this.router.navigate(['/quiz/intro', lesson.id]);
       return;
     }
 
-    // Video lesson — load signed URL inline
+    // Load signed URL inline
     this.activeLesson.set(lesson);
     this.signedUrl.set(null);
     this.safeUrl.set(null);
@@ -171,15 +167,29 @@ export class CourseWorkspaceComponent implements OnInit, OnDestroy {
     this.destroyPlyr();
     this.clearIntervals();
 
-    this.studentContentService.getVideoSignedUrl(lesson.id).subscribe({
+    const type = lesson.type?.toLowerCase();
+
+    if (type === 'live') {
+      this.provider.set('live');
+      this.isVideoLoading.set(false);
+      return;
+    }
+
+    const request$ = type === 'pdf'
+      ? this.studentContentService.getPdfSignedUrl(lesson.id)
+      : this.studentContentService.getVideoSignedUrl(lesson.id);
+
+    request$.subscribe({
       next: (res) => {
         this.signedUrl.set(res.url);
         this.expiresAt.set(res.expiresAt);
-        const p = this.detectProvider(res.url);
+        const p = type === 'pdf' ? 'pdf' : this.detectProvider(res.url);
         this.provider.set(p);
         this.buildSafeUrl(res.url, p);
         this.startExpiryWatcher(res.expiresAt);
-        this.startHeartbeat(lesson.id);
+        if (p !== 'pdf') {
+          this.startHeartbeat(lesson.id);
+        }
         this.isVideoLoading.set(false);
         
         if (p === 'youtube' || p === 'vimeo') {
@@ -190,7 +200,7 @@ export class CourseWorkspaceComponent implements OnInit, OnDestroy {
         if (err?.status === 403) {
           this.videoError.set('Enroll in this course to watch this lesson.');
         } else {
-          this.videoError.set('Failed to load video. Please try again.');
+          this.videoError.set('Failed to load content. Please try again.');
         }
         this.isVideoLoading.set(false);
       },
@@ -287,6 +297,22 @@ export class CourseWorkspaceComponent implements OnInit, OnDestroy {
         previewUrl = url.replace('/view', '/preview');
       }
       this.safeUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(previewUrl));
+    } else if (provider === 'pdf') {
+      // PDF native viewing doesn't require manipulation unless it's a Drive link.
+      // If our backend returns a Drive link for PDF, it might be caught by PDF type though.
+      // We will just bypass security trust.
+      if (/drive\.google\.com/.test(url)) {
+        let previewUrl = url;
+        const match = url.match(/id=([^&]+)/);
+        if (match) {
+          previewUrl = `https://drive.google.com/file/d/${match[1]}/preview`;
+        } else if (url.includes('/view')) {
+          previewUrl = url.replace('/view', '/preview');
+        }
+        this.safeUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(previewUrl));
+      } else {
+        this.safeUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(url));
+      }
     }
   }
 
