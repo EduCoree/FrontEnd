@@ -59,7 +59,8 @@
   <div *ngIf="isLoading()" class="sp-loading">
     <span class="material-symbols-outlined sp-loading__icon">progress_activity</span>
     <span>{{ 'teacherSessions.loading' | translate }}</span>
-    <div *ngIf="!isLoading()" class="sp-content">
+  </div>
+  <div *ngIf="!isLoading()" class="sp-content">
       <!-- ── Empty State ───────────────────────────────────────── -->
       <div *ngIf="sessions().length === 0" class="sp-empty">
         <div class="sp-empty__icon-wrap">
@@ -436,4 +437,3 @@
       </form>
     </div>
   </div>
-</div>

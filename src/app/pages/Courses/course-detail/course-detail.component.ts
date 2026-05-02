@@ -84,6 +84,8 @@ closeEnrollmentModal(): void {
     // We navigate to the student workspace player if it's a free preview
     if (lesson.type.toLowerCase() === 'video') {
       this.router.navigate(['/student/courses', this.course.id, 'lessons', lesson.id, 'player']);
+    } else if (lesson.type.toLowerCase() === 'pdf') {
+      this.router.navigate(['/student/courses', this.course.id, 'lessons', lesson.id, 'player']);
     } else if (lesson.type.toLowerCase() === 'quiz') {
       this.router.navigate(['/student/courses', this.course.id, 'lessons', lesson.id, 'player']);
     }
