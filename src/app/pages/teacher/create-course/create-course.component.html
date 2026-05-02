@@ -1,6 +1,6 @@
 <div class="bg-surface text-on-surface min-h-screen font-body">
 
-  <aside class="fixed left-0 top-0 h-full p-6 flex flex-col gap-8 bg-surface-container w-72 z-50">
+  <aside class="fixed start-0 top-0 h-full p-6 flex flex-col gap-8 bg-surface-container w-72 z-50">
     <div class="flex flex-col gap-1 px-4">
       <span class="text-lg font-black text-primary cursor-pointer" (click)="goToDashboard()">
         {{ 'courseBuilder.brand' | translate }}
@@ -31,12 +31,12 @@
       <button (click)="goToDashboard()"
         class="w-full bg-surface-container-high text-on-surface-variant rounded-full py-4 font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-all text-sm">
         <span class="material-symbols-outlined text-xl">arrow_back</span>
-        {{ 'courseInfoStep.backToDashboard' | translate }}
+        {{ 'courseBuilder.backToDashboard' | translate }}
       </button>
     </div>
   </aside>
 
-  <main class="ml-72 min-h-screen pb-32">
+  <main class="ms-72 min-h-screen pb-32">
 
     <header class="flex justify-between items-center w-full px-8 py-3 bg-surface/90 backdrop-blur-xl sticky top-0 z-40 border-b border-outline-variant/10">
       <div class="flex items-center gap-8">
@@ -74,7 +74,7 @@
       </div>
     </header>
 
-    <div class="p-8 max-w-[1400px] mx-auto grid grid-cols-12 gap-8">
+    <div class="px-8 pt-4 pb-8 max-w-[1400px] mx-auto grid grid-cols-12 gap-8">
       <form [formGroup]="courseForm" (ngSubmit)="onSubmit()" class="col-span-12 lg:col-span-8 space-y-10">
 
         <div *ngIf="errorMessage" class="bg-red-100 text-red-600 p-3 rounded-lg text-sm text-center">
@@ -99,16 +99,19 @@
               <label class="uppercase tracking-widest text-xs font-bold text-on-surface-variant">
                 {{ 'courseInfoStep.category' | translate }}
               </label>
-              <div *ngIf="categories.length === 0"
+              <div *ngIf="!isCategoriesLoaded"
                 class="w-full px-5 py-3 bg-surface-container-high rounded-full text-on-surface-variant text-sm font-medium flex items-center gap-2">
                 {{ 'courseInfoStep.loadingCategories' | translate }}
               </div>
-              <div *ngIf="categories.length > 0" class="relative">
+              <div *ngIf="isCategoriesLoaded" class="relative">
                 <select formControlName="categoryId"
-                  class="w-full px-5 py-3 bg-surface-container-high rounded-full border-none focus:ring-2 focus:ring-primary/20 transition-all text-sm font-medium outline-none appearance-none cursor-pointer">
+                  class="w-full px-5 py-3 bg-surface-container-high rounded-full border-none focus:ring-2 focus:ring-primary/20 transition-all text-sm font-medium outline-none appearance-none cursor-pointer pr-10 rtl:pr-5 rtl:pl-10">
                   <option value="" disabled selected>{{ 'courseInfoStep.selectCategory' | translate }}</option>
                   <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
                 </select>
+                <span class="material-symbols-outlined absolute right-4 rtl:right-auto rtl:left-4 top-1/2 -translate-y-1/2 pointer-events-none text-outline">
+                  expand_more
+                </span>
               </div>
               <span *ngIf="courseForm.get('categoryId')?.invalid && courseForm.get('categoryId')?.touched"
                 class="text-red-500 text-xs block px-2">{{ 'courseInfoStep.categoryError' | translate }}</span>
@@ -206,9 +209,9 @@
                   {{ 'courseInfoStep.priceUsd' | translate }}
                 </label>
                 <div class="relative">
-                  <span class="absolute left-5 top-1/2 -translate-y-1/2 font-bold text-xl text-on-surface-variant">$</span>
+                  <span class="absolute start-5 top-1/2 -translate-y-1/2 font-bold text-xl text-on-surface-variant">$</span>
                   <input type="number" formControlName="price" placeholder="49.00"
-                    class="w-full pl-10 pr-5 py-3.5 bg-white rounded-full border-none focus:ring-2 focus:ring-primary/20 text-2xl font-extrabold text-primary outline-none"/>
+                    class="w-full ps-10 pe-5 py-3.5 bg-white rounded-full border-none focus:ring-2 focus:ring-primary/20 text-2xl font-extrabold text-primary outline-none"/>
                 </div>
               </div>
             </div>
@@ -309,7 +312,7 @@
     </div>
   </main>
 
-  <footer class="fixed bottom-0 left-72 right-0 z-40 px-8 pb-6">
+  <footer class="fixed bottom-0 start-72 end-0 z-40 px-8 pb-6">
     <div class="bg-white shadow-2xl rounded-full px-8 py-4 flex items-center justify-between border border-primary/10">
       <div class="flex items-center gap-3">
         <div class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></div>

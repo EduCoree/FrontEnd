@@ -66,14 +66,14 @@
   @if (isOpen()) {
     <div class="p-4 border-t border-outline-variant/20">
       <div class="flex items-center gap-3">
-        <div
-          class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container text-xs font-bold flex-shrink-0"
-        >
-          AU
+        <div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container text-xs font-bold flex-shrink-0">
+          {{ userInitials }}
         </div>
-        <div>
-          <p class="text-xs font-bold text-on-surface">{{ 'sidebar.adminUser' | translate }}</p>
-          <p class="text-[10px] text-on-surface-variant">{{ 'sidebar.superAdmin' | translate }}</p>
+        <div class="overflow-hidden">
+          <p class="text-xs font-bold text-on-surface truncate">{{ userName }}</p>
+          <p class="text-[10px] text-on-surface-variant uppercase tracking-widest">
+            {{ 'teacherPortal.instructor' | translate }}
+          </p>
         </div>
       </div>
     </div>

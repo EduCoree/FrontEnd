@@ -1,6 +1,6 @@
 <div class="bg-surface text-on-surface min-h-screen font-body">
 
-  <aside class="fixed left-0 top-0 h-full p-6 flex flex-col gap-8 bg-surface-container w-72 z-50">
+  <aside class="fixed start-0 top-0 h-full p-6 flex flex-col gap-8 bg-surface-container w-72 z-50">
     <div class="flex flex-col gap-1 px-4">
       <span class="text-lg font-black text-primary cursor-pointer" (click)="goToDashboard()">EduCore</span>
       <span class="uppercase tracking-widest text-xs font-bold text-on-surface-variant">
@@ -30,7 +30,7 @@
     </nav>
   </aside>
 
-  <main class="ml-72 min-h-screen pb-32">
+  <main class="ms-72 min-h-screen pb-32">
 
     <header class="flex justify-between items-center w-full px-8 py-3 bg-surface/90 backdrop-blur-xl sticky top-0 z-40 border-b border-outline-variant/10">
       <div class="flex items-center gap-8">
@@ -73,7 +73,7 @@
       <span class="material-symbols-outlined text-primary text-4xl animate-spin">progress_activity</span>
     </div>
 
-    <div *ngIf="!isLoading()" class="p-8 max-w-5xl mx-auto space-y-6">
+    <div *ngIf="!isLoading()" class="px-8 pt-4 pb-8 max-w-5xl mx-auto space-y-6">
 
       <!-- Lesson Selector -->
       <div class="bg-white rounded-2xl border border-outline-variant/10 shadow-sm overflow-hidden">
@@ -91,7 +91,7 @@
         <div class="divide-y divide-outline-variant/5">
           <button *ngFor="let lesson of lessons()"
             (click)="selectLesson(lesson)"
-            class="w-full text-left px-6 py-4 flex items-center gap-4 transition-colors"
+            class="w-full text-start px-6 py-4 flex items-center gap-4 transition-colors"
             [class]="selectedLesson()?.id === lesson.id ? 'bg-primary/5' : 'hover:bg-surface-container'">
 
             <div class="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
@@ -168,7 +168,7 @@
                       <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings:'FILL' 1">play_arrow</span>
                     </div>
                   </div>
-                  <span class="absolute top-2 left-2 px-2 py-0.5 bg-surface-container/90 backdrop-blur text-on-surface text-[10px] font-bold rounded uppercase tracking-wider">
+                  <span class="absolute top-2 start-2 px-2 py-0.5 bg-surface-container/90 backdrop-blur text-on-surface text-[10px] font-bold rounded uppercase tracking-wider">
                     {{ selectedLesson()?.videoProvider ?? 'video' }}
                   </span>
                 </div>
@@ -373,7 +373,7 @@
                   <span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings:'FILL' 1">play_arrow</span>
                 </div>
               </div>
-              <span class="absolute bottom-2 right-2 text-[10px] font-bold px-2 py-0.5 bg-surface-container/90 text-on-surface rounded uppercase">
+              <span class="absolute bottom-2 end-2 text-[10px] font-bold px-2 py-0.5 bg-surface-container/90 text-on-surface rounded uppercase">
                 {{ selectedLesson()?.videoProvider }}
               </span>
             </div>
@@ -429,7 +429,7 @@
     </div>
   </main>
 
-  <footer class="fixed bottom-0 left-72 right-0 z-40 px-8 pb-6">
+  <footer class="fixed bottom-0 start-72 end-0 z-40 px-8 pb-6">
     <div class="bg-white shadow-2xl rounded-full px-8 py-4 flex items-center justify-between border border-primary/10">
       <div class="flex items-center gap-3">
         <div class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></div>

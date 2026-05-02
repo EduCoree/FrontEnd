@@ -1,6 +1,6 @@
 <div class="bg-surface text-on-surface min-h-screen font-body">
 
-  <aside class="fixed left-0 top-0 h-full w-72 bg-surface-container flex-col p-6 gap-8 z-50 hidden md:flex">
+  <aside class="fixed start-0 top-0 h-full w-72 bg-surface-container flex-col p-6 gap-8 z-50 hidden md:flex">
     <div class="flex flex-col gap-1 px-4">
       <span class="text-lg font-black text-primary cursor-pointer" (click)="goToDashboard()">
         {{ 'courseBuilder.brand' | translate }}
@@ -29,7 +29,7 @@
     </nav>
   </aside>
 
-  <main class="md:ml-72 min-h-screen pb-32">
+  <main class="md:ms-72 min-h-screen pb-32">
 
     <header class="flex justify-between items-center w-full px-8 py-3 bg-surface/90 backdrop-blur-xl sticky top-0 z-40 border-b border-outline-variant/10">
       <div class="flex items-center gap-8">
@@ -67,7 +67,7 @@
       </div>
     </header>
 
-    <div class="px-8 py-8 flex flex-col md:flex-row gap-12 max-w-7xl mx-auto w-full">
+    <div class="px-8 pt-4 pb-8 flex flex-col md:flex-row gap-12 max-w-7xl mx-auto w-full">
 
       <div class="flex-[1.5] space-y-10">
 
@@ -94,23 +94,23 @@
 
             <div *ngIf="pricingForm.get('pricingType')?.value === 'Paid'" class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div class="space-y-2">
-                <label class="uppercase tracking-widest text-xs font-bold text-on-surface-variant ml-2">
+                <label class="uppercase tracking-widest text-xs font-bold text-on-surface-variant ms-2">
                   {{ 'pricingStep.coursePriceUsd' | translate }}
                 </label>
                 <div class="relative">
-                  <span class="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+                  <span class="absolute start-4 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
                   <input type="number" formControlName="price"
-                    class="w-full bg-white border-none rounded-xl py-4 pl-8 pr-4 text-lg font-bold focus:ring-2 focus:ring-primary/20 outline-none"/>
+                    class="w-full bg-white border-none rounded-xl py-4 ps-8 pe-4 text-lg font-bold focus:ring-2 focus:ring-primary/20 outline-none"/>
                 </div>
               </div>
               <div class="space-y-2">
-                <label class="uppercase tracking-widest text-xs font-bold text-on-surface-variant ml-2">
+                <label class="uppercase tracking-widest text-xs font-bold text-on-surface-variant ms-2">
                   {{ 'pricingStep.discountPrice' | translate }}
                 </label>
                 <div class="relative">
-                  <span class="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+                  <span class="absolute start-4 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
                   <input type="number" formControlName="discountedPrice"
-                    class="w-full bg-white border-none rounded-xl py-4 pl-8 pr-4 text-lg font-bold focus:ring-2 focus:ring-primary/20 outline-none"
+                    class="w-full bg-white border-none rounded-xl py-4 ps-8 pe-4 text-lg font-bold focus:ring-2 focus:ring-primary/20 outline-none"
                     placeholder="0.00"/>
                 </div>
               </div>
@@ -206,7 +206,7 @@
     </div>
   </main>
 
-  <footer class="fixed bottom-0 md:left-72 left-0 right-0 z-40 px-8 pb-6">
+  <footer class="fixed bottom-0 md:start-72 start-0 end-0 z-40 px-8 pb-6">
     <div class="bg-white shadow-2xl rounded-full px-8 py-4 flex items-center justify-between border border-primary/10">
       <div class="flex items-center gap-3">
         <div class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></div>
