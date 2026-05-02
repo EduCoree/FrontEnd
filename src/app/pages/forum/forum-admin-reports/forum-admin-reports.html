@@ -1,199 +1,267 @@
 <!-- Admin Forum Reports Page -->
-<div class="flex min-h-screen bg-[#F8FAFA]">
+<div class="flex min-h-screen bg-[#f8faf9] font-headline">
   <app-admin-sidebar />
 
-  <main class="ms-6 flex-1 min-h-screen md:pt-0 pt-16">
+  <main class="flex-1 min-h-screen flex flex-col overflow-hidden">
 
-    <!-- Top bar -->
-    <header class="sticky top-0 z-30 bg-[#F8FAFA]/80 backdrop-blur-xl border-b border-slate-200 flex items-center justify-between px-8 py-4">
-      <div class="relative w-full max-w-md">
-        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
-        <input type="text"
-          [placeholder]="'adminReports.searchPlaceholder' | translate"
-          class="w-full pl-12 pr-4 py-2.5 rounded-full bg-[#ECEEEE] border-none focus:ring-2 focus:ring-[#2E6858]/20 text-sm placeholder-slate-400" />
+    <!-- ══ TOP NAV ══ -->
+    <header class="sticky top-0 z-20 bg-white border-b border-[#eaefee] px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="text-sm font-bold text-[#acb3b2]">Admin</span>
+        <span class="text-[#d0d8d6]">/</span>
+        <span class="text-sm font-bold text-[#2d3433]">{{ 'adminReports.title' | translate }}</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#acb3b2] text-[18px]">search</span>
+          <input type="text"
+            [placeholder]="'adminReports.searchPlaceholder' | translate"
+            class="pl-10 pr-4 py-2 rounded-xl bg-[#f0f5f3] border border-transparent focus:border-[#b2efda] focus:bg-white text-sm text-[#2d3433] placeholder-[#acb3b2] outline-none transition-all w-56" />
+        </div>
       </div>
     </header>
 
-    <div class="p-8 space-y-8">
+    <div class="p-8 space-y-6">
 
-      <!-- Page header -->
-      <div>
-        <h2 class="text-4xl font-extrabold tracking-tight text-[#191C1D] font-headline mb-2">
-          {{ 'adminReports.title' | translate }}
-        </h2>
-        <p class="text-slate-500">
-          {{ 'adminReports.subtitle' | translate }}
-        </p>
+      <!-- ══ BANNER ══ -->
+      <div class="relative rounded-2xl overflow-hidden bg-[#2e6959] px-8 py-7 flex items-center justify-between">
+        <div class="absolute right-32 top-1/2 -translate-y-1/2 w-40 h-40 rounded-full border-[24px] border-white/5"></div>
+        <div class="absolute right-16 top-1/2 -translate-y-1/2 w-28 h-28 rounded-full border-[16px] border-white/5"></div>
+        <div class="absolute right-52 bottom-0 w-20 h-20 rounded-full border-[12px] border-white/5"></div>
+        <div>
+          <p class="text-[#b2efda] text-sm font-semibold mb-1 flex items-center gap-2">
+            <span class="material-symbols-outlined text-base">flag</span>
+            {{ 'adminReports.subtitle' | translate }}
+          </p>
+          <h2 class="text-white text-3xl font-black tracking-tight mb-2">{{ 'adminReports.title' | translate }}</h2>
+          <p class="text-white/60 text-sm font-medium">{{ reports().length }} {{ 'adminReports.pendingReports' | translate }}</p>
+        </div>
       </div>
 
-      <!-- Toasts -->
+      <!-- ══ TOASTS ══ -->
       @if (successMsg()) {
-        <div class="flex items-center gap-3 px-5 py-3 bg-[#AAF1DA]/40 border border-[#226A58]/20 rounded-xl text-[#226A58] font-semibold text-sm">
+        <div class="flex items-center gap-3 px-5 py-3 bg-[#e4fff4] border border-[#b2efda] rounded-2xl text-[#2e6959] font-semibold text-sm">
           <span class="material-symbols-outlined text-[18px]">check_circle</span>
           {{ successMsg() }}
         </div>
       }
       @if (errorMsg()) {
-        <div class="flex items-center gap-3 px-5 py-3 bg-[#FFDAD6]/40 border border-[#BA1A1A]/20 rounded-xl text-[#BA1A1A] font-semibold text-sm">
+        <div class="flex items-center gap-3 px-5 py-3 bg-[#fff0ee] border border-[#f5c5bf] rounded-2xl text-[#c0392b] font-semibold text-sm">
           <span class="material-symbols-outlined text-[18px]">error</span>
           {{ errorMsg() }}
         </div>
       }
 
-      <!-- Stats Row -->
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-        <div class="bg-[#FFDAD6]/30 p-6 rounded-xl space-y-1 relative overflow-hidden group">
-          <p class="uppercase tracking-widest text-[10px] font-bold text-[#BA1A1A]">
+      <!-- ══ KPI CARDS ══ -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Pending Reports -->
+        <div class="bg-white rounded-2xl p-5 border border-[#eaefee] hover:border-[#f5c5bf] hover:shadow-sm transition-all group">
+          <div class="flex items-start justify-between mb-4">
+            <div class="w-10 h-10 rounded-xl bg-[#fff0ee] flex items-center justify-center text-[#c0392b] group-hover:bg-[#fde2de] transition-colors">
+              <span class="material-symbols-outlined text-xl">flag</span>
+            </div>
+            @if (reports().length > 0) {
+              <span class="text-[10px] font-black uppercase tracking-widest text-[#c0392b] bg-[#fff0ee] px-2 py-1 rounded-lg">
+                {{ 'adminReports.pendingReports' | translate }}
+              </span>
+            }
+          </div>
+          <p class="text-[10px] uppercase tracking-widest font-bold text-[#596060] mb-1">
             {{ 'adminReports.pendingReports' | translate }}
           </p>
-          <h3 class="text-3xl font-extrabold text-[#BA1A1A]">{{ reports().length }}</h3>
+          <p class="text-3xl font-black text-[#2d3433] tracking-tight">{{ reports().length }}</p>
         </div>
 
-        <div class="bg-[#F2F4F4] p-6 rounded-xl space-y-1 relative overflow-hidden group">
-          <p class="uppercase tracking-widest text-[10px] font-bold text-slate-400">
+        <!-- Moderation Status -->
+        <div class="bg-white rounded-2xl p-5 border border-[#eaefee] hover:border-[#b2efda] hover:shadow-sm transition-all group">
+          <div class="flex items-start justify-between mb-4">
+            <div class="w-10 h-10 rounded-xl bg-[#e4fff4] flex items-center justify-center text-[#2e6959] group-hover:bg-[#b2efda] transition-colors">
+              <span class="material-symbols-outlined text-xl">shield</span>
+            </div>
+            <span class="text-[10px] font-black uppercase tracking-widest text-[#2e6959] bg-[#e4fff4] px-2 py-1 rounded-lg">Live</span>
+          </div>
+          <p class="text-[10px] uppercase tracking-widest font-bold text-[#596060] mb-1">
             {{ 'adminReports.moderation' | translate }}
           </p>
-          <h3 class="text-3xl font-extrabold text-[#191C1D]">
+          <p class="text-3xl font-black text-[#2d3433] tracking-tight">
             {{ 'adminReports.active' | translate }}
-          </h3>
+          </p>
         </div>
       </div>
 
-      <!-- Table -->
-      <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-separate border-spacing-y-2 px-4 py-4">
-            <thead>
-              <tr class="text-slate-400">
-                <th class="px-4 py-3 text-[10px] font-black uppercase">
-                  {{ 'adminReports.table.postTitle' | translate }}
-                </th>
-                <th class="px-4 py-3 text-[10px] font-black uppercase">
-                  {{ 'adminReports.table.reporter' | translate }}
-                </th>
-                <th class="px-4 py-3 text-[10px] font-black uppercase hidden md:table-cell">
-                  {{ 'adminReports.table.reason' | translate }}
-                </th>
-                <th class="px-4 py-3 text-[10px] font-black uppercase hidden lg:table-cell">
-                  {{ 'adminReports.table.date' | translate }}
-                </th>
-                <th class="px-4 py-3 text-[10px] font-black uppercase text-right">
-                  {{ 'adminReports.table.actions' | translate }}
-                </th>
-              </tr>
-            </thead>
+      <!-- ══ TABLE ══ -->
+      @if (loading()) {
+        <div class="flex justify-center py-20">
+          <span class="material-symbols-outlined text-[#2e6959] text-5xl animate-spin">progress_activity</span>
+        </div>
+      }
 
-            <tbody>
-              @if (loading()) {
-                <tr>
-                  <td colspan="5" class="text-center py-20">
-                    <span class="material-symbols-outlined text-5xl animate-spin">
-                      progress_activity
-                    </span>
-                    <p class="mt-2 text-sm text-slate-400">
-                      {{ 'adminReports.loading' | translate }}
-                    </p>
-                  </td>
+      @if (!loading()) {
+        <div class="bg-white rounded-2xl border border-[#eaefee] overflow-hidden">
+
+          <div class="px-6 py-5 border-b border-[#f0f5f3] flex items-center justify-between">
+            <div>
+              <p class="text-sm font-extrabold text-[#2d3433]">{{ 'adminReports.title' | translate }}</p>
+              <p class="text-[10px] uppercase tracking-widest font-bold text-[#acb3b2] mt-0.5">{{ 'adminReports.subtitle' | translate }}</p>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left">
+              <thead>
+                <tr class="border-b border-[#f0f5f3]">
+                  <th class="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-[#acb3b2]">
+                    {{ 'adminReports.table.postTitle' | translate }}
+                  </th>
+                  <th class="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-[#acb3b2]">
+                    {{ 'adminReports.table.reporter' | translate }}
+                  </th>
+                  <th class="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-[#acb3b2] hidden md:table-cell">
+                    {{ 'adminReports.table.reason' | translate }}
+                  </th>
+                  <th class="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-[#acb3b2] hidden lg:table-cell">
+                    {{ 'adminReports.table.date' | translate }}
+                  </th>
+                  <th class="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-[#acb3b2] text-right">
+                    {{ 'adminReports.table.actions' | translate }}
+                  </th>
                 </tr>
-              }
+              </thead>
+              <tbody class="divide-y divide-[#f0f5f3]">
 
-              @for (report of reports(); track report.id) {
-                <tr class="group bg-[#F8FAFA] hover:bg-white transition-colors rounded-xl">
+                @for (report of reports(); track report.id) {
+                  <tr class="group hover:bg-[#fafcfb] transition-colors">
 
-                  <td class="px-4 py-5">
-                    {{ report.postTitle }}
-                  </td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-[#fff0ee] flex items-center justify-center text-[#c0392b] flex-shrink-0">
+                          <span class="material-symbols-outlined text-[14px]">article</span>
+                        </div>
+                        <span class="font-bold text-sm text-[#2d3433]">{{ report.postTitle }}</span>
+                      </div>
+                    </td>
 
-                  <td class="px-4 py-5">
-                    {{ report.reporterName }}
-                  </td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center gap-2">
+                        <div class="w-7 h-7 rounded-full bg-[#2e6959] flex items-center justify-center text-[#b2efda] text-[10px] font-black flex-shrink-0">
+                          {{ report.reporterName?.[0] ?? '?' }}
+                        </div>
+                        <span class="text-sm text-[#596060] font-medium">{{ report.reporterName }}</span>
+                      </div>
+                    </td>
 
-                  <td class="px-4 py-5 hidden md:table-cell">
-                    {{ report.reason }}
-                  </td>
+                    <td class="px-6 py-4 hidden md:table-cell">
+                      <span class="px-3 py-1 rounded-full bg-[#f0f5f3] text-xs font-bold text-[#596060]">{{ report.reason }}</span>
+                    </td>
 
-                  <td class="px-4 py-5 hidden lg:table-cell">
-                    {{ formatDate(report.createdAt) }}
-                  </td>
+                    <td class="px-6 py-4 hidden lg:table-cell text-sm text-[#596060]">
+                      {{ formatDate(report.createdAt) }}
+                    </td>
 
-                  <td class="px-4 py-5 text-right">
-                    <button (click)="openDismissModal(report)"
-                      [title]="'adminReports.actions.dismiss' | translate">
-                      ✔
-                    </button>
-
-                    <button (click)="openDeleteModal(report)"
-                      [title]="'adminReports.actions.deletePost' | translate">
-                      🗑
-                    </button>
-                  </td>
-                </tr>
-              }
-
-              @empty {
-                @if (!loading()) {
-                  <tr>
-                    <td colspan="5" class="text-center py-20 text-slate-400">
-                      {{ 'adminReports.empty.title' | translate }}
-                      <br />
-                      <span class="text-sm">
-                        {{ 'adminReports.empty.subtitle' | translate }}
-                      </span>
+                    <td class="px-6 py-4 text-right">
+                      <div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button (click)="openDismissModal(report)"
+                          [title]="'adminReports.actions.dismiss' | translate"
+                          class="p-2 rounded-xl text-[#acb3b2] hover:text-[#2e6959] hover:bg-[#e4fff4] transition-all">
+                          <span class="material-symbols-outlined text-[18px]">check_circle</span>
+                        </button>
+                        <button (click)="openDeleteModal(report)"
+                          [title]="'adminReports.actions.deletePost' | translate"
+                          class="p-2 rounded-xl text-[#acb3b2] hover:text-[#c0392b] hover:bg-[#fff0ee] transition-all">
+                          <span class="material-symbols-outlined text-[18px]">delete</span>
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 }
-              }
-            </tbody>
-          </table>
+
+                @empty {
+                  @if (!loading()) {
+                    <tr>
+                      <td colspan="5" class="text-center py-20">
+                        <span class="material-symbols-outlined text-4xl block mb-3 text-[#d0d8d6]">flag</span>
+                        <p class="text-sm font-bold text-[#acb3b2]">{{ 'adminReports.empty.title' | translate }}</p>
+                        <p class="text-xs text-[#acb3b2] mt-1">{{ 'adminReports.empty.subtitle' | translate }}</p>
+                      </td>
+                    </tr>
+                  }
+                }
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
+      }
 
     </div>
   </main>
 </div>
 
-<!-- Dismiss Modal -->
+<!-- ══ DISMISS MODAL ══ -->
 @if (showDismissModal()) {
-  <div class="fixed inset-0 flex items-center justify-center">
-    <div class="bg-white p-6 rounded-xl">
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm px-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 border border-[#eaefee]">
 
-      <h3>{{ 'adminReports.modals.dismiss.title' | translate }}</h3>
+      <div class="flex items-start justify-between mb-6">
+        <div>
+          <h2 class="text-lg font-black text-[#2d3433] tracking-tight">{{ 'adminReports.modals.dismiss.title' | translate }}</h2>
+        </div>
+        <button (click)="closeModals()"
+          class="w-8 h-8 flex items-center justify-center rounded-xl bg-[#f0f5f3] hover:bg-[#e4eeea] transition-colors">
+          <span class="material-symbols-outlined text-[#596060] text-sm">close</span>
+        </button>
+      </div>
 
-      <p>
+      <p class="text-sm text-[#596060] mb-6">
         {{ 'adminReports.modals.dismiss.message' | translate }}
-        "{{ actionReport()?.postTitle }}"
+        <strong class="text-[#2d3433]">"{{ actionReport()?.postTitle }}"</strong>
       </p>
 
-      <button (click)="confirmDismiss()">
-        {{ 'adminReports.modals.dismiss.confirm' | translate }}
-      </button>
-
-      <button (click)="closeModals()">
-        {{ 'adminReports.modals.cancel' | translate }}
-      </button>
+      <div class="flex justify-end gap-3">
+        <button (click)="closeModals()"
+          class="px-5 py-2.5 rounded-xl border border-[#eaefee] text-[#596060] font-bold hover:bg-[#f0f5f3] text-sm transition-colors">
+          {{ 'adminReports.modals.cancel' | translate }}
+        </button>
+        <button (click)="confirmDismiss()"
+          class="px-5 py-2.5 bg-[#2e6959] text-white font-bold rounded-xl text-sm flex items-center gap-2 hover:bg-[#1a3d34] transition-colors shadow-sm">
+          <span class="material-symbols-outlined text-[15px]">check_circle</span>
+          {{ 'adminReports.modals.dismiss.confirm' | translate }}
+        </button>
+      </div>
     </div>
   </div>
 }
 
-<!-- Delete Modal -->
+<!-- ══ DELETE MODAL ══ -->
 @if (showDeleteModal()) {
-  <div class="fixed inset-0 flex items-center justify-center">
-    <div class="bg-white p-6 rounded-xl">
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm px-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 border border-[#eaefee]">
 
-      <h3>{{ 'adminReports.modals.delete.title' | translate }}</h3>
+      <div class="flex items-start justify-between mb-6">
+        <div>
+          <h2 class="text-lg font-black text-[#c0392b] tracking-tight">{{ 'adminReports.modals.delete.title' | translate }}</h2>
+        </div>
+        <button (click)="closeModals()"
+          class="w-8 h-8 flex items-center justify-center rounded-xl bg-[#f0f5f3] hover:bg-[#e4eeea] transition-colors">
+          <span class="material-symbols-outlined text-[#596060] text-sm">close</span>
+        </button>
+      </div>
 
-      <p>
+      <p class="text-sm text-[#596060] mb-6">
         {{ 'adminReports.modals.delete.message' | translate }}
-        "{{ actionReport()?.postTitle }}"
+        <strong class="text-[#2d3433]">"{{ actionReport()?.postTitle }}"</strong>
       </p>
 
-      <button (click)="confirmDeletePost()">
-        {{ 'adminReports.modals.delete.confirm' | translate }}
-      </button>
-
-      <button (click)="closeModals()">
-        {{ 'adminReports.modals.cancel' | translate }}
-      </button>
+      <div class="flex justify-end gap-3">
+        <button (click)="closeModals()"
+          class="px-5 py-2.5 rounded-xl border border-[#eaefee] text-[#596060] font-bold hover:bg-[#f0f5f3] text-sm transition-colors">
+          {{ 'adminReports.modals.cancel' | translate }}
+        </button>
+        <button (click)="confirmDeletePost()"
+          class="px-5 py-2.5 bg-[#c0392b] text-white font-bold rounded-xl text-sm flex items-center gap-2 hover:bg-[#a93226] transition-colors shadow-sm">
+          <span class="material-symbols-outlined text-[15px]">delete</span>
+          {{ 'adminReports.modals.delete.confirm' | translate }}
+        </button>
+      </div>
     </div>
   </div>
 }

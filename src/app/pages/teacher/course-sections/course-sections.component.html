@@ -1,6 +1,6 @@
 <div class="bg-surface text-on-surface min-h-screen font-body">
 
-  <aside class="fixed left-0 top-0 h-full p-6 flex flex-col gap-8 bg-surface-container w-72 z-50">
+  <aside class="fixed start-0 top-0 h-full p-6 flex flex-col gap-8 bg-surface-container w-72 z-50">
     <div class="flex flex-col gap-1 px-4">
       <span class="text-lg font-black text-primary cursor-pointer" (click)="goToDashboard()">
         {{ 'courseBuilder.brand' | translate }}
@@ -29,7 +29,7 @@
     </nav>
   </aside>
 
-  <main class="ml-72 min-h-screen pb-32">
+  <main class="ms-72 min-h-screen pb-32">
 
     <header class="flex justify-between items-center w-full px-8 py-3 bg-surface/90 backdrop-blur-xl sticky top-0 z-40 border-b border-outline-variant/10">
       <div class="flex items-center gap-8">
@@ -67,7 +67,7 @@
       </div>
     </header>
 
-    <div class="max-w-7xl mx-auto p-10 pt-8 flex gap-10">
+    <div class="max-w-7xl mx-auto p-10 pt-4 flex gap-10">
 
       <div class="flex-1 space-y-8">
 
@@ -135,9 +135,9 @@
               </div>
             </div>
 
-            <div class="space-y-3 pl-12">
+            <div class="space-y-3 ps-12">
               <div *ngFor="let lesson of section.lessons"
-                class="bg-white rounded-lg p-5 flex items-center justify-between shadow-sm group hover:translate-x-1 transition-all">
+                class="bg-white rounded-lg p-5 flex items-center justify-between shadow-sm group transition-all">
                 <div class="flex items-center gap-4">
                   <span class="material-symbols-outlined text-on-surface-variant/30 cursor-grab">drag_handle</span>
                   <div class="p-2 rounded-lg"
@@ -227,7 +227,7 @@
     </div>
   </main>
 
-  <footer class="fixed bottom-0 left-72 right-0 z-40 px-8 pb-6">
+  <footer class="fixed bottom-0 start-72 end-0 z-40 px-8 pb-6">
     <div class="bg-white shadow-2xl rounded-full px-8 py-4 flex items-center justify-between border border-primary/10">
       <div class="flex items-center gap-3">
         <div class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></div>

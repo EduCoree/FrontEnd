@@ -1,14 +1,17 @@
-<div class="md:ml-57 pt-16 min-h-screen">
-  <main class="px-6 py-8 md:px-12 md:py-12 max-w-5xl mx-auto">
+<div class="flex flex-col min-h-screen bg-[#f4f7f6]">
 
-    <header class="mb-10">
-      <h3 class="text-3xl font-extrabold text-on-surface tracking-tight mb-2">
-        {{ 'quizHistory.title' | translate }}
-      </h3>
-      <p class="text-on-surface-variant font-body text-sm uppercase tracking-wider">
-        {{ 'quizHistory.subtitle' | translate }}
-      </p>
-    </header>
+  <!-- Top bar (Sticky) -->
+  <header class="bg-white border-b border-outline-variant/20 px-6 md:px-8 h-16 flex items-center justify-between sticky top-0 z-40 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+    <div>
+      <h1 class="text-lg font-black text-on-surface tracking-tight">{{ 'quizHistory.title' | translate }}</h1>
+      <p class="text-xs text-on-surface-variant hidden md:block">{{ 'quizHistory.subtitle' | translate }}</p>
+    </div>
+    
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 p-6 md:p-8">
+    <div class="max-w-7xl mx-auto space-y-6">
 
     <!-- Filters -->
     <section class="bg-surface-container-low p-6 rounded-xl mb-12 flex flex-col md:flex-row gap-4 items-end">
@@ -18,13 +21,15 @@
         <label class="block text-xs font-bold text-primary mb-2 uppercase tracking-tighter">
           {{ 'quizHistory.allCourses' | translate }}
         </label>
-        <select
-          [(ngModel)]="selectedCourse"
-          (ngModelChange)="onCourseChange()"
-          [disabled]="loadingCourses"
-          class="w-full bg-surface-container-lowest border-none rounded-lg py-3 px-4 text-sm text-on-surface appearance-none focus:ring-2 focus:ring-primary-container">
-          <option *ngFor="let course of courseOptions" [value]="course">{{ course }}</option>
-        </select>
+        <div class="relative">
+          <select
+            [(ngModel)]="selectedCourse"
+            (ngModelChange)="onCourseChange()"
+            [disabled]="loadingCourses"
+            class="w-full bg-surface-container-lowest border-none rounded-lg py-3 px-4 text-sm text-on-surface appearance-none focus:ring-2 focus:ring-primary-container">
+            <option *ngFor="let course of courseOptions" [value]="course">{{ course }}</option>
+          </select>
+        </div>
       </div>
 
       <!-- Date Range Filter -->
@@ -39,9 +44,6 @@
             class="w-full bg-surface-container-lowest border-none rounded-lg py-3 px-4 text-sm text-on-surface appearance-none focus:ring-2 focus:ring-primary-container">
             <option *ngFor="let opt of dateRangeOptions" [value]="opt.value">{{ opt.label }}</option>
           </select>
-          <span class="material-symbols-outlined absolute right-3 top-3 pointer-events-none text-outline">
-            calendar_today
-          </span>
         </div>
       </div>
 
@@ -99,14 +101,15 @@
 
     <!-- Empty State -->
     @if (!loading && !error && attempts.length === 0) {
-      <div class="flex flex-col items-center justify-center p-20 bg-surface-container-lowest rounded-2xl text-center">
-        <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6">
-          <span class="material-symbols-outlined text-4xl text-primary">assignment</span>
+      <div class="bg-white rounded-2xl border border-outline-variant/15 shadow-sm
+             flex flex-col items-center justify-center py-16 text-center">
+        <div class="w-16 h-16 rounded-2xl bg-primary/8 flex items-center justify-center mb-4">
+          <span class="material-symbols-outlined text-primary text-3xl">assignment</span>
         </div>
-        <h3 class="text-xl font-bold text-on-surface mb-2">
+        <h3 class="font-bold text-base text-on-surface mb-2">
           {{ 'quizHistory.noAttempts' | translate }}
         </h3>
-        <p class="text-on-surface-variant/70 max-w-xs">
+        <p class="text-on-surface-variant text-sm max-w-xs">
           {{ activeFilter === 'All'
             ? ('quizHistory.noAttemptsAll' | translate)
             : ('quizHistory.noAttemptsFilter' | translate) }}
@@ -118,7 +121,9 @@
     @if (!loading && !error && attempts.length > 0) {
       <div class="space-y-6">
         @for (attempt of attempts; track attempt.id) {
-          <div class="group bg-surface-container-lowest rounded-xl p-6 shadow-[0_8px_32px_rgba(125,184,165,0.08)] hover:shadow-[0_8px_32px_rgba(125,184,165,0.15)] transition-all duration-300 flex flex-col md:flex-row md:items-center justify-between gap-6"
+          <div class="group bg-white rounded-2xl p-6 border border-outline-variant/15 shadow-sm
+                      hover:shadow-lg hover:shadow-primary/8 hover:-translate-y-1 transition-all duration-300
+                      flex flex-col md:flex-row md:items-center justify-between gap-6"
             [class.border-l-4]="true"
             [class.border-primary]="attempt.passed"
             [class.border-tertiary]="!attempt.passed">
@@ -215,7 +220,14 @@
       </div>
     }
 
+    </div>
   </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-outline-variant/15 px-6 md:px-8 py-4 flex justify-between items-center mt-auto mb-20 md:mb-0">
+    <span class="text-sm font-black text-primary">EduCore</span>
+    <p class="text-xs text-on-surface-variant">{{ 'teacherPortal.copyright' | translate }}</p>
+  </footer>
 
   <!-- Mobile Nav -->
   <nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-2 bg-[#FFFFFFCC] backdrop-blur-xl z-50 rounded-t-[24px] shadow-[0_-8px_32px_rgba(125,184,165,0.12)]">

@@ -1,99 +1,116 @@
 <div class="bg-[#f4f7f6] text-on-surface min-h-screen font-body" [attr.dir]="isRtl ? 'rtl' : 'ltr'">
   <aside
     *ngIf="!isEditCourseRoute"
-    class="teacher-layout-sidebar hidden md:flex flex-col fixed ltr:start-0 rtl:end-0 top-0 h-screen w-64 bg-white border-e border-outline-variant/20 shadow-[2px_0_12px_rgba(0,0,0,0.04)] z-50"
-  >
-    <div class="px-6 py-6 border-b border-outline-variant/15">
-      <div class="flex items-center gap-3">
-        <div
-          class="w-10 h-10 rounded-2xl bg-primary flex items-center justify-center shadow-md shadow-primary/30"
-        >
-          <span class="material-symbols-outlined text-white text-xl">school</span>
+    [class.w-64]="isOpen()"
+    [class.w-16]="!isOpen()"
+    class="hidden lg:flex flex-col fixed start-0 top-20 h-[calc(100vh-5rem)] bg-[#F2F4F4] border-e border-[#d5dbd9] z-50 transition-all duration-300">
+
+    <!-- Header -->
+    <div class="flex items-center gap-3 p-4 border-b border-[#d5dbd9]"
+         [class.justify-between]="isOpen()"
+         [class.justify-center]="!isOpen()">
+      @if (isOpen()) {
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg bg-[#2e6959] flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-[#e4fff4] text-lg">school</span>
+          </div>
+          <div>
+            <p class="text-sm font-bold text-[#2d3433]">EduCore</p>
+            <p class="text-[10px] text-[#596060] uppercase tracking-widest">
+              {{ 'teacherPortal.title' | translate }}
+            </p>
+          </div>
         </div>
-        <div>
-          <h2 class="text-base font-black text-on-surface tracking-tight">EduCore</h2>
-          <p class="text-[10px] text-on-surface-variant">{{ 'teacherPortal.title' | translate }}</p>
-        </div>
-      </div>
+      }
+      <button (click)="toggle()"
+              class="w-8 h-8 rounded-lg hover:bg-[#d5dbd9] flex items-center justify-center transition-colors flex-shrink-0">
+        <span class="material-symbols-outlined text-[#acb3b2] text-lg">
+          {{ getToggleIcon() }}
+        </span>
+      </button>
     </div>
 
-    <nav class="flex flex-col gap-1 px-4 py-6 flex-1">
-      <p
-        class="text-[10px] font-bold text-on-surface-variant/60 uppercase tracking-widest px-3 mb-2"
-      >
-        {{ 'teacherLayout.mainMenu' | translate }}
-      </p>
-
-      <a
-        routerLink="/teacher/dashboard"
-        routerLinkActive="bg-primary text-white shadow-md shadow-primary/25"
-        [routerLinkActiveOptions]="{ exact: true }"
-        class="flex items-center gap-3 px-4 py-3 rounded-2xl text-on-surface-variant hover:bg-primary/8 hover:text-primary font-semibold text-sm transition-all duration-200"
-      >
-        <span class="material-symbols-outlined text-[20px]">home</span>
-        <span>{{ 'adminSidebar.dashboard' | translate }}</span>
-      </a>
-
-      <a
-        routerLink="/teacher/courses"
-        routerLinkActive="bg-primary text-white shadow-md shadow-primary/25"
-        [routerLinkActiveOptions]="{ exact: true }"
-        class="flex items-center gap-3 px-4 py-3 rounded-2xl text-on-surface-variant hover:bg-primary/8 hover:text-primary font-semibold text-sm transition-all duration-200"
-      >
-        <span class="material-symbols-outlined text-[20px]">school</span>
-        <span>{{ 'myCourses.title' | translate }}</span>
-      </a>
-      <a
-        routerLink="/teacher/payout/dashboard"
-        routerLinkActive="bg-primary text-white shadow-md shadow-primary/25"
-        [routerLinkActiveOptions]="{ exact: true }"
-        class="flex items-center gap-3 px-4 py-3 rounded-2xl text-on-surface-variant hover:bg-primary/8 hover:text-primary font-semibold text-sm transition-all duration-200"
-      >
-        <span class="material-symbols-outlined text-[20px]">school</span>
-        <span>{{ 'teacherPortal.payoutDashboard' | translate }}</span>
-      </a>
-
-      <a
-        routerLink="/teacher/reviews"
-        routerLinkActive="bg-primary text-white shadow-md shadow-primary/25"
-        [routerLinkActiveOptions]="{ exact: true }"
-        class="flex items-center gap-3 px-4 py-3 rounded-2xl text-on-surface-variant hover:bg-primary/8 hover:text-primary font-semibold text-sm transition-all duration-200"
-      >
-        <span class="material-symbols-outlined text-[20px]">rate_review</span>
-        <span>{{ 'teacherLayout.studentFeedback' | translate }}</span>
-      </a>
-
-      <a
-        class="flex items-center gap-3 px-4 py-3 rounded-2xl text-on-surface-variant hover:bg-primary/8 hover:text-primary font-semibold text-sm transition-all duration-200 cursor-not-allowed"
-      >
-        <span class="material-symbols-outlined text-[20px]">settings</span>
-        <span>{{ 'teacherPortal.settings' | translate }}</span>
-      </a>
+    <!-- Nav -->
+    <nav class="flex-1 p-3 space-y-1 overflow-y-auto">
+      @for (item of navItems; track item.route) {
+        <a [routerLink]="item.route"
+           routerLinkActive #rla="routerLinkActive"
+           [routerLinkActiveOptions]="{ exact: !!item.exact }"
+           class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group"
+           [class.bg-[#2e6959]]="rla.isActive"
+           [class.text-[#e4fff4]]="rla.isActive"
+           [class.shadow-sm]="rla.isActive"
+           [class.hover:bg-[#d5dbd9]]="!rla.isActive"
+           [class.text-[#596060]]="!rla.isActive"
+           [class.justify-center]="!isOpen()">
+          <span class="material-symbols-outlined text-xl flex-shrink-0"
+                [class.text-[#e4fff4]]="rla.isActive"
+                [class.text-[#2e6959]]="!rla.isActive">
+            {{ item.icon }}
+          </span>
+          @if (isOpen()) {
+            <span class="uppercase tracking-widest text-[10px] font-bold whitespace-nowrap">
+              {{ item.label | translate }}
+            </span>
+          }
+        </a>
+      }
     </nav>
 
-    <div
-      class="mx-4 mb-6 p-4 bg-surface-container-low rounded-2xl border border-outline-variant/20"
-    >
-      <div class="flex items-center gap-3">
-        <div
-          class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0"
-        >
-          <span class="material-symbols-outlined text-white text-[18px]">person</span>
-        </div>
-        <div class="min-w-0">
-          <p class="text-sm font-bold text-on-surface truncate">Instructor</p>
-          <p class="text-[10px] text-on-surface-variant uppercase tracking-wide">
-            {{ 'teacherPortal.instructor' | translate }}
-          </p>
-        </div>
+    <!-- Footer -->
+    <div class="border-t border-[#d5dbd9]">
+
+      <!-- Logout -->
+      <div class="p-3 space-y-1">
+        <button (click)="logout()"
+                class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[#596060] hover:bg-red-50 hover:text-red-600 transition-colors"
+                [class.justify-center]="!isOpen()">
+          <span class="material-symbols-outlined text-xl flex-shrink-0">logout</span>
+          @if (isOpen()) {
+            <span class="uppercase tracking-widest text-[10px] font-bold whitespace-nowrap">
+              {{ 'teacherPortal.logout' | translate }}
+            </span>
+          }
+        </button>
       </div>
+
+      <!-- User -->
+      @if (isOpen()) {
+        <div class="p-4 border-t border-[#d5dbd9]">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-[#2e6959] flex items-center justify-center text-[#e4fff4] text-xs font-bold flex-shrink-0">
+              {{ userInitials }}
+            </div>
+            <div class="overflow-hidden">
+              <p class="text-xs font-bold text-[#2d3433] truncate">{{ userName }}</p>
+              <p class="text-[10px] text-[#596060] uppercase tracking-widest">
+                {{ 'teacherPortal.instructor' | translate }}
+              </p>
+            </div>
+          </div>
+        </div>
+      } @else {
+        <div class="p-3 flex justify-center border-t border-[#d5dbd9]">
+          <div class="w-8 h-8 rounded-full bg-[#2e6959] flex items-center justify-center text-[#e4fff4] text-xs font-bold"
+               [title]="userName">
+            {{ userInitials }}
+          </div>
+        </div>
+      }
     </div>
+
   </aside>
 
-  <div
-    class="teacher-layout-content flex flex-col min-h-screen"
-    [ngClass]="{ 'md:ms-64 rtl:md:me-64': !isEditCourseRoute }"
-  >
+  <!-- Spacer -->
+  <div *ngIf="!isEditCourseRoute"
+       [class.ms-64]="isOpen()"
+       [class.ms-16]="!isOpen()"
+       class="transition-all duration-300 lg:block hidden h-0">
+  </div>
+
+  <!-- Main Content -->
+  <div class="teacher-layout-content flex flex-col min-h-screen transition-all duration-300"
+       [ngClass]="{ 'lg:ms-64': !isEditCourseRoute && isOpen(), 'lg:ms-16': !isEditCourseRoute && !isOpen() }">
     <router-outlet></router-outlet>
   </div>
 </div>

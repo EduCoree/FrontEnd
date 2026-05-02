@@ -1,20 +1,9 @@
-<header
-  class="bg-white border-b border-outline-variant/20 ps-16 h-16 flex items-center justify-between sticky top-0 z-40 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+<header class="sticky top-0 z-40 bg-white border-b border-outline-variant/20 px-8 h-16 flex items-center justify-between shadow-sm">
   <div>
-    <h1 class="text-lg font-black text-on-surface tracking-tight">{{ 'teacherReviews.studentFeedback' | translate }}
-    </h1>
+    <h1 class="text-lg font-black text-on-surface tracking-tight">{{ 'teacherReviews.studentFeedback' | translate }}</h1>
     <p class="text-xs text-on-surface-variant">
-      {{ 'teacherReviews.manageReviews' | translate }}
+      {{ 'teacherReviews.workspace' | translate }}
     </p>
-  </div>
-  <div class="flex items-center gap-3">
-    <button class="relative p-2.5 rounded-xl bg-surface-container-low hover:bg-primary/8 transition-colors">
-      <span class="material-symbols-outlined text-on-surface-variant text-[22px]">notifications</span>
-    </button>
-    <div
-      class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white text-sm font-bold ring-2 ring-primary/20 cursor-pointer">
-      <span class="material-symbols-outlined text-[18px]">person</span>
-    </div>
   </div>
 </header>
 
@@ -82,7 +71,7 @@
   <div *ngIf="!isLoading && !error && reviews.length === 0"
     class="flex flex-col items-center justify-center py-20 text-center">
     <span class="material-symbols-outlined text-6xl text-on-surface-variant mb-4">rate_review</span>
-    <p class="text-on-surface-variant font-medium">No reviews found for the selected filters.</p>
+    <p class="text-on-surface-variant font-medium">{{ 'teacherReviews.noReviewsFound' | translate }}</p>
   </div>
 
   <section *ngIf="!isLoading && reviews.length > 0" class="flex flex-col gap-4">
@@ -119,7 +108,7 @@
             class="flex items-center gap-2 px-4 py-2 rounded-full text-error text-xs font-bold hover:bg-error-container hover:text-on-error-container transition-all disabled:opacity-50 disabled:cursor-not-allowed">
             <span class="material-symbols-outlined text-sm" [class.animate-spin]="deletingReviewId === review.id">{{
               deletingReviewId === review.id ? 'progress_activity' : 'delete' }}</span>
-            {{ deletingReviewId === review.id ? 'Deleting...' : 'Delete' }}
+            {{ deletingReviewId === review.id ? ('common.deleting' | translate) : ('common.delete' | translate) }}
           </button>
         </div>
       </div>
@@ -128,12 +117,10 @@
       <span
         class="material-symbols-outlined quote-icon absolute -right-4 -bottom-4 text-9xl opacity-10 text-tertiary">format_quote</span>
       <h4 class="font-manrope uppercase tracking-widest text-[10px] font-black text-on-secondary-container mb-4">
-        Faculty Guidelines
+        {{ 'teacherReviews.guidelinesTitle' | translate }}
       </h4>
       <p class="text-on-secondary-container font-medium text-sm max-w-2xl relative z-10">
-        Reviews are your most valuable asset for pedagogical growth. Remember to respond to critical
-        feedback with constructive solutions—this significantly increases student retention and
-        trust in the Academy's standards.
+        {{ 'teacherReviews.guidelinesText' | translate }}
       </p>
     </div>
   </section>

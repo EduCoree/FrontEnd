@@ -61,6 +61,7 @@ export class CourseInfoComponent implements OnInit {
   pricingTypes = ['Free', 'Paid', 'Subscription'];
   categories: Category[] = [];
   courseCategoryName = '';
+  isCategoriesLoaded = false;
 
   // ── Add Lesson Modal ────────────────────────────────────────────────────────
   showAddLessonModal = signal(false);
@@ -192,16 +193,20 @@ export class CourseInfoComponent implements OnInit {
   }
 
   loadCategories(): void {
-    const centerId = 11;
+    const centerId = 1;
     this.categoryService.getAll(centerId).subscribe({
-      next: (res: Category[]) => {
-        this.categories = res;
+      next: (res: any) => {
+        this.categories = res.data || res || [];
+        this.isCategoriesLoaded = true;
         if (!this.courseForm.get('categoryId')?.value && this.courseCategoryName) {
           const match = this.categories.find(c => c.name === this.courseCategoryName);
           if (match) this.courseForm.patchValue({ categoryId: match.id });
         }
       },
-      error: () => console.error('Failed to load categories')
+      error: () => {
+        console.error('Failed to load categories');
+        this.isCategoriesLoaded = true;
+      }
     });
   }
 

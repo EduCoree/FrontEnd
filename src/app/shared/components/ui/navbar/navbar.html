@@ -49,7 +49,7 @@
           {{ 'nav.liveSessions' | translate }}
         </a>
         <a
-          routerLink="/teacher/dashboard"
+          [routerLink]="dashboardRoute"
           routerLinkActive="text-primary font-bold bg-primary/8"
           class="px-3 py-2 rounded-xl text-sm text-slate-600 font-medium hover:text-primary hover:bg-primary/5 transition-all duration-200"
         >
@@ -397,6 +397,14 @@
       >
         <span class="material-symbols-outlined text-[18px] text-primary">live_tv</span>
         {{ 'nav.liveSessions' | translate }}
+      </a>
+      <a
+        [routerLink]="dashboardRoute"
+        (click)="mobileMenuOpen.set(false)"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-on-surface hover:bg-surface-container-low hover:text-primary transition-colors"
+      >
+        <span class="material-symbols-outlined text-[18px] text-primary">dashboard</span>
+        {{ 'nav.dashboard' | translate }}
       </a>
 
       <!-- Language in mobile -->

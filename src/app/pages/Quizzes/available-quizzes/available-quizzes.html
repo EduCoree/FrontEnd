@@ -1,13 +1,17 @@
-<div class="md:ms-64 pt-16 min-h-screen bg-[#F5F7F6]">
-  <div class="flex">
-    <main class="flex-1 w-full px-8 pt-10 pb-32">
-      <!-- Header -->
-      <div class="mb-8">
-        <h1 class="text-3xl font-extrabold text-on-surface">{{ 'myQuizzes.title' | translate }}</h1>
-        <p class="text-on-surface-variant text-sm mt-1">
-          {{ 'myQuizzes.subtitle' | translate }}
-        </p>
-      </div>
+<div class="flex flex-col min-h-screen bg-[#f4f7f6]">
+
+  <!-- Top bar (Sticky) -->
+  <header class="bg-white border-b border-outline-variant/20 px-6 md:px-8 h-16 flex items-center justify-between sticky top-0 z-40 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+    <div>
+      <h1 class="text-lg font-black text-on-surface tracking-tight">{{ 'myQuizzes.title' | translate }}</h1>
+      <p class="text-xs text-on-surface-variant hidden md:block">{{ 'myQuizzes.subtitle' | translate }}</p>
+    </div>
+    
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 p-6 md:p-8">
+    <div class="max-w-7xl mx-auto space-y-6">
 
       <!-- Toolbar: chips filter -->
       <div class="flex flex-wrap items-center gap-2 mb-8">
@@ -59,18 +63,22 @@
         <!-- Empty state -->
         <div
           *ngIf="quizzes.length === 0"
-          class="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-outline-variant/20 text-center"
+          class="bg-white rounded-2xl border border-outline-variant/15 shadow-sm
+                 flex flex-col items-center justify-center py-16 text-center"
         >
-          <span class="material-symbols-outlined text-5xl text-primary/20 mb-3">quiz</span>
-          <p class="text-on-surface-variant font-medium text-sm">{{ 'myQuizzes.noQuizzesTitle' | translate }}</p>
-          <p class="text-on-surface-variant/60 text-xs mt-1">{{ 'myQuizzes.noQuizzesSubtitle' | translate }}</p>
+          <div class="w-16 h-16 rounded-2xl bg-primary/8 flex items-center justify-center mb-4">
+            <span class="material-symbols-outlined text-primary text-3xl">quiz</span>
+          </div>
+          <h3 class="font-bold text-base text-on-surface mb-2">{{ 'myQuizzes.noQuizzesTitle' | translate }}</h3>
+          <p class="text-on-surface-variant text-sm max-w-xs">{{ 'myQuizzes.noQuizzesSubtitle' | translate }}</p>
         </div>
 
         <!-- Cards Grid -->
         <div class="grid grid-cols-1 gap-4">
           <div
             *ngFor="let quiz of quizzes"
-            class="group bg-white rounded-2xl border border-outline-variant/20 p-6 flex flex-col gap-5 hover:border-primary/40 hover:-translate-y-0.5 transition-all duration-200 min-h-[200px]"
+            class="group bg-white rounded-2xl border border-outline-variant/15 shadow-sm p-6 flex flex-col gap-5
+                   hover:shadow-lg hover:shadow-primary/8 hover:-translate-y-1 transition-all duration-300 min-h-[200px]"
           >
             <!-- Card top: course badge -->
             <div class="flex items-start justify-between gap-2">
@@ -145,8 +153,14 @@
           </div>
         }
       </div>
-    </main>
-  </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-outline-variant/15 px-6 md:px-8 py-4 flex justify-between items-center mt-auto mb-20 md:mb-0">
+    <span class="text-sm font-black text-primary">EduCore</span>
+    <p class="text-xs text-on-surface-variant">{{ 'teacherPortal.copyright' | translate }}</p>
+  </footer>
 
   <!-- Mobile Nav -->
   <nav

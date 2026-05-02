@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { AuthService } from '../../../../../core/services/auth';
 
 @Component({
   selector: 'app-course-sidebar',
@@ -11,8 +12,18 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 })
 export class CourseSidebar {
   private translate = inject(TranslateService);
+  private auth = inject(AuthService);
   isOpen = signal(true);
   courseId: string | null = null;
+
+  get userInitials(): string {
+    return (this.auth.currentUser()?.name ?? '')
+      .split(' ').map((w) => w[0]).slice(0, 2).join('').toUpperCase();
+  }
+
+  get userName(): string {
+    return this.auth.currentUser()?.name ?? '';
+  }
 
   get toggleIcon(): string {
     const open = this.isOpen();
