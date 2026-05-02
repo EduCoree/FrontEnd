@@ -195,6 +195,46 @@
           </div>
         </ng-container>
 
+        <!-- ── State: PDF Viewer ─────────────────────────────── -->
+        <ng-container
+          *ngIf="
+            activeLesson() &&
+            !isVideoLoading() &&
+            !videoError() &&
+            signedUrl() &&
+            provider() === 'pdf'
+          "
+        >
+          <div
+            class="cw-player-wrap"
+            style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              bottom: 0;
+              left: 0;
+              display: flex;
+              flex-direction: column;
+              background: #f8f9fa;
+            "
+          >
+            <div class="cw-player-bar" style="flex-shrink: 0; z-index: 10;">
+              <p class="cw-player-bar__title">{{ activeLesson()!.title }}</p>
+              <button class="cw-player-bar__close" (click)="closePlayer()">
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <div class="cw-iframe-wrap" style="flex: 1; min-height: 0; overflow: hidden; border-radius: 0 0 12px 12px">
+              <iframe
+                [src]="safeUrl()"
+                style="width: 100%; height: 100%; border: none;"
+                allowfullscreen
+              >
+              </iframe>
+            </div>
+          </div>
+        </ng-container>
+
         <!-- ── State: Self-hosted <video> ─────────────────────────────── -->
         <ng-container
           *ngIf="

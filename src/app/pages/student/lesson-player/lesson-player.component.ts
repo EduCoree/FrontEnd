@@ -7,6 +7,7 @@ import { CommonModule, Location } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { StudentContentService } from '../../../core/services/student-content';
 import { ProgressService } from '../../../core/services/progress';
+import { PublicCourseService } from '../../../core/services/public-course.service';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -30,6 +31,7 @@ export class LessonPlayerComponent implements OnInit, OnDestroy {
   currentPositionSecs = signal(0);
   successMsg          = signal('');
   errorMsg            = signal('');
+  lessonTitle         = signal<string>('Lesson Content');
 
   private expiryInterval: ReturnType<typeof setInterval> | null = null;
   private heartbeatInterval: ReturnType<typeof setInterval> | null = null;
@@ -38,6 +40,7 @@ export class LessonPlayerComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private studentContentService: StudentContentService,
     private progressService: ProgressService,
+    private publicCourseService: PublicCourseService,
     private sanitizer: DomSanitizer,
     private location: Location
   ) {}
@@ -65,24 +68,56 @@ export class LessonPlayerComponent implements OnInit, OnDestroy {
 
   private loadSignedUrl(lessonId: number): void {
     this.isLoading.set(true);
-    this.studentContentService.getVideoSignedUrl(lessonId).subscribe({
-      next: (res) => {
-        this.signedUrl.set(res.url);
-        this.expiresAt.set(res.expiresAt);
-        this.provider.set(this.detectProvider(res.url));
-        this.buildSafeUrl(res.url);
-        this.startExpiryWatcher(res.expiresAt);
-        this.startHeartbeatWatcher(lessonId);
-        this.isLoading.set(false);
-      },
-      error: (err) => {
-        if (err?.status === 403) {
-          this.errorMsg.set('You must be enrolled to watch this lesson.');
-        } else {
-          this.errorMsg.set('Failed to load video. Please try again.');
+
+    this.publicCourseService.getCourseById(this.courseId()).subscribe({
+      next: (courseData: any) => {
+        const course = courseData.data ?? courseData;
+        let isPdf = false;
+        if (course?.sections) {
+          for (const section of course.sections) {
+            const lesson = section.lessons?.find((l: any) => l.id === lessonId);
+            if (lesson) {
+              this.lessonTitle.set(lesson.title);
+              if (lesson.type?.toLowerCase() === 'pdf') {
+                isPdf = true;
+              }
+              break;
+            }
+          }
         }
-        this.isLoading.set(false);
+
+        const request$ = isPdf
+          ? this.studentContentService.getPdfSignedUrl(lessonId)
+          : this.studentContentService.getVideoSignedUrl(lessonId);
+
+        request$.subscribe({
+          next: (res) => {
+            this.signedUrl.set(res.url);
+            this.expiresAt.set(res.expiresAt);
+            const p = isPdf ? 'pdf' : this.detectProvider(res.url);
+            // If the provider returned self but it is actually a PDF file
+            this.provider.set(isPdf && p === 'self' ? 'pdf' : p);
+            this.buildSafeUrl(res.url);
+            this.startExpiryWatcher(res.expiresAt);
+            if (this.provider() !== 'pdf') {
+              this.startHeartbeatWatcher(lessonId);
+            }
+            this.isLoading.set(false);
+          },
+          error: (err) => {
+            if (err?.status === 403) {
+              this.errorMsg.set('You must be enrolled to access this lesson.');
+            } else {
+              this.errorMsg.set('Failed to load content. Please try again.');
+            }
+            this.isLoading.set(false);
+          },
+        });
       },
+      error: () => {
+        this.errorMsg.set('Failed to load course details.');
+        this.isLoading.set(false);
+      }
     });
   }
 
@@ -109,6 +144,19 @@ export class LessonPlayerComponent implements OnInit, OnDestroy {
       if (match) {
         const embedUrl = `https://player.vimeo.com/video/${match[1]}`;
         this.safeUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl));
+      }
+    } else if (p === 'pdf') {
+      if (/drive\.google\.com/.test(url)) {
+        let previewUrl = url;
+        const match = url.match(/id=([^&]+)/);
+        if (match) {
+          previewUrl = `https://drive.google.com/file/d/${match[1]}/preview`;
+        } else if (url.includes('/view')) {
+          previewUrl = url.replace('/view', '/preview');
+        }
+        this.safeUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(previewUrl));
+      } else {
+        this.safeUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(url));
       }
     }
     // 'self' uses signedUrl() directly in the <video> tag — no safeUrl needed

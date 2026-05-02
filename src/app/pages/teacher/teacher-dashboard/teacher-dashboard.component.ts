@@ -335,8 +335,8 @@ export class TeacherDashboardComponent implements OnInit {
 
   goToCreate(): void { this.router.navigate(['/teacher/courses/create']); }
   goToEdit(id: number): void { this.router.navigate(['/teacher/courses/edit', id]); }
-  goToProgress(courseId: number): void { this.router.navigate(['/teacher/courses', courseId, 'progress']); }
+  goToProgress(courseId: number): void { this.router.navigate(['/teacher/courses/edit', courseId, 'progress']); }
   goToMyCourses(): void { this.router.navigate(['/teacher/courses']); }
   toggleScheduleDropdown(): void { this.showScheduleDropdown.update(v => !v); }
-  goToCourseSessions(courseId: number): void { this.router.navigate(['/teacher/courses', courseId, 'sessions']); }
+  goToCourseSessions(courseId: number): void { this.router.navigate(['/teacher/courses/edit', courseId, 'sessions']); }
 }

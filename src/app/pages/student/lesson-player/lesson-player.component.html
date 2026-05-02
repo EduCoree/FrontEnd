@@ -102,6 +102,23 @@
       </video>
     </div>
 
+    <div *ngIf="provider() === 'pdf'"
+      class="bg-black rounded-2xl overflow-hidden shadow-xl border border-gray-200">
+      <div class="flex items-center gap-2 px-4 py-2 bg-gray-900 border-b border-gray-800">
+        <span class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></span>
+        <span class="text-[10px] font-bold uppercase tracking-widest text-teal-400">
+          PDF Document — {{ 'lessonPlayer.secureView' | translate }}
+        </span>
+        <span class="ml-auto text-[10px] text-gray-500 font-medium">
+          <span class="material-symbols-outlined text-[12px] align-middle">lock</span>
+          {{ 'lessonPlayer.timeLimitedAccess' | translate }}
+        </span>
+      </div>
+      <div class="bg-gray-100 flex flex-col">
+        <iframe [src]="safeUrl()" class="w-full min-h-[600px] border-none" allowfullscreen></iframe>
+      </div>
+    </div>
+
     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex items-center justify-between">
       <div>
         <h2 class="text-xl font-bold text-gray-800">{{ 'lessonPlayer.lessonContent' | translate }}</h2>
