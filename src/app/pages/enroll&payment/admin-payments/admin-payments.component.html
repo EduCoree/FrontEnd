@@ -7,10 +7,10 @@
     <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
       <div>
         <h2 class="text-4xl font-extrabold tracking-tight text-on-surface mb-2">
-          Payments & Transactions
+          {{ 'payments.title' | translate }}
         </h2>
         <p class="text-on-surface-variant font-medium">
-          Manage all payments and cash enrollment requests
+          {{ 'payments.subtitle' | translate }}
         </p>
       </div>
 
@@ -18,26 +18,26 @@
       <div class="flex gap-4">
         <div class="bg-surface-container-lowest p-6 rounded-lg min-w-[180px] shadow-sm">
           <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">
-            Total Revenue
+            {{ 'payments.totalRevenue' | translate }}
           </p>
           <p class="text-3xl font-black text-primary">
             ${{ totalRevenue() | number:'1.2-2' }}
           </p>
           <div class="mt-2 flex items-center gap-1 text-[10px] text-primary">
             <span class="material-symbols-outlined text-xs">trending_up</span>
-            <span>Completed payments</span>
+            <span>{{ 'payments.completedPayments' | translate }}</span>
           </div>
         </div>
 
         <div class="bg-surface-container-lowest p-6 rounded-lg min-w-[180px] shadow-sm">
           <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">
-            Pending Cash Requests
+            {{ 'payments.pendingCashRequests' | translate }}
           </p>
           <div class="flex items-center gap-3">
             <p class="text-3xl font-black text-error">{{ pendingCashCount() }}</p>
             @if (pendingCashCount() > 0) {
               <span class="px-2 py-0.5 bg-error-container/20 text-error text-[10px] font-bold rounded-full">
-                ACTION REQUIRED
+                {{ 'payments.actionRequired' | translate }}
               </span>
             }
           </div>
@@ -68,7 +68,7 @@
         [class.border-b-2]="activeTab() === 'payments'"
         [class.border-primary]="activeTab() === 'payments'"
         [class.text-on-surface-variant]="activeTab() !== 'payments'">
-        All Payments
+        {{ 'payments.tabs.allPayments' | translate }}
       </button>
       <button
         (click)="activeTab.set('cash-requests')"
@@ -77,7 +77,7 @@
         [class.border-b-2]="activeTab() === 'cash-requests'"
         [class.border-primary]="activeTab() === 'cash-requests'"
         [class.text-on-surface-variant]="activeTab() !== 'cash-requests'">
-        Cash Requests
+        {{ 'payments.tabs.cashRequests' | translate }}
         @if (pendingCashCount() > 0) {
           <span class="w-5 h-5 bg-error text-on-error rounded-full text-[10px] font-bold flex items-center justify-center">
             {{ pendingCashCount() }}
@@ -92,8 +92,8 @@
 
         <!-- Filter Chips -->
         <div class="flex items-center gap-2 overflow-x-auto pb-2">
-@for (f of paymentsFilterOptions; track f) {
-  <button (click)="paymentsFilter.set(f)">
+          @for (f of paymentsFilterOptions; track f) {
+            <button (click)="paymentsFilter.set(f)">
               {{ f }}
             </button>
           }
@@ -114,7 +114,7 @@
             <span class="material-symbols-outlined text-5xl block mb-3 text-outline-variant">
               receipt_long
             </span>
-            No payments found.
+            {{ 'payments.emptyPayments' | translate }}
           </div>
         }
 
@@ -124,11 +124,11 @@
             <table class="w-full text-left border-separate border-spacing-y-3">
               <thead>
                 <tr class="text-on-surface-variant text-[10px] font-black uppercase tracking-widest">
-                  <th class="px-6 pb-2">Date</th>
-                  <th class="px-6 pb-2">Course</th>
-                  <th class="px-6 pb-2">Amount</th>
-                  <th class="px-6 pb-2">Method</th>
-                  <th class="px-6 pb-2">Status</th>
+                  <th class="px-6 pb-2">{{ 'payments.table.date' | translate }}</th>
+                  <th class="px-6 pb-2">{{ 'payments.table.course' | translate }}</th>
+                  <th class="px-6 pb-2">{{ 'payments.table.amount' | translate }}</th>
+                  <th class="px-6 pb-2">{{ 'payments.table.method' | translate }}</th>
+                  <th class="px-6 pb-2">{{ 'payments.table.status' | translate }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -141,7 +141,7 @@
                       {{ payment.courseTitle }}
                     </td>
                     <td class="px-6 py-5 text-sm font-black text-on-surface">
-                      {{ payment.amount === 0 ? 'Free' : '$' + (payment.amount | number:'1.2-2') }}
+                      {{ payment.amount === 0 ? ('payments.table.free' | translate) : '$' + (payment.amount | number:'1.2-2') }}
                     </td>
                     <td class="px-6 py-5">
                       <div class="flex items-center gap-2">
@@ -172,8 +172,8 @@
 
         <!-- Filter Chips -->
         <div class="flex items-center gap-2 overflow-x-auto pb-2">
-         @for (f of cashFilterOptions; track f) {
-  <button (click)="cashFilter.set(f)">
+          @for (f of cashFilterOptions; track f) {
+            <button (click)="cashFilter.set(f)">
               {{ f }}
             </button>
           }
@@ -194,7 +194,7 @@
             <span class="material-symbols-outlined text-5xl block mb-3 text-outline-variant">
               account_balance_wallet
             </span>
-            No cash requests found.
+            {{ 'payments.emptyCash' | translate }}
           </div>
         }
 
@@ -226,11 +226,15 @@
                 <!-- Details -->
                 <div class="flex items-center justify-between py-4 border-y border-outline-variant/10 mb-6">
                   <div>
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">Amount</p>
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">
+                      {{ 'payments.card.amount' | translate }}
+                    </p>
                     <p class="text-xl font-black text-on-surface">${{ request.amount | number:'1.2-2' }}</p>
                   </div>
                   <div class="text-right">
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">Request Date</p>
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">
+                      {{ 'payments.card.requestDate' | translate }}
+                    </p>
                     <p class="text-sm font-semibold text-on-surface">
                       {{ request.requestedAt | date:'MMM d, y • hh:mm a' }}
                     </p>
@@ -244,18 +248,18 @@
                       (click)="confirmRequest(request.id)"
                       class="flex-1 py-3 bg-primary text-on-primary rounded-full font-bold text-sm hover:bg-primary-dim transition-colors flex items-center justify-center gap-2">
                       <span class="material-symbols-outlined text-base">check_circle</span>
-                      Confirm
+                      {{ 'payments.card.confirm' | translate }}
                     </button>
                     <button
                       (click)="rejectRequest(request.id)"
                       class="flex-1 py-3 bg-error-container/10 text-error rounded-full font-bold text-sm hover:bg-error-container/20 transition-colors flex items-center justify-center gap-2">
                       <span class="material-symbols-outlined text-base">cancel</span>
-                      Reject
+                      {{ 'payments.card.reject' | translate }}
                     </button>
                   </div>
                 } @else {
                   <div class="py-3 bg-surface-container-highest text-on-surface-variant/40 rounded-full font-bold text-sm text-center">
-                    {{ request.status === 'Confirmed' ? 'Payment Processed' : 'Request Rejected' }}
+                    {{ request.status === 'Confirmed' ? ('payments.card.paymentProcessed' | translate) : ('payments.card.requestRejected' | translate) }}
                   </div>
                 }
 

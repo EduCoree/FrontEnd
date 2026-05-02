@@ -9,7 +9,11 @@
     "signup": "Sign Up",
     "search": "Search courses...",
     "profile": "My Profile",
-    "logout": "Logout"
+    "logout": "Logout",
+   
+    "live": "Live",
+    "quizzes": "Quizzes",
+    "history": "History"
   },
   "center": {
     "title": "Training Center",
@@ -65,6 +69,17 @@
     "reviews": "reviews",
     "saving": "Saving..."
   },
+  "teacherReviews": {
+    "studentFeedback": "Student Feedback",
+    "manageReviews": "Manage and moderate reviews across all your published courses.",
+    "courseFilter": "Course Filter",
+    "allCourses": "All Courses",
+    "ratingFilter": "Rating Filter",
+    "all": "All",
+    "fourStarsPlus": "4★+",
+    "critical": "Critical",
+    "globalAverage": "Global Average"
+  },
   "common": {
     "cancel": "Cancel",
     "delete": "Delete",
@@ -74,7 +89,9 @@
     "loading": "Loading...",
     "error": "An error occurred",
     "retry": "Retry",
-    "viewAll": "View All"
+    "viewAll": "View All",
+    "edit": "Edit",
+"remove": "Remove"
   },
   "home": {
     "badge": "Premium Learning",
@@ -154,7 +171,7 @@
     "allinone_badge": "All-In-One",
     "allinone_title": "All-In-One",
     "allinone_highlight": "Cloud Software.",
-    "allinone_desc": "TOTC is one powerful online software suite that combines all the tools needed to run a successful school or office.",
+    "allinone_desc": "EduCore is one powerful online software suite that combines all the tools needed to run a successful school or office.",
     "feature_billing_title": "Online Billing, Invoicing, & Contracts",
     "feature_billing_desc": "Simple and secure control of your organization's financial and legal transactions. Send customized invoices and contracts.",
     "feature_scheduling_title": "Easy Scheduling & Attendance Tracking",
@@ -162,8 +179,8 @@
     "feature_tracking_title": "Customer Tracking",
     "feature_tracking_desc": "Automate and track emails to individuals or groups. Skilline's built-in system helps organize your organization.",
     "whatis_title": "What is",
-    "whatis_highlight": "TOTC?",
-    "whatis_desc": "TOTC is a platform that allows educators to create online classes whereby they can store the course materials online, manage assignments, quizzes and exams, monitor due dates, grade results and provide students with feedback all in one place.",
+    "whatis_highlight": "EduCore?",
+    "whatis_desc": "EduCore is a platform that allows educators to create online classes whereby they can store the course materials online, manage assignments, quizzes and exams, monitor due dates, grade results and provide students with feedback all in one place.",
     "for_instructors_label": "For Instructors",
     "for_students_label": "For Students",
     "start_class_btn": "Start a class today",
@@ -326,7 +343,16 @@
     "updateLogo": "Update Logo",
     "categories": "Categories",
     "adminUser": "Admin User",
-    "superAdmin": "Super Admin"
+    "superAdmin": "Super Admin",
+      "subtitle": "Dashboard",
+  
+  "adminRole": "General Manager",
+  "nav": {
+    "courseInfo": "Course Information",
+    "quizzes": "Quizzes",
+    "sessions": "Sessions",
+    "progress": "Progress"
+  }
   },
   "adminCourses": {
     "title": "Course Management",
@@ -517,7 +543,9 @@
     "forumReports": "Forum Reports",
     "support": "Support",
     "logout": "Logout",
-    "administrator": "Administrator"
+    "administrator": "Administrator",
+    "payouts": "Payouts",
+    "payments":"Payments"
   },
   "confirmEmail": {
     "verifying": {
@@ -1015,13 +1043,18 @@
     "haveAccount": "Already have an account?"
   },
   "reviewss": {
+    "heading": "course reviews",
     "breadcrumb": "Reviews",
     "course": "Course #",
     "topRated": "TOP RATED COURSE",
     "overallRating": "Overall Rating",
     "basedOn": "Based on",
     "reviewsCount": "reviews",
+    "description": "manage and update your feedback for completed courses",
     "star": "star",
+    "totalReviews":"Total Reviews",
+    "avgRatingGiven":"Average Rating Given",
+    "uniqueCourses":"Unique Courses Reviewed",
     "stars": "stars",
     "searchPlaceholder": "Search reviews...",
     "writeReview": "Write Review",
@@ -1042,6 +1075,29 @@
     "deleting": "Deleting...",
     "yesDelete": "Yes, Delete",
     "cancel": "Cancel"
+  },
+   "paymentHistory": {
+    "portalLabel": "Student Portal",
+    "pageTitle": "Payment History",
+    "pageSubtitle": "Track all your course payments and transactions in one place.",
+    "totalInvestment": "Total Investment",
+    "recentTransactions": "Recent Transactions",
+    "noPaymentsYet": "No Payments Yet",
+    "paymentHistoryEmpty": "You haven't made any payments yet. Start learning by enrolling in a course.",
+    "browseCourses": "Browse Courses",
+    "secureTransactions": "Secure Transactions",
+    "secureTransactionsDescription": "All your payments are encrypted and processed through a secure and trusted payment gateway."
+  },
+  "myQuizzes": {
+    "title": "My Quizzes",
+    "subtitle": "Browse and take quizzes for your enrolled courses",
+    "allCourses": "All Courses",
+    "noQuizzesTitle": "No quizzes available",
+    "noQuizzesSubtitle": "Try selecting a different course",
+    "passScore": "Pass {{value}}%",
+    "requiredToPass": "Required to pass",
+    "viewQuiz": "View Quiz",
+    "retry": "Retry"
   },
   "lessonPlayer": {
     "brand": "EduCore",
@@ -1064,6 +1120,36 @@
     "secureSignedAccess": "Secure Signed Access",
     "secureSignedDesc": "This video is served via a time-limited signed URL. Your access is valid until",
     "refreshIfExpires": "Refresh the page if it expires."
+  },
+    "payments": {
+    "title": "Payments & Transactions",
+    "subtitle": "Manage all payments and cash enrollment requests",
+    "totalRevenue": "Total Revenue",
+    "completedPayments": "Completed payments",
+    "pendingCashRequests": "Pending Cash Requests",
+    "actionRequired": "ACTION REQUIRED",
+    "tabs": {
+      "allPayments": "All Payments",
+      "cashRequests": "Cash Requests"
+    },
+    "table": {
+      "date": "Date",
+      "course": "Course",
+      "amount": "Amount",
+      "method": "Method",
+      "status": "Status",
+      "free": "Free"
+    },
+    "emptyPayments": "No payments found.",
+    "emptyCash": "No cash requests found.",
+    "card": {
+      "amount": "Amount",
+      "requestDate": "Request Date",
+      "confirm": "Confirm",
+      "reject": "Reject",
+      "paymentProcessed": "Payment Processed",
+      "requestRejected": "Request Rejected"
+    }
   },
   "myCertificates": {
     "title": "My Certificates",
@@ -1111,6 +1197,7 @@
     "joinTooltip": "Available 15 minutes before start",
     "availableHint": "Available 15 min\nbefore start",
     "teams": "Teams"
+      
   },
   "studentDashboard": {
     "welcomeBack": "Welcome back",
@@ -1138,6 +1225,7 @@
     "completion": "Completion",
     "lessonsCompleted": "Lessons completed",
     "resumeLesson": "Resume lesson"
+    
   },
   "videoWatch": {
     "brand": "EduCore",
@@ -1361,6 +1449,7 @@
     "editCourse": "Edit Course",
     "goToDashboard": "Go to Dashboard",
     "goToDashboardHint": "Go to dashboard to create your first course!",
+    "payoutDashboard": "Payout Dashboard",
     "enrolledStudents": "Enrolled Students",
     "totalAcrossAll": "Total across all courses",
     "acrossCategories": "Across all categories",
@@ -1380,13 +1469,25 @@
     "copyright": "© 2025 EduCore. Empowering Education.",
     "exitCourseBuilder": "Exit Course Builder"
   },
+  "teacherLayout": {
+    "mainMenu": "Main Menu",
+    "studentFeedback": "Student Feedback"
+  },
   "teacherSessions": {
     "sessions": "Sessions",
     "sessionOverview": "Session Overview",
     "upcoming": "Upcoming",
     "past": "Past",
     "liveSessions": "Live Sessions",
+    "subtitle": "Oversee your virtual classrooms and upcoming student interactions.",
     "scheduleSession": "Schedule Session",
+    "happeningNow": "Happening Now",
+    "joinSession": "Join Session",
+    "loading": "Loading sessions…",
+    "insightTitle": "Academic Insight",
+    "insightText": "Live sessions are the heartbeat of the learning experience. Enable recordings so students can revisit key discussions at any time.",
+    "edit": "Edit",
+    "completed": "Completed",
     "noSessionsTitle": "No sessions scheduled yet",
     "noSessionsHint": "Schedule your first live session for this course.",
     "scheduleFirst": "Schedule First Session",
@@ -1413,21 +1514,15 @@
     "recordingUrlError": "A valid URL starting with http:// or https:// is required.",
     "saveRecording": "Save Recording",
     "footerLabel": "Sessions — Course Builder",
-    "backToMedia": "Back to Media"
-  },
-  "teacherProgress": {
-    "lessonBreakdown": "Lesson Breakdown",
-    "watchedUpTo": "Watched up to",
-    "statusCompleted": "Completed",
-    "statusInProgress": "In Progress",
-    "statusNotStarted": "Not Started",
-    "studentName": "Student Name",
-    "completed": "Completed",
-    "footerLabel": "Progress — Course Builder",
-    "backToSessions": "Back to Sessions",
-    "done": "Done",
-    "noStudents": "No enrolled students yet",
-    "noStudentsHint": "Students who enroll in this course will appear here."
+    "backToMedia": "Back to Media",
+    "pageTitle": "Live Sessions",
+"pageSubtitle": "Oversee your virtual classrooms and upcoming student interactions.",
+"loadingSessions": "Loading sessions…",
+
+"defaultSessionTitle": "Live Session",
+"providerTeams": "Teams"
+
+
   },
   "teacherDashboard": {
     "subtitle": "Your courses, students, and upcoming sessions.",
@@ -1449,6 +1544,7 @@
     "dashboard": "Dashboard",
     "myCourses": "My Courses",
     "myQuizzes": "My Quizzes",
+    "reviews": "Reviews",
     "QuizHistory": "Quiz History",
     "liveSessions": "Live Sessions",
     "certificates": "Certificates",
@@ -1461,7 +1557,8 @@
     "learn": "Learn",
     "live": "Live",
     "certs": "Certs",
-    "profile": "Profile"
+    "profile": "Profile",
+    "payments":"Payments"
   },
   "adminTopbar": {
     "notifications": "Notifications",
@@ -1620,6 +1717,8 @@
 },
 "teacherProgress": {
   "pageTitle": "Student Progress",
+  "quizzes": "Quizzes",
+  "progress": "Progress",
   "pageSubtitle": "Real-time student engagement tracking and module completion analytics for this course.",
   "loading": "Loading student data...",
   "studentRoster": "Student Roster",
@@ -1933,5 +2032,124 @@
       }
     }
   }
+},
+  "COURSE": {
+    "LOADING": "Loading your course…",
+    "BACK_TO_MY_COURSES": "← Back to My Courses",
+    "MY_COURSES": "My Courses",
+    "IN_PROGRESS": "In Progress",
+    "ENROLLED": "Enrolled",
+    "RESUME_HINT": "Resume where you left off",
+    "START_HINT": "Start first lesson",
+    "LESSONS": "lessons",
+    "VIDEO_LOADING": "Loading",
+    "REFRESH": "Refresh",
+    "CLOSE": "Close",
+    "VIDEO_NOT_SUPPORTED": "Your browser does not support the video tag.",
+    "WATCH_FULL_VIDEO": "Watch the full video, then mark as complete",
+    "COMPLETED": "Completed",
+    "SAVING": "Saving…",
+    "NEXT": "Next",
+    "MARK_COMPLETE": "Mark Complete",
+    "INSTRUCTOR": "Instructor",
+    "INSTRUCTOR_TIP": "Follow the curriculum in order for the best learning experience. Click any lesson in the sidebar to play it instantly.",
+    "SECTIONS": "Sections",
+    "LEVEL": "Level",
+    "COMPLETE": "Complete",
+    "COURSE_CONTENT": "Course Content",
+    "RESUME": "Resume",
+    "START": "Start",
+    "DISCUSSION": "Discussion",
+    "REVIEWS": "Reviews",
+    "MY_PROGRESS": "My Progress",
+    "JOIN_DISCUSSION": "Join Discussion"
+  },
+   "courseManagement": {
+    "label": "Course Management"
+  }
+ ,
+ "enrollment": {
+  "confirmEnrollment": "Confirm Enrollment",
+  "enrollingIn": "You're enrolling in",
+  "certificate": "Certificate Included",
+  "selectPathway": "Select your pathway",
+  "pathway01": "Pathway 01",
+  "pathway02": "Pathway 02",
+  "recommended": "Recommended",
+  "freeCourse": "Free Course",
+  "freeEnrollment": "Free Enrollment",
+  "freeDesc": "Full access to all course materials at no cost.",
+  "free": "Free",
+  "enrollFree": "Enroll for Free",
+  "enrolling": "Enrolling...",
+  "digitalAccess": "Digital Access",
+  "digitalDesc": "Full access including exams and certificate.",
+  "payCard": "Pay with Card",
+  "processing": "Processing...",
+  "offline": "Offline",
+  "offlineDesc": "Manual enrollment via cash payment.",
+  "requestCash": "Request Cash",
+  "sending": "Sending...",
+  "requestSent": "Request Sent!",
+  "contactAdmin": "Or contact admin directly",
+  "adminWillContact": "The admin will contact you to confirm your payment.",
+  "termsNote": "By enrolling, you agree to our Terms of Service and Academic Integrity Policy."
 }
+
+  ,
+   "payout": {
+    "dashboard": {
+      "title": "Payout Dashboard",
+      "subtitle": "Overview of instructor earnings and platform revenue",
+      "actions": {
+        "settings": "Settings",
+        "generate": "Generate Payouts",
+        "allInvoices": "All Invoices"
+      },
+      "error": {
+        "title": "Something went wrong",
+        "retry": "Retry"
+      },
+      "kpi": {
+        "pendingPayouts": {
+          "label": "Pending Payouts",
+          "subtitle": "pending invoices"
+        },
+        "teacherEarnings": {
+          "label": "Teacher Earnings",
+          "subtitle": "This month"
+        },
+        "platformRevenue": {
+          "label": "Platform Revenue",
+          "subtitle": "This month"
+        },
+        "lastMonthPaid": {
+          "label": "Last Month Paid",
+          "subtitle": "Paid to teachers"
+        }
+      },
+      "chart": {
+        "title": "Revenue Split",
+        "subtitle": "Teacher earnings vs platform revenue",
+        "empty": "No data available for the selected period"
+      },
+      "export": {
+        "title": "Export Report",
+        "subtitle": "Download Excel report",
+        "description": "Select a date range to export a detailed payout report as an Excel file.",
+        "from": "From",
+        "to": "To",
+        "generating": "Generating...",
+        "download": "Download Report"
+      },
+      "activeTeachers": {
+        "label": "Paid Enrollments This Month",
+        "description": "Total enrollments with completed payments in the current month",
+        "viewAll": "View All Invoices"
+      }
+    }
+  }
+
+ 
+
 }

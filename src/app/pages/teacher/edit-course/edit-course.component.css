@@ -20,16 +20,16 @@
 .ec-body {
   flex: 1;
   min-width: 0;
-  /* The sidebar is fixed at left:0 with width 256px (w-64).
-     We need margin-left to match the sidebar width on desktop.
-     On small screens the sidebar is hidden so no margin needed. */
-  margin-left: 0;
+  /* The sidebar is fixed at the inline start edge with width 256px (w-64).
+     Use margin-inline-start for LTR/RTL spacing and preserve mobile layout. */
+  margin-inline-start: 0;
   padding-bottom: 4rem;
 }
 
 @media (min-width: 1024px) {
   .ec-body {
-    transition: margin-left 0.3s ease;
+    margin-inline-start: 16rem;
+    transition: margin-inline-start 0.3s ease;
   }
 }
 
@@ -39,6 +39,7 @@
   top: 0;
   z-index: 30;
   background: rgba(255, 255, 255, 0.9);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid #e2e8f0;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
@@ -954,6 +955,7 @@
   inset: 0;
   z-index: 100;
   background: rgba(15, 23, 42, 0.45);
+  -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
   opacity: 0;
   pointer-events: none;

@@ -146,10 +146,19 @@ export class CourseInfoComponent implements OnInit {
 
   ngOnInit(): void {
     // Read :id from the parent shell route (teacher/courses/edit/:id)
+    const currentParams = this.route.snapshot.paramMap;
     const parentParams = this.route.parent?.snapshot.paramMap;
+    const grandParentParams = this.route.parent?.parent?.snapshot.paramMap;
+
     this.courseId = Number(
-      parentParams?.get('id') ?? this.route.snapshot.paramMap.get('id')
+      currentParams.get('id') ??
+      currentParams.get('courseId') ??
+      parentParams?.get('id') ??
+      parentParams?.get('courseId') ??
+      grandParentParams?.get('id') ??
+      grandParentParams?.get('courseId')
     );
+
     this.loadCategories();
     this.loadCourse();
     this.loadSections();

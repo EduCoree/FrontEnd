@@ -91,7 +91,6 @@
             >…
           </p>
         </div>
-
         <!-- ── State: Video Error ──────────────────────────────────────── -->
         <div *ngIf="activeLesson() && !isVideoLoading() && videoError()" class="cw-video-error">
           <span class="material-symbols-outlined">{{ isVideoExpired ? 'timer_off' : 'lock' }}</span>
@@ -331,7 +330,6 @@
         <h1 class="cw-title">{{ course()?.title }}</h1>
         <p class="cw-desc">{{ course()?.description }}</p>
       </div>
-
       <!-- Instructor note card -->
       <div class="cw-note-card">
         <span class="cw-note-card__quote">"</span>
@@ -387,8 +385,8 @@
       </div>
     </section>
 
-    <!-- ── RIGHT: Sidebar ────────────────────────────────────────────────── -->
-    <aside class="cw-sidebar">
+    <!-- ── LEFT: Sidebar (Course Content) ────────────────────────────────────────────────── -->
+    <aside class="cw-sidebar cw-sidebar--left">
       <div class="cw-sidebar__inner">
         <div class="cw-sidebar__header">
           <div class="cw-sidebar__header-row">
@@ -407,7 +405,7 @@
         </div>
 
         <nav class="cw-sidebar__nav">
-          <a class="cw-nav-link" [routerLink]="['/courses', courseId(), 'forum']">
+          <a class="cw-nav-link" style="cursor: pointer" (click)="navigateToForum()">
             <span class="material-symbols-outlined">forum</span> Discussion
           </a>
           <a class="cw-nav-link" [routerLink]="['/courses', courseId(), 'reviews']">
@@ -421,7 +419,6 @@
             <span class="material-symbols-outlined">trending_up</span> My Progress
           </a>
         </nav>
-
         <!-- Curriculum -->
         <div class="cw-curriculum">
           <div *ngFor="let section of course()?.sections" class="cw-section">
@@ -482,11 +479,21 @@
         </div>
 
         <div class="cw-sidebar__footer">
-          <button class="cw-forum-btn" [routerLink]="['/courses', courseId(), 'forum']">
+          <button class="cw-forum-btn" (click)="navigateToForum()">
             <span class="material-symbols-outlined">forum</span>
             Join Discussion
           </button>
         </div>
+      </div>
+    </aside>
+
+    <!-- ── RIGHT: Sidebar (AI Tool) ──────────────────────────────────────── -->
+    <aside class="cw-sidebar cw-sidebar--right">
+      <div
+        *ngIf="activeLesson() && !isVideoLoading() && !videoError() && signedUrl()"
+        class="cw-ai-panel-wrap"
+      >
+        <app-lesson-ai-panel [lessonId]="activeLesson()!.id" [courseId]="courseId()" />
       </div>
     </aside>
   </div>

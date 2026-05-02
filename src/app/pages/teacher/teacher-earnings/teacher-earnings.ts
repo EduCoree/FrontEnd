@@ -11,6 +11,7 @@ import { InvoiceStatusBadgeComponent } from '../../../shared/components/invoice-
 import { LoadingSkeletonComponent } from '../../../shared/components/loading-skeleton/loading-skeleton';
 import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state';
 import { TranslateModule } from '@ngx-translate/core';
+import { TeacherLayoutComponent } from "../../../layouts/teacher-layout/teacher-layout.component";
 
 @Component({
   selector: 'app-teacher-earnings',
@@ -23,8 +24,9 @@ import { TranslateModule } from '@ngx-translate/core';
     InvoiceStatusBadgeComponent,
     LoadingSkeletonComponent,
     EmptyStateComponent,
-    TranslateModule
-  ],
+    TranslateModule,
+    TeacherLayoutComponent
+],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './teacher-earnings.html',
 })

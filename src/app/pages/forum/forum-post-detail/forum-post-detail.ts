@@ -6,13 +6,10 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { ForumService } from '../../../core/services/forum.service';
 import { AuthService } from '../../../core/services/auth';
 import { ForumPostDetailDto, ForumReplyDto } from '../../../core/models/forum';
-
-import { Sidebar } from '../../../shared/components/ui/sidebar/sidebar';
-
 @Component({
   selector: 'app-forum-post-detail',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, Sidebar , TranslateModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './forum-post-detail.html',
   styleUrl: './forum-post-detail.css',
 })
@@ -24,7 +21,7 @@ export class ForumPostDetailComponent implements OnInit {
   private fb = inject(FormBuilder);
 
   // ── State ─────────────────────────────────────────────────────────────────
-  courseId = 0;
+  lessonId = 0;
   postId = 0;
   post = signal<ForumPostDetailDto | null>(null);
   loading = signal(false);
@@ -80,7 +77,7 @@ export class ForumPostDetailComponent implements OnInit {
 
   // ── Lifecycle ─────────────────────────────────────────────────────────────
   ngOnInit() {
-    this.courseId = Number(this.route.snapshot.paramMap.get('courseId'));
+    this.lessonId = Number(this.route.snapshot.paramMap.get('lessonId'));
     this.postId = Number(this.route.snapshot.paramMap.get('postId'));
     this.loadPost();
   }
@@ -88,7 +85,7 @@ export class ForumPostDetailComponent implements OnInit {
   // ── Data ───────────────────────────────────────────────────────────────────
   loadPost() {
     this.loading.set(true);
-    this.forumService.getPostDetails(this.courseId, this.postId).subscribe({
+    this.forumService.getPostDetails(this.lessonId, this.postId).subscribe({
       next: (data) => {
         const result = (data as any)?.data ?? data;
         // Ensure replies is always an array
@@ -111,7 +108,7 @@ export class ForumPostDetailComponent implements OnInit {
   savePost() {
     if (this.postForm.invalid) return;
     this.loading.set(true);
-    this.forumService.updatePost(this.courseId, this.postId, this.postForm.value).subscribe({
+    this.forumService.updatePost(this.lessonId, this.postId, this.postForm.value).subscribe({
       next: () => {
         this.showEditPostModal.set(false);
         this.flash('Post updated successfully.');
@@ -127,10 +124,10 @@ export class ForumPostDetailComponent implements OnInit {
   }
 
   confirmDeletePost() {
-    this.forumService.deletePost(this.courseId, this.postId).subscribe({
+    this.forumService.deletePost(this.lessonId, this.postId).subscribe({
       next: () => {
         this.showDeletePostModal.set(false);
-        this.router.navigate(['/courses', this.courseId, 'forum']);
+        this.router.navigate(['/lessons', this.lessonId, 'forum']);
       },
       error: () => this.flashError('Failed to delete post.'),
     });
@@ -143,7 +140,7 @@ export class ForumPostDetailComponent implements OnInit {
 
     this.post.set({ ...p, upvoteCount: p.upvoteCount + 1, hasUpvoted: true });
 
-    this.forumService.upvotePost(this.courseId, this.postId).subscribe({
+    this.forumService.upvotePost(this.lessonId, this.postId).subscribe({
       error: (err) => {
         this.post.set({ ...p, upvoteCount: p.upvoteCount, hasUpvoted: false });
         if (err.status === 400) {
@@ -163,7 +160,7 @@ export class ForumPostDetailComponent implements OnInit {
 
   submitReport() {
     if (this.reportForm.invalid) return;
-    this.forumService.reportPost(this.courseId, this.postId, this.reportForm.value).subscribe({
+    this.forumService.reportPost(this.lessonId, this.postId, this.reportForm.value).subscribe({
       next: () => {
         this.showReportModal.set(false);
         this.flash('Report submitted. Thank you.');
@@ -175,7 +172,7 @@ export class ForumPostDetailComponent implements OnInit {
   // ── Replies ───────────────────────────────────────────────────────────────
   addReply() {
     if (this.replyForm.invalid) return;
-    this.forumService.addReply(this.courseId, this.postId, this.replyForm.value).subscribe({
+    this.forumService.addReply(this.lessonId, this.postId, this.replyForm.value).subscribe({
       next: () => {
         this.replyForm.reset();
         this.flash('Reply added.');
@@ -197,7 +194,7 @@ export class ForumPostDetailComponent implements OnInit {
 
   saveReply(replyId: number) {
     if (this.editReplyForm.invalid) return;
-    this.forumService.updateReply(this.courseId, this.postId, replyId, this.editReplyForm.value).subscribe({
+    this.forumService.updateReply(this.lessonId, this.postId, replyId, this.editReplyForm.value).subscribe({
       next: () => {
         this.editingReplyId.set(null);
         this.flash('Reply updated.');
@@ -215,7 +212,7 @@ export class ForumPostDetailComponent implements OnInit {
   confirmDeleteReply() {
     const replyId = this.deletingReplyId();
     if (!replyId) return;
-    this.forumService.deleteReply(this.courseId, this.postId, replyId).subscribe({
+    this.forumService.deleteReply(this.lessonId, this.postId, replyId).subscribe({
       next: () => {
         const p = this.post();
         if (p) {
@@ -258,7 +255,7 @@ export class ForumPostDetailComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/courses', this.courseId, 'forum']);
+    this.router.navigate(['/lessons', this.lessonId, 'forum']);
   }
 
   private flash(msg: string) {

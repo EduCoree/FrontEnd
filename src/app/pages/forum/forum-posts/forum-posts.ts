@@ -5,13 +5,12 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { ForumService } from '../../../core/services/forum.service';
 import { AuthService } from '../../../core/services/auth';
 import { ForumPostDto } from '../../../core/models/forum';
-import { Sidebar } from '../../../shared/components/ui/sidebar/sidebar';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-forum-posts',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, Sidebar , TranslateModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, TranslateModule],
   templateUrl: './forum-posts.html',
   styleUrl: './forum-posts.css',
 })
@@ -23,7 +22,7 @@ export class ForumPostsComponent implements OnInit {
   private fb = inject(FormBuilder);
 
   // ── State ─────────────────────────────────────────────────────────────────
-  courseId = 0;
+  lessonId = 0;
   posts = signal<ForumPostDto[]>([]);
   loading = signal(false);
   successMsg = signal('');
@@ -63,14 +62,14 @@ export class ForumPostsComponent implements OnInit {
 
   // ── Lifecycle ─────────────────────────────────────────────────────────────
   ngOnInit() {
-    this.courseId = Number(this.route.snapshot.paramMap.get('courseId'));
+    this.lessonId = Number(this.route.snapshot.paramMap.get('lessonId'));
     this.loadPosts();
   }
 
   // ── Data ───────────────────────────────────────────────────────────────────
   loadPosts() {
     this.loading.set(true);
-    this.forumService.getPosts(this.courseId, this.sortBy()).subscribe({
+    this.forumService.getPosts(this.lessonId, this.sortBy()).subscribe({
       next: (data) => {
         const visible = (Array.isArray(data) ? data : (data as any)?.data ?? [])
           .filter((p: ForumPostDto) => !p.isRemoved);
@@ -106,8 +105,8 @@ export class ForumPostsComponent implements OnInit {
     const editing = this.editingPost();
 
     const action = editing
-      ? this.forumService.updatePost(this.courseId, editing.id, dto)
-      : this.forumService.createPost(this.courseId, dto);
+      ? this.forumService.updatePost(this.lessonId, editing.id, dto)
+      : this.forumService.createPost(this.lessonId, dto);
 
     action.subscribe({
       next: () => {
@@ -133,7 +132,7 @@ export class ForumPostsComponent implements OnInit {
   confirmDeletePost() {
     const post = this.deletingPost();
     if (!post) return;
-    this.forumService.deletePost(this.courseId, post.id).subscribe({
+    this.forumService.deletePost(this.lessonId, post.id).subscribe({
       next: () => {
         this.posts.update(list => list.filter(p => p.id !== post.id));
         this.closeDeleteModal();
@@ -154,7 +153,7 @@ export class ForumPostsComponent implements OnInit {
         : p)
     );
 
-    this.forumService.upvotePost(this.courseId, post.id).subscribe({
+    this.forumService.upvotePost(this.lessonId, post.id).subscribe({
       error: (err) => {
         // Rollback on failure
         this.posts.update(list =>
@@ -180,7 +179,7 @@ export class ForumPostsComponent implements OnInit {
 
   submitReport() {
     if (this.reportForm.invalid || !this.reportingPostId()) return;
-    this.forumService.reportPost(this.courseId, this.reportingPostId()!, this.reportForm.value).subscribe({
+    this.forumService.reportPost(this.lessonId, this.reportingPostId()!, this.reportForm.value).subscribe({
       next: () => {
         this.showReportModal.set(false);
         this.flash('Report submitted. Thank you.');
@@ -191,7 +190,7 @@ export class ForumPostsComponent implements OnInit {
 
   // ── Navigation ────────────────────────────────────────────────────────────
   goToPost(postId: number) {
-    this.router.navigate(['/courses', this.courseId, 'forum', postId]);
+    this.router.navigate(['/lessons', this.lessonId, 'forum', postId]);
   }
 
   // ── Helpers ───────────────────────────────────────────────────────────────

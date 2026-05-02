@@ -3,13 +3,15 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { PaymentService } from '../../../core/services/payment.service';
 import { PaymentDto } from '../../../core/models/enrollment.models';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-payment-history',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule , TranslateModule],
   templateUrl: './payment-history.component.html',
 })
+
 export class PaymentHistoryComponent implements OnInit {
 
   payments: PaymentDto[] = [];

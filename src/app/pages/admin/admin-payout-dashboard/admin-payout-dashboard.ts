@@ -11,6 +11,7 @@ import { KpiCardComponent } from '../../../shared/components/kpi-card/kpi-card';
 import { MoneyDisplayComponent } from '../../../shared/components/money-display/money-display';
 import { LoadingSkeletonComponent } from '../../../shared/components/loading-skeleton/loading-skeleton';
 import { TranslateModule } from '@ngx-translate/core';
+import { AdminSidebarComponent } from "../../../layouts/admin-sidebar/admin-sidebar";
 
 @Component({
   selector: 'app-admin-payout-dashboard',
@@ -23,8 +24,9 @@ import { TranslateModule } from '@ngx-translate/core';
     KpiCardComponent,
     MoneyDisplayComponent,
     LoadingSkeletonComponent,
-    TranslateModule
-  ],
+    TranslateModule,
+    AdminSidebarComponent
+],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './admin-payout-dashboard.html',
 })

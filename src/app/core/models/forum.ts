@@ -3,7 +3,7 @@
 
 export interface ForumPostDto {
   id: number;
-  courseId: number;
+  lessonId: number;
   studentId: string;
   studentName: string;
   title: string;
@@ -17,7 +17,7 @@ export interface ForumPostDto {
 
 export interface ForumPostDetailDto {
   id: number;
-  courseId: number;
+  lessonId: number;
   studentId: string;
   studentName: string;
   title: string;
