@@ -14,13 +14,13 @@ import {
 import { LiveSessionService } from '../../../core/services/live-session';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { JitsiPlayer } from '../../../shared/components/jitsi-player/jitsi-player';
+import { JitsiPlayerComponent } from '../../../shared/components/jitsi-player/jitsi-player';
 import { AuthService } from '../../../core/services/auth';
 
 @Component({
   selector: 'app-teacher-sessions',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule , TranslateModule, JitsiPlayer],
+  imports: [CommonModule, ReactiveFormsModule , TranslateModule, JitsiPlayerComponent],
   templateUrl: './teacher-sessions.component.html',
   styleUrl: './teacher-sessions.component.css',
 })

@@ -10,7 +10,7 @@ declare var JitsiMeetExternalAPI: any;
   templateUrl: './jitsi-player.html',
   styleUrl: './jitsi-player.css'
 })
-export class JitsiPlayer implements AfterViewInit, OnDestroy {
+export class JitsiPlayerComponent implements AfterViewInit, OnDestroy {
   @Input() roomName!: string;
   @Input() userName!: string;
   @Input() userEmail!: string;

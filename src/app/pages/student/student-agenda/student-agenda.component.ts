@@ -4,13 +4,13 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { LiveSessionResponse, JoinSessionResponse } from '../../../core/models/session';
 import { LiveSessionService } from '../../../core/services/live-session';
 import { TranslateModule } from '@ngx-translate/core';
-import { JitsiPlayer } from '../../../shared/components/jitsi-player/jitsi-player';
+import { JitsiPlayerComponent } from '../../../shared/components/jitsi-player/jitsi-player';
 import { AuthService } from '../../../core/services/auth';
 
 @Component({
   selector: 'app-student-agenda',
   standalone: true,
-  imports: [CommonModule, TranslateModule, JitsiPlayer],
+  imports: [CommonModule, TranslateModule, JitsiPlayerComponent],
   templateUrl: './student-agenda.component.html',
 })
 export class StudentAgendaComponent implements OnInit, OnDestroy {
