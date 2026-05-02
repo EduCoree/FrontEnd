@@ -167,7 +167,15 @@ export class CourseWorkspaceComponent implements OnInit, OnDestroy {
     this.destroyPlyr();
     this.clearIntervals();
 
-    const request$ = lesson.type?.toLowerCase() === 'pdf'
+    const type = lesson.type?.toLowerCase();
+
+    if (type === 'live') {
+      this.provider.set('live');
+      this.isVideoLoading.set(false);
+      return;
+    }
+
+    const request$ = type === 'pdf'
       ? this.studentContentService.getPdfSignedUrl(lesson.id)
       : this.studentContentService.getVideoSignedUrl(lesson.id);
 
@@ -175,7 +183,7 @@ export class CourseWorkspaceComponent implements OnInit, OnDestroy {
       next: (res) => {
         this.signedUrl.set(res.url);
         this.expiresAt.set(res.expiresAt);
-        const p = lesson.type?.toLowerCase() === 'pdf' ? 'pdf' : this.detectProvider(res.url);
+        const p = type === 'pdf' ? 'pdf' : this.detectProvider(res.url);
         this.provider.set(p);
         this.buildSafeUrl(res.url, p);
         this.startExpiryWatcher(res.expiresAt);
