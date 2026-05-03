@@ -148,7 +148,7 @@
                   </div>
                   <div>
                     <h4 class="font-bold text-sm">{{ lesson.title }}</h4>
-                    <p class="text-xs text-on-surface-variant uppercase tracking-widest mt-0.5">{{ 'common.' + lesson.type.toLowerCase() | translate }}</p>
+                    <p class="text-xs text-on-surface-variant uppercase tracking-widest mt-0.5">{{ 'common.' + (lesson?.type ? lesson.type.toLowerCase() : 'none') | translate }}</p>
                   </div>
                 </div>
                 <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -166,6 +166,7 @@
                     <span class="material-symbols-outlined text-sm text-error">delete</span>
                   </button>
                 </div>
+              </div>
 
 
               <button (click)="openAddLesson(section.id)"
