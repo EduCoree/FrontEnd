@@ -1,7 +1,7 @@
 // src/app/pages/teacher/teacher-sessions/teacher-sessions.component.ts
 // Branch: feature/teacher-live-sessions-ui
 
-import { Component, OnInit, signal, computed, effect } from '@angular/core';
+import { Component, OnInit, signal, computed, effect, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
@@ -14,10 +14,13 @@ import {
 import { LiveSessionService } from '../../../core/services/live-session';
 import { TranslateModule } from '@ngx-translate/core';
 
+import { JitsiPlayerComponent } from '../../../shared/components/jitsi-player/jitsi-player';
+import { AuthService } from '../../../core/services/auth';
+
 @Component({
   selector: 'app-teacher-sessions',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule , TranslateModule],
+  imports: [CommonModule, ReactiveFormsModule , TranslateModule, JitsiPlayerComponent],
   templateUrl: './teacher-sessions.component.html',
   styleUrl: './teacher-sessions.component.css',
 })
@@ -35,6 +38,10 @@ export class TeacherSessionsComponent implements OnInit {
   recordingTargetId     = signal<number | null>(null);
   successMsg      = signal('');
   errorMsg        = signal('');
+  jitsiRoomName   = signal<string>('');
+
+  auth = inject(AuthService);
+  currentUser = this.auth.currentUser;
 
   // ─── Computed Groups ──────────────────────────────────────────────────────
   now = Date.now();
@@ -230,12 +237,15 @@ export class TeacherSessionsComponent implements OnInit {
   }
 
   joinSession(session: LiveSessionResponse): void {
-    const url = session.provider === 'Jitsi' 
-      ? `https://meet.jit.si/${session.meetingUrl}` 
-      : session.meetingUrl;
-    if (url) {
-      window.open(url, '_blank');
+    if (session.provider === 'Jitsi' && session.meetingUrl) {
+      this.jitsiRoomName.set(session.meetingUrl);
+    } else if (session.meetingUrl) {
+      window.open(session.meetingUrl, '_blank');
     }
+  }
+
+  leaveJitsiSession(): void {
+    this.jitsiRoomName.set('');
   }
 
   // ─── Recording Modal ──────────────────────────────────────────────────────

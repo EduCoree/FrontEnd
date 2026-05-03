@@ -8,21 +8,21 @@ import { QuizDetailsDto, QuestionDto, UpdateQuestionDto, UpdateAnswerOptionDto, 
 import { CenterDelete } from "../../centers/center-delete/center-delete";
 import { DeleteQuestionModalComponent } from "../delete-question/delete-question";
 import { QuestionService } from '../../../core/services/question.service';
-import { AnsweroptionService } from '../../../core/services/answeroption.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { QuizService } from '../../../core/services/quiz.service';
+import { QuizAiGenerator } from "../quiz-ai-generator/quiz-ai-generator";
 
 
 interface EditingQuestion {
   question: QuestionDto;
   text: string;
   points: number;
-  options: { id: number; text: string; isCorrect: boolean }[];
+  options: { id: number|null; text: string; isCorrect: boolean }[];
 }
 @Component({
   selector: 'app-quiz-builder',
   standalone: true,
-  imports: [CommonModule, CourseSidebar, FormsModule, DeleteQuestionModalComponent, RouterLink , TranslateModule],
+  imports: [CommonModule, CourseSidebar, FormsModule, DeleteQuestionModalComponent, RouterLink, TranslateModule, QuizAiGenerator],
   templateUrl: './quiz-builder.html'
 })
 export class QuizBuilderComponent implements OnInit {
@@ -38,7 +38,9 @@ export class QuizBuilderComponent implements OnInit {
   addingQuestion = false;
   questionToDelete: QuestionDto | null = null;
   addingQuestionError: string | null = null;
-
+  
+ showAiModal = false;
+editingError: string | null = null;
 
   currentPage = signal(1);
 pageSize = 5;
@@ -55,7 +57,6 @@ pageSize = 5;
     private route: ActivatedRoute,
     private questionservice: QuestionService,
     private quizService:QuizService,
-    private answeroptionservice:AnsweroptionService,
     private cdr: ChangeDetectorRef,
     private router:Router
 
@@ -66,14 +67,17 @@ pageSize = 5;
     this.loadQuizQuestions();
   }
 
-  loadQuizQuestions(): void {
+  loadQuizQuestions(successMessage?: string): void {
     this.loading = true;
     this.questionservice.getQuizQuestions(this.quizId).subscribe({
       next: (res) => {
         this.quiz = res.data;
         this.loading = false;
+         if (successMessage) {
+        this.flash("success", successMessage);
+      }
         this.cdr.detectChanges();
-      },
+       },
       error: (err) => {
         this.flash("error",err.error?.message || err.message || 'Failed to load quiz questions');
         this.loading = false;
@@ -123,61 +127,71 @@ pageSize = 5;
 
   cancelEditing(): void {
     this.editingQuestion = null;
+      this.editingError = null;
   }
 
   saveEditing(): void {
     if (!this.editingQuestion || this.saving) return;
+ this.editingError = null;
+  const options = this.editingQuestion.options;
 
+  if (!this.editingQuestion.text.trim()) {
+    this.editingError = 'Question text is required';
+    return;
+  }
+  if (options.length < 2) {
+    this.editingError = 'At least 2 options are required';
+    return;
+  }
+  if (!options.some(o => o.isCorrect)) {
+    this.editingError = 'Please select a correct answer';
+    return;
+  }
+  if (!options.every(o => o.text.trim())) {
+    this.editingError = 'All options must have text';
+    return;
+  }
     this.saving = true;
     const question = this.editingQuestion.question;
-    const originalOptions = question.answerOptions;
 
     const questionDto: UpdateQuestionDto = {
       text: this.editingQuestion.text,
-      points: this.editingQuestion.points
+      points: this.editingQuestion.points,
+      type: question.type,
+      answerOptions: this.editingQuestion.options.map(opt => ({
+        id: opt.id??null,
+        text: opt.text,
+        isCorrect: opt.isCorrect
+      }))
+
     };
 
-    this.questionservice.updateQuestion( this.quizId, question.id, questionDto).subscribe({
-      next: () => {
-        const optionUpdates: Observable<ApiResponse<AnswerOptionDto>>[] = [];
-        this.editingQuestion!.options.forEach((opt, index) => {
-          const originalOpt = originalOptions[index];
-          if (originalOpt.text !== opt.text || originalOpt.isCorrect !== opt.isCorrect) {
-            optionUpdates.push(
-              this.answeroptionservice.updateAnswerOption( question.id, opt.id, {
-                text: opt.text,
-                isCorrect: opt.isCorrect
-              })
-            );
-          }
-        });
+    this.questionservice.updateQuestion(this.quizId, question.id, questionDto).subscribe({
+    next: () => {
+      this.editingQuestion = null;
+         this.editingError = null;
+      this.saving = false;
+      this.loadQuizQuestions("Question updated successfully!");
+    },
+    error: (err) => {
+       this.flash("error", err.error?.message || 'Failed to update question');
+      this.saving = false;
+      this.cdr.detectChanges();
+    }
+  });
+}
 
-        if (optionUpdates.length > 0) {
-          forkJoin(optionUpdates).subscribe({
-            next: () => {
-              this.editingQuestion = null;
-              this.saving = false;
-              this.loadQuizQuestions();
-            },
-            error: (err) => {
-              this.flash("error",err.error?.message || err.message || 'Failed to update answer options');
-              this.saving = false;
-              this.cdr.detectChanges();
-            }
-          });
-        } else {
-          this.editingQuestion = null;
-          this.saving = false;
-          this.loadQuizQuestions();
-        }
-      },
-      error: (err) => {
-        this.flash("error",err.error?.message || err.message || 'Failed to update question');
-        this.saving = false;
-        this.cdr.detectChanges();
-      }
-    });
+addEditOption(): void {
+  if (!this.editingQuestion) return;
+  this.editingQuestion.options.push({ id: null, text: '', isCorrect: false });
+}
+
+removeEditOption(index: number): void {
+  if (!this.editingQuestion) return;
+  if (this.editingQuestion.options.length > 2) {
+    this.editingQuestion.options.splice(index, 1);
   }
+}
 
   toggleCorrectOption(index: number): void {
     if (!this.editingQuestion) return;
@@ -254,39 +268,24 @@ pageSize = 5;
     const questionDto: CreateQuestionDto = {
       text: this.newQuestionText.trim(),
       type: this.newQuestionType,
-      points: this.newQuestionPoints
+      points: this.newQuestionPoints,
+      answerOptions: validOptions.map(opt => ({
+        text: opt.text.trim(),
+        isCorrect: opt.isCorrect
+      }))
     };
 
     this.questionservice.addQuestion(this.quizId, questionDto).subscribe({
       next: (res:ApiResponse<QuestionDto>) => {
-        console.log(res);
-        const questionId = res.data.id;
-        const optionCalls: Observable<ApiResponse<AnswerOptionDto>>[] = validOptions.map(opt => 
-          this.answeroptionservice.addanswerOption( questionId, {
-            text: opt.text.trim(),
-            isCorrect: opt.isCorrect
-          })
-        );
-
-        forkJoin(optionCalls).subscribe({
-          next: () => {
-            this.resetNewQuestionForm();
-            this.loadQuizQuestions();
-          },
-         error: (err) => {
-  if (err.error?.errors) {
-    this.addingQuestionError = Object.values(err.error.errors)
-      .flat()
-      .join(', ');
-  } else {
-    this.addingQuestionError = 'Failed to add answer options';
-  }
-  this.addingQuestion = false;
-}
-        });
+        this.resetNewQuestionForm();
+        this.loadQuizQuestions("Question added successfully!");
       },
       error: (err) => {
-        this.addingQuestionError = err.error?.message || 'Failed to add question';
+        if (err.error?.errors) {
+          this.addingQuestionError = Object.values(err.error.errors).flat().join(', ');
+        } else {
+          this.flash("error", err.error?.message || 'Failed to add question');
+        }
         this.addingQuestion = false;
         this.cdr.detectChanges();
       }
@@ -358,5 +357,13 @@ get totalPages(): number {
 goToPage(page: number): void {
   this.currentPage.set(page);
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+onAiQuizSaved(): void {
+  this.showAiModal = false;
+  this.loadQuizQuestions();
+}
+
+getcourseTitle(): string {
+  return this.quiz?.courseTitle?? '';
 }
 }

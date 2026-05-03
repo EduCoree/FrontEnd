@@ -1,312 +1,202 @@
-<!-- <div class="bg-background text-on-background min-h-screen font-body">
-
-  <nav class="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-xl border-b border-surface-container">
-    <div class="flex justify-between items-center w-full px-8 h-20">
+<div class="bg-background text-on-background min-h-screen flex flex-col font-body">
+  <nav class="sticky top-0 z-40 bg-white border-b border-outline-variant/20">
+    <div class="flex justify-between items-center w-full px-4 md:px-8 h-16">
       <div class="flex items-center gap-8">
-        <span class="text-2xl font-bold text-primary tracking-tight cursor-pointer" (click)="goToDashboard()">EduCore</span>
-        <div class="hidden md:flex items-center gap-8 text-sm font-medium">
-          <a (click)="goToDashboard()" class="text-on-surface-variant hover:text-primary transition-colors cursor-pointer">
-            {{ 'adminSidebar.dashboard' | translate }}
-          </a>
-          <a class="text-primary font-bold border-b-2 border-primary cursor-pointer">
-            {{ 'myCourses.title' | translate }}
-          </a>
-        </div>
+      <div>
+        <h1 class="text-lg font-black text-on-surface tracking-tight">{{ 'myCourses.title' | translate }}</h1>
+        <p class="text-xs text-on-surface-variant">
+          {{ 'myCourses.workspace' | translate }}
+        </p>
+      </div>
       </div>
       <div class="flex items-center gap-4">
-        <button class="p-2 rounded-full hover:bg-surface-container transition-colors">
-          <span class="material-symbols-outlined text-primary">notifications</span>
-        </button>
-        <div class="h-10 w-10 rounded-full bg-primary-container flex items-center justify-center border border-primary/20">
-          <span class="material-symbols-outlined text-primary">person</span>
-        </div>
+        <!-- Icons removed per user request (already in global navbar) -->
       </div>
     </div>
   </nav>
 
-  <main class="md:ms-64 pt-8 pb-8 px-8 min-h-screen">
-    <div class="max-w-7xl mx-auto py-8">
+  <main class="flex-1 px-4 md:px-8 py-4 md:py-8">
+    <!-- Loading -->
+    <div *ngIf="isLoading()" class="flex justify-center py-20">
+      <span class="material-symbols-outlined text-primary text-4xl animate-spin">
+        progress_activity
+      </span>
+    </div>
 
-      <div *ngIf="isLoading()" class="flex justify-center py-20">
-        <span class="material-symbols-outlined text-primary text-4xl animate-spin">progress_activity</span>
-      </div>
+    <div *ngIf="!isLoading()">
+      <!-- Courses Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+        <div
+          *ngFor="let course of courses()"
+          class="group bg-white rounded-2xl overflow-hidden flex flex-col border border-outline-variant/20 shadow-sm hover:border-outline-variant/50 hover:shadow-lg hover:shadow-black/5 hover:-translate-y-1 transition-all duration-300 relative"
+        >
+          <!-- Colored top accent bar -->
+          <div
+            class="h-1 w-full flex-shrink-0"
+            [class]="
+              course.status === 'Published'
+                ? 'bg-gradient-to-r from-emerald-300 to-teal-200'
+                : course.status === 'Draft'
+                  ? 'bg-gradient-to-r from-amber-300 to-yellow-200'
+                  : 'bg-gradient-to-r from-slate-200 to-slate-100'
+            "
+          ></div>
 
-      <div *ngIf="!isLoading()" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-
-        <div *ngFor="let course of courses()"
-          class="group bg-white rounded-xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1 shadow-sm border border-outline-variant/10">
-
-          <div class="relative h-56 overflow-hidden bg-surface-container-high">
-            <img *ngIf="course.coverImage" [src]="course.coverImage" [alt]="course.title"
-              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          <!-- Thumbnail -->
+          <div class="relative h-48 overflow-hidden bg-surface-container flex-shrink-0">
+            <img
+              [src]="getCourseImage(course)"
+              [alt]="course.title"
+              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              [class.grayscale]="course.status !== 'Published'"
               [class.opacity-60]="course.status !== 'Published'"
-              [class.grayscale]="course.status !== 'Published'"/>
-            <div *ngIf="!course.coverImage" class="w-full h-full flex items-center justify-center">
-              <span class="material-symbols-outlined text-outline text-5xl">image</span>
+            />
+            <!-- Debug info - temporary -->
+            <div class="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[8px] p-1 truncate" *ngIf="false">
+              {{ course.coverImage || 'no-img' }}
             </div>
 
-            <div class="absolute top-4 start-4">
-              <span *ngIf="course.status === 'Published'"
-                class="bg-primary text-on-primary text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest backdrop-blur-md shadow-sm">
+            <!-- Status Badge -->
+            <div class="absolute top-3 start-3">
+              <span
+                *ngIf="course.status === 'Published'"
+                class="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wide bg-primary text-white shadow-sm"
+              >
                 {{ 'adminCourses.published' | translate }}
               </span>
-              <span *ngIf="course.status === 'Draft'"
-                class="bg-surface-dim text-on-surface-variant text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest backdrop-blur-md shadow-sm">
+              <span
+                *ngIf="course.status === 'Draft'"
+                class="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wide bg-amber-400 text-white shadow-sm"
+              >
                 {{ 'adminCourses.draft' | translate }}
               </span>
-              <span *ngIf="course.status === 'Archived'"
-                class="bg-tertiary-container text-on-tertiary-container text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest backdrop-blur-md shadow-sm">
+              <span
+                *ngIf="course.status === 'Archived'"
+                class="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wide bg-slate-200 text-slate-600 shadow-sm"
+              >
                 {{ 'adminCourses.archived' | translate }}
               </span>
             </div>
           </div>
 
-          <div class="p-8 flex flex-col flex-grow">
-            <h3 class="text-xl font-bold text-on-surface leading-tight tracking-tight mb-4">{{ course.title }}</h3>
-            <div class="flex items-center gap-6 mb-8 text-on-surface-variant text-sm">
-              <div class="flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-base">group</span>
-                <span class="font-medium">{{ course.totalStudents || 0 }} {{ 'courseCard.students' | translate }}</span>
+          <!-- Content -->
+          <div class="p-5 flex flex-col flex-1">
+            <h3
+              class="font-bold text-base text-on-surface leading-snug mb-3 group-hover:text-primary transition-colors duration-200 line-clamp-2"
+            >
+              {{ course.title }}
+            </h3>
+
+            <!-- Stats -->
+            <div class="flex items-center gap-3 mb-5">
+              <div
+                class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface-container-low text-xs text-on-surface-variant font-semibold"
+              >
+                <span
+                  class="material-symbols-outlined text-blue-500 text-[14px]"
+                  style="font-variation-settings: 'FILL' 1"
+                  >group</span
+                >
+                {{ course.totalStudents || 0 }} {{ 'courseCard.students' | translate }}
               </div>
-              <div class="flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-base">menu_book</span>
-                <span class="font-medium">{{ course.totalLessons || 0 }} {{ 'courseCard.lessons' | translate }}</span>
+              <div
+                class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface-container-low text-xs text-on-surface-variant font-semibold"
+              >
+                <span
+                  class="material-symbols-outlined text-primary text-[14px]"
+                  style="font-variation-settings: 'FILL' 1"
+                  >menu_book</span
+                >
+                {{ course.totalLessons || 0 }} {{ 'courseCard.lessons' | translate }}
               </div>
             </div>
 
-            <div class="mt-auto flex items-center gap-3">
-              <button  [routerLink]="['/teacher/courses/edit', course.id]"
-                class="flex-grow flex items-center justify-center gap-2 bg-primary-container text-on-primary-container py-3 rounded-full font-semibold hover:bg-primary-fixed transition-colors">
-                <span class="material-symbols-outlined text-lg">edit</span>
-                {{ course.status === 'Draft' ? ('teacherPortal.continueEditing' | translate) : ('teacherPortal.editCourse' | translate) }}
+            <!-- Actions -->
+            <div class="mt-auto flex items-center gap-2">
+              <button
+                [routerLink]="['/teacher/courses/edit', course.id]"
+                class="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-bold bg-primary text-white hover:bg-primary/90 hover:shadow-md hover:shadow-primary/25 transition-all duration-200"
+              >
+                <span class="material-symbols-outlined text-[16px]">edit</span>
+                {{
+                  course.status === 'Draft'
+                    ? ('teacherPortal.continueEditing' | translate)
+                    : ('teacherPortal.editCourse' | translate)
+                }}
               </button>
-              <button (click)="deleteCourse(course.id)"
-                class="p-3 bg-surface-container-high text-error rounded-full hover:bg-error-container/20 transition-colors">
-                <span class="material-symbols-outlined text-lg">delete</span>
+              <button
+                (click)="deleteCourse(course)"
+                class="p-2.5 rounded-xl bg-red-50 border border-red-100 text-error hover:bg-error-container/40 transition-colors duration-200"
+              >
+                <span class="material-symbols-outlined text-[18px]">delete</span>
               </button>
             </div>
           </div>
         </div>
 
-        <div *ngIf="courses().length === 0"
-          class="col-span-full flex flex-col items-center justify-center py-20 text-center">
-          <span class="material-symbols-outlined text-outline text-6xl mb-4">menu_book</span>
-          <h3 class="text-xl font-bold text-on-surface-variant mb-2">{{ 'myCourses.noCoursesTitle' | translate }}</h3>
-          <p class="text-sm text-outline mb-6">{{ 'teacherPortal.goToDashboardHint' | translate }}</p>
-          <button (click)="goToDashboard()"
-            class="px-8 py-3 rounded-full bg-primary text-on-primary font-bold text-sm uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-105 transition-transform">
+        <!-- Empty State -->
+        <div
+          *ngIf="courses().length === 0"
+          class="col-span-full flex flex-col items-center justify-center py-20 text-center"
+        >
+          <div class="w-20 h-20 rounded-2xl bg-primary/8 flex items-center justify-center mb-4">
+            <span class="material-symbols-outlined text-primary text-4xl">menu_book</span>
+          </div>
+          <h3 class="text-lg font-bold text-on-surface mb-2">
+            {{ 'myCourses.noCoursesTitle' | translate }}
+          </h3>
+          <p class="text-sm text-on-surface-variant mb-6 max-w-xs">
+            {{ 'teacherPortal.goToDashboardHint' | translate }}
+          </p>
+          <button
+            (click)="goToDashboard()"
+            class="px-6 py-2.5 rounded-xl bg-primary text-white font-bold text-sm shadow-md shadow-primary/20 hover:-translate-y-0.5 transition-all duration-200"
+          >
             {{ 'teacherPortal.goToDashboard' | translate }}
           </button>
         </div>
       </div>
 
-      <div *ngIf="totalPages() > 1" class="flex justify-center gap-2 mt-10">
-        <button *ngFor="let p of [].constructor(totalPages()); let i = index"
+      <!-- Pagination -->
+      <div *ngIf="totalPages() > 1" class="flex justify-center gap-2 mt-8">
+        <button
+          *ngFor="let p of [].constructor(totalPages()); let i = index"
           (click)="changePage(i + 1)"
-          [class]="currentPage === i + 1
-            ? 'w-10 h-10 rounded-full bg-primary text-white font-bold text-sm'
-            : 'w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant font-bold text-sm hover:bg-surface-container transition-colors'">
+          [class]="
+            currentPage === i + 1
+              ? 'w-9 h-9 rounded-xl bg-primary text-white font-bold text-sm shadow-md shadow-primary/20'
+              : 'w-9 h-9 rounded-xl bg-white border border-outline-variant/20 text-on-surface-variant font-bold text-sm hover:bg-primary/8 hover:text-primary hover:border-primary/20 transition-all duration-200'
+          "
+        >
           {{ i + 1 }}
         </button>
       </div>
-
     </div>
   </main>
-</div> -->
 
-<!-- Top bar -->
-<header
-  class="bg-white border-b border-outline-variant/20 px-8 h-16 flex items-center justify-between sticky top-0 z-40 shadow-[0_2px_8px_rgba(0,0,0,0.04)]"
->
-  <div>
-    <h1 class="text-lg font-black text-on-surface tracking-tight">
-      {{ 'myCourses.title' | translate }}
-    </h1>
-    <p class="text-xs text-on-surface-variant">
-      {{ 'myCourses.workspace' | translate }}
+  <!-- Footer -->
+  <footer
+    class="bg-white border-t border-outline-variant/15 px-4 md:px-8 py-4 flex justify-between items-center"
+  >
+    <span class="text-xs md:text-sm font-black text-primary">EduCore</span>
+    <p class="text-[10px] md:text-xs text-on-surface-variant">
+      {{ 'teacherPortal.copyright' | translate }}
     </p>
-  </div>
-  <div class="flex items-center gap-3">
-    <button
-      class="relative p-2.5 rounded-xl bg-surface-container-low hover:bg-primary/8 transition-colors"
-    >
-      <span class="material-symbols-outlined text-on-surface-variant text-[22px]">
-        notifications
-      </span>
-    </button>
-    <div
-      class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white text-sm font-bold ring-2 ring-primary/20 cursor-pointer"
-    >
-      <span class="material-symbols-outlined text-[18px]">person</span>
-    </div>
-  </div>
-</header>
+  </footer>
+  
+</div>
 
-<main class="flex-1 px-8 py-8">
-  <!-- Loading -->
-  <div *ngIf="isLoading()" class="flex justify-center py-20">
-    <span class="material-symbols-outlined text-primary text-4xl animate-spin">
-      progress_activity
-    </span>
-  </div>
-
-  <div *ngIf="!isLoading()">
-    <!-- Courses Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-      <div
-        *ngFor="let course of courses()"
-        class="group bg-white rounded-2xl overflow-hidden flex flex-col border border-outline-variant/20 shadow-sm hover:border-outline-variant/50 hover:shadow-lg hover:shadow-black/5 hover:-translate-y-1 transition-all duration-300 relative"
-      >
-        <!-- Colored top accent bar -->
-        <div
-          class="h-1 w-full flex-shrink-0"
-          [class]="
-            course.status === 'Published'
-              ? 'bg-gradient-to-r from-emerald-300 to-teal-200'
-              : course.status === 'Draft'
-                ? 'bg-gradient-to-r from-amber-300 to-yellow-200'
-                : 'bg-gradient-to-r from-slate-200 to-slate-100'
-          "
-        ></div>
-
-        <!-- Thumbnail -->
-        <div class="relative h-48 overflow-hidden bg-surface-container flex-shrink-0">
-          <img
-            *ngIf="course.coverImage"
-            [src]="course.coverImage"
-            [alt]="course.title"
-            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            [class.grayscale]="course.status !== 'Published'"
-            [class.opacity-60]="course.status !== 'Published'"
-          />
-          <div *ngIf="!course.coverImage" class="w-full h-full flex items-center justify-center">
-            <span class="material-symbols-outlined text-outline text-4xl">image</span>
-          </div>
-
-          <!-- Status Badge -->
-          <div class="absolute top-3 start-3">
-            <span
-              *ngIf="course.status === 'Published'"
-              class="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wide bg-primary text-white shadow-sm"
-            >
-              {{ 'adminCourses.published' | translate }}
-            </span>
-            <span
-              *ngIf="course.status === 'Draft'"
-              class="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wide bg-amber-400 text-white shadow-sm"
-            >
-              {{ 'adminCourses.draft' | translate }}
-            </span>
-            <span
-              *ngIf="course.status === 'Archived'"
-              class="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wide bg-slate-200 text-slate-600 shadow-sm"
-            >
-              {{ 'adminCourses.archived' | translate }}
-            </span>
-          </div>
-        </div>
-
-        <!-- Content -->
-        <div class="p-5 flex flex-col flex-1">
-          <h3
-            class="font-bold text-base text-on-surface leading-snug mb-3 group-hover:text-primary transition-colors duration-200 line-clamp-2"
-          >
-            {{ course.title }}
-          </h3>
-
-          <!-- Stats -->
-          <div class="flex items-center gap-3 mb-5">
-            <div
-              class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface-container-low text-xs text-on-surface-variant font-semibold"
-            >
-              <span
-                class="material-symbols-outlined text-blue-500 text-[14px]"
-                style="font-variation-settings: 'FILL' 1"
-                >group</span
-              >
-              {{ course.totalStudents || 0 }} {{ 'courseCard.students' | translate }}
-            </div>
-            <div
-              class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface-container-low text-xs text-on-surface-variant font-semibold"
-            >
-              <span
-                class="material-symbols-outlined text-primary text-[14px]"
-                style="font-variation-settings: 'FILL' 1"
-                >menu_book</span
-              >
-              {{ course.totalLessons || 0 }} {{ 'courseCard.lessons' | translate }}
-            </div>
-          </div>
-
-          <!-- Actions -->
-          <div class="mt-auto flex items-center gap-2">
-            <button
-              [routerLink]="['/teacher/courses/edit', course.id]"
-              class="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-bold bg-primary text-white hover:bg-primary/90 hover:shadow-md hover:shadow-primary/25 transition-all duration-200"
-            >
-              <span class="material-symbols-outlined text-[16px]">edit</span>
-              {{
-                course.status === 'Draft'
-                  ? ('teacherPortal.continueEditing' | translate)
-                  : ('teacherPortal.editCourse' | translate)
-              }}
-            </button>
-            <button
-              (click)="deleteCourse(course.id)"
-              class="p-2.5 rounded-xl bg-red-50 border border-red-100 text-error hover:bg-error-container/40 transition-colors duration-200"
-            >
-              <span class="material-symbols-outlined text-[18px]">delete</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Empty State -->
-      <div
-        *ngIf="courses().length === 0"
-        class="col-span-full flex flex-col items-center justify-center py-20 text-center"
-      >
-        <div class="w-20 h-20 rounded-2xl bg-primary/8 flex items-center justify-center mb-4">
-          <span class="material-symbols-outlined text-primary text-4xl">menu_book</span>
-        </div>
-        <h3 class="text-lg font-bold text-on-surface mb-2">
-          {{ 'myCourses.noCoursesTitle' | translate }}
-        </h3>
-        <p class="text-sm text-on-surface-variant mb-6 max-w-xs">
-          {{ 'teacherPortal.goToDashboardHint' | translate }}
-        </p>
-        <button
-          (click)="goToDashboard()"
-          class="px-6 py-2.5 rounded-xl bg-primary text-white font-bold text-sm shadow-md shadow-primary/20 hover:-translate-y-0.5 transition-all duration-200"
-        >
-          {{ 'teacherPortal.goToDashboard' | translate }}
-        </button>
-      </div>
-    </div>
-
-    <!-- Pagination -->
-    <div *ngIf="totalPages() > 1" class="flex justify-center gap-2 mt-8">
-      <button
-        *ngFor="let p of [].constructor(totalPages()); let i = index"
-        (click)="changePage(i + 1)"
-        [class]="
-          currentPage === i + 1
-            ? 'w-9 h-9 rounded-xl bg-primary text-white font-bold text-sm shadow-md shadow-primary/20'
-            : 'w-9 h-9 rounded-xl bg-white border border-outline-variant/20 text-on-surface-variant font-bold text-sm hover:bg-primary/8 hover:text-primary hover:border-primary/20 transition-all duration-200'
-        "
-      >
-        {{ i + 1 }}
-      </button>
-    </div>
-  </div>
-</main>
-
-<!-- Footer -->
-<footer
-  class="bg-white border-t border-outline-variant/15 px-8 py-4 flex justify-between items-center"
+<div
+  *ngIf="selectedCourseId() !== null"
+  class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center"
+  (click)="onDeleteCancelled()"
 >
-  <span class="text-sm font-black text-primary">EduCore</span>
-  <p class="text-xs text-on-surface-variant">
-    {{ 'teacherPortal.copyright' | translate }}
-  </p>
-</footer>
+  <div (click)="$event.stopPropagation()">
+    <app-delete-course
+      [courseId]="selectedCourseId()!"
+      [courseName]="selectedCourseName()"
+      (deleted)="onDeleteConfirmed()"
+      (cancelled)="onDeleteCancelled()"
+    />
+  </div>
+</div>

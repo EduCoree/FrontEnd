@@ -1,215 +1,135 @@
-<!-- <article 
-  class="group bg-surface-container-lowest rounded-2xl overflow-hidden transition-transform hover:-translate-y-2 duration-300 cursor-pointer"
-  [routerLink]="['/courses', course.id]">
-
-
-  <div class="relative h-48">
-    <img
-      class="w-full h-full object-cover"
-      [src]="course.coverImage || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600'"
-      [alt]="course.title"
-    />
-    <span class="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-lg text-[10px] font-bold text-primary uppercase">
-      {{ course.categoryName }}
-    </span>
-  </div>
-
- 
-  <div class="p-6">
-
-  
-    <div class="flex items-center gap-2 mb-4">
-      <span class="material-symbols-outlined text-sm text-on-surface-variant">person</span>
-      <span class="text-xs font-semibold text-on-surface-variant">{{ course.teacherName }}</span>
-    </div>
-
-
-    <h3 class="font-headline font-bold text-lg mb-3 group-hover:text-primary transition-colors line-clamp-2">
-      {{ course.title }}
-    </h3>
-
-  
-    <div class="flex items-center justify-between text-xs text-on-surface-variant mb-6">
-      <div class="flex items-center gap-1">
-        <span class="material-symbols-outlined text-[16px]">group</span>
-        <span>{{ course.totalStudents }} {{ 'courseCard.students' | translate }}</span>
-      </div>
-      <div class="flex items-center gap-1">
-        <span class="material-symbols-outlined text-[16px]">menu_book</span>
-        <span>{{ course.totalLessons }} {{ 'courseCard.lessons' | translate }}</span>
-      </div>
-    </div>
-
-   
-    <div class="flex items-center justify-between pt-4 border-t border-outline-variant/20">
-      <div class="flex items-baseline gap-2">
-        <span class="text-xl font-bold text-primary">
-          {{ course.pricingType === 'Free' ? ('courseCard.free' | translate) : '$' + course.price }}
-        </span>
-      </div>
-      <button 
-        class="p-2 bg-primary-container/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all"
-        (click)="$event.stopPropagation()">
-        <span class="material-symbols-outlined">shopping_cart</span>
-      </button>
-    </div>
-
-  </div>
-</article> -->
-
-
 <article
-  class="group relative rounded-[30px] overflow-hidden cursor-pointer
-         p-[1.2px]
-         bg-gradient-to-br from-primary/70 via-white to-secondary/70
-         shadow-[0_10px_35px_rgba(15,23,42,0.10)]
-         hover:shadow-[0_22px_55px_rgba(46,104,88,0.18)]
+  class="group relative flex flex-col rounded-[20px] overflow-hidden cursor-pointer
+         bg-white
+         border border-black/[0.07]
+         shadow-[0_4px_20px_rgba(15,23,42,0.07)]
+         hover:shadow-[0_20px_44px_rgba(15,70,48,0.14)]
          hover:-translate-y-1.5
          transition-all duration-500 ease-out"
   [routerLink]="['/courses', course.id]">
 
-  <!-- real gradient border inner shell -->
-  <div class="relative rounded-[29px] overflow-hidden
-              bg-white/75 backdrop-blur-xl
-              border border-white/60
-              flex flex-col h-full isolate">
+  <!-- top accent line -->
+  <div class="h-[3px] w-full bg-gradient-to-r from-[#1D9E75] to-[#5DCAA5] flex-shrink-0"></div>
 
-    <!-- soft glass overlay -->
-    <div class="absolute inset-0 bg-gradient-to-br from-white/50 via-white/20 to-transparent pointer-events-none"></div>
+  <!-- Cover Image -->
+  <div class="relative h-48 overflow-hidden flex-shrink-0">
+    <img
+      class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+      [src]="course.coverImage || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600'"
+      [alt]="course.title"
+    />
 
-    <!-- shine -->
-    <div class="absolute inset-0 pointer-events-none overflow-hidden">
-      <div class="absolute top-0 -left-[120%] w-[70%] h-full
-                  bg-gradient-to-r from-transparent via-white/35 to-transparent
-                  skew-x-[-18deg]
-                  group-hover:left-[135%]
-                  transition-all duration-1000">
+    <!-- dark overlay for text legibility -->
+    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent"></div>
+
+    <!-- category badge -->
+    <span class="absolute top-3 left-3 inline-flex items-center gap-1.5
+                 bg-white/92 backdrop-blur-md
+                 px-3 py-1.5 rounded-full
+                 text-[10px] font-bold tracking-wide uppercase
+                 text-[#0f6e56]
+                 border border-white/70
+                 shadow-[0_2px_10px_rgba(15,23,42,0.08)]">
+      <span class="w-1.5 h-1.5 rounded-full bg-[#1D9E75]"></span>
+      {{ course.categoryName }}
+    </span>
+
+    <!-- floating price chip (dark green, solid) -->
+    <div class="absolute bottom-3 right-3 px-3 py-1.5 rounded-full
+                bg-[#0f6e56]/90 backdrop-blur-md
+                border border-white/20
+                text-white font-bold text-[13px]
+                group-hover:scale-105 transition-all duration-300">
+      {{ course.pricingType === 'Free' ? ('courseCard.free' | translate) : course.price + ' ' + ('courseCard.currency' | translate) }}
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="flex flex-col flex-1 p-5">
+
+    <!-- teacher row -->
+    <div class="flex items-center gap-2 mb-2.5">
+      <div class="w-7 h-7 rounded-full
+                  bg-[#E1F5EE]
+                  border border-[#1D9E75]/20
+                  flex items-center justify-center flex-shrink-0">
+        <span class="material-symbols-outlined text-[14px] text-[#1D9E75]">person</span>
       </div>
+      <span class="text-xs font-semibold text-on-surface-variant truncate">
+        {{ course.teacherName }}
+      </span>
     </div>
 
-    <!-- Cover Image -->
-    <div class="relative h-52 overflow-hidden flex-shrink-0">
-      <img
-        class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-        [src]="course.coverImage || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600'"
-        [alt]="course.title"
-      />
+    <!-- title -->
+    <h3 class="font-headline font-bold text-[15px]
+               text-on-surface leading-snug min-h-[2.8rem] line-clamp-2
+               mb-3
+               transition-colors duration-300 group-hover:text-[#0f6e56]">
+      {{ course.title }}
+    </h3>
 
-      <div class="absolute inset-0 bg-gradient-to-t from-black/35 via-black/5 to-transparent"></div>
+    <!-- stats pills -->
+    <div class="grid grid-cols-2 gap-2 mb-3">
 
-      <!-- category badge -->
-      <span class="absolute top-4 left-4 inline-flex items-center 
-                   bg-white/70 backdrop-blur-xl
-                   px-3.5 py-1.5 rounded-full
-                   text-[11px] font-semibold text-on-surface
-                   border border-white/80
-                   shadow-[0_4px_16px_rgba(15,23,42,0.08)]">
-        <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
-        {{ course.categoryName }}
+      <div class="flex items-center gap-2 rounded-xl
+                  bg-[#f4fbf8]
+                  border border-[#1D9E75]/12
+                  px-3 py-2
+                  hover:bg-[#E1F5EE] transition-colors duration-200">
+        <span class="material-symbols-outlined text-[16px] text-[#1D9E75]">group</span>
+        <div class="flex flex-col leading-none">
+          <span class="text-[9px] font-medium text-on-surface-variant uppercase tracking-wide">
+            {{ 'courseCard.students' | translate }}
+          </span>
+          <span class="text-[13px] font-bold text-on-surface mt-0.5">
+            {{ (course.totalStudents ?? 0) | number }}
+          </span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 rounded-xl
+                  bg-[#f4fbf8]
+                  border border-[#1D9E75]/12
+                  px-3 py-2
+                  hover:bg-[#E1F5EE] transition-colors duration-200">
+        <span class="material-symbols-outlined text-[16px] text-[#1D9E75]">menu_book</span>
+        <div class="flex flex-col leading-none">
+          <span class="text-[9px] font-medium text-on-surface-variant uppercase tracking-wide">
+            {{ 'courseCard.lessons' | translate }}
+          </span>
+          <span class="text-[13px] font-bold text-on-surface mt-0.5">
+            {{ (course.totalLessons ?? 0) | number }}
+          </span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- footer -->
+    <div class="flex items-center justify-between pt-3 mt-auto
+                border-t border-[#1D9E75]/10">
+
+      <span class="text-2xl font-extrabold text-[#0f6e56] leading-none">
+        {{ course.pricingType === 'Free' ? ('courseCard.free' | translate) : course.price + ' ' + ('courseCard.currency' | translate) }}
       </span>
 
-      <!-- floating price -->
-      <div class="absolute bottom-4 right-4 px-3.5 py-2 rounded-full
-                  bg-white/72 backdrop-blur-xl
-                  border border-white/80
-                  shadow-[0_4px_18px_rgba(15,23,42,0.10)]
-                  text-on-surface font-semibold text-sm
-                  group-hover:scale-105 transition-all duration-300">
-        {{ course.pricingType === 'Free' ? ('courseCard.free' | translate) : '$' + course.price }}
-      </div>
-    </div>
-
-    <!-- Content -->
-    <div class="relative p-5 md:p-6 flex flex-col flex-1">
-
-      <!-- teacher -->
-      <div class="flex items-center gap-2.5 mb-2">
-        <div class="w-8 h-8 rounded-full
-                    bg-white/65 backdrop-blur-lg
-                    border border-white/80
-                    shadow-[0_2px_10px_rgba(15,23,42,0.06)]
-                    flex items-center justify-center">
-          <span class="material-symbols-outlined text-[16px] text-primary">person</span>
-        </div>
-        <span class="text-sm font-medium text-on-surface-variant truncate">
-          {{ course.teacherName }}
+      <button
+        class="group/btn relative overflow-hidden
+               w-9 h-9 rounded-xl
+               bg-[#E1F5EE]
+               border border-[#1D9E75]/20
+               text-[#1D9E75]
+               hover:bg-[#1D9E75] hover:text-white hover:scale-105
+               active:scale-95
+               transition-all duration-300
+               flex items-center justify-center"
+        (click)="$event.stopPropagation()">
+        <span class="material-symbols-outlined text-[18px] relative z-10
+                     transition-transform duration-300 group-hover/btn:scale-110">
+          shopping_cart
         </span>
-      </div>
+      </button>
 
-      <!-- title -->
-      <h3 class="font-headline font-bold text-lg
-                 text-on-surface leading-snug min-h-[3.2rem] line-clamp-2 pt-1 pb-1
-                 transition-colors duration-300 group-hover:text-primary">
-        {{ course.title }}
-      </h3>
-
-      <!-- stats -->
-      <div class="grid grid-cols-2 gap-3 mb-2">
-        <div class="flex items-center gap-2.5 rounded-2xl
-                    bg-white/55 backdrop-blur-lg
-                    border border-white/70
-                    shadow-[0_4px_14px_rgba(15,23,42,0.05)]
-                    hover:bg-white/72
-                    transition-all duration-300
-                    px-3 py-2">
-          <span class="material-symbols-outlined text-[18px] text-primary">group</span>
-          <div class="flex flex-col leading-none">
-            <span class="text-xs text-on-surface-variant">
-              {{ 'courseCard.students' | translate }}
-            </span>
-            <span class="text-sm font-semibold text-on-surface">
-              {{ course.totalStudents }}
-            </span>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-2.5 rounded-2xl
-                    bg-white/55 backdrop-blur-lg
-                    border border-white/70
-                    shadow-[0_4px_14px_rgba(15,23,42,0.05)]
-                    hover:bg-white/72
-                    transition-all duration-300
-                    px-3 py-2">
-          <span class="material-symbols-outlined text-[18px] text-primary">menu_book</span>
-          <div class="flex flex-col leading-none">
-            <span class="text-xs text-on-surface-variant">
-              {{ 'courseCard.lessons' | translate }}
-            </span>
-            <span class="text-sm font-semibold text-on-surface">
-              {{ course.totalLessons }}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <!-- footer -->
-      <div class="flex items-center justify-between pt-2 mt-auto border-t border-white/60">
-        <div class="flex flex-col">
-       
-          <span class="text-2xl font-bold text-on-surface leading-none">
-            {{ course.pricingType === 'Free' ? ('courseCard.free' | translate) : '$' + course.price }}
-          </span>
-        </div>
-
-        <button
-          class="group/btn relative overflow-hidden
-                 p-2 rounded-2xl
-                 bg-white/72 backdrop-blur-xl
-                 border border-white/85
-                 text-primary
-                 shadow-[0_6px_18px_rgba(15,23,42,0.08)]
-                 hover:bg-white hover:scale-105 active:scale-95
-                 transition-all duration-300"
-          (click)="$event.stopPropagation()">
-
-          <span class="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"></span>
-
-          <span class="material-symbols-outlined text-[20px] relative z-10 transition-transform duration-300 group-hover/btn:scale-110">
-            shopping_cart
-          </span>
-        </button>
-      </div>
     </div>
   </div>
 </article>
-

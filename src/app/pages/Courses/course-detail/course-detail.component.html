@@ -42,7 +42,7 @@
             {{ 'courseDetails.tuition' | translate }}
           </span>
           <span class="text-white text-3xl font-bold">
-            {{ course.pricingType === 'Free' ? ('courseDetails.free' | translate) : '$' + course.price }}
+            {{ course.pricingType === 'Free' ? ('courseDetails.free' | translate) : course.price + ' ' + ('courseDetails.currency' | translate) }}
           </span>
 
           <!-- Enroll Now Button -->
@@ -51,7 +51,6 @@
             class="w-full mt-4 py-3 px-6 bg-white text-primary font-bold rounded-full hover:bg-white/90 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
           >
             <span class="material-symbols-outlined text-lg">school</span>
-            Enroll Now
             {{ 'courseDetails.enroll' | translate }}
           </button>
         </div>
@@ -154,19 +153,30 @@
                   <div
                     *ngFor="let lesson of section.lessons"
                     class="flex items-center justify-between py-3 border-t border-surface-container-highest cursor-pointer hover:bg-surface-container-lowest/50 transition-colors rounded-md -mx-2 px-2"
-                    (click)="goToLesson(lesson.id, lesson.type)"
+                    [class.opacity-60]="!lesson.isFreePreview"
+                    (click)="handleLessonClick(lesson)"
                   >
                     <div class="flex items-center gap-3">
                       <span class="material-symbols-outlined text-primary text-xl">
                         {{ getLessonIcon(lesson.type) }}
                       </span>
                       <span class="text-on-surface-variant text-sm group-hover:text-primary transition-colors">{{ lesson.title }}</span>
+                      
+                      <!-- Free Preview badge -->
+                      <span *ngIf="lesson.isFreePreview" class="px-2 py-0.5 rounded text-[10px] font-bold bg-primary/10 text-primary uppercase ml-2">
+                        Preview
+                      </span>
                     </div>
 
-                    <span class="text-xs font-bold text-outline-variant">
-                      {{ lesson.durationSeconds / 60 | number: '1.0-0' }}
-                      {{ 'courseDetails.min' | translate }}
-                    </span>
+                    <div class="flex items-center gap-3">
+                      <span class="text-xs font-bold text-outline-variant">
+                        {{ lesson.durationSeconds / 60 | number: '1.0-0' }}
+                        {{ 'courseDetails.min' | translate }}
+                      </span>
+                      <span *ngIf="!lesson.isFreePreview" class="material-symbols-outlined text-outline-variant text-[16px]">
+                        lock
+                      </span>
+                    </div>
                   </div>
                 </div>
 

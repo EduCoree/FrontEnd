@@ -206,7 +206,7 @@ export class CourseSectionsComponent implements OnInit {
 
   // Navigation
   goBack(): void {
-    this.router.navigate(['/teacher/courses/create']);
+    this.router.navigate(['/teacher/courses/edit', this.courseId, 'info']);
   }
 
   goNext(): void {

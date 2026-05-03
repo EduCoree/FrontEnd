@@ -1,16 +1,19 @@
-<div class="min-h-screen bg-surface p-4 md:p-6 lg:p-8">
-  <div class="max-w-7xl mx-auto">
+<div class="flex min-h-screen bg-[#f8faf9] font-headline">
+  <app-admin-sidebar />
+  
+  <main class="flex-1 min-h-screen flex flex-col overflow-hidden">
+    <div class="flex-1 overflow-y-auto p-4 md:p-8 pb-24 md:pb-8 max-w-7xl custom-scrollbar">
 
     <!-- Header -->
-    <header class="mb-6">
+    <header class="mb-6 px-2 md:px-0">
       <a routerLink="/admin/payout/dashboard"
-         class="text-on-surface-variant hover:text-primary text-sm flex items-center gap-1 mb-1">
+         class="text-on-surface-variant hover:text-primary text-xs md:text-sm flex items-center gap-1 mb-1">
         <i class="fa-solid fa-arrow-left"></i> {{ 'payout.invoiceList.backToDashboard' | translate }}
       </a>
-      <h1 class="text-2xl md:text-3xl font-bold text-on-surface font-headline">
+      <h1 class="text-xl md:text-3xl font-bold text-on-surface font-headline tracking-tight">
         {{ 'payout.invoiceList.title' | translate }}
       </h1>
-      <p class="text-sm text-on-surface-variant mt-1">
+      <p class="text-xs md:text-sm text-on-surface-variant mt-1 font-medium">
         @if (totalCount() > 0) {
           {{ totalCount() }} {{ 'payout.invoiceList.subtitle.count' | translate }}
         } @else if (!loading()) {
@@ -75,14 +78,14 @@
         </div>
       </div>
 
-      <div class="flex gap-2">
+      <div class="flex flex-col sm:flex-row gap-2">
         <button (click)="applyFilters()"
-                class="px-4 py-2 rounded-xl bg-primary text-on-primary hover:bg-primary-dim transition-colors text-sm font-medium">
+                class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-primary text-on-primary hover:bg-primary-dim transition-colors text-sm font-bold shadow-lg shadow-primary/20">
           <i class="fa-solid fa-filter mr-1"></i> {{ 'payout.invoiceList.filters.apply' | translate }}
         </button>
         @if (hasActiveFilters()) {
           <button (click)="clearFilters()"
-                  class="px-4 py-2 rounded-xl bg-surface-container ring-1 ring-outline-variant hover:bg-surface-container-high transition-colors text-sm font-medium text-on-surface">
+                  class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-surface-container ring-1 ring-outline-variant hover:bg-surface-container-high transition-colors text-sm font-bold text-on-surface">
             {{ 'payout.invoiceList.filters.clearAll' | translate }}
           </button>
         }
@@ -116,42 +119,48 @@
       </div>
     }
 
-    <!-- Table -->
+    <!-- Table / Cards -->
     @if (!loading() && invoices().length > 0) {
-      <div class="bg-surface-container-lowest rounded-2xl ring-1 ring-outline-variant/40 overflow-hidden">
-
-        <!-- Desktop -->
+      <div class="bg-surface-container-lowest rounded-2xl ring-1 ring-outline-variant/40 overflow-hidden mb-6">
+        <!-- Desktop Table -->
         <div class="hidden md:block overflow-x-auto">
-          <table class="w-full text-sm">
-            <thead class="bg-surface-container">
-              <tr class="text-left text-xs uppercase tracking-wide text-on-surface-variant">
-                <th class="px-5 py-3 font-semibold">{{ 'payout.invoiceList.table.invoiceNumber' | translate }}</th>
-                <th class="px-5 py-3 font-semibold">{{ 'payout.invoiceList.table.teacher' | translate }}</th>
-                <th class="px-5 py-3 font-semibold">{{ 'payout.invoiceList.table.period' | translate }}</th>
-                <th class="px-5 py-3 font-semibold text-center">{{ 'payout.invoiceList.table.enrollments' | translate }}</th>
-                <th class="px-5 py-3 font-semibold text-right">{{ 'payout.invoiceList.table.total' | translate }}</th>
-                <th class="px-5 py-3 font-semibold">{{ 'payout.invoiceList.table.status' | translate }}</th>
-                <th class="px-5 py-3 font-semibold"></th>
+          <table class="w-full text-sm border-collapse">
+            <thead>
+              <tr class="text-left text-[10px] font-black uppercase tracking-widest text-[#acb3b2] bg-[#f8faf9] border-b border-[#eaefee]">
+                <th class="px-6 py-4">{{ 'payout.invoiceList.table.invoiceNumber' | translate }}</th>
+                <th class="px-6 py-4">{{ 'payout.invoiceList.table.teacher' | translate }}</th>
+                <th class="px-6 py-4">{{ 'payout.invoiceList.table.period' | translate }}</th>
+                <th class="px-6 py-4 text-center">{{ 'payout.invoiceList.table.enrollments' | translate }}</th>
+                <th class="px-6 py-4">{{ 'payout.invoiceList.table.total' | translate }}</th>
+                <th class="px-6 py-4">{{ 'payout.invoiceList.table.status' | translate }}</th>
+                <th class="px-6 py-4"></th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-outline-variant/20">
+            <tbody class="divide-y divide-[#eaefee]">
               @for (inv of invoices(); track inv.id) {
-                <tr class="hover:bg-surface-container/30 transition-colors cursor-pointer"
-                    (click)="openInvoice(inv.id)">
-                  <td class="px-5 py-3 font-semibold text-primary">{{ inv.invoiceNumber }}</td>
-                  <td class="px-5 py-3 font-medium text-on-surface">{{ inv.teacherName ?? '—' }}</td>
-                  <td class="px-5 py-3 text-on-surface-variant whitespace-nowrap">
-                    {{ inv.periodStart | date:'MMM yyyy' }}
+                <tr (click)="openInvoice(inv.id)" class="group hover:bg-[#f8faf9] transition-colors cursor-pointer">
+                  <td class="px-6 py-4">
+                    <span class="text-[#2e6959] font-black tracking-tight">{{ inv.invoiceNumber }}</span>
                   </td>
-                  <td class="px-5 py-3 text-center">{{ inv.paidEnrollmentsCount }}</td>
-                  <td class="px-5 py-3 text-right font-semibold">
-                    <app-money-display [amount]="inv.totalAmount" [currency]="inv.currency" size="sm" />
+                  <td class="px-6 py-4">
+                    <span class="font-bold text-[#2d3433]">{{ inv.teacherName ?? inv.teacherId }}</span>
                   </td>
-                  <td class="px-5 py-3">
+                  <td class="px-6 py-4">
+                    <span class="text-xs font-bold text-[#596060] uppercase">{{ inv.periodStart | date:'MMMM yyyy' }}</span>
+                  </td>
+                  <td class="px-6 py-4 text-center">
+                    <span class="bg-[#f0f5f3] text-[#2e6959] text-[10px] font-black px-2 py-0.5 rounded-lg border border-[#eaefee]">
+                      {{ inv.paidEnrollmentsCount }}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4">
+                    <app-money-display [amount]="inv.totalAmount" [currency]="inv.currency" size="sm" weight="black" />
+                  </td>
+                  <td class="px-6 py-4">
                     <app-invoice-status-badge [status]="inv.status" />
                   </td>
-                  <td class="px-5 py-3 text-right">
-                    <i class="fa-solid fa-chevron-right text-xs text-on-surface-variant"></i>
+                  <td class="px-6 py-4 text-right">
+                    <span class="material-symbols-outlined text-lg text-[#acb3b2] group-hover:text-[#2e6959] transition-colors">chevron_right</span>
                   </td>
                 </tr>
               }
@@ -159,39 +168,40 @@
           </table>
         </div>
 
-        <!-- Mobile cards -->
-        <div class="md:hidden divide-y divide-outline-variant/20">
-          @for (inv of invoices(); track inv.id) {
-            <div class="p-4 cursor-pointer hover:bg-surface-container/30"
-                 (click)="openInvoice(inv.id)">
-              <div class="flex items-start justify-between mb-2">
-                <div class="flex-1 min-w-0">
-                  <h3 class="font-semibold text-primary">{{ inv.invoiceNumber }}</h3>
-                  <p class="text-sm text-on-surface mt-0.5">{{ inv.teacherName ?? '—' }}</p>
-                  <p class="text-xs text-on-surface-variant">
-                    {{ inv.periodStart | date:'MMM yyyy' }} · {{ inv.paidEnrollmentsCount }} {{ 'payout.invoiceList.mobile.enrollments' | translate }}
-                  </p>
-                </div>
-                <app-invoice-status-badge [status]="inv.status" />
-              </div>
-              <div class="flex items-center justify-between mt-2">
-                <span class="text-xs text-on-surface-variant">{{ 'payout.invoiceList.mobile.total' | translate }}</span>
-                <app-money-display [amount]="inv.totalAmount" [currency]="inv.currency" size="md" />
-              </div>
-            </div>
-          }
-        </div>
-      </div>
 
+<!-- Mobile Cards -->
+<div class="md:hidden divide-y divide-[#eaefee]">
+  @for (inv of invoices(); track inv.id) {
+    <div class="p-4 bg-white active:bg-[#f0f5f3] transition-colors" (click)="openInvoice(inv.id)">
+      <div class="flex items-start justify-between mb-3">
+        <div>
+          <h3 class="font-bold text-[#2e6959] text-sm">{{ inv.invoiceNumber }}</h3>
+          <p class="text-sm font-extrabold text-[#2d3433] mt-0.5">{{ inv.teacherName ?? '—' }}</p>
+        </div>
+        <app-invoice-status-badge [status]="inv.status" />
+      </div>
+      <div class="flex items-end justify-between">
+        <div class="text-[10px] text-[#acb3b2] font-bold uppercase tracking-wider">
+          {{ inv.periodStart | date:'MMM yyyy' }} · {{ inv.paidEnrollmentsCount }} {{ 'payout.invoiceList.mobile.enrollments' | translate }}
+        </div>
+        <app-money-display [amount]="inv.totalAmount" [currency]="inv.currency" size="md" />
+      </div>
+    </div>
+  }
+</div>
+</div>
+      
       <!-- Pagination -->
+
+
       @if (totalPages() > 1) {
-        <div class="mt-4 flex items-center justify-between">
-          <div class="text-xs text-on-surface-variant">
+        <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-[10px] md:text-xs text-on-surface-variant font-bold uppercase tracking-widest">
             {{ 'payout.invoiceList.pagination.page' | translate }} {{ pageNumber() }}
             {{ 'payout.invoiceList.pagination.of' | translate }} {{ totalPages() }} ·
             {{ totalCount() }} {{ 'payout.invoiceList.pagination.total' | translate }}
           </div>
-          <div class="flex items-center gap-1">
+          <div class="flex items-center gap-1.5 flex-wrap justify-center">
             <button
               (click)="goToPage(pageNumber() - 1)"
               [disabled]="pageNumber() === 1"
@@ -218,5 +228,6 @@
         </div>
       }
     }
-  </div>
+    </div>
+  </main>
 </div>

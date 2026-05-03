@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { CourseService } from '../../../core/services/course';
 import { CategoryService } from '../../../core/services/category.service';
 import { Category } from '../../../core/models/category.model';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 //import { CategoryDto } from '../../../core/model/courses/course.model';
 
 @Component({
@@ -29,8 +29,15 @@ export class CreateCourseComponent implements OnInit {
   isUploadingCover = false;
   coverUploadSuccess = false;
   courseIdAfterCreate: number | null = null;
-categories: Category[] = [];
-  constructor(private fb: FormBuilder, private courseService: CourseService, private categoryService: CategoryService,private router: Router) {
+  categories: Category[] = [];
+  isCategoriesLoaded = false;
+  constructor(
+    private fb: FormBuilder,
+    private courseService: CourseService,
+    private categoryService: CategoryService,
+    private router: Router,
+    private translate: TranslateService
+  ) {
     this.courseForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
@@ -46,14 +53,20 @@ categories: Category[] = [];
       this.loadCategories();
     }
   }
-loadCategories(): void {
-  // const centerId = Number(localStorage.getItem('centerId'));
-  const centerId = 11;
-  this.categoryService.getAll(centerId).subscribe({
-    next: (res) => this.categories = res,
-    error: () => console.error('Failed to load categories')
-  });
-}
+  loadCategories(): void {
+    // const centerId = Number(localStorage.getItem('centerId'));
+    const centerId = 1;
+    this.categoryService.getAll(centerId).subscribe({
+      next: (res: any) => {
+        this.categories = res.data || res || [];
+        this.isCategoriesLoaded = true;
+      },
+      error: () => {
+        console.error('Failed to load categories');
+        this.isCategoriesLoaded = true;
+      }
+    });
+  }
 
   onFileSelected(event: any): void {
     this.selectedFile = event.target.files[0];
@@ -94,7 +107,7 @@ loadCategories(): void {
       },
       error: (err) => {
         this.isLoading = false;
-        this.errorMessage = err.error?.message || 'An error occurred';
+        this.errorMessage = err.error?.message || this.translate.instant('common.error');
       }
     });
   }

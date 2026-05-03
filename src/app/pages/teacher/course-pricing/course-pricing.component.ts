@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CourseService } from '../../../core/services/course';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-course-pricing',
@@ -26,9 +26,10 @@ export class CoursePricingComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-public router: Router,
+    public router: Router,
     private courseService: CourseService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private translate: TranslateService
   ) {
     this.pricingForm = this.fb.group({
       pricingType: ['Free', Validators.required],
@@ -60,7 +61,7 @@ public router: Router,
     this.courseService.updatePricing(this.courseId, this.pricingForm.value).subscribe({
       next: () => {
         this.isLoading.set(false);
-        this.successMessage.set('Pricing saved!');
+        this.successMessage.set(this.translate.instant('common.saveSuccess'));
         setTimeout(() => this.successMessage.set(''), 3000);
       },
       error: () => { this.isLoading.set(false); }
@@ -76,7 +77,7 @@ public router: Router,
         this.courseService.publishCourse(this.courseId).subscribe({
           next: () => {
             this.isPublishing.set(false);
-            this.successMessage.set('Course published successfully! 🎉');
+            this.successMessage.set(this.translate.instant('pricingStep.publishSuccess'));
             setTimeout(() => {
               this.router.navigate(['/teacher/dashboard']);
             }, 2000);

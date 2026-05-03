@@ -78,6 +78,6 @@ export class QuizResult implements OnInit {
   }
   backToCourse()
   {
-    this.router.navigate(['/'])
+    this.router.navigate(['/student/quiz-history']);
   }
 }

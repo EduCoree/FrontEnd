@@ -2,7 +2,7 @@
 
 <!-- ── Top App Bar ───────────────────────────────────────────────────────── -->
 <header class="bg-[#F8FAFA] sticky top-0 z-40 shadow-[0_1px_0_rgba(0,0,0,0.06)]">
-  <div class="flex justify-between items-center w-full px-8 py-4">
+  <div class="flex justify-between items-center w-full px-4 md:px-8 py-4">
 
     <div class="flex items-center gap-4">
       <button
@@ -58,7 +58,7 @@
 </header>
 
 <!-- ── Main Content ──────────────────────────────────────────────────────── -->
-<main class="max-w-3xl mx-auto px-6 mt-8 pb-32">
+<main class="max-w-3xl mx-auto px-4 md:px-6 mt-6 md:mt-8 pb-32">
 
   <!-- Loading skeleton (initial) -->
   @if (isLoading && notifications.length === 0) {
@@ -196,7 +196,7 @@
     [class]="notif.isRead
       ? 'bg-surface-container-lowest/70 border border-outline-variant/10'
       : 'bg-surface-container-lowest shadow-[0_8px_32px_rgba(125,184,165,0.12)]'"
-    class="p-6 rounded-xl transition-all duration-200
+    class="p-4 md:p-6 rounded-xl transition-all duration-200
            hover:translate-y-[-2px] cursor-pointer select-none
            active:scale-[0.99]">
 

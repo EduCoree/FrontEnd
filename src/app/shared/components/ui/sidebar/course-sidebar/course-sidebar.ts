@@ -1,52 +1,77 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { AuthService } from '../../../../../core/services/auth';
 
 @Component({
   selector: 'app-course-sidebar',
   imports: [CommonModule, RouterLink, RouterLinkActive, TranslateModule],
   templateUrl: './course-sidebar.html',
-  styleUrl: './course-sidebar.css',
+  styleUrls: ['./course-sidebar.css'],
 })
 export class CourseSidebar {
+  private translate = inject(TranslateService);
+  private auth = inject(AuthService);
   isOpen = signal(true);
   courseId: string | null = null;
 
-  constructor(private route: ActivatedRoute) {
-    // Check both potential param names from your routes.ts
-    this.courseId = this.route.snapshot.params['id'] || 
-                    this.route.snapshot.params['courseId'];
+  get userInitials(): string {
+    return (this.auth.currentUser()?.name ?? '')
+      .split(' ').map((w) => w[0]).slice(0, 2).join('').toUpperCase();
   }
 
-  // Use a 'get' property so the routes are calculated 
+  get userName(): string {
+    return this.auth.currentUser()?.name ?? '';
+  }
+
+  get toggleIcon(): string {
+    const open = this.isOpen();
+    const isRtl = this.translate.currentLang === 'ar';
+    if (open) {
+      return isRtl ? 'chevron_right' : 'chevron_left';
+    }
+    return isRtl ? 'chevron_left' : 'chevron_right';
+  }
+
+  constructor(private route: ActivatedRoute) {
+    // Read the edit route ID from whichever active route level provides it.
+    this.courseId =
+      this.route.snapshot.paramMap.get('id') ||
+      this.route.snapshot.paramMap.get('courseId') ||
+      this.route.parent?.snapshot.paramMap.get('id') ||
+      this.route.parent?.snapshot.paramMap.get('courseId') ||
+      null;
+  }
+
+  // Use a 'get' property so the routes are calculated
   // every time they are accessed, ensuring the ID is ready.
   get navItems() {
+    const courseId = this.courseId || '';
     return [
-      { 
-        labelKey: 'Course Information', 
-        icon: 'business', 
-        route: `/teacher/courses/edit/${this.courseId}`, 
-        exact: true  
+      {
+        labelKey: 'courseBuilder.courseInfo',
+        icon: 'business',
+        route: `/teacher/courses/edit/${courseId}/info`,
+        exact: true,
       },
-
-      { 
-        labelKey: 'Quizzes', 
-        icon: 'upload', 
-        route: `/teacher/courses/${this.courseId}/quizzes`, 
-        exact: false 
+      {
+        labelKey: 'teacherProgress.quizzes',
+        icon: 'upload',
+        route: `/teacher/courses/edit/${courseId}/quizzes`,
+        exact: false,
       },
-      { 
-        labelKey: 'Sessions', 
-        icon: 'calendar_month', 
-        route: `/teacher/courses/edit/${this.courseId}/sessions`, 
-        exact: false 
+      {
+        labelKey: 'teacherSessions.sessions',
+        icon: 'calendar_month',
+        route: `/teacher/courses/edit/${courseId}/sessions`,
+        exact: false,
       },
-      { 
-        labelKey: 'Progress', 
-        icon: 'trending_up', 
-        route: `/teacher/courses/edit/${this.courseId}/progress`, 
-        exact: false 
+      {
+        labelKey: 'teacherProgress.progress',
+        icon: 'trending_up',
+        route: `/teacher/courses/edit/${courseId}/progress`,
+        exact: false,
       },
     ];
   }

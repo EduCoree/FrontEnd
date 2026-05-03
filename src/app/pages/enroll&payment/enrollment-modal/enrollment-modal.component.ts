@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { EnrollmentService } from '../../../core/services/enrollment.service';
 import { CourseDetailDto} from '../../../core/models/course';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-enrollment-modal',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule , TranslateModule],
   templateUrl: './enrollment-modal.component.html',
 })
 export class EnrollmentModalComponent {

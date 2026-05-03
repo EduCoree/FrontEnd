@@ -18,6 +18,7 @@ import { LoadingSkeletonComponent } from '../../../shared/components/loading-ske
 import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state';
 import { InvoiceStatusBadgeComponent } from '../../../shared/components/invoice-status-badge/invoice-status-badge';
 import { TranslateModule } from '@ngx-translate/core';
+import { TeacherLayoutComponent } from "../../../layouts/teacher-layout/teacher-layout.component";
 
 @Component({
   selector: 'app-teacher-payout-dashboard',
@@ -31,8 +32,9 @@ import { TranslateModule } from '@ngx-translate/core';
     LoadingSkeletonComponent,
     EmptyStateComponent,
     InvoiceStatusBadgeComponent,
-    TranslateModule
-  ],
+    TranslateModule,
+    TeacherLayoutComponent
+],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './teacher-payout-dashboard.html',
 })

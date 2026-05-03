@@ -62,6 +62,13 @@ export class Navbar {
     return this.isTeacher() ? '/teacher/dashboard' : '/student/sessions';
   }
 
+  /** Route the "Dashboard" nav link based on the logged-in role */
+  get dashboardRoute(): string {
+    if (this.isAdmin()) return '/admin/dashboard';
+    if (this.isTeacher()) return '/teacher/dashboard';
+    return '/student/dashboard';
+  }
+
   private getRole(): string {
     const token = this.auth.getToken();
     if (!token) return '';
@@ -172,6 +179,23 @@ if (notification.metadata) {
       case 'SessionCancelled':
         this.router.navigate(['/student/sessions']); // ← course page
         break;
+     
+      case 'ForumReply':                                            
+    if (extraData?.lessonId && notification.entityId) {
+      this.router.navigate(['/lessons', extraData.lessonId, 'forum', notification.entityId]);
+    }
+    break;
+
+    case 'Certificate':
+      this.router.navigate(['/student/certificates']);
+      break;
+
+    case 'CashPaymentRequest':
+  this.router.navigate(['/admin/payments']);
+  break;
+  case 'PostReported':
+    this.router.navigate(['/admin/forum/reports']);
+    break;
         
       default:
           this.router.navigate(['/notifications'])
@@ -185,7 +209,10 @@ if (notification.metadata) {
       'ForumReply': 'forum',
       'Enrollment': 'person_add',
        'LiveSession':'podcasts',
-       'SessionCancelled':'podcasts'
+       'SessionCancelled':'podcasts',
+       'Certificate':'workspace_premium',
+        'CashPaymentRequest':'request_quote',
+        'PostReported':'flag'
     };
     
     return icons[type] || 'notifications';

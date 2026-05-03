@@ -1,0 +1,268 @@
+
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4">
+  <div class="absolute inset-0 bg-on-background/40 backdrop-blur-sm" (click)="cancelled.emit()"></div>
+
+  <div class="relative w-full max-w-3xl bg-surface-container-lowest rounded-2xl shadow-[0_32px_64px_rgba(46,104,88,0.2)] overflow-hidden flex flex-col max-h-[80vh] mt-16">
+
+    <!-- Header -->
+    <div class="px-8 py-6 flex items-center justify-between bg-surface-container-low shrink-0">
+      <div class="flex items-center gap-4">
+        <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
+          <span class="material-symbols-outlined text-white">auto_awesome</span>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold font-headline text-on-surface">AI Quiz Generator</h2>
+          <p class="text-xs text-on-surface-variant">Powered by Gemini AI</p>
+        </div>
+      </div>
+      <!-- Step Indicator -->
+      @if (step === 'form' || step === 'preview') {
+        <div class="flex items-center gap-2 mr-4">
+          <div class="flex items-center gap-1.5">
+            <div class="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold"
+              [ngClass]="step === 'form' ? 'bg-primary text-white' : 'bg-primary/20 text-primary'">
+              @if (step === 'preview') {
+                <span class="material-symbols-outlined text-sm" style="font-size:13px">check</span>
+              } @else {
+                1
+              }
+            </div>
+            <span class="text-xs font-medium"
+              [ngClass]="step === 'form' ? 'text-on-surface' : 'text-on-surface-variant'">Setup</span>
+          </div>
+          <div class="w-6 h-px bg-outline-variant"></div>
+          <div class="flex items-center gap-1.5">
+            <div class="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold"
+              [ngClass]="step === 'preview' ? 'bg-primary text-white' : 'bg-surface-container-highest text-on-surface-variant'">
+              2
+            </div>
+            <span class="text-xs font-medium"
+              [ngClass]="step === 'preview' ? 'text-on-surface' : 'text-on-surface-variant'">Review</span>
+          </div>
+        </div>
+      }
+      <button (click)="cancelled.emit()" class="p-2 hover:bg-surface-container-high rounded-full transition-colors">
+        <span class="material-symbols-outlined text-on-surface-variant">close</span>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="overflow-y-auto flex-1">
+
+      <!-- Step 1: Form -->
+      @if (step === 'form') {
+        <div class="px-8 py-8 space-y-6">
+
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-primary">Topic *</label>
+            <textarea
+              [(ngModel)]="request.topic"
+              rows="3"
+              placeholder="e.g., Object-Oriented Programming in C#, French Revolution, Photosynthesis..."
+              class="w-full bg-surface-container-highest border-none focus:ring-2 focus:ring-primary-container rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 resize-none font-medium">
+            </textarea>
+          </div>
+
+          <div class="grid grid-cols-2 gap-6">
+
+            <div class="space-y-2">
+              <label class="text-sm font-semibold text-primary">Number of Questions</label>
+              <input
+                [(ngModel)]="request.questionCount"
+                type="number" min="1" max="20"
+                class="w-full bg-surface-container-highest border-none focus:ring-2 focus:ring-primary-container rounded-lg px-4 py-3 font-medium"/>
+            </div>
+
+            <div class="space-y-2">
+              <label class="text-sm font-semibold text-primary">Points per Question</label>
+              <input
+                [(ngModel)]="request.pointsPerQuestion"
+                type="number" min="1" max="100"
+                class="w-full bg-surface-container-highest border-none focus:ring-2 focus:ring-primary-container rounded-lg px-4 py-3 font-medium"/>
+            </div>
+
+            <div class="space-y-2">
+              <label class="text-sm font-semibold text-primary">Question Type</label>
+              <select [(ngModel)]="request.questionType"
+                class="w-full bg-surface-container-highest border-none focus:ring-2 focus:ring-primary-container rounded-lg px-4 py-3 font-medium">
+                <option value="MCQ">Multiple Choice</option>
+                <option value="TrueFalse">True / False</option>
+              </select>
+            </div>
+
+            <div class="space-y-2">
+              <label class="text-sm font-semibold text-primary">Difficulty</label>
+              <select [(ngModel)]="request.difficulty"
+                class="w-full bg-surface-container-highest border-none focus:ring-2 focus:ring-primary-container rounded-lg px-4 py-3 font-medium">
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+              </select>
+            </div>
+          </div>
+
+          @if (error) {
+            <div class="flex items-center gap-2 px-4 py-3 bg-error-container text-on-error-container rounded-lg text-sm">
+              <span class="material-symbols-outlined text-lg">error</span>
+              {{ error }}
+            </div>
+          }
+        </div>
+      }
+
+      <!-- Step 2: Preview -->
+      @if (step === 'preview' && generated) {
+        <div class="px-8 py-6 space-y-6">
+
+         <!-- Quiz summary -->
+          <div class="flex items-start justify-between">
+            <div>
+              <p class="text-xs font-bold text-primary uppercase tracking-widest mb-1">Quiz Topic</p>
+              <h3 class="text-2xl font-bold text-on-surface">{{ request.topic }}</h3>
+              <div class="flex items-center gap-3 mt-2">
+                <span class="text-xs text-on-surface-variant flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm">quiz</span>
+                  {{ request.questionType === 'MCQ' ? 'Multiple Choice' : 'True/False' }}
+                </span>
+                <span class="text-xs text-on-surface-variant flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm">signal_cellular_alt</span>
+                  {{ request.difficulty }}
+                </span>
+              </div>
+            </div>
+            <span class="px-3 py-1 bg-primary-fixed-dim text-on-primary-container text-xs font-bold rounded-full">
+              {{ generated.questions.length }} Questions
+            </span>
+          </div>
+
+           <!-- Review hint -->
+          <div class="flex items-center gap-2 px-4 py-3 bg-primary/5 border border-primary/10 rounded-xl text-sm text-on-surface-variant">
+            <span class="material-symbols-outlined text-primary text-lg">info</span>
+            Review the questions below. Remove any you don't want before saving.
+          </div>
+
+          <!-- Questions -->
+          <div class="space-y-4">
+            @for (question of generated.questions; track $index; let i = $index) {
+              <div class="bg-surface-container-low rounded-xl p-5 space-y-3">
+                <div class="flex justify-between items-start">
+                  <div class="flex items-start gap-3">
+                    <span class="w-7 h-7 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold shrink-0">
+                      {{ i + 1 }}
+                    </span>
+                    <p class="font-semibold text-on-surface text-sm leading-relaxed">{{ question.text }}</p>
+                  </div>
+                  <button (click)="removeQuestion(i)"
+                    class="p-1.5 text-slate-400 hover:text-error transition-colors shrink-0 ml-2">
+                    <span class="material-symbols-outlined text-lg">delete</span>
+                  </button>
+                </div>
+
+                <div class="ml-10 space-y-2">
+                  @for (option of question.options; track $index) {
+                    <div class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm"
+                      [class.bg-primary\/10]="option.isCorrect"
+                      [class.border]="option.isCorrect"
+                      [class.border-primary\/20]="option.isCorrect"
+                      [class.bg-surface-container-highest]="!option.isCorrect">
+                      <span *ngIf="option.isCorrect" class="material-symbols-outlined text-primary text-sm"
+                        style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                      <div *ngIf="!option.isCorrect" class="w-4 h-4 rounded-full border-2 border-outline-variant shrink-0"></div>
+                      <span [class.font-medium]="option.isCorrect" [class.text-primary]="option.isCorrect">
+                        {{ option.text }}
+                      </span>
+                    </div>
+                  }
+                </div>
+
+                <div class="ml-10 flex items-center gap-2">
+                  <span class="px-2 py-0.5 bg-surface-container-highest text-on-surface-variant text-[10px] font-bold rounded-full uppercase">
+                    {{ question.type === 'MCQ' ? 'MCQ' : 'True/False' }}
+                  </span>
+                  <span class="px-2 py-0.5 bg-surface-container-highest text-on-surface-variant text-[10px] font-bold rounded-full">
+                    {{ question.points }} pts
+                  </span>
+                </div>
+              </div>
+            }
+          </div>
+
+          @if (error) {
+            <div class="flex items-center gap-2 px-4 py-3 bg-error-container text-on-error-container rounded-lg text-sm">
+              <span class="material-symbols-outlined text-lg">error</span>
+              {{ error }}
+            </div>
+          }
+        </div>
+      }
+
+      <!-- Step 3: Done -->
+      @if (step === 'done') {
+        <div class="flex flex-col items-center justify-center py-16 px-8 text-center">
+          <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+            <span class="material-symbols-outlined text-4xl text-primary" style="font-variation-settings:'FILL' 1;">
+              check_circle
+            </span>
+          </div>
+          <h3 class="text-2xl font-bold text-on-surface mb-2">Quiz Saved!</h3>
+          <p class="text-on-surface-variant text-sm max-w-xs">
+            Your AI-generated quiz has been saved. You can now add questions or manage it from the quizzes list.
+          </p>
+        </div>
+      }
+
+    </div>
+
+    <!-- Footer -->
+    <div class="px-8 py-5 flex justify-end items-center gap-4 bg-surface-container-low border-t border-outline-variant/10 shrink-0">
+
+      @if (step === 'form') {
+        <button (click)="cancelled.emit()"
+          class="px-6 py-3 rounded-lg font-bold text-primary hover:bg-surface-container-high transition-all">
+          Cancel
+        </button>
+        <button (click)="generate()" [disabled]="generating || !request.topic"
+          class="px-8 py-3 bg-gradient-to-br from-primary to-primary-container text-white rounded-lg font-bold disabled:opacity-50 flex items-center gap-2">
+          @if (generating) {
+            <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            Generating...
+          } @else {
+            <span class="material-symbols-outlined text-sm">auto_awesome</span>
+            Generate Quiz
+          }
+        </button>
+      }
+
+      @if (step === 'preview') {
+       <button (click)="generate()" [disabled]="generating || !request.topic"
+          class="px-8 py-3 bg-gradient-to-br from-primary to-primary-container text-white rounded-lg font-bold disabled:opacity-50 flex items-center gap-2">
+          @if (generating) {
+            <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            Regenerating...
+          } @else {
+            <span class="material-symbols-outlined text-sm">auto_awesome</span>
+            Regenerate
+          }
+        </button>
+        <button (click)="save()" [disabled]="saving || generated?.questions?.length === 0"
+          class="px-8 py-3 bg-gradient-to-br from-primary to-primary-container text-white rounded-lg font-bold disabled:opacity-50 flex items-center gap-2">
+          @if (saving) {
+            <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            Saving...
+          } @else {
+            <span class="material-symbols-outlined text-sm">save</span>
+            Save Quiz
+          }
+        </button>
+      }
+
+      @if (step === 'done') {
+        <button (click)="cancelled.emit()"
+          class="px-8 py-3 bg-gradient-to-br from-primary to-primary-container text-white rounded-lg font-bold">
+          Done
+        </button>
+      }
+
+    </div>
+  </div>
+</div>

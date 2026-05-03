@@ -8,14 +8,14 @@ import { CreateQuizComponent } from '../../CreateQuiz/create-quiz/create-quiz';
 import { FormsModule } from '@angular/forms';
 import { CourseSidebar } from "../../../../shared/components/ui/sidebar/course-sidebar/course-sidebar";
 import { EditQuiz } from "../../edit-quiz/edit-quiz";
-import { Sidebar } from "../../../../shared/components/ui/sidebar/sidebar";
 import { TranslateModule } from '@ngx-translate/core';
+import { QuizAiWizard } from "../../quiz-ai-wizard/quiz-ai-wizard";
 
 
 @Component({
   selector: 'app-quiz',
   templateUrl: './get-quizzes.html',
-  imports: [CommonModule, CreateQuizComponent, FormsModule, CourseSidebar, RouterLink, EditQuiz,TranslateModule,Sidebar],
+  imports: [CommonModule, CreateQuizComponent, FormsModule, CourseSidebar, RouterLink, EditQuiz, TranslateModule, QuizAiWizard],
 })
 export class QuizComponent implements OnInit {
   courseId!: number;
@@ -23,13 +23,13 @@ export class QuizComponent implements OnInit {
   isLoading = false;
   errorMessage = '';
    searchTerm = '';
-   courseTitle='jndjendije';
   showCreateModal = false;
   showEditModal=false;
   selectedQuizId :number|null=null;
   openMenuId: number | null = null;
    totalPages = signal(1);
   currentPage = signal(1);
+  showAiWizard=signal(false);
  
   constructor(
     private route: ActivatedRoute,
@@ -39,8 +39,18 @@ export class QuizComponent implements OnInit {
     
   ) {}
 
+  get showSidebar(): boolean {
+    return !this.router.url.includes('/teacher/courses/edit/');
+  }
+
   ngOnInit(): void {
-    this.courseId = Number(this.route.snapshot.paramMap.get('courseId'));
+    const courseIdParam =
+      this.route.snapshot.paramMap.get('courseId') ||
+      this.route.snapshot.paramMap.get('id') ||
+      this.route.parent?.snapshot.paramMap.get('courseId') ||
+      this.route.parent?.snapshot.paramMap.get('id');
+
+    this.courseId = courseIdParam ? Number(courseIdParam) : 0;
     this.loadQuizzes();
   }
    get avgPassScore(): number {
@@ -131,4 +141,12 @@ onDocumentClick(event: MouseEvent): void {
     this.currentPage.set(page);
     this.loadQuizzes();
   }
+
+  onAiQuizSaved(): void {
+  this.showAiWizard.set(false);
+  this.loadQuizzes();
+}
+getcourseTitle(): string {
+  return this.quizzes[0]?.courseTitle ?? '';
+}
 }

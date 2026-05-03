@@ -31,6 +31,13 @@ export interface PaymentDto {
   reference?: string;
   paidAt?: string;
   courseTitle: string;
+  studentName?: string;
+  userName?: string;
+  courseName?: string;
+  title?: string;
+  student?: { name: string };
+  user?: { name: string };
+  course?: { title: string };
 }
 export interface CashPaymentDto {
   studentId: string;
@@ -62,4 +69,8 @@ export interface CashPaymentRequestDto {
   amount: number;
   status: 'Pending' | 'Confirmed' | 'Rejected';
   requestedAt: string;
+  userName?: string;
+  courseName?: string;
+  student?: { name: string };
+  course?: { title: string };
 }

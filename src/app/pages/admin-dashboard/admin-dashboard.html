@@ -1,7 +1,7 @@
 <div class="flex min-h-screen bg-[#f8faf9] font-headline">
   <app-admin-sidebar />
 
-  <main class="flex-1 min-h-screen flex flex-col overflow-hidden">
+  <main class="flex-1 min-h-screen flex flex-col overflow-hidden pb-20 lg:pb-0">
 
     <!-- TOP NAV -->
     <header class="sticky top-0 z-20 bg-white border-b border-[#eaefee] px-8 h-16 flex items-center justify-between">
@@ -18,8 +18,8 @@
     <div class="p-8 space-y-6">
 
       <!-- WELCOME BANNER -->
-      <div class="relative rounded-2xl overflow-hidden bg-[#2e6959] px-8 py-7 flex items-center justify-between">
-        <div class="absolute right-32 top-1/2 -translate-y-1/2 w-40 h-40 rounded-full border-[24px] border-white/5"></div>
+      <div class="relative rounded-2xl overflow-hidden bg-[#2e6959] px-6 md:px-8 py-7 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div class="hidden md:block absolute right-32 top-1/2 -translate-y-1/2 w-40 h-40 rounded-full border-[24px] border-white/5"></div>
         <div class="absolute right-16 top-1/2 -translate-y-1/2 w-28 h-28 rounded-full border-[16px] border-white/5"></div>
         <div class="absolute right-52 bottom-0 w-20 h-20 rounded-full border-[12px] border-white/5"></div>
         <div>
@@ -31,11 +31,7 @@
           <p class="text-white/60 text-sm font-medium max-w-md">{{ 'adminDashboard.subtitle' | translate }}</p>
         </div>
         <div class="flex gap-3 relative z-10">
-          <a routerLink="/admin/payout/generate"
-             class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-[#2e6959] text-sm font-bold hover:bg-[#e4fff4] transition-colors shadow-sm">
-            <span class="material-symbols-outlined text-base">bolt</span>
-            {{ 'adminDashboard.generatePayouts' | translate }}
-          </a>
+        
           <a routerLink="/admin/courses/create"
              class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/15 text-white text-sm font-bold hover:bg-white/25 transition-colors border border-white/20">
             <span class="material-symbols-outlined text-base">add</span>
@@ -53,10 +49,10 @@
       @if (!loading() && kpis()) {
 
         <!-- KPI ROW 1 — 4 cards -->
-        <div class="grid grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
           <!-- Students -->
-          <div class="bg-white rounded-2xl p-5 border border-[#eaefee] hover:border-[#b2efda] hover:shadow-sm transition-all group">
+          <a routerLink="/admin/students" class="bg-white rounded-2xl p-5 border border-[#eaefee] hover:border-[#b2efda] hover:shadow-sm transition-all group block cursor-pointer">
             <div class="flex items-start justify-between mb-4">
               <div class="w-10 h-10 rounded-xl bg-[#e4fff4] flex items-center justify-center text-[#2e6959] group-hover:bg-[#b2efda] transition-colors">
                 <span class="material-symbols-outlined text-xl">group</span>
@@ -65,10 +61,10 @@
             </div>
             <p class="text-[10px] uppercase tracking-widest font-bold text-[#596060] mb-1">{{ 'adminDashboard.students' | translate }}</p>
             <p class="text-3xl font-black text-[#2d3433] tracking-tight">{{ kpis()!.totalStudents }}</p>
-          </div>
+          </a>
 
           <!-- Teachers -->
-          <div class="bg-white rounded-2xl p-5 border border-[#eaefee] hover:border-[#c9e7f7] hover:shadow-sm transition-all group">
+          <a routerLink="/admin/teachers" class="bg-white rounded-2xl p-5 border border-[#eaefee] hover:border-[#c9e7f7] hover:shadow-sm transition-all group block cursor-pointer">
             <div class="flex items-start justify-between mb-4">
               <div class="w-10 h-10 rounded-xl bg-[#e8f4fd] flex items-center justify-center text-[#466370] group-hover:bg-[#c9e7f7] transition-colors">
                 <span class="material-symbols-outlined text-xl">school</span>
@@ -77,10 +73,10 @@
             </div>
             <p class="text-[10px] uppercase tracking-widest font-bold text-[#596060] mb-1">{{ 'adminDashboard.teachers' | translate }}</p>
             <p class="text-3xl font-black text-[#2d3433] tracking-tight">{{ kpis()!.totalTeachers }}</p>
-          </div>
+          </a>
 
           <!-- Active Courses -->
-          <div class="bg-white rounded-2xl p-5 border border-[#eaefee] hover:border-[#fde9c9] hover:shadow-sm transition-all group">
+          <a routerLink="/admin/courses" class="bg-white rounded-2xl p-5 border border-[#eaefee] hover:border-[#fde9c9] hover:shadow-sm transition-all group block cursor-pointer">
             <div class="flex items-start justify-between mb-4">
               <div class="w-10 h-10 rounded-xl bg-[#fef5e7] flex items-center justify-center text-[#8a6d3b] group-hover:bg-[#fde9c9] transition-colors">
                 <span class="material-symbols-outlined text-xl">menu_book</span>
@@ -92,10 +88,10 @@
               <p class="text-3xl font-black text-[#2d3433] tracking-tight">{{ kpis()!.activeCourses }}</p>
               <p class="text-sm font-bold text-[#acb3b2]">/ {{ kpis()!.totalCourses }}</p>
             </div>
-          </div>
+          </a>
 
           <!-- Total Revenue -->
-          <div class="bg-[#2e6959] rounded-2xl p-5 border border-transparent hover:shadow-md transition-all group relative overflow-hidden">
+          <a routerLink="/admin/payments" class="bg-[#2e6959] rounded-2xl p-5 border border-transparent hover:shadow-md transition-all group relative overflow-hidden block cursor-pointer">
             <div class="absolute bottom-0 right-0 w-24 h-24 rounded-full bg-white/5 translate-x-8 translate-y-8"></div>
             <div class="flex items-start justify-between mb-4">
               <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center text-[#b2efda]">
@@ -105,13 +101,13 @@
             </div>
             <p class="text-[10px] uppercase tracking-widest font-bold text-[#b2efda]/70 mb-1">{{ 'adminDashboard.totalRevenue' | translate }}</p>
             <p class="text-3xl font-black text-white tracking-tight">${{ formatCurrency(kpis()!.totalRevenue) }}</p>
-          </div>
+          </a>
         </div>
 
         <!-- ══════════════════════════════════════════
              CHARTS ROW 1 — Enrollment Trend + Revenue Trend (Line Charts)
         ══════════════════════════════════════════ -->
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
           <!-- Enrollment Trend Line Chart -->
           <div class="bg-white rounded-2xl p-6 border border-[#eaefee]">
@@ -119,7 +115,6 @@
               <div>
                 <p class="text-2xl font-black text-[#2d3433] tracking-tight">
                   {{ kpis()!.totalEnrollments }}
-                  <span class="text-sm font-bold text-[#2e6959] ml-2">+2.04% vs last month</span>
                 </p>
                 <p class="text-[10px] uppercase tracking-widest font-bold text-[#acb3b2] mt-0.5">{{ 'adminDashboard.totalEnrollments' | translate }}</p>
               </div>
@@ -162,7 +157,7 @@
         <!-- ══════════════════════════════════════════
              CHARTS ROW 2 — Course Status (Stacked Bar) + Enrollment Status (Donut)
         ══════════════════════════════════════════ -->
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
           <!-- Course Status Overview — Stacked Bar -->
           <div class="bg-white rounded-2xl p-6 border border-[#eaefee]">
@@ -192,7 +187,7 @@
               <p class="text-sm font-extrabold text-[#2d3433]">{{ 'adminDashboard.enrollmentStatus' | translate }}</p>
               <p class="text-[10px] uppercase tracking-widest font-bold text-[#acb3b2] mt-0.5">{{ 'adminDashboard.byCertificateType' | translate }}</p>
             </div>
-            <div class="flex items-center gap-6">
+            <div class="flex flex-col sm:flex-row items-center gap-6">
               <!-- Donut -->
               <div class="relative w-44 h-44 flex-shrink-0">
                 <canvas #enrollmentStatusChartCanvas></canvas>
@@ -274,9 +269,17 @@
             }
           </div>
         </div>
-
+        @if (!loading() && !kpis()) {
+          <div class="bg-white rounded-2xl p-12 border border-[#eaefee] text-center">
+            <span class="material-symbols-outlined text-5xl text-[#acb3b2] mb-4">error_outline</span>
+            <h3 class="text-xl font-bold text-[#2d3433] mb-2">{{ 'common.error' | translate }}</h3>
+            <p class="text-[#596060] mb-6">Failed to load dashboard statistics. Please ensure you are logged in as an administrator.</p>
+            <button (click)="loadAll()" class="bg-[#2e6959] text-white px-6 py-2 rounded-xl font-bold hover:bg-[#1a3d34] transition-colors">
+              {{ 'common.retry' | translate }}
+            </button>
+          </div>
+        }
       }
     </div>
   </main>
 </div>
-

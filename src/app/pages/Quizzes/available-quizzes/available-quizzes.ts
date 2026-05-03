@@ -4,10 +4,11 @@ import { StudentquizService } from '../../../core/services/studentquiz.service';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-available-quizzes',
-  imports: [RouterLink,CommonModule,FormsModule],
+  imports: [RouterLink,CommonModule,FormsModule , TranslateModule],
   templateUrl: './available-quizzes.html',
   styleUrl: './available-quizzes.css',
 })

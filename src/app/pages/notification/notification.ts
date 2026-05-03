@@ -127,6 +127,22 @@ export class Notification {
       case 'SessionCancelled':
         this.router.navigate(['/student/sessions']); 
         break;
+         case 'ForumReply':                                            
+    if (extra?.lessonId && notification.entityId) {
+      this.router.navigate(['/lessons', extra.lessonId, 'forum', notification.entityId]);
+    }
+    break;
+    case 'Certificate':
+      this.router.navigate(['/student/certificates']);
+      break;
+       case 'CashPaymentRequest':
+  this.router.navigate(['/admin/payments']);
+  break;
+  case 'PostReported':
+    this.router.navigate(['/admin/forum/reports']);
+    break;
+        
+    
   
       default:
         console.warn('Unknown notification type:', notification.type);
@@ -173,21 +189,27 @@ export class Notification {
       ForumReply:    'forum',
       Enrollment: 'person_add',
       LiveSession:   'podcasts',
-      SessionCancelled: 'podcasts'
+      SessionCancelled: 'podcasts',
+      Certificate: 'workspace_premium',
+      CashPaymentRequest: 'request_quote',
+      PostReported: 'flag'
     };
     return map[type] ?? 'notifications';
   }
  
   getIconBgClass(type: string): string {
-    const map: Record<string, string> = {
-      QuizResult:    'bg-[#E3F2FD]',
-      ForumReply:    'bg-tertiary-container/30',
-      Enrollment: 'bg-secondary-container',
-      LiveSession:   'bg-secondary-container',
-      SessionCancelled:  'bg-error-container/30',
-    };
-    return map[type] ?? 'bg-surface-container';
-  }
+  const map: Record<string, string> = {
+    QuizResult:         'bg-blue-100',            // was bg-[#E3F2FD]
+    ForumReply:         'bg-orange-100',           // was bg-tertiary-container/30
+    Enrollment:         'bg-secondary-container',  // ✅ same
+    LiveSession:        'bg-secondary-container',  // ✅ same
+    SessionCancelled:   'bg-red-100',              // was bg-error-container/30
+    Certificate:        'bg-purple-100',           // was bg-success-container/30
+    CashPaymentRequest: 'bg-amber-100',            // was bg-warning-container/30
+    PostReported:       'bg-red-100'               // was bg-error-container/30
+  };
+  return map[type] ?? 'bg-surface-container';
+}
  
   getIconColorClass(type: string): string {
     const map: Record<string, string> = {
@@ -196,6 +218,10 @@ export class Notification {
       Enrollment: 'text-on-secondary-container',
       LiveSession:  'text-on-secondary-container',
       SessionCancelled: 'text-error',
+      Certificate: 'text-success',
+      CashPaymentRequest: 'text-warning',
+      PostReported: 'text-error'
+
    
      
     };

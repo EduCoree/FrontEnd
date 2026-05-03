@@ -12,6 +12,7 @@ import {
 import { LoadingSkeletonComponent } from '../../../shared/components/loading-skeleton/loading-skeleton';
 import { MoneyDisplayComponent } from '../../../shared/components/money-display/money-display';
 import { TranslateModule } from '@ngx-translate/core';
+import { AdminSidebarComponent } from "../../../layouts/admin-sidebar/admin-sidebar";
 
 @Component({
   selector: 'app-admin-payout-settings',
@@ -22,8 +23,9 @@ import { TranslateModule } from '@ngx-translate/core';
     FormsModule,
     LoadingSkeletonComponent,
     MoneyDisplayComponent,
-  TranslateModule
-  ],
+    TranslateModule,
+    AdminSidebarComponent
+],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './admin-payout-settings.html',
 })
@@ -104,6 +106,11 @@ export class AdminPayoutSettingsComponent implements OnInit {
   updateField<K extends keyof UpdatePayoutSettingsDto>(key: K, value: UpdatePayoutSettingsDto[K]): void {
     this.form.update(f => ({ ...f, [key]: value }));
     this.saveSuccess.set(false); // any change clears the "saved" state
+  }
+
+  updateTierField(tierNum: number, field: 'Threshold' | 'Bonus', value: number): void {
+    const key = `tier${tierNum}${field}` as keyof UpdatePayoutSettingsDto;
+    this.updateField(key, value);
   }
 
   /**

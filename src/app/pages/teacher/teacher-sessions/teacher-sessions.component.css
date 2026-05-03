@@ -8,7 +8,7 @@
 .sessions-page {
   max-width: 860px;
   margin: 0 auto;
-  padding: 2.5rem 2rem 5rem;
+  padding: 2.5rem 2rem 6rem; /* Increased bottom padding for mobile nav */
   font-family: 'Inter', system-ui, sans-serif;
 }
 

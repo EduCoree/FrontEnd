@@ -9,7 +9,10 @@
     "signup": "Sign Up",
     "search": "Search courses...",
     "profile": "My Profile",
-    "logout": "Logout"
+    "logout": "Logout",
+    "live": "Live",
+    "quizzes": "Quizzes",
+    "history": "History"
   },
   "center": {
     "title": "Training Center",
@@ -65,6 +68,19 @@
     "reviews": "reviews",
     "saving": "Saving..."
   },
+  "teacherReviews": {
+    "studentFeedback": "Student Feedback",
+    "manageReviews": "Manage and moderate reviews across all your published courses.",
+    "courseFilter": "Course Filter",
+    "allCourses": "All Courses",
+    "ratingFilter": "Rating Filter",
+    "all": "All",
+    "fourStarsPlus": "4★+",
+    "critical": "Critical",
+    "globalAverage": "Global Average",
+    "guidelinesTitle": "Faculty Guidelines",
+    "guidelinesText": "Reviews are your most valuable asset for pedagogical growth. Remember to respond to critical feedback with constructive solutions—this significantly increases student retention and trust in the Academy's standards."
+  },
   "common": {
     "cancel": "Cancel",
     "delete": "Delete",
@@ -74,7 +90,14 @@
     "loading": "Loading...",
     "error": "An error occurred",
     "retry": "Retry",
-    "viewAll": "View All"
+    "viewAll": "View All",
+    "edit": "Edit",
+    "remove": "Remove",
+    "video": "Video",
+    "pdf": "PDF",
+    "saveSuccess": "Changes saved successfully!",
+    "error": "An error occurred. Please try again.",
+    "confirmDelete": "Are you sure you want to delete this?"
   },
   "home": {
     "badge": "Premium Learning",
@@ -154,7 +177,7 @@
     "allinone_badge": "All-In-One",
     "allinone_title": "All-In-One",
     "allinone_highlight": "Cloud Software.",
-    "allinone_desc": "TOTC is one powerful online software suite that combines all the tools needed to run a successful school or office.",
+    "allinone_desc": "EduCore is one powerful online software suite that combines all the tools needed to run a successful school or office.",
     "feature_billing_title": "Online Billing, Invoicing, & Contracts",
     "feature_billing_desc": "Simple and secure control of your organization's financial and legal transactions. Send customized invoices and contracts.",
     "feature_scheduling_title": "Easy Scheduling & Attendance Tracking",
@@ -162,8 +185,8 @@
     "feature_tracking_title": "Customer Tracking",
     "feature_tracking_desc": "Automate and track emails to individuals or groups. Skilline's built-in system helps organize your organization.",
     "whatis_title": "What is",
-    "whatis_highlight": "TOTC?",
-    "whatis_desc": "TOTC is a platform that allows educators to create online classes whereby they can store the course materials online, manage assignments, quizzes and exams, monitor due dates, grade results and provide students with feedback all in one place.",
+    "whatis_highlight": "EduCore?",
+    "whatis_desc": "EduCore is a platform that allows educators to create online classes whereby they can store the course materials online, manage assignments, quizzes and exams, monitor due dates, grade results and provide students with feedback all in one place.",
     "for_instructors_label": "For Instructors",
     "for_students_label": "For Students",
     "start_class_btn": "Start a class today",
@@ -326,7 +349,232 @@
     "updateLogo": "Update Logo",
     "categories": "Categories",
     "adminUser": "Admin User",
-    "superAdmin": "Super Admin"
+    "superAdmin": "Super Admin",
+    "subtitle": "Dashboard",
+    "adminRole": "General Manager",
+    "nav": {
+      "courseInfo": "Course Information",
+      "quizzes": "Quizzes",
+      "sessions": "Sessions",
+      "progress": "Progress"
+    }
+  },
+  "myCourses": {
+    "title": "My Courses",
+    "workspace": "Manage course content and enrolled students",
+    "subtitle": "Review, publish, and manage pricing for all courses.",
+    "search": "Search courses, teachers, or tags...",
+    "all": "All Courses",
+    "published": "Published",
+    "draft": "Draft",
+    "noCoursesTitle": "No courses found",
+    "inProgress": "In Progress",
+    "completed": "Completed",
+    "lessons": "Lessons",
+    "resumeLesson": "Resume Lesson",
+    "resume": "Resume",
+    "noCoursesDesc": "Start learning by browsing our courses.",
+    "browseCourses": "Browse Courses",
+    "exploreTitle": "Explore New Subjects",
+    "exploreDesc": "Browse the library for your next challenge.",
+    "goToLibrary": "Go to Library",
+    "tipTitle": "Academic Tip: Spaced Repetition",
+    "tipDesc": "Focus on completing one module every 48 hours to maintain high retention.",
+    "facultyInsights": "Sage Faculty Insights",
+    "by": "By"
+  },
+  "teacherDashboard": {
+    "title": "Dashboard",
+    "welcomeDesc": "Monitor your progress and manage your courses effectively.",
+    "monthlyEnrollments": "Monthly Enrollments",
+    "studentActivity": "Student Activity",
+    "monthly": "Monthly",
+    "weekly": "Weekly",
+    "courseStatus": "Course Status",
+    "distribution": "Distribution",
+    "total": "Total",
+    "published": "Published",
+    "draft": "Draft",
+    "archived": "Archived",
+    "quickActions": "Quick Actions",
+    "rating": "Rating",
+    "avgRating": "Average Rating",
+    "draftCount": "draft"
+  },
+  "teacherPortal": {
+    "title": "Instructor Portal",
+    "welcomeBack": "Welcome back",
+    "instructor": "Instructor",
+    "logout": "Logout",
+    "createCourse": "Create Course",
+    "payoutDashboard": "Payout Dashboard",
+    "enrolledStudents": "Enrolled Students",
+    "schedule": "Schedule",
+    "selectCourse": "Select Course",
+    "noCoursesAvailable": "No courses available",
+    "activeCourses": "Active Courses",
+    "createFirstCourse": "Create your first course",
+    "recentEnrollments": "Recent Enrollments",
+    "enrollmentsHint": "New students will appear here.",
+    "comingSoon": "Coming soon",
+    "viewAllActivity": "View all activity",
+    "instructorTip": "Instructor Tip",
+    "tipText": "Consistency is key to student success.",
+    "copyright": "© 2026 EduCore. All rights reserved.",
+    "continueEditing": "Continue Editing",
+    "editCourse": "Edit Course",
+    "goToDashboardHint": "You haven't created any courses yet.",
+    "goToDashboard": "Go to Dashboard"
+  },
+  "earnings": {
+    "overview": "Overview",
+    "title": "Earnings",
+    "subtitle": "Manage and track your revenue.",
+    "allEarnings": {
+      "title": "All Earnings",
+      "backToDashboard": "Back to Dashboard",
+      "recordsFound": "records found",
+      "noEarnings": "No earnings found",
+      "filters": {
+        "fromDate": "From Date",
+        "toDate": "To Date",
+        "apply": "Apply Filter",
+        "clear": "Clear"
+      },
+      "empty": {
+        "title": "No earnings yet",
+        "message": "Student enrollments will appear here once you start selling courses."
+      },
+      "table": {
+        "course": "Course",
+        "date": "Date",
+        "gross": "Gross",
+        "rate": "Rate",
+        "net": "Net",
+        "status": "Status",
+        "invoice": "Invoice"
+      },
+      "pagination": {
+        "page": "Page",
+        "of": "of",
+        "total": "total"
+      }
+    },
+    "myInvoices": "My Invoices",
+    "error": {
+      "title": "Error loading dashboard"
+    },
+    "kpi": {
+      "totalEarned": "Total Earned",
+      "totalEarnedSub": "Lifetime earnings",
+      "totalPaid": "Total Paid",
+      "totalPaidSub": "Successfully transferred",
+      "pendingPayout": "Pending Payout",
+      "totalInvoices": "Invoices",
+      "thisMonth": "This Month",
+      "paidEnrollments": "Paid Enrollments"
+    },
+    "chart": {
+      "title": "Earnings Trend",
+      "subtitle": "Monthly revenue analysis",
+      "projectedTotal": "Projected Total"
+    },
+    "tier": {
+      "title": "Tier Progress",
+      "enrollmentsAway": {
+        "prefix": "You are ",
+        "suffix": " enrollments away from next tier"
+      },
+      "enrolled": "Enrolled",
+      "target": "Target",
+      "complete": "Complete",
+      "nextReward": "Next Reward",
+      "bonusNote": "Bonus for reaching next tier",
+      "topTier": {
+        "title": "Top Tier Reached",
+        "subtitle": "You are at the maximum payout tier."
+      },
+      "earnedBonus": "Earned Bonus"
+    },
+    "recent": {
+      "title": "Recent Earnings",
+      "subtitle": "Latest transactions",
+      "empty": {
+        "title": "No earnings yet",
+        "message": "Start selling courses to see data."
+      },
+      "table": {
+        "course": "Course",
+        "date": "Date",
+        "gross": "Gross",
+        "net": "Net",
+        "status": "Status"
+      },
+      "mobile": {
+        "netEarned": "Net Earned"
+      }
+    },
+    "invoicesList": {
+      "title": "My Invoices",
+      "backToDashboard": "Back to Dashboard",
+      "totalInvoices": "invoices",
+      "noInvoices": "No invoices found",
+      "empty": {
+        "title": "No invoices yet",
+        "message": "Invoices are generated monthly based on your earnings."
+      },
+      "invoice": "Invoice",
+      "enrollments": "Enrollments",
+      "totalEarned": "Total Earned",
+      "tierBonusIncluded": "Tier bonus included",
+      "paid": "Paid on",
+      "issued": "Issued on",
+      "created": "Created on",
+      "view": "View Details",
+      "pagination": {
+        "page": "Page",
+        "of": "of"
+      }
+    },
+    "invoiceDetail": {
+      "backToInvoices": "Back to Invoices",
+      "oops": "Oops!",
+      "invoice": "Invoice",
+      "generatingPdf": "Generating PDF...",
+      "downloadPdf": "Download PDF",
+      "enrollments": "Enrollments",
+      "earnings": "Earnings",
+      "tierBonus": "Tier Bonus",
+      "total": "Total",
+      "paymentDetails": "Payment Details",
+      "paidOn": "Paid On",
+      "method": "Payout Method",
+      "reference": "Reference #",
+      "notes": "Admin Notes",
+      "breakdownTitle": "Earnings Breakdown",
+      "breakdownSub": "Detailed list of enrollments included in this invoice",
+      "noEarnings": "No earnings recorded for this invoice.",
+      "tableNum": "#",
+      "tableCourse": "Course",
+      "tableDate": "Date",
+      "tableGross": "Gross",
+      "tableRate": "Rate",
+      "tableNet": "Net",
+      "subtotal": "Subtotal",
+      "tierBonusRow": "Tier Performance Bonus",
+      "rateMobile": "Rate",
+      "grossMobile": "Gross"
+    },
+    "status": {
+      "all": "All Statuses",
+      "Issued": "Awaiting Payment",
+      "Paid": "Paid",
+      "Cancelled": "Cancelled",
+      "Draft": "Draft",
+      "Pending": "Pending",
+      "Available": "Available",
+      "Invoiced": "Invoiced"
+    }
   },
   "adminCourses": {
     "title": "Course Management",
@@ -364,6 +612,249 @@
     "unpublish": "Unpublish",
     "publish": "Publish"
   },
+  "payout": {
+    "dashboard": {
+      "title": "Payout Dashboard",
+      "subtitle": "Financial overview and payout management",
+      "actions": {
+        "settings": "Payout Settings",
+        "generate": "Generate Invoices",
+        "allInvoices": "All Invoices"
+      },
+      "kpi": {
+        "pendingPayouts": {
+          "label": "Pending Payouts"
+        },
+        "teacherEarnings": {
+          "label": "Teacher Earnings"
+        },
+        "platformRevenue": {
+          "label": "Platform Revenue"
+        },
+        "lastMonthPaid": {
+          "label": "Last Month Paid"
+        }
+      },
+      "chart": {
+        "title": "Revenue Distribution",
+        "subtitle": "Current month split between platform and teachers",
+        "empty": "No revenue data for this month"
+      },
+      "export": {
+        "title": "Financial Report",
+        "subtitle": "Export earnings to Excel",
+        "description": "Generate a detailed Excel report for a specific period.",
+        "from": "From Date",
+        "to": "To Date",
+        "download": "Download Excel",
+        "generating": "Generating..."
+      },
+      "activeTeachers": {
+        "label": "Monthly Enrollments",
+        "description": "Total paid enrollments for the current period",
+        "viewAll": "View Invoice List"
+      },
+      "error": {
+        "retry": "Retry"
+      }
+    },
+    "invoiceList": {
+      "title": "All Invoices",
+      "backToDashboard": "Back to Dashboard",
+      "subtitle": {
+        "count": "invoices found",
+        "empty": "No invoices generated yet"
+      },
+      "filters": {
+        "status": "Filter by Status",
+        "teacherId": "Teacher ID",
+        "teacherIdPlaceholder": "Enter Teacher ID...",
+        "fromDate": "From Date",
+        "toDate": "To Date",
+        "apply": "Apply Filters",
+        "clearAll": "Clear All"
+      },
+      "table": {
+        "invoiceNumber": "Invoice #",
+        "teacher": "Teacher",
+        "period": "Period",
+        "enrollments": "Enrollments",
+        "total": "Total Amount",
+        "status": "Status"
+      },
+      "mobile": {
+        "enrollments": "enrollments",
+        "total": "Total Amount"
+      },
+      "pagination": {
+        "page": "Page",
+        "of": "of",
+        "total": "total invoices"
+      },
+      "emptyState": {
+        "title": "No Invoices Found",
+        "messageWithFilters": "Try adjusting your filters to find what you're looking for.",
+        "messageNoFilters": "There are no invoices in the system yet."
+      },
+      "error": {
+        "retry": "Retry"
+      }
+    },
+    "generate": {
+      "title": "Generate Monthly Invoices",
+      "subtitle": "Process payouts for all teachers for a specific month.",
+      "backToDashboard": "Back to Dashboard",
+      "infoBanner": {
+        "title": "Important Information",
+        "item1": "This process calculates earnings for all teachers based on paid enrollments.",
+        "item2": "Invoices will be generated in 'Issued' status.",
+        "item3": "You can generate invoices for the same month multiple times; system will only create new ones for missing teachers.",
+        "idempotent": "Safe Process:",
+        "idempotentText": "Generating again won't duplicate existing invoices."
+      },
+      "form": {
+        "title": "Select Period",
+        "year": "Year",
+        "month": "Month",
+        "submit": "Generate for",
+        "submitting": "Processing..."
+      },
+      "result": {
+        "title": "Generation Complete",
+        "period": "Successfully processed invoices for",
+        "stats": {
+          "created": "Created",
+          "skipped": "Skipped",
+          "skippedHint": "Already exist",
+          "failed": "Failed",
+          "total": "Total Value"
+        },
+        "failedTeachersTitle": "Failed Teachers",
+        "messagesTitle": "System Messages",
+        "actions": {
+          "generateAnother": "Generate Another",
+          "viewAll": "View Invoice List"
+        }
+      },
+      "error": {
+        "title": "Generation Failed",
+        "tryAgain": "Try Again"
+      }
+    },
+    "invoiceDetail": {
+      "backToInvoices": "Back to Invoices",
+      "header": {
+        "invoiceLabel": "Invoice Details"
+      },
+      "actions": {
+        "downloadPdf": "Download PDF",
+        "downloading": "Downloading...",
+        "markAsPaid": "Mark as Paid",
+        "cancelInvoice": "Cancel Invoice"
+      },
+      "totals": {
+        "enrollments": "Enrollments",
+        "earnings": "Earnings",
+        "tierBonus": "Tier Bonus",
+        "total": "Final Total"
+      },
+      "paymentInfo": {
+        "title": "Payment Information",
+        "paidOn": "Paid On",
+        "method": "Payout Method",
+        "reference": "Reference #",
+        "notes": "Admin Notes"
+      },
+      "breakdown": {
+        "title": "Earnings Breakdown",
+        "columns": {
+          "number": "#",
+          "course": "Course Title",
+          "date": "Earned At",
+          "gross": "Gross",
+          "net": "Net"
+        }
+      },
+      "payModal": {
+        "title": "Confirm Payment",
+        "confirmText": "You are marking a payout of",
+        "to": "to",
+        "method": "Payout Method",
+        "reference": "Reference / Transaction ID",
+        "referencePlaceholder": "e.g. TXN-123456",
+        "notes": "Notes for Teacher",
+        "notesPlaceholder": "Optional details about the transfer...",
+        "cancel": "Cancel",
+        "confirm": "Confirm Payment",
+        "processing": "Processing..."
+      },
+      "cancelModal": {
+        "title": "Cancel Invoice",
+        "warningTitle": "Warning",
+        "warningText": "Cancelling an invoice will revert all earnings to 'Available' state. This action should only be taken for errors.",
+        "reason": "Cancellation Reason",
+        "reasonPlaceholder": "Explain why this invoice is being cancelled...",
+        "reasonHint": "This reason will be visible to the teacher.",
+        "keep": "Keep Invoice",
+        "confirm": "Yes, Cancel",
+        "cancelling": "Cancelling..."
+      },
+      "error": {
+        "title": "Failed to load invoice"
+      }
+    },
+    "settings": {
+      "title": "Payout Settings",
+      "subtitle": "Configure global commission rates and performance tiers.",
+      "backToDashboard": "Back to Dashboard",
+      "notice": {
+        "title": "System Note",
+        "text": "Changes to settings only affect future invoice generation. Existing invoices will not be modified."
+      },
+      "lastUpdated": {
+        "label": "Last Updated:",
+        "by": "by"
+      },
+      "commission": {
+        "title": "Global Commission Split",
+        "subtitle": "Percentage of course price that goes to the teacher.",
+        "fieldLabel": "Teacher Rate (%)",
+        "platformKeeps": "Platform keeps",
+        "example": "Example: 1000 EGP sale → teacher gets",
+        "exampleSuffix": "EGP"
+      },
+      "tiers": {
+        "title": "Performance Tiers",
+        "subtitle": "Bonus amounts for reaching enrollment thresholds within a single month.",
+        "threshold": "Threshold (Enrollments)",
+        "bonus": "Bonus Amount",
+        "thresholdShort": "Threshold",
+        "tier1": "Tier 1 (Silver)",
+        "tier2": "Tier 2 (Gold)",
+        "tier3": "Tier 3 (Platinum)",
+        "currency": "Payout Currency",
+        "addTier": "Add Tier"
+      },
+      "validation": {
+        "title": "Please correct the following errors:"
+      },
+      "actions": {
+        "save": "Save Settings",
+        "saving": "Saving...",
+        "discard": "Discard Changes",
+        "reset": "Reset to Defaults"
+      },
+      "saveSuccess": "Settings saved successfully",
+      "messages": {
+        "success": "Settings saved successfully",
+        "error": "Failed to save settings"
+      },
+      "error": {
+        "retry": "Retry"
+      }
+    }
+  },
+
   "adminDashboard": {
     "title": "Dashboard",
     "subtitle": "Monitor your platform's performance and key metrics at a glance.",
@@ -395,7 +886,6 @@
     "byCertificateType": "By Certificate Type",
     "courseStatusOverview": "Course Status Overview",
     "activeVsTotal": "Active vs Total Courses"
-    
   },
   "adminStudentDetail": {
     "enrollments": "Enrollments",
@@ -417,11 +907,11 @@
     "noPayments": "No payments yet.",
     "noAttendance": "No attendance records yet.",
     "enrolled_tag": "(enrolled)"
-  
   },
   "adminStudents": {
     "title": "Student Registry",
     "subtitle": "Manage academic records and enrollment statuses.",
+    "manageMembers": "Manage Members",
     "search": "Search...",
     "totalStudents": "Total Students",
     "active": "Active",
@@ -508,17 +998,6 @@
       "cancel": "Cancel"
     }
   },
-  "adminSidebar": {
-    "adminPortal": "Admin Portal",
-    "dashboard": "Dashboard",
-    "courses": "Courses",
-    "teachers": "Teachers",
-    "students": "Students",
-    "forumReports": "Forum Reports",
-    "support": "Support",
-    "logout": "Logout",
-    "administrator": "Administrator"
-  },
   "confirmEmail": {
     "verifying": {
       "title": "Confirming your email...",
@@ -545,12 +1024,15 @@
   "courseCard": {
     "students": "Students",
     "lessons": "Lessons",
+    "viewDetails": "View Details",
     "free": "Free",
-    "addToCart": "Add to cart"
+    "addToCart": "Add to cart",
+    "currency": "EGP"
   },
   "courseDetails": {
     "tuition": "Tuition",
     "free": "Free",
+    "currency": "EGP",
     "enroll": "Enroll Now",
     "about": "About This Course",
     "level": "Level",
@@ -737,7 +1219,13 @@
     "step": "Step 3 of 4",
     "back": "Back",
     "nextPricing": "Next: Pricing",
-    "videoUrlPlaceholder": "https://youtube.com/watch?v=..."
+    "videoUrlPlaceholder": "https://youtube.com/watch?v=...",
+    "openingDrive": "Opening Drive...",
+    "pickVideoFromDrive": "Pick Video from Google Drive",
+    "pickPdfFromDrive": "Pick PDF from Google Drive",
+    "enterUrlManually": "Or enter URL manually",
+    "video": "Video",
+    "pdf": "PDF"
   },
   "login": {
     "welcome": "Welcome back",
@@ -1015,13 +1503,18 @@
     "haveAccount": "Already have an account?"
   },
   "reviewss": {
+    "heading": "course reviews",
     "breadcrumb": "Reviews",
     "course": "Course #",
     "topRated": "TOP RATED COURSE",
     "overallRating": "Overall Rating",
     "basedOn": "Based on",
     "reviewsCount": "reviews",
+    "description": "manage and update your feedback for completed courses",
     "star": "star",
+    "totalReviews": "Total Reviews",
+    "avgRatingGiven": "Average Rating Given",
+    "uniqueCourses": "Unique Courses Reviewed",
     "stars": "stars",
     "searchPlaceholder": "Search reviews...",
     "writeReview": "Write Review",
@@ -1042,6 +1535,29 @@
     "deleting": "Deleting...",
     "yesDelete": "Yes, Delete",
     "cancel": "Cancel"
+  },
+  "paymentHistory": {
+    "portalLabel": "Student Portal",
+    "pageTitle": "Payment History",
+    "pageSubtitle": "Track all your course payments and transactions in one place.",
+    "totalInvestment": "Total Investment",
+    "recentTransactions": "Recent Transactions",
+    "noPaymentsYet": "No Payments Yet",
+    "paymentHistoryEmpty": "You haven't made any payments yet. Start learning by enrolling in a course.",
+    "browseCourses": "Browse Courses",
+    "secureTransactions": "Secure Transactions",
+    "secureTransactionsDescription": "All your payments are encrypted and processed through a secure and trusted payment gateway."
+  },
+  "myQuizzes": {
+    "title": "My Quizzes",
+    "subtitle": "Browse and take quizzes for your enrolled courses",
+    "allCourses": "All Courses",
+    "noQuizzesTitle": "No quizzes available",
+    "noQuizzesSubtitle": "Try selecting a different course",
+    "passScore": "Pass {{value}}%",
+    "requiredToPass": "Required to pass",
+    "viewQuiz": "View Quiz",
+    "retry": "Retry"
   },
   "lessonPlayer": {
     "brand": "EduCore",
@@ -1065,9 +1581,42 @@
     "secureSignedDesc": "This video is served via a time-limited signed URL. Your access is valid until",
     "refreshIfExpires": "Refresh the page if it expires."
   },
+  "payments": {
+    "title": "Payments & Transactions",
+    "subtitle": "Manage all payments and cash enrollment requests",
+    "totalRevenue": "Total Revenue",
+    "completedPayments": "Completed payments",
+    "pendingCashRequests": "Pending Cash Requests",
+    "actionRequired": "ACTION REQUIRED",
+    "tabs": {
+      "allPayments": "All Payments",
+      "cashRequests": "Cash Requests"
+    },
+    "table": {
+      "date": "Date",
+      "course": "Course",
+      "amount": "Amount",
+      "method": "Method",
+      "status": "Status",
+      "free": "Free",
+      "student": "Student"
+    },
+    "emptyPayments": "No payments found.",
+    "emptyCash": "No cash requests found.",
+    "card": {
+      "amount": "Amount",
+      "requestDate": "Request Date",
+      "confirm": "Confirm",
+      "reject": "Reject",
+      "paymentProcessed": "Payment Processed",
+      "requestRejected": "Request Rejected"
+    }
+  },
   "myCertificates": {
     "title": "My Certificates",
     "subtitle": "View and download your earned certificates.",
+    "earned": "Earned",
+    "completionRate": "Completion Rate",
     "completionLabel": "Certificate of Completion",
     "issued": "Issued:",
     "awardedTo": "Awarded to",
@@ -1075,25 +1624,6 @@
     "noDesc": "Complete all lessons in a course to earn your certificate.",
     "viewPage": "View Page",
     "download": "Download"
-  },
-  "myCourses": {
-    "workspace": "Student Workspace",
-    "title": "My Courses",
-    "inProgress": "In Progress",
-    "completed": "Completed",
-    "lessons": "Lessons",
-    "resumeLesson": "Resume Lesson",
-    "resume": "Resume",
-    "noCoursesTitle": "No courses found",
-    "noCoursesDesc": "Start learning by browsing our courses.",
-    "browseCourses": "Browse Courses",
-    "exploreTitle": "Explore New Subjects",
-    "exploreDesc": "Browse the library for your next challenge.",
-    "goToLibrary": "Go to Library",
-    "tipTitle": "Academic Tip: Spaced Repetition",
-    "tipDesc": "Focus on completing one module every 48 hours to maintain high retention.",
-    "facultyInsights": "Sage Faculty Insights",
-    "by": "By"
   },
   "studentAgenda": {
     "title": "My Schedule",
@@ -1199,6 +1729,11 @@
     "selectCategory": "Select category",
     "categoryError": "Category is required",
     "level": "Level",
+    "levels": {
+      "Beginner": "Beginner",
+      "Intermediate": "Intermediate",
+      "Advanced": "Advanced"
+    },
     "description": "Description",
     "descriptionPlaceholder": "Describe the journey your students will take...",
     "descriptionError": "Description is required",
@@ -1209,7 +1744,7 @@
     "uploading": "Uploading...",
     "coverUploaded": "✓ Cover uploaded successfully!",
     "pricingStrategy": "Pricing strategy",
-    "priceUsd": "Price (USD)",
+    "priceUsd": "Price (EGP)",
     "courseHealth": "Course health",
     "progress": "Progress",
     "instructorTips": "Instructor tips",
@@ -1254,7 +1789,7 @@
   "pricingStep": {
     "pricingType": "Pricing type",
     "pricingTypeDesc": "Choose how students will access your course.",
-    "coursePriceUsd": "Course price (USD)",
+    "coursePriceUsd": "Course price (EGP)",
     "discountPrice": "Discount price (optional)",
     "earningsBreakdown": "Earnings breakdown",
     "coursePrice": "Course price",
@@ -1266,7 +1801,14 @@
     "publishingChecklist": "Publishing checklist",
     "unpublishAnytime": "You can unpublish anytime from the dashboard",
     "publishing": "Publishing...",
-    "publishCourse": "Publish course"
+    "publishCourse": "Publish course",
+    "publishSuccess": "Course published successfully! 🎉",
+    "currency": "EGP",
+    "types": {
+      "Free": "Free",
+      "Paid": "Paid",
+      "Subscription": "Subscription"
+    }
   },
   "editCourse": {
     "title": "Edit course",
@@ -1350,43 +1892,21 @@
     "notFound": "Lesson not found. It may have been deleted.",
     "backToCurriculum": "Back to curriculum"
   },
-  "teacherPortal": {
-    "title": "Teacher Portal",
-    "settings": "Settings",
-    "instructor": "Instructor",
-    "welcomeBack": "Welcome back",
-    "createCourse": "Create Course",
-    "createFirstCourse": "Create your first course",
-    "continueEditing": "Continue Editing",
-    "editCourse": "Edit Course",
-    "goToDashboard": "Go to Dashboard",
-    "goToDashboardHint": "Go to dashboard to create your first course!",
-    "enrolledStudents": "Enrolled Students",
-    "totalAcrossAll": "Total across all courses",
-    "acrossCategories": "Across all categories",
-    "inDraft": "items in draft",
-    "academicExcellence": "Academic Excellence",
-    "schedule": "Schedule",
-    "selectCourse": "Select Course",
-    "noCoursesAvailable": "No courses available",
-    "scheduleHint": "Schedule a session from your courses to see it here.",
-    "activeCourses": "Active Courses",
-    "recentEnrollments": "Recent Enrollments",
-    "enrollmentsHint": "Recent enrollments will appear here",
-    "comingSoon": "Coming soon with Enrollment module",
-    "viewAllActivity": "View All Activity",
-    "instructorTip": "Instructor Tip",
-    "tipText": "Keep students motivated by providing detailed feedback and updating your course content regularly.",
-    "copyright": "© 2025 EduCore. Empowering Education.",
-    "exitCourseBuilder": "Exit Course Builder"
-  },
   "teacherSessions": {
     "sessions": "Sessions",
     "sessionOverview": "Session Overview",
     "upcoming": "Upcoming",
     "past": "Past",
     "liveSessions": "Live Sessions",
+    "subtitle": "Oversee your virtual classrooms and upcoming student interactions.",
     "scheduleSession": "Schedule Session",
+    "happeningNow": "Happening Now",
+    "joinSession": "Join Session",
+    "loading": "Loading sessions…",
+    "insightTitle": "Academic Insight",
+    "insightText": "Live sessions are the heartbeat of the learning experience. Enable recordings so students can revisit key discussions at any time.",
+    "edit": "Edit",
+    "completed": "Completed",
     "noSessionsTitle": "No sessions scheduled yet",
     "noSessionsHint": "Schedule your first live session for this course.",
     "scheduleFirst": "Schedule First Session",
@@ -1413,27 +1933,12 @@
     "recordingUrlError": "A valid URL starting with http:// or https:// is required.",
     "saveRecording": "Save Recording",
     "footerLabel": "Sessions — Course Builder",
-    "backToMedia": "Back to Media"
-  },
-  "teacherProgress": {
-    "lessonBreakdown": "Lesson Breakdown",
-    "watchedUpTo": "Watched up to",
-    "statusCompleted": "Completed",
-    "statusInProgress": "In Progress",
-    "statusNotStarted": "Not Started",
-    "studentName": "Student Name",
-    "completed": "Completed",
-    "footerLabel": "Progress — Course Builder",
-    "backToSessions": "Back to Sessions",
-    "done": "Done",
-    "noStudents": "No enrolled students yet",
-    "noStudentsHint": "Students who enroll in this course will appear here."
-  },
-  "teacherDashboard": {
-    "subtitle": "Your courses, students, and upcoming sessions.",
-    "scheduledSessions": "Your scheduled live sessions",
-    "latestStudents": "Latest students joining your courses",
-    "noEnrollments": "No recent enrollments."
+    "backToMedia": "Back to Media",
+    "pageTitle": "Live Sessions",
+    "pageSubtitle": "Oversee your virtual classrooms and upcoming student interactions.",
+    "loadingSessions": "Loading sessions…",
+    "defaultSessionTitle": "Live Session",
+    "providerTeams": "Teams"
   },
   "teacherProfile": {
     "loading": "Loading teacher profile...",
@@ -1449,7 +1954,6 @@
     "dashboard": "Dashboard",
     "myCourses": "My Courses",
     "myQuizzes": "My Quizzes",
-    "reviews": "Reviews",
     "QuizHistory": "Quiz History",
     "liveSessions": "Live Sessions",
     "certificates": "Certificates",
@@ -1462,7 +1966,10 @@
     "learn": "Learn",
     "live": "Live",
     "certs": "Certs",
-    "profile": "Profile"
+    "profile": "Profile",
+    "payments": "Payments",
+    "reviews": "Reviews",
+    "student": "Student"
   },
   "adminTopbar": {
     "notifications": "Notifications",
@@ -1476,463 +1983,186 @@
     "createNewCourse": "Create New Course",
     "logout": "Logout"
   },
-  "earnings": {
-    "title": "Earnings Dashboard",
-    "subtitle": "Track your earnings, monthly progress, and payout history",
-    "myInvoices": "My Invoices",
-    "error": {
-      "title": "Could not load dashboard"
-    },
-    "kpi": {
-      "totalEarned": "Total Earned",
-      "totalEarnedSub": "All-time net earnings",
-      "totalPaid": "Total Paid",
-      "totalPaidSub": "Already received",
-      "pendingPayout": "Pending Payout",
-      "totalInvoices": "total invoices",
-      "thisMonth": "This Month",
-      "paidEnrollments": "paid enrollments"
-    },
-    "chart": {
-      "title": "Current Month Breakdown",
-      "subtitle": "Earnings + projected tier bonus",
-      "projectedTotal": "Projected Total"
-    },
-    "tier": {
-      "title": "Tier Progress",
-      "enrollmentsAway": {
-        "prefix": "You're",
-        "suffix": "enrollment(s) away from your next bonus!"
-      },
-      "enrolled": "enrolled",
-      "target": "target",
-      "complete": "complete",
-      "nextReward": "Next Reward",
-      "bonusNote": "Bonus added to your invoice",
-      "topTier": {
-        "title": "Top Tier Achieved!",
-        "subtitle": "You've unlocked the highest tier bonus this month."
-      },
-      "earnedBonus": "Earned Bonus"
-    },
-    "recent": {
-      "title": "Recent Earnings",
-      "subtitle": "Last 5 payments received",
-      "empty": {
-        "title": "No earnings yet",
-        "message": "Earnings will appear here once students enroll in your paid courses."
-      },
-      "table": {
-        "course": "Course",
-        "date": "Date",
-        "gross": "Gross",
-        "net": "Net",
-        "status": "Status"
-      },
-      "mobile": {
-        "netEarned": "Net earned:"
-      }
-    },
   "allEarnings": {
-  "title": "My Earnings",
-  "backToDashboard": "Dashboard",
-  "recordsFound": "earnings recorded",
-  "noEarnings": "No earnings yet",
-  "filters": {
-    "fromDate": "From Date",
-    "toDate": "To Date",
-    "apply": "Apply",
-    "clear": "Clear"
-  },
-  "table": {
-    "course": "Course",
-    "date": "Date",
-    "gross": "Gross Amount",
-    "rate": "Rate",
-    "net": "Your Net",
-    "status": "Status",
-    "invoice": "Invoice"
-  },
-  "empty": {
-    "title": "No earnings found",
-    "message": "Earnings appear here when students enroll in your paid courses."
-  },
-  "pagination": {
-    "page": "Page",
-    "of": "of",
-    "total": "total"
-  }
-},
-"invoiceDetail": {
-  "backToInvoices": "Back to Invoices",
-  "invoice": "Invoice",
-  "generatingPdf": "Generating…",
-  "downloadPdf": "Download PDF",
-  "enrollments": "Enrollments",
-  "earnings": "Earnings",
-  "tierBonus": "Tier Bonus",
-  "total": "Total",
-  "paymentDetails": "Payment Details",
-  "paidOn": "Paid On",
-  "method": "Method",
-  "reference": "Reference",
-  "notes": "Notes",
-  "breakdownTitle": "Earnings Breakdown",
-  "breakdownSub": "All earnings included in this invoice",
-  "noEarnings": "No earnings in this invoice.",
-  "tableNum": "#",
-  "tableCourse": "Course",
-  "tableDate": "Date",
-  "tableGross": "Gross",
-  "tableRate": "Rate",
-  "tableNet": "Net",
-  "subtotal": "Earnings Subtotal",
-  "tierBonusRow": "Tier Bonus",
-  "oops": "Oops!",
-  "rateMobile": "Rate",
-  "grossMobile": "Gross"
-},
-
-
-"invoicesList": {
-  "backToDashboard": "Dashboard",
-  "title": "My Invoices",
-  "totalInvoices": "invoices total",
-  "noInvoices": "No invoices yet",
-  "invoice": "Invoice",
-  "enrollments": "Enrollments",
-  "totalEarned": "Total Earned",
-  "tierBonusIncluded": "Tier bonus included",
-  "paid": "Paid",
-  "issued": "Issued",
-  "created": "Created",
-  "view": "View",
-  "empty": {
-    "title": "No invoices yet",
-    "message": "Your monthly invoices will appear here on the 1st of each month."
-  },
-  "pagination": {
-    "page": "Page",
-    "of": "of"
-  }
-,
-"courseManagement": {
-  "label": "Course Management"
-},
-"teacherProgress": {
-  "pageTitle": "Student Progress",
-  "pageSubtitle": "Real-time student engagement tracking and module completion analytics for this course.",
-  "loading": "Loading student data...",
-  "studentRoster": "Student Roster",
-  "exportCsv": "Export CSV",
-  "selectStudentHint": "Click a student row to view their detailed lesson-by-lesson progress.",
-  "detailedBreakdown": "Detailed Breakdown",
-  "lessonsCompleted": "lessons completed",
-  "curriculumProgress": "Curriculum Progress",
-  "noLessons": "No lessons tracked yet for this student.",
-  "viewFullHistory": "View Full History",
-  "lessonBreakdown": "Lesson Breakdown",
-  "watchedUpTo": "Watched up to",
-  "statusCompleted": "Completed",
-  "statusInProgress": "In Progress",
-  "statusNotStarted": "Not Started",
-  "studentName": "Student Name",
-  "completed": "Completed",
-  "footerLabel": "Progress — Course Builder",
-  "backToSessions": "Back to Sessions",
-  "done": "Done",
-  "noStudents": "No enrolled students yet",
-  "noStudentsHint": "Students who enroll in this course will appear here."
-},
-"teacherDashboard": {
-  "subtitle": "Your courses, students, and upcoming sessions.",
-  "scheduledSessions": "Your scheduled live sessions",
-  "latestStudents": "Latest students joining your courses",
-  "noEnrollments": "No recent enrollments."
-},
-"teacherProfile": {
-  "loading": "Loading teacher profile...",
-  "courses": "Courses",
-  "course": "Course",
-  "coursesByTeacher": "Courses by",
-  "noPublished": "No courses published yet.",
-  "enrolled": "enrolled",
-  "view": "View"
-},
-"studentSidebar": {
-  "portal": "Student Portal",
-  "dashboard": "Dashboard",
-  "myCourses": "My Courses",
-  "myQuizzes":"My Quizzes",
-  "QuizHistory":"Quiz History",
-  "liveSessions": "Live Sessions",
-  "certificates": "Certificates",
-  "messages": "Messages",
-  "continueLearning": "Continue Learning",
-  "settings": "Settings",
-  "support": "Support",
-  "logout": "Logout",
-  "dash": "Dash",
-  "learn": "Learn",
-  "live": "Live",
-  "certs": "Certs",
-  "profile": "Profile",
-  "payments": "Payments"
-},
-"adminTopbar": {
-  "notifications": "Notifications",
-  "help": "Help"
-},
-"teacherSidebar": {
-  "teacherPortal": "Teacher Portal",
-  "courseInfo": "Course Information",
-  "curriculumBuilder": "Curriculum Builder",
-  "quizzes": "Quizzes",
-  "createNewCourse": "Create New Course",
-  "logout": "Logout"
-}
-  },
-   "payout": {
-    "dashboard": {
-      "title": "Payouts Dashboard",
-      "subtitle": "Manage teacher payouts, invoices, and earnings overview",
-      "actions": {
-        "settings": "Settings",
-        "generate": "Generate",
-        "allInvoices": "All Invoices"
-      },
-      "error": {
-        "title": "Could not load dashboard",
-        "retry": "Retry"
-      },
-      "kpi": {
-        "pendingPayouts": {
-          "label": "Pending Payouts",
-          "subtitle": "unpaid invoices"
-        },
-        "teacherEarnings": {
-          "label": "Teacher Earnings",
-          "subtitle": "Current month"
-        },
-        "platformRevenue": {
-          "label": "Platform Revenue",
-          "subtitle": "Current month"
-        },
-        "lastMonthPaid": {
-          "label": "Last Month Paid",
-          "subtitle": "Disbursed to teachers"
-        }
-      },
-      "chart": {
-        "title": "Revenue Split (This Month)",
-        "subtitle": "How earnings are split between teachers and the platform",
-        "empty": "No revenue this month yet"
-      },
-      "export": {
-        "title": "Financial Report",
-        "subtitle": "Export to Excel",
-        "description": "Multi-sheet workbook with summary, invoices, and earnings.",
-        "from": "From",
-        "to": "To",
-        "download": "Download Excel",
-        "generating": "Generating…"
-      },
-      "activeTeachers": {
-        "label": "Active Teachers This Month",
-        "description": "Teachers with at least one paid enrollment",
-        "viewAll": "View All Invoices"
-      }
+    "title": "My Earnings",
+    "backToDashboard": "Dashboard",
+    "recordsFound": "earnings recorded",
+    "noEarnings": "No earnings yet",
+    "filters": {
+      "fromDate": "From Date",
+      "toDate": "To Date",
+      "apply": "Apply",
+      "clear": "Clear"
     },
-    "invoiceDetail": {
-      "backToInvoices": "Back to All Invoices",
-      "error": {
-        "title": "Oops!"
-      },
-      "header": {
-        "invoiceLabel": "Invoice",
-        "periodLabel": "Period"
-      },
-      "actions": {
-        "downloadPdf": "Download PDF",
-        "downloading": "Downloading…",
-        "markAsPaid": "Mark as Paid",
-        "cancelInvoice": "Cancel Invoice"
-      },
-      "totals": {
-        "enrollments": "Enrollments",
-        "earnings": "Earnings",
-        "tierBonus": "Tier Bonus",
-        "total": "Total"
-      },
-      "paymentInfo": {
-        "title": "Payment Info",
-        "paidOn": "Paid On",
-        "method": "Method",
-        "reference": "Reference",
-        "notes": "Notes"
-      },
-      "breakdown": {
-        "title": "Earnings Breakdown",
-        "columns": {
-          "number": "#",
-          "course": "Course",
-          "date": "Date",
-          "gross": "Gross",
-          "net": "Net"
-        }
-      },
-      "payModal": {
-        "title": "Mark as Paid",
-        "confirmText": "Confirm payment of",
-        "to": "to",
-        "method": "Payment Method",
-        "reference": "Reference (optional)",
-        "referencePlaceholder": "e.g. Bank txn #12345",
-        "notes": "Notes (optional)",
-        "notesPlaceholder": "Any internal notes…",
-        "cancel": "Cancel",
-        "confirm": "Confirm Payment",
-        "processing": "Processing…"
-      },
-      "cancelModal": {
-        "title": "Cancel Invoice",
-        "warningTitle": "What happens next?",
-        "warningText": "Earnings on this invoice will be released back to Available status, so they can be re-invoiced in the next run.",
-        "reason": "Reason",
-        "reasonPlaceholder": "Why are you cancelling this invoice?",
-        "reasonHint": "Min 5 characters. This will be saved on the invoice notes.",
-        "keep": "Keep Invoice",
-        "confirm": "Confirm Cancel",
-        "cancelling": "Cancelling…"
-      }
+    "table": {
+      "course": "Course",
+      "date": "Date",
+      "gross": "Gross Amount",
+      "rate": "Rate",
+      "net": "Your Net",
+      "status": "Status",
+      "invoice": "Invoice"
     },
-    "invoiceList": {
-      "backToDashboard": "Dashboard",
-      "title": "All Invoices",
-      "subtitle": {
-        "count": "invoices across all teachers",
-        "empty": "No invoices match the current filters"
-      },
-      "filters": {
-        "status": "Status",
-        "teacherId": "Teacher ID",
-        "teacherIdPlaceholder": "Optional teacher ID",
-        "fromDate": "From Date",
-        "toDate": "To Date",
-        "apply": "Apply",
-        "clearAll": "Clear All"
-      },
-      "error": {
-        "retry": "Retry"
-      },
-      "emptyState": {
-        "title": "No invoices found",
-        "messageWithFilters": "Try adjusting your filters or clearing them.",
-        "messageNoFilters": "Invoices will appear here once generated."
-      },
-      "table": {
-        "invoiceNumber": "Invoice #",
-        "teacher": "Teacher",
-        "period": "Period",
-        "enrollments": "Enrollments",
-        "total": "Total",
-        "status": "Status"
-      },
-      "mobile": {
-        "enrollments": "enrollments",
-        "total": "Total"
-      },
-      "pagination": {
-        "page": "Page",
-        "of": "of",
-        "total": "total"
-      }
+    "empty": {
+      "title": "No earnings found",
+      "message": "Earnings appear here when students enroll in your paid courses."
     },
-    "generate": {
-      "backToDashboard": "Dashboard",
-      "title": "Generate Invoices",
-      "subtitle": "Manually trigger invoice generation for a specific month",
-      "infoBanner": {
-        "title": "When to use this",
-        "item1": "Testing the system without waiting for the monthly cron",
-        "item2": "Backfilling a month that the auto-job missed",
-        "item3": "Regenerating after cancelling some invoices",
-        "idempotent": "Idempotent:",
-        "idempotentText": "Teachers who already have an invoice for the period are skipped automatically."
-      },
-      "form": {
-        "title": "Select Period",
-        "year": "Year",
-        "month": "Month",
-        "submit": "Generate Invoices for",
-        "submitting": "Generating Invoices…"
-      },
-      "error": {
-        "title": "Generation Failed",
-        "tryAgain": "Try Again"
-      },
-      "result": {
-        "title": "Generation Complete",
-        "period": "Period:",
-        "stats": {
-          "created": "Created",
-          "skipped": "Skipped",
-          "skippedHint": "Already had invoice",
-          "failed": "Failed",
-          "total": "Total"
-        },
-        "failedTeachersTitle": "Failed Teachers",
-        "messagesTitle": "Messages",
-        "actions": {
-          "generateAnother": "Generate Another Month",
-          "viewAll": "View All Invoices"
-        }
-      }
-    },
-    "settings": {
-      "backToDashboard": "Dashboard",
-      "title": "Payout Settings",
-      "subtitle": "Configure commission rate and tier-based enrollment bonuses",
-      "notice": {
-        "title": "Changes apply to FUTURE earnings only",
-        "text": "Existing earnings keep their original commission rate as a financial snapshot. Only new payments after the change will use the updated rate."
-      },
-      "error": {
-        "retry": "Retry"
-      },
-      "lastUpdated": {
-        "label": "Last updated:",
-        "by": "by"
-      },
-      "saveSuccess": "Settings saved successfully!",
-      "commission": {
-        "title": "Commission Rate",
-        "subtitle": "Teacher's share of each course sale",
-        "fieldLabel": "Teacher's Share (%)",
-        "platformKeeps": "Platform keeps:",
-        "example": "Example: 1,000 EGP sale →",
-        "exampleSuffix": "EGP to teacher"
-      },
-      "tiers": {
-        "title": "Tier Bonuses",
-        "subtitle": "Reward teachers for hitting monthly enrollment milestones",
-        "threshold": "Threshold (enrollments)",
-        "thresholdShort": "Threshold",
-        "bonus": "Bonus",
-        "tier1": "Tier 1",
-        "tier2": "Tier 2",
-        "tier3": "Tier 3 ⭐",
-        "currency": "Currency"
-      },
-      "validation": {
-        "title": "Please fix:"
-      },
-      "actions": {
-        "reset": "Reset",
-        "save": "Save Settings",
-        "saving": "Saving…"
-      }
+    "pagination": {
+      "page": "Page",
+      "of": "of",
+      "total": "total"
     }
+  },
+  "invoiceDetail": {
+    "backToInvoices": "Back to Invoices",
+    "invoice": "Invoice",
+    "generatingPdf": "Generating…",
+    "downloadPdf": "Download PDF",
+    "enrollments": "Enrollments",
+    "earnings": "Earnings",
+    "tierBonus": "Tier Bonus",
+    "total": "Total",
+    "paymentDetails": "Payment Details",
+    "paidOn": "Paid On",
+    "method": "Method",
+    "reference": "Reference",
+    "notes": "Notes",
+    "breakdownTitle": "Earnings Breakdown",
+    "breakdownSub": "All earnings included in this invoice",
+    "noEarnings": "No earnings in this invoice.",
+    "tableNum": "#",
+    "tableCourse": "Course",
+    "tableDate": "Date",
+    "tableGross": "Gross",
+    "tableRate": "Rate",
+    "tableNet": "Net",
+    "subtotal": "Earnings Subtotal",
+    "tierBonusRow": "Tier Bonus",
+    "oops": "Oops!",
+    "rateMobile": "Rate",
+    "grossMobile": "Gross"
+  },
+  "invoicesList": {
+    "backToDashboard": "Dashboard",
+    "title": "My Invoices",
+    "totalInvoices": "invoices total",
+    "noInvoices": "No invoices yet",
+    "invoice": "Invoice",
+    "enrollments": "Enrollments",
+    "totalEarned": "Total Earned",
+    "tierBonusIncluded": "Tier bonus included",
+    "paid": "Paid",
+    "issued": "Issued",
+    "created": "Created",
+    "view": "View",
+    "empty": {
+      "title": "No invoices yet",
+      "message": "Your monthly invoices will appear here on the 1st of each month."
+    },
+    "pagination": {
+      "page": "Page",
+      "of": "of"
+    }
+  },
+  "courseManagement": {
+    "label": "Course Management"
+  },
+  "teacherProgress": {
+    "pageTitle": "Student Progress",
+    "quizzes": "Quizzes",
+    "progress": "Progress",
+    "pageSubtitle": "Real-time student engagement tracking and module completion analytics for this course.",
+    "loading": "Loading student data...",
+    "studentRoster": "Student Roster",
+    "exportCsv": "Export CSV",
+    "selectStudentHint": "Click a student row to view their detailed lesson-by-lesson progress.",
+    "detailedBreakdown": "Detailed Breakdown",
+    "lessonsCompleted": "lessons completed",
+    "curriculumProgress": "Curriculum Progress",
+    "noLessons": "No lessons tracked yet for this student.",
+    "viewFullHistory": "View Full History",
+    "lessonBreakdown": "Lesson Breakdown",
+    "watchedUpTo": "Watched up to",
+    "statusCompleted": "Completed",
+    "statusInProgress": "In Progress",
+    "statusNotStarted": "Not Started",
+    "studentName": "Student Name",
+    "completed": "Completed",
+    "footerLabel": "Progress — Course Builder",
+    "backToSessions": "Back to Sessions",
+    "done": "Done",
+    "noStudents": "No enrolled students yet",
+    "noStudentsHint": "Students who enroll in this course will appear here."
+  },
+  "COURSE": {
+    "LOADING": "Loading your course…",
+    "BACK_TO_MY_COURSES": "← Back to My Courses",
+    "MY_COURSES": "My Courses",
+    "IN_PROGRESS": "In Progress",
+    "ENROLLED": "Enrolled",
+    "RESUME_HINT": "Resume where you left off",
+    "START_HINT": "Start first lesson",
+    "LESSONS": "lessons",
+    "VIDEO_LOADING": "Loading",
+    "REFRESH": "Refresh",
+    "CLOSE": "Close",
+    "VIDEO_NOT_SUPPORTED": "Your browser does not support the video tag.",
+    "WATCH_FULL_VIDEO": "Watch the full video, then mark as complete",
+    "COMPLETED": "Completed",
+    "SAVING": "Saving…",
+    "NEXT": "Next",
+    "MARK_COMPLETE": "Mark Complete",
+    "INSTRUCTOR": "Instructor",
+    "INSTRUCTOR_TIP": "Follow the curriculum in order for the best learning experience. Click any lesson in the sidebar to play it instantly.",
+    "SECTIONS": "Sections",
+    "LEVEL": "Level",
+    "COMPLETE": "Complete",
+    "COURSE_CONTENT": "Course Content",
+    "RESUME": "Resume",
+    "START": "Start",
+    "DISCUSSION": "Discussion",
+    "REVIEWS": "Reviews",
+    "MY_PROGRESS": "My Progress",
+    "JOIN_DISCUSSION": "Join Discussion"
+  },
+  "enrollment": {
+    "confirmEnrollment": "Confirm Enrollment",
+    "enrollingIn": "You're enrolling in",
+    "certificate": "Certificate Included",
+    "selectPathway": "Select your pathway",
+    "pathway01": "Pathway 01",
+    "pathway02": "Pathway 02",
+    "recommended": "Recommended",
+    "freeCourse": "Free Course",
+    "freeEnrollment": "Free Enrollment",
+    "freeDesc": "Full access to all course materials at no cost.",
+    "free": "Free",
+    "enrollFree": "Enroll for Free",
+    "enrolling": "Enrolling...",
+    "digitalAccess": "Digital Access",
+    "digitalDesc": "Full access including exams and certificate.",
+    "payCard": "Pay with Card",
+    "processing": "Processing...",
+    "offline": "Offline",
+    "offlineDesc": "Manual enrollment via cash payment.",
+    "requestCash": "Request Cash",
+    "sending": "Sending...",
+    "requestSent": "Request Sent!",
+    "contactAdmin": "Or contact admin directly",
+    "adminWillContact": "The admin will contact you to confirm your payment.",
+    "termsNote": "By enrolling, you agree to our Terms of Service and Academic Integrity Policy."
+  },
+  "adminSidebar": {
+    "adminPortal": "Admin Portal",
+    "dashboard": "Dashboard",
+    "courses": "Courses",
+    "teachers": "Teachers",
+    "students": "Students",
+    "forumReports": "Forum Reports",
+    "payouts": "Payouts",
+    "payments": "Payments",
+    "support": "Support",
+    "logout": "Logout",
+    "administrator": "Administrator"
   }
-}
 }

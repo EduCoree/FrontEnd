@@ -1,51 +1,44 @@
-<div class="md:ml-72 pt-16 min-h-screen">
-  <main class="pt-8 pb-12 px-6 md:px-12 min-h-screen bg-[#F2F7F6]">
-    <div class="max-w-5xl mx-auto">
+<div class="flex flex-col min-h-screen bg-[#f4f7f6]">
 
-      <!-- Header -->
-      <header class="mb-8">
-        <span class="text-xs font-bold uppercase tracking-[0.2em] mb-2 block"
-              style="color: var(--color-primary);">
-          {{ 'myCertificates.portal' | translate }}
-        </span>
-        <h1 class="text-4xl font-extrabold text-on-surface tracking-tight leading-none mb-1.5">
-          {{ 'myCertificates.title' | translate }}
-        </h1>
-        <p class="text-sm text-on-surface-variant">{{ 'myCertificates.subtitle' | translate }}</p>
-      </header>
+  <!-- Top bar (Sticky) -->
+  <header class="bg-white border-b border-outline-variant/20 px-6 md:px-8 h-16 flex items-center justify-between sticky top-0 z-40 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+    <div>
+      <h1 class="text-lg font-black text-on-surface tracking-tight">{{ 'myCertificates.title' | translate }}</h1>
+      <!-- <p class="text-xs text-on-surface-variant hidden md:block">{{ 'myCertificates.portal' | translate }}</p> -->
+    </div>
+    
+  </header>
 
-      <!-- Stats pills -->
-      <div class="flex flex-wrap gap-3 mb-8">
-        <div class="flex items-center gap-3 bg-white border border-outline-variant/15
-                    rounded-full px-5 py-2.5">
-          <div class="w-8 h-8 rounded-full flex items-center justify-center"
-               style="background: rgba(46,104,88,0.1);">
-            <span class="material-symbols-outlined text-[16px]"
-                  style="color: var(--color-primary); font-variation-settings:'FILL' 1">
-              workspace_premium
-            </span>
+  <!-- Main Content Area -->
+  <main class="flex-1 p-6 md:p-8">
+    <div class="max-w-7xl mx-auto space-y-6">
+
+      <p class="text-sm text-on-surface-variant mb-6">{{ 'myCertificates.subtitle' | translate }}</p>
+
+      <!-- Stats Row -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+        <div class="bg-white rounded-2xl border border-outline-variant/15 shadow-sm p-6 flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-4">
+            <div class="w-11 h-11 rounded-xl bg-primary/8 flex items-center justify-center">
+              <span class="material-symbols-outlined text-primary text-[22px]"
+                    style="font-variation-settings:'FILL' 1">workspace_premium</span>
+            </div>
           </div>
-          <div>
-            <p class="text-sm font-extrabold text-on-surface leading-none">
-              {{ certificates().length }}
-            </p>
-            <p class="text-[10px] text-on-surface-variant mt-0.5">
-              {{ 'myCertificates.earned' | translate }}
-            </p>
+          <div class="text-4xl font-black text-on-surface mb-1">{{ certificates().length }}</div>
+          <div class="text-xs text-on-surface-variant font-medium uppercase tracking-wide">
+            {{ 'myCertificates.earned' | translate }}
           </div>
         </div>
-        <div class="flex items-center gap-3 bg-white border border-outline-variant/15
-                    rounded-full px-5 py-2.5">
-          <div class="w-8 h-8 rounded-full flex items-center justify-center"
-               style="background: rgba(46,104,88,0.1);">
-            <span class="material-symbols-outlined text-[16px]"
-                  style="color: var(--color-primary); font-variation-settings:'FILL' 1">star</span>
+        <div class="bg-white rounded-2xl border border-outline-variant/15 shadow-sm p-6 flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-4">
+            <div class="w-11 h-11 rounded-xl bg-green-50 flex items-center justify-center">
+              <span class="material-symbols-outlined text-green-500 text-[22px]"
+                    style="font-variation-settings:'FILL' 1">star</span>
+            </div>
           </div>
-          <div>
-            <p class="text-sm font-extrabold text-on-surface leading-none">100%</p>
-            <p class="text-[10px] text-on-surface-variant mt-0.5">
-              {{ 'myCertificates.completionRate' | translate }}
-            </p>
+          <div class="text-4xl font-black text-on-surface mb-1">100%</div>
+          <div class="text-xs text-on-surface-variant font-medium uppercase tracking-wide">
+            {{ 'myCertificates.completionRate' | translate }}
           </div>
         </div>
       </div>
@@ -66,15 +59,12 @@
 
       <!-- Empty state -->
       <div *ngIf="!isLoading() && !errorMsg() && certificates().length === 0"
-           class="border-2 border-dashed rounded-3xl py-20
-                  flex flex-col items-center justify-center text-center gap-4"
-           style="border-color: rgba(46,104,88,0.18);">
-        <div class="w-16 h-16 rounded-full flex items-center justify-center"
-             style="background: rgba(46,104,88,0.07);">
-          <span class="material-symbols-outlined text-3xl"
-                style="color: var(--color-primary);">workspace_premium</span>
+           class="bg-white rounded-2xl border border-outline-variant/15 shadow-sm
+                  flex flex-col items-center justify-center py-16 text-center">
+        <div class="w-16 h-16 rounded-2xl bg-primary/8 flex items-center justify-center mb-4">
+          <span class="material-symbols-outlined text-primary text-3xl">workspace_premium</span>
         </div>
-        <h3 class="text-base font-bold text-on-surface">
+        <h3 class="font-bold text-base text-on-surface mb-2">
           {{ 'myCertificates.noTitle' | translate }}
         </h3>
         <p class="text-sm text-on-surface-variant max-w-xs leading-relaxed">
@@ -87,9 +77,9 @@
            class="grid grid-cols-1 md:grid-cols-2 gap-5">
 
         <div *ngFor="let cert of certificates()"
-             class="bg-white rounded-2xl overflow-hidden border border-outline-variant/10
+             class="bg-white rounded-2xl overflow-hidden border border-outline-variant/15
                     shadow-sm transition-all duration-300
-                    hover:shadow-[0_12px_40px_rgba(46,104,88,0.13)] hover:-translate-y-0.5">
+                    hover:shadow-lg hover:shadow-primary/8 hover:-translate-y-1">
 
           <!-- Banner -->
           <div class="relative flex flex-col items-center justify-center overflow-hidden"
@@ -154,8 +144,7 @@
 <a [href]="getDownloadUrl(cert.certificateUuid)" target="_blank"
    class="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl
           text-xs font-bold text-white bg-primary transition-all duration-200
-          hover:opacity-90 hover:-translate-y-0.5"
-   style="box-shadow: 0 4px 14px rgba(46,104,88,0.25);">
+          hover:bg-primary-dim">
   <span class="material-symbols-outlined text-[15px]">download</span>
   {{ 'myCertificates.download' | translate }}
 </a>
@@ -166,4 +155,11 @@
       </div>
     </div>
   </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-outline-variant/15 px-6 md:px-8 py-4 flex justify-between items-center mt-auto">
+    <span class="text-sm font-black text-primary">EduCore</span>
+    <p class="text-xs text-on-surface-variant">{{ 'teacherPortal.copyright' | translate }}</p>
+  </footer>
+
 </div>

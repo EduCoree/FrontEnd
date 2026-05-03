@@ -13,6 +13,7 @@ import { SignedUrlResponse } from '../models/session';
 export class StudentContentService {
 
   private videoBase = `${environment.apiUrl}/api/video`;
+  private pdfBase = `${environment.apiUrl}/api/pdf`;
 
   constructor(private http: HttpClient) {}
 
@@ -25,6 +26,12 @@ export class StudentContentService {
   getVideoSignedUrl(lessonId: number): Observable<SignedUrlResponse> {
     return this.http.get<any>(
       `${this.videoBase}/${lessonId}/signed-url`
+    ).pipe(map(res => res.data));
+  }
+
+  getPdfSignedUrl(lessonId: number): Observable<SignedUrlResponse> {
+    return this.http.get<any>(
+      `${this.pdfBase}/${lessonId}/signed-url`
     ).pipe(map(res => res.data));
   }
 }

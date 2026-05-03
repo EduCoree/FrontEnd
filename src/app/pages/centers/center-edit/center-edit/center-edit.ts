@@ -45,15 +45,23 @@ export class CenterEdit implements OnInit{
   });
 
   ngOnInit() {
-   
     if (!isPlatformBrowser(this.platformId)) {
       this.loading.set(false);
       return;
     }
 
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.centerId.set(id);
+    this.route.paramMap.subscribe(params => {
+      const id = Number(params.get('id'));
+      if (id) {
+        this.centerId.set(id);
+        this.loadCenter(id);
+      }
+    });
+  }
 
+  loadCenter(id: number) {
+    this.loading.set(true);
+    this.error.set(null);
     this.centerService.getById(id).subscribe({
       next: (center) => {
         this.form.patchValue({
