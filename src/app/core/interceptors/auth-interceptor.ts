@@ -27,8 +27,10 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         return handleRefresh(req, next, auth, router);
       }
 
-      // 403 → error page
-      if (error.status === 403) {
+      // 403 → error page only for unexpected authorization failures.
+      // Endpoints that legitimately return 403 as a business rule (e.g. /join)
+      // are handled by the calling component, so we skip the redirect for them.
+      if (error.status === 403 && !isBusiness403(req.url)) {
         router.navigate(['/error/403']);
       }
 
@@ -57,6 +59,12 @@ function isAuthEndpoint(url: string): boolean {
   return url.includes('/authentication/login')
       || url.includes('/authentication/register')
       || url.includes('/authentication/refresh-token');
+}
+
+/** Endpoints that return 403 as a normal business-logic response (not a real auth failure).
+ *  These are handled by the calling component — the interceptor must NOT redirect on them. */
+function isBusiness403(url: string): boolean {
+  return url.includes('/join');
 }
 
 function handleRefresh(

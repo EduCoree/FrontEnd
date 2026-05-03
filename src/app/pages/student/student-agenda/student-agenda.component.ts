@@ -98,7 +98,12 @@ export class StudentAgendaComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         if (err?.status === 403) {
-          this.flash('error', 'You can only join within 15 minutes of the session start time.');
+          // Read the actual reason from the backend response body
+          const backendMsg: string =
+            err?.error?.message ||
+            err?.error?.errors?.[0] ||
+            'Access denied. Please check your enrollment or session time.';
+          this.flash('error', backendMsg);
         } else {
           this.flash('error', 'Failed to join session. Please try again.');
         }
