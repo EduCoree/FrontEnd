@@ -125,7 +125,7 @@
                 }}
               </button>
               <button
-                (click)="deleteCourse(course.id)"
+                (click)="deleteCourse(course)"
                 class="p-2.5 rounded-xl bg-red-50 border border-red-100 text-error hover:bg-error-container/40 transition-colors duration-200"
               >
                 <span class="material-symbols-outlined text-[18px]">delete</span>
@@ -183,4 +183,20 @@
       {{ 'teacherPortal.copyright' | translate }}
     </p>
   </footer>
+  
+</div>
+
+<div
+  *ngIf="selectedCourseId() !== null"
+  class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center"
+  (click)="onDeleteCancelled()"
+>
+  <div (click)="$event.stopPropagation()">
+    <app-delete-course
+      [courseId]="selectedCourseId()!"
+      [courseName]="selectedCourseName()"
+      (deleted)="onDeleteConfirmed()"
+      (cancelled)="onDeleteCancelled()"
+    />
+  </div>
 </div>
