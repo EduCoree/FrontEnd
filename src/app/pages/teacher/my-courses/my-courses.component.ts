@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { CourseService } from '../../../core/services/course';
 import { CourseSummaryDto } from '../../../core/models/course';
 import { TranslateModule } from '@ngx-translate/core';
+import { DeleteCourse } from "../delete-course/delete-course";
 
 @Component({
   selector: 'app-my-courses',
   standalone: true,
-  imports: [CommonModule, RouterLink, TranslateModule],
+  imports: [CommonModule, RouterLink, TranslateModule, DeleteCourse],
   templateUrl: './my-courses.component.html',
   styleUrl: './my-courses.component.css'
 })
@@ -18,6 +19,8 @@ teacherName = localStorage.getItem('name') || 'Teacher';
   isLoading = signal(true);
   totalPages = signal(1);
   currentPage = 1;
+   selectedCourseId = signal<number | null>(null);
+selectedCourseName = signal<string>('');
 
   constructor(private courseService: CourseService, private router: Router) {}
 
@@ -45,13 +48,6 @@ teacherName = localStorage.getItem('name') || 'Teacher';
     this.router.navigate(['/teacher/courses/edit', id]);
   }
 
-  deleteCourse(id: number): void {
-    if (!confirm('Are you sure you want to delete this course?')) return;
-    this.courseService.deleteCourse(id).subscribe({
-      next: () => this.loadCourses()
-    });
-  }
-
   togglePublish(course: CourseSummaryDto): void {
     const action = course.status === 'Published'
       ? this.courseService.unpublishCourse(course.id)
@@ -73,4 +69,16 @@ teacherName = localStorage.getItem('name') || 'Teacher';
     if (img.startsWith('http')) return img;
     return `https://edu-coree.runasp.net/${img.startsWith('/') ? img.substring(1) : img}`;
   }
+  deleteCourse(course: CourseSummaryDto): void {
+  this.selectedCourseId.set(course.id);
+  this.selectedCourseName.set(course.title);   
+}
+onDeleteConfirmed(): void {
+  this.selectedCourseId.set(null);             
+  this.loadCourses();                          
+}
+
+onDeleteCancelled(): void {
+  this.selectedCourseId.set(null);             
+}
 }
