@@ -86,6 +86,7 @@
                 <input
                   [(ngModel)]="opt.text"
                   type="text"
+                  [readonly]="newQuestionType === 'TRUEFALSE'"
                   [placeholder]="('addQuestion.optionPlaceholder' | translate) + ' ' + (i + 1)"
                   class="flex-1 bg-transparent border-none focus:ring-0 font-body text-sm" />
                 @if (newQuestionOptions.length > 2) {
@@ -96,13 +97,14 @@
               </div>
             }
           </div>
-
+@if (newQuestionType !== 'TRUEFALSE') {
           <button
             (click)="addNewOption()"
             class="flex items-center gap-2 text-primary font-bold text-sm px-2 py-2 hover:bg-surface-container-low rounded-lg transition-colors font-label w-max">
             <span class="material-symbols-outlined text-lg">add_circle</span>
             {{ 'addQuestion.addOption' | translate }}
           </button>
+        }
         </div>
 
         @if (addingQuestionError) {
