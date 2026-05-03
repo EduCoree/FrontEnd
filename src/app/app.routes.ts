@@ -557,7 +557,7 @@ export const routes: Routes = [
 
 {
   path: 'notifications',
-   canActivate: [authGuard, roleGuard('Student')],
+   canActivate: [authGuard],
   component : Notification,
 },
 

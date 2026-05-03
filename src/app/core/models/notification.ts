@@ -9,7 +9,8 @@ export interface NotificationDto {
   createdAt: string;
 }
 export interface metadata{
-   attemptId:number
+   attemptId?:number,
+    lessonId?: string;  
 }
 
 export interface NotificationListDto {
