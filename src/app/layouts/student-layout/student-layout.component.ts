@@ -49,6 +49,7 @@ export class StudentLayoutComponent {
     { route: '/student/sessions',        icon: 'podcasts',     labelKey: 'studentSidebar.liveSessions' },
     { route: '/student/certificates',    icon: 'verified',     labelKey: 'studentSidebar.certificates' },
     { route: '/student/payment-history', icon: 'payments',     labelKey: 'studentSidebar.payments' },
+    // { route: '/centers/1',               icon: 'business',     labelKey: 'sidebar.centers' },
     // { route: '/student/settings',        icon: 'settings',     labelKey: 'studentSidebar.settings' },
     // { route: '/student/support',         icon: 'help',         labelKey: 'studentSidebar.support' },
   ];

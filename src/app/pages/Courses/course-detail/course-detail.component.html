@@ -42,7 +42,7 @@
             {{ 'courseDetails.tuition' | translate }}
           </span>
           <span class="text-white text-3xl font-bold">
-            {{ course.pricingType === 'Free' ? ('courseDetails.free' | translate) : '$' + course.price }}
+            {{ course.pricingType === 'Free' ? ('courseDetails.free' | translate) : course.price + ' ' + ('courseDetails.currency' | translate) }}
           </span>
 
           <!-- Enroll Now Button -->
@@ -51,7 +51,6 @@
             class="w-full mt-4 py-3 px-6 bg-white text-primary font-bold rounded-full hover:bg-white/90 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
           >
             <span class="material-symbols-outlined text-lg">school</span>
-            Enroll Now
             {{ 'courseDetails.enroll' | translate }}
           </button>
         </div>

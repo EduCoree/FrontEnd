@@ -1,273 +1,249 @@
 <div class="flex min-h-screen bg-[#f8faf9] font-headline">
   <app-admin-sidebar />
-<div class="min-h-screen bg-surface p-4 md:p-6 lg:p-8">
-  <div class="max-w-4xl mx-auto">
 
+  <main class="flex-1 min-h-screen flex flex-col overflow-hidden">
     <!-- Header -->
-    <header class="mb-6">
-      <a routerLink="/admin/payout/dashboard"
-         class="text-on-surface-variant hover:text-primary text-sm flex items-center gap-1 mb-1">
-        <i class="fa-solid fa-arrow-left"></i> {{ 'payout.settings.backToDashboard' | translate }}
-      </a>
-      <h1 class="text-2xl md:text-3xl font-bold text-on-surface font-headline">
-        {{ 'payout.settings.title' | translate }}
-      </h1>
-      <p class="text-sm text-on-surface-variant mt-1">
-        {{ 'payout.settings.subtitle' | translate }}
-      </p>
+    <header class="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-[#eaefee] px-4 md:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <a routerLink="/admin/payout/dashboard"
+           class="flex items-center justify-center w-9 h-9 rounded-xl hover:bg-[#f0f5f3] text-[#acb3b2] hover:text-[#2e6959] transition-all">
+          <span class="material-symbols-outlined">arrow_back</span>
+        </a>
+        <div class="flex flex-col">
+          <h1 class="text-xs md:text-base font-bold text-[#2d3433] leading-none truncate max-w-[200px]">
+            {{ 'payout.settings.title' | translate }}
+          </h1>
+          <p class="text-[10px] text-[#acb3b2] font-medium mt-0.5 hidden md:block">
+            {{ 'payout.settings.subtitle' | translate }}
+          </p>
+        </div>
+      </div>
     </header>
 
-    <!-- Important Notice -->
-    <div class="bg-amber-50 ring-1 ring-amber-200 rounded-2xl p-4 mb-6 flex items-start gap-3">
-      <i class="fa-solid fa-circle-info text-amber-700 text-lg mt-0.5"></i>
-      <div class="text-sm text-amber-900">
-        <p class="font-semibold mb-1">{{ 'payout.settings.notice.title' | translate }}</p>
-        <p class="text-xs">{{ 'payout.settings.notice.text' | translate }}</p>
-      </div>
-    </div>
+    <div class="flex-1 overflow-y-auto p-4 md:p-8 pb-24 md:pb-8 custom-scrollbar">
+      <div class="max-w-4xl">
 
-    @if (loading()) {
-      <app-loading-skeleton variant="card" />
-    }
+        <!-- Important Notice -->
+        <div class="bg-[#fffcf0] border border-[#fef3c7] rounded-2xl p-4 mb-6 flex items-start gap-3 shadow-sm">
+          <span class="material-symbols-outlined text-[#f59e0b] text-xl">info</span>
+          <div class="text-sm text-[#92400e]">
+            <p class="font-bold mb-1">{{ 'payout.settings.notice.title' | translate }}</p>
+            <p class="text-xs opacity-80 leading-relaxed">{{ 'payout.settings.notice.text' | translate }}</p>
+          </div>
+        </div>
 
-    @if (loadError() && !loading()) {
-      <div class="p-4 rounded-2xl bg-error-container text-on-error-container">
-        <p class="font-semibold">{{ loadError() }}</p>
-        <button (click)="loadSettings()" class="mt-2 text-sm underline">
-          {{ 'payout.settings.error.retry' | translate }}
-        </button>
-      </div>
-    }
-
-    @if (!loading() && current(); as data) {
-
-      <!-- Last Updated Info -->
-      <div class="bg-surface-container-lowest rounded-2xl p-4 ring-1 ring-outline-variant/40 mb-6 text-xs text-on-surface-variant flex items-center gap-2">
-        <i class="fa-solid fa-clock-rotate-left"></i>
-        <span>
-          {{ 'payout.settings.lastUpdated.label' | translate }}
-          <strong class="text-on-surface">{{ data.updatedAt | date:'medium' }}</strong>
-        </span>
-        @if (data.updatedBy) {
-          <span class="opacity-50">·</span>
-          <span>{{ 'payout.settings.lastUpdated.by' | translate }} {{ data.updatedBy }}</span>
+        @if (loading()) {
+          <div class="space-y-6">
+            <app-loading-skeleton variant="card" />
+            <app-loading-skeleton variant="row" [count]="3" />
+          </div>
         }
-      </div>
 
-      <!-- Success Toast -->
-      @if (saveSuccess()) {
-        <div class="mb-4 p-3 rounded-2xl bg-emerald-50 ring-1 ring-emerald-200 text-emerald-900 text-sm flex items-center gap-2 animate-pulse">
-          <i class="fa-solid fa-circle-check text-emerald-600"></i>
-          {{ 'payout.settings.saveSuccess' | translate }}
-        </div>
-      }
+        @if (loadError() && !loading()) {
+          <div class="p-5 rounded-2xl bg-[#fff0ee] border border-[#f5c5bf] text-[#c0392b] mb-6">
+            <p class="font-bold flex items-center gap-2">
+              <span class="material-symbols-outlined">error</span>
+              {{ loadError() }}
+            </p>
+            <button (click)="loadSettings()" class="mt-3 text-sm font-bold underline hover:no-underline">
+              {{ 'payout.settings.error.retry' | translate }}
+            </button>
+          </div>
+        }
 
-      <!-- Save Error -->
-      @if (saveError()) {
-        <div class="mb-4 p-3 rounded-2xl bg-error-container text-on-error-container text-sm">
-          <i class="fa-solid fa-circle-exclamation mr-1"></i>{{ saveError() }}
-        </div>
-      }
+        @if (!loading() && current(); as data) {
 
-      <!-- Form -->
-      <form (ngSubmit)="save()" class="space-y-6">
-
-        <!-- Commission Rate Section -->
-        <section class="bg-surface-container-lowest rounded-2xl p-5 ring-1 ring-outline-variant/40">
-          <div class="flex items-center gap-3 mb-4">
-            <div class="w-10 h-10 rounded-xl bg-primary-fixed flex items-center justify-center">
-              <i class="fa-solid fa-percent text-on-primary-fixed-variant"></i>
+          <!-- Last Updated Info -->
+          <div class="bg-white rounded-2xl p-4 border border-[#eaefee] mb-6 text-[10px] md:text-xs text-[#acb3b2] flex items-center justify-between flex-wrap gap-2">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-sm">history</span>
+              <span>
+                {{ 'payout.settings.lastUpdated.label' | translate }}
+                <strong class="text-[#2d3433]">{{ data.updatedAt | date:'medium' }}</strong>
+              </span>
             </div>
-            <div>
-              <h2 class="text-base font-semibold text-on-surface font-headline">
-                {{ 'payout.settings.commission.title' | translate }}
-              </h2>
-              <p class="text-xs text-on-surface-variant">
-                {{ 'payout.settings.commission.subtitle' | translate }}
-              </p>
-            </div>
+            @if (data.updatedBy) {
+              <span class="bg-[#f0f5f3] px-2 py-0.5 rounded-lg text-[#2e6959] font-bold">
+                {{ 'payout.settings.lastUpdated.by' | translate }} {{ data.updatedBy }}
+              </span>
+            }
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
-            <div>
-              <label class="block text-xs font-semibold text-on-surface-variant uppercase mb-1.5">
-                {{ 'payout.settings.commission.fieldLabel' | translate }}
-              </label>
-              <input type="number" min="0" max="100" step="1"
-                     [ngModel]="commissionPercent" (ngModelChange)="commissionPercent = $event"
-                     name="commissionPercent"
-                     class="w-full px-3 py-2 rounded-xl bg-surface ring-1 ring-outline-variant focus:ring-2 focus:ring-primary outline-none text-on-surface" />
-            </div>
-            <div class="text-sm text-on-surface-variant">
-              <p>
-                {{ 'payout.settings.commission.platformKeeps' | translate }}
-                <strong class="text-on-surface">{{ 100 - commissionPercent }}%</strong>
-              </p>
-              <p class="text-xs mt-1">
-                {{ 'payout.settings.commission.example' | translate }}
-                {{ 1000 * form().teacherCommissionRate | number }}
-                {{ 'payout.settings.commission.exampleSuffix' | translate }}
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <!-- Tier Bonuses Section -->
-        <section class="bg-surface-container-lowest rounded-2xl p-5 ring-1 ring-outline-variant/40">
-          <div class="flex items-center gap-3 mb-4">
-            <div class="w-10 h-10 rounded-xl bg-tertiary-fixed flex items-center justify-center">
-              <i class="fa-solid fa-trophy text-on-tertiary-fixed-variant"></i>
-            </div>
-            <div>
-              <h2 class="text-base font-semibold text-on-surface font-headline">
-                {{ 'payout.settings.tiers.title' | translate }}
-              </h2>
-              <p class="text-xs text-on-surface-variant">
-                {{ 'payout.settings.tiers.subtitle' | translate }}
-              </p>
-            </div>
-          </div>
-
-          <div class="space-y-4">
-            <!-- Tier 1 -->
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-end p-3 rounded-xl bg-surface">
-              <div class="md:col-span-2">
-                <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-primary-fixed text-on-primary-fixed-variant text-xs font-semibold">
-                  {{ 'payout.settings.tiers.tier1' | translate }}
-                </span>
-              </div>
-              <div class="md:col-span-5">
-                <label class="block text-xs font-semibold text-on-surface-variant uppercase mb-1">
-                  {{ 'payout.settings.tiers.threshold' | translate }}
-                </label>
-                <input type="number" min="1"
-                       [ngModel]="form().tier1Threshold"
-                       (ngModelChange)="updateField('tier1Threshold', $event)"
-                       name="tier1Threshold"
-                       class="w-full px-3 py-2 rounded-xl bg-surface-container-lowest ring-1 ring-outline-variant focus:ring-2 focus:ring-primary outline-none text-sm" />
-              </div>
-              <div class="md:col-span-5">
-                <label class="block text-xs font-semibold text-on-surface-variant uppercase mb-1">
-                  {{ 'payout.settings.tiers.bonus' | translate }} ({{ form().currency }})
-                </label>
-                <input type="number" min="0"
-                       [ngModel]="form().tier1Bonus"
-                       (ngModelChange)="updateField('tier1Bonus', $event)"
-                       name="tier1Bonus"
-                       class="w-full px-3 py-2 rounded-xl bg-surface-container-lowest ring-1 ring-outline-variant focus:ring-2 focus:ring-primary outline-none text-sm" />
-              </div>
-            </div>
-
-            <!-- Tier 2 -->
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-end p-3 rounded-xl bg-surface">
-              <div class="md:col-span-2">
-                <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-secondary-fixed text-on-secondary-fixed-variant text-xs font-semibold">
-                  {{ 'payout.settings.tiers.tier2' | translate }}
-                </span>
-              </div>
-              <div class="md:col-span-5">
-                <label class="block text-xs font-semibold text-on-surface-variant uppercase mb-1">
-                  {{ 'payout.settings.tiers.thresholdShort' | translate }}
-                </label>
-                <input type="number" min="1"
-                       [ngModel]="form().tier2Threshold"
-                       (ngModelChange)="updateField('tier2Threshold', $event)"
-                       name="tier2Threshold"
-                       class="w-full px-3 py-2 rounded-xl bg-surface-container-lowest ring-1 ring-outline-variant focus:ring-2 focus:ring-primary outline-none text-sm" />
-              </div>
-              <div class="md:col-span-5">
-                <label class="block text-xs font-semibold text-on-surface-variant uppercase mb-1">
-                  {{ 'payout.settings.tiers.bonus' | translate }}
-                </label>
-                <input type="number" min="0"
-                       [ngModel]="form().tier2Bonus"
-                       (ngModelChange)="updateField('tier2Bonus', $event)"
-                       name="tier2Bonus"
-                       class="w-full px-3 py-2 rounded-xl bg-surface-container-lowest ring-1 ring-outline-variant focus:ring-2 focus:ring-primary outline-none text-sm" />
-              </div>
-            </div>
-
-            <!-- Tier 3 -->
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-end p-3 rounded-xl bg-surface">
-              <div class="md:col-span-2">
-                <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-tertiary-fixed text-on-tertiary-fixed-variant text-xs font-semibold">
-                  {{ 'payout.settings.tiers.tier3' | translate }}
-                </span>
-              </div>
-              <div class="md:col-span-5">
-                <label class="block text-xs font-semibold text-on-surface-variant uppercase mb-1">
-                  {{ 'payout.settings.tiers.thresholdShort' | translate }}
-                </label>
-                <input type="number" min="1"
-                       [ngModel]="form().tier3Threshold"
-                       (ngModelChange)="updateField('tier3Threshold', $event)"
-                       name="tier3Threshold"
-                       class="w-full px-3 py-2 rounded-xl bg-surface-container-lowest ring-1 ring-outline-variant focus:ring-2 focus:ring-primary outline-none text-sm" />
-              </div>
-              <div class="md:col-span-5">
-                <label class="block text-xs font-semibold text-on-surface-variant uppercase mb-1">
-                  {{ 'payout.settings.tiers.bonus' | translate }}
-                </label>
-                <input type="number" min="0"
-                       [ngModel]="form().tier3Bonus"
-                       (ngModelChange)="updateField('tier3Bonus', $event)"
-                       name="tier3Bonus"
-                       class="w-full px-3 py-2 rounded-xl bg-surface-container-lowest ring-1 ring-outline-variant focus:ring-2 focus:ring-primary outline-none text-sm" />
-              </div>
-            </div>
-
-            <!-- Currency -->
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-end p-3 rounded-xl bg-surface">
-              <div class="md:col-span-2">
-                <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-surface-container-high text-on-surface-variant text-xs font-semibold">
-                  {{ 'payout.settings.tiers.currency' | translate }}
-                </span>
-              </div>
-              <div class="md:col-span-5">
-                <input type="text" maxlength="3"
-                       [ngModel]="form().currency"
-                       (ngModelChange)="updateField('currency', $event.toUpperCase())"
-                       name="currency"
-                       class="w-full px-3 py-2 rounded-xl bg-surface-container-lowest ring-1 ring-outline-variant focus:ring-2 focus:ring-primary outline-none text-sm uppercase" />
-              </div>
-            </div>
-          </div>
-
-          <!-- Validation messages -->
-          @if (validationErrors().length > 0) {
-            <div class="mt-4 p-3 rounded-xl bg-error-container text-on-error-container text-sm">
-              <p class="font-semibold mb-1">
-                <i class="fa-solid fa-circle-exclamation mr-1"></i>
-                {{ 'payout.settings.validation.title' | translate }}
-              </p>
-              <ul class="list-disc list-inside space-y-0.5 text-xs">
-                @for (err of validationErrors(); track err) {
-                  <li>{{ err }}</li>
-                }
-              </ul>
+          <!-- Success Toast -->
+          @if (saveSuccess()) {
+            <div class="mb-6 p-4 rounded-2xl bg-[#e4fff4] border border-[#b2efda] text-[#2e6959] text-sm flex items-center gap-3 animate-in fade-in slide-in-from-top-2">
+              <span class="material-symbols-outlined">check_circle</span>
+              <span class="font-bold">{{ 'payout.settings.saveSuccess' | translate }}</span>
             </div>
           }
-        </section>
 
-        <!-- Action buttons -->
-        <div class="flex flex-col sm:flex-row gap-2 sm:justify-end">
-          <button type="button" (click)="reset()" [disabled]="saving()"
-                  class="px-4 py-2.5 rounded-xl bg-surface-container ring-1 ring-outline-variant hover:bg-surface-container-high text-sm font-medium text-on-surface">
-            {{ 'payout.settings.actions.reset' | translate }}
-          </button>
-          <button type="submit" [disabled]="!isValid() || saving()"
-                  class="px-6 py-2.5 rounded-xl bg-primary text-on-primary hover:bg-primary-dim text-sm font-semibold shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
-            @if (saving()) {
-              <i class="fa-solid fa-circle-notch fa-spin mr-1"></i>
-              {{ 'payout.settings.actions.saving' | translate }}
-            } @else {
-              <i class="fa-solid fa-floppy-disk mr-1"></i>
-              {{ 'payout.settings.actions.save' | translate }}
-            }
-          </button>
-        </div>
-      </form>
-    }
-  </div>
-</div>
+          <!-- Save Error -->
+          @if (saveError()) {
+            <div class="mb-6 p-4 rounded-2xl bg-[#fff0ee] border border-[#f5c5bf] text-[#c0392b] text-sm flex items-center gap-3">
+              <span class="material-symbols-outlined">error</span>
+              <span class="font-bold">{{ saveError() }}</span>
+            </div>
+          }
+
+          <!-- Form -->
+          <form (ngSubmit)="save()" class="space-y-6">
+
+            <!-- Commission Rate Section -->
+            <section class="bg-white rounded-3xl p-6 border border-[#eaefee] shadow-sm hover:shadow-md transition-shadow">
+              <div class="flex items-center gap-4 mb-6">
+                <div class="w-12 h-12 rounded-2xl bg-[#e8f4fd] flex items-center justify-center text-[#466370]">
+                  <span class="material-symbols-outlined text-2xl">percent</span>
+                </div>
+                <div>
+                  <h2 class="text-sm md:text-base font-black text-[#2d3433] tracking-tight">
+                    {{ 'payout.settings.commission.title' | translate }}
+                  </h2>
+                  <p class="text-[10px] text-[#acb3b2] font-bold uppercase tracking-wider mt-0.5">
+                    {{ 'payout.settings.commission.subtitle' | translate }}
+                  </p>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                <div class="space-y-2">
+                  <label class="block text-[10px] font-black text-[#acb3b2] uppercase tracking-widest">
+                    {{ 'payout.settings.commission.fieldLabel' | translate }}
+                  </label>
+                  <div class="relative">
+                    <input type="number" min="0" max="100" step="1"
+                           [ngModel]="commissionPercent" (ngModelChange)="commissionPercent = $event"
+                           name="commissionPercent"
+                           class="w-full px-5 py-3 rounded-2xl bg-[#f8faf9] border border-[#eaefee] focus:border-[#b2efda] focus:bg-white text-base font-bold text-[#2d3433] outline-none transition-all" />
+                    <span class="absolute right-5 top-1/2 -translate-y-1/2 font-bold text-[#acb3b2]">%</span>
+                  </div>
+                </div>
+                <div class="bg-[#f8faf9] rounded-2xl p-4 border border-dashed border-[#d0d8d6]">
+                  <p class="text-sm font-bold text-[#596060] flex items-center justify-between">
+                    {{ 'payout.settings.commission.platformKeeps' | translate }}
+                    <span class="text-[#2e6959] text-lg font-black">{{ 100 - commissionPercent }}%</span>
+                  </p>
+                  <div class="mt-3 pt-3 border-t border-[#eaefee] text-[10px] text-[#acb3b2] font-medium leading-relaxed">
+                    <i class="fa-solid fa-lightbulb mr-1 text-[#f59e0b]"></i>
+                    {{ 'payout.settings.commission.example' | translate }}
+                    <span class="text-[#2d3433] font-bold">{{ 1000 * (commissionPercent/100) | number }}</span>
+                    {{ 'payout.settings.commission.exampleSuffix' | translate }}
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Tier Bonuses Section -->
+            <section class="bg-white rounded-3xl p-6 border border-[#eaefee] shadow-sm hover:shadow-md transition-shadow">
+              <div class="flex items-center gap-4 mb-6">
+                <div class="w-12 h-12 rounded-2xl bg-[#fff8e1] flex items-center justify-center text-[#f59e0b]">
+                  <span class="material-symbols-outlined text-2xl">trophy</span>
+                </div>
+                <div>
+                  <h2 class="text-sm md:text-base font-black text-[#2d3433] tracking-tight">
+                    {{ 'payout.settings.tiers.title' | translate }}
+                  </h2>
+                  <p class="text-[10px] text-[#acb3b2] font-bold uppercase tracking-wider mt-0.5">
+                    {{ 'payout.settings.tiers.subtitle' | translate }}
+                  </p>
+                </div>
+              </div>
+
+              <div class="space-y-4">
+                <!-- Tiers List -->
+                @for (tierNum of [1, 2, 3]; track tierNum) {
+                  <div class="group relative bg-[#f8faf9] hover:bg-white rounded-2xl p-4 border border-[#eaefee] hover:border-[#b2efda] transition-all">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                      <div class="md:col-span-2">
+                        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-xl bg-white border border-[#eaefee] text-[10px] font-black uppercase tracking-widest text-[#2d3433] shadow-sm">
+                          <span class="w-1.5 h-1.5 rounded-full" [class]="tierNum === 1 ? 'bg-[#2e6959]' : tierNum === 2 ? 'bg-[#3b82f6]' : 'bg-[#f59e0b]'"></span>
+                          Tier {{ tierNum }}
+                        </span>
+                      </div>
+                      <div class="md:col-span-5 space-y-1.5">
+                        <label class="block text-[10px] font-black text-[#acb3b2] uppercase tracking-widest">
+                          {{ 'payout.settings.tiers.threshold' | translate }}
+                        </label>
+                        <input type="number" min="1"
+                               [ngModel]="tierNum === 1 ? form().tier1Threshold : tierNum === 2 ? form().tier2Threshold : form().tier3Threshold"
+                               (ngModelChange)="updateTierField(tierNum, 'Threshold', $event)"
+                               [name]="'tier' + tierNum + 'Threshold'"
+                               class="w-full px-4 py-2 rounded-xl bg-white border border-[#eaefee] focus:border-[#b2efda] text-sm font-bold text-[#2d3433] outline-none transition-all" />
+                      </div>
+                      <div class="md:col-span-5 space-y-1.5">
+                        <label class="block text-[10px] font-black text-[#acb3b2] uppercase tracking-widest">
+                          {{ 'payout.settings.tiers.bonus' | translate }}
+                        </label>
+                        <div class="relative">
+                          <input type="number" min="0"
+                                 [ngModel]="tierNum === 1 ? form().tier1Bonus : tierNum === 2 ? form().tier2Bonus : form().tier3Bonus"
+                                 (ngModelChange)="updateTierField(tierNum, 'Bonus', $event)"
+                                 [name]="'tier' + tierNum + 'Bonus'"
+                                 class="w-full px-4 py-2 rounded-xl bg-white border border-[#eaefee] focus:border-[#b2efda] text-sm font-bold text-[#2d3433] outline-none transition-all" />
+                          <span class="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-[#acb3b2]">{{ form().currency }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                }
+
+                <!-- Currency -->
+                <div class="mt-6 flex items-center justify-end">
+                   <div class="flex items-center gap-3">
+                     <span class="text-[10px] font-black text-[#acb3b2] uppercase tracking-widest">
+                       {{ 'payout.settings.tiers.currency' | translate }}
+                     </span>
+                     <input type="text" maxlength="3"
+                            [ngModel]="form().currency"
+                            (ngModelChange)="updateField('currency', $event.toUpperCase())"
+                            name="currency"
+                            class="w-20 px-3 py-1.5 rounded-xl bg-[#f8faf9] border border-[#eaefee] focus:border-[#b2efda] text-xs font-black text-center uppercase outline-none transition-all" />
+                   </div>
+                </div>
+              </div>
+
+              <!-- Validation messages -->
+              @if (validationErrors().length > 0) {
+                <div class="mt-6 p-4 rounded-2xl bg-[#fff0ee] border border-[#f5c5bf] text-[#c0392b]">
+                  <p class="text-xs font-bold uppercase tracking-widest mb-2 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">warning</span>
+                    {{ 'payout.settings.validation.title' | translate }}
+                  </p>
+                  <ul class="space-y-1 text-xs font-medium">
+                    @for (err of validationErrors(); track err) {
+                      <li class="flex items-center gap-2">
+                        <span class="w-1 h-1 rounded-full bg-[#c0392b]"></span>
+                        {{ err }}
+                      </li>
+                    }
+                  </ul>
+                </div>
+              }
+            </section>
+
+            <!-- Action buttons -->
+            <div class="flex flex-col sm:flex-row gap-3 sm:justify-end pt-4">
+              <button type="button" (click)="reset()" [disabled]="saving()"
+                      class="px-6 py-3 rounded-2xl bg-white border border-[#eaefee] hover:bg-[#f8faf9] text-sm font-bold text-[#596060] transition-all shadow-sm">
+                {{ 'payout.settings.actions.reset' | translate }}
+              </button>
+              <button type="submit" [disabled]="!isValid() || saving()"
+                      class="px-8 py-3 rounded-2xl bg-[#2e6959] text-white hover:bg-[#1a3d34] text-sm font-extrabold shadow-lg shadow-[#2e6959]/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                @if (saving()) {
+                  <span class="flex items-center gap-2">
+                    <span class="material-symbols-outlined animate-spin text-sm">progress_activity</span>
+                    {{ 'payout.settings.actions.saving' | translate }}
+                  </span>
+                } @else {
+                  <span class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">save</span>
+                    {{ 'payout.settings.actions.save' | translate }}
+                  </span>
+                }
+              </button>
+            </div>
+          </form>
+        }
+      </div>
+    </div>
+  </main>
 </div>

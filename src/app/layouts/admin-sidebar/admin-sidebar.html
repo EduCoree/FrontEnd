@@ -111,8 +111,35 @@
 
 </aside>
 
+<!-- Mobile Bottom Nav -->
+<nav
+  class="lg:hidden fixed bottom-0 left-0 right-0 bg-[#F2F4F4]/90 backdrop-blur-xl border-t border-[#d5dbd9] px-4 py-3 flex items-center gap-6 overflow-x-auto z-50 hide-scrollbar"
+>
+  @for (item of navItems; track item.route) {
+    <a [routerLink]="item.route"
+       routerLinkActive="text-[#2e6959] font-bold"
+       [routerLinkActiveOptions]="{ exact: item.exact }"
+       class="flex flex-col items-center gap-1 text-[#596060] flex-shrink-0 min-w-[60px]">
+      <span class="material-symbols-outlined text-lg">{{ item.icon }}</span>
+      <span class="text-[10px] font-bold uppercase truncate max-w-full">{{ item.label | translate }}</span>
+    </a>
+  }
+</nav>
+
 <!-- Spacer -->
 <div [class.ms-64]="isOpen()"
      [class.ms-16]="!isOpen()"
      class="transition-all duration-300 lg:block hidden h-0">
 </div>
+
+<style>
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .hide-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+</style>

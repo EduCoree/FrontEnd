@@ -10,6 +10,7 @@ import { CourseSummaryDto } from '../../../core/models/course';
 import { LiveSessionService } from '../../../core/services/live-session';
 import { LiveSessionResponse } from '../../../core/models/session';
 import { TranslateModule } from '@ngx-translate/core';
+import { environment } from '../../../../environments/environment';
 
 interface DashboardSession extends LiveSessionResponse {
   courseTitle?: string;
@@ -204,4 +205,10 @@ export class TeacherDashboardComponent implements OnInit {
   goToMyCourses(): void { this.router.navigate(['/teacher/courses']); }
   toggleScheduleDropdown(): void { this.showScheduleDropdown.update(v => !v); }
   goToCourseSessions(courseId: number): void { this.router.navigate(['/teacher/courses/edit', courseId, 'sessions']); }
+
+  getImageUrl(path: string | null): string {
+    if (!path) return 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600';
+    if (path.startsWith('http')) return path;
+    return `${environment.apiUrl}/${path}`;
+  }
 }

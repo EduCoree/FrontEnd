@@ -45,6 +45,7 @@ export class TeacherLayoutComponent {
     { route: '/teacher/courses',          icon: 'school',       label: 'myCourses.title' },
     { route: '/teacher/payout/dashboard', icon: 'payments',     label: 'teacherPortal.payoutDashboard' },
     { route: '/teacher/reviews',          icon: 'rate_review',  label: 'teacherReviews.studentFeedback' },
+    // { route: '/centers/1',                icon: 'business',     label: 'sidebar.centers' },
     // { route: '/teacher/settings',         icon: 'settings',     label: 'teacherPortal.settings' },
   ];
 

@@ -99,7 +99,7 @@
               style="background:#0F6E56; border-radius: 0 16px 0 12px;">
           {{ 'enrollment.freeCourse' | translate }}
         </span>
-        <div class="flex items-center justify-between gap-3 pt-1">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-1">
           <div class="flex-1">
             <p class="text-[8px] font-bold tracking-[2px] uppercase mb-1.5" style="color:#94a3b8;">
               {{ 'enrollment.pathway01' | translate }}
@@ -111,7 +111,7 @@
               {{ 'enrollment.freeDesc' | translate }}
             </p>
           </div>
-          <div class="flex flex-col items-end gap-2.5 flex-shrink-0">
+          <div class="flex sm:flex-col items-center sm:items-end justify-between sm:justify-start w-full sm:w-auto gap-2.5 flex-shrink-0">
             <p class="font-black" style="font-family:'Unbounded',sans-serif; font-size:26px; color:#0F6E56;">
               {{ 'enrollment.free' | translate }}
             </p>
@@ -139,7 +139,7 @@
                 style="background:#0F6E56; border-radius: 0 16px 0 12px;">
             {{ 'enrollment.recommended' | translate }}
           </span>
-          <div class="flex items-center justify-between gap-3 pt-1">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-1">
             <div class="flex-1">
               <p class="text-[8px] font-bold tracking-[2px] uppercase mb-1.5" style="color:#94a3b8;">
                 {{ 'enrollment.pathway01' | translate }}
@@ -151,7 +151,7 @@
                 {{ 'enrollment.digitalDesc' | translate }}
               </p>
             </div>
-            <div class="flex flex-col items-end gap-2.5 flex-shrink-0">
+            <div class="flex sm:flex-col items-center sm:items-end justify-between sm:justify-start w-full sm:w-auto gap-2.5 flex-shrink-0">
               <p class="font-black" style="font-family:'Unbounded',sans-serif; font-size:26px; color:#0F6E56;">
                 ${{ course.price }}
               </p>
@@ -173,7 +173,7 @@
         <!-- Card 2: Cash / Offline -->
         <div class="rounded-[18px] p-5"
              style="background:#0d2018; border: 1px solid rgba(29,158,117,0.18);">
-          <div class="flex items-center justify-between gap-3">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div class="flex-1">
               <p class="text-[8px] font-bold tracking-[2px] uppercase mb-1.5"
                  style="color:rgba(255,255,255,0.25);">
@@ -186,7 +186,7 @@
                 {{ 'enrollment.offlineDesc' | translate }}
               </p>
             </div>
-            <div class="flex flex-col items-end gap-2.5 flex-shrink-0">
+            <div class="flex sm:flex-col items-center sm:items-end justify-between sm:justify-start w-full sm:w-auto gap-2.5 flex-shrink-0">
               <p class="font-black" style="font-family:'Unbounded',sans-serif; font-size:26px; color:rgba(255,255,255,0.72);">
                 ${{ course.price }}
               </p>

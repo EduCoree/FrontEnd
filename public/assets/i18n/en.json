@@ -92,7 +92,12 @@
     "retry": "Retry",
     "viewAll": "View All",
     "edit": "Edit",
-    "remove": "Remove"
+    "remove": "Remove",
+    "video": "Video",
+    "pdf": "PDF",
+    "saveSuccess": "Changes saved successfully!",
+    "error": "An error occurred. Please try again.",
+    "confirmDelete": "Are you sure you want to delete this?"
   },
   "home": {
     "badge": "Premium Learning",
@@ -393,6 +398,7 @@
     "archived": "Archived",
     "quickActions": "Quick Actions",
     "rating": "Rating",
+    "avgRating": "Average Rating",
     "draftCount": "draft"
   },
   "teacherPortal": {
@@ -606,6 +612,249 @@
     "unpublish": "Unpublish",
     "publish": "Publish"
   },
+  "payout": {
+    "dashboard": {
+      "title": "Payout Dashboard",
+      "subtitle": "Financial overview and payout management",
+      "actions": {
+        "settings": "Payout Settings",
+        "generate": "Generate Invoices",
+        "allInvoices": "All Invoices"
+      },
+      "kpi": {
+        "pendingPayouts": {
+          "label": "Pending Payouts"
+        },
+        "teacherEarnings": {
+          "label": "Teacher Earnings"
+        },
+        "platformRevenue": {
+          "label": "Platform Revenue"
+        },
+        "lastMonthPaid": {
+          "label": "Last Month Paid"
+        }
+      },
+      "chart": {
+        "title": "Revenue Distribution",
+        "subtitle": "Current month split between platform and teachers",
+        "empty": "No revenue data for this month"
+      },
+      "export": {
+        "title": "Financial Report",
+        "subtitle": "Export earnings to Excel",
+        "description": "Generate a detailed Excel report for a specific period.",
+        "from": "From Date",
+        "to": "To Date",
+        "download": "Download Excel",
+        "generating": "Generating..."
+      },
+      "activeTeachers": {
+        "label": "Monthly Enrollments",
+        "description": "Total paid enrollments for the current period",
+        "viewAll": "View Invoice List"
+      },
+      "error": {
+        "retry": "Retry"
+      }
+    },
+    "invoiceList": {
+      "title": "All Invoices",
+      "backToDashboard": "Back to Dashboard",
+      "subtitle": {
+        "count": "invoices found",
+        "empty": "No invoices generated yet"
+      },
+      "filters": {
+        "status": "Filter by Status",
+        "teacherId": "Teacher ID",
+        "teacherIdPlaceholder": "Enter Teacher ID...",
+        "fromDate": "From Date",
+        "toDate": "To Date",
+        "apply": "Apply Filters",
+        "clearAll": "Clear All"
+      },
+      "table": {
+        "invoiceNumber": "Invoice #",
+        "teacher": "Teacher",
+        "period": "Period",
+        "enrollments": "Enrollments",
+        "total": "Total Amount",
+        "status": "Status"
+      },
+      "mobile": {
+        "enrollments": "enrollments",
+        "total": "Total Amount"
+      },
+      "pagination": {
+        "page": "Page",
+        "of": "of",
+        "total": "total invoices"
+      },
+      "emptyState": {
+        "title": "No Invoices Found",
+        "messageWithFilters": "Try adjusting your filters to find what you're looking for.",
+        "messageNoFilters": "There are no invoices in the system yet."
+      },
+      "error": {
+        "retry": "Retry"
+      }
+    },
+    "generate": {
+      "title": "Generate Monthly Invoices",
+      "subtitle": "Process payouts for all teachers for a specific month.",
+      "backToDashboard": "Back to Dashboard",
+      "infoBanner": {
+        "title": "Important Information",
+        "item1": "This process calculates earnings for all teachers based on paid enrollments.",
+        "item2": "Invoices will be generated in 'Issued' status.",
+        "item3": "You can generate invoices for the same month multiple times; system will only create new ones for missing teachers.",
+        "idempotent": "Safe Process:",
+        "idempotentText": "Generating again won't duplicate existing invoices."
+      },
+      "form": {
+        "title": "Select Period",
+        "year": "Year",
+        "month": "Month",
+        "submit": "Generate for",
+        "submitting": "Processing..."
+      },
+      "result": {
+        "title": "Generation Complete",
+        "period": "Successfully processed invoices for",
+        "stats": {
+          "created": "Created",
+          "skipped": "Skipped",
+          "skippedHint": "Already exist",
+          "failed": "Failed",
+          "total": "Total Value"
+        },
+        "failedTeachersTitle": "Failed Teachers",
+        "messagesTitle": "System Messages",
+        "actions": {
+          "generateAnother": "Generate Another",
+          "viewAll": "View Invoice List"
+        }
+      },
+      "error": {
+        "title": "Generation Failed",
+        "tryAgain": "Try Again"
+      }
+    },
+    "invoiceDetail": {
+      "backToInvoices": "Back to Invoices",
+      "header": {
+        "invoiceLabel": "Invoice Details"
+      },
+      "actions": {
+        "downloadPdf": "Download PDF",
+        "downloading": "Downloading...",
+        "markAsPaid": "Mark as Paid",
+        "cancelInvoice": "Cancel Invoice"
+      },
+      "totals": {
+        "enrollments": "Enrollments",
+        "earnings": "Earnings",
+        "tierBonus": "Tier Bonus",
+        "total": "Final Total"
+      },
+      "paymentInfo": {
+        "title": "Payment Information",
+        "paidOn": "Paid On",
+        "method": "Payout Method",
+        "reference": "Reference #",
+        "notes": "Admin Notes"
+      },
+      "breakdown": {
+        "title": "Earnings Breakdown",
+        "columns": {
+          "number": "#",
+          "course": "Course Title",
+          "date": "Earned At",
+          "gross": "Gross",
+          "net": "Net"
+        }
+      },
+      "payModal": {
+        "title": "Confirm Payment",
+        "confirmText": "You are marking a payout of",
+        "to": "to",
+        "method": "Payout Method",
+        "reference": "Reference / Transaction ID",
+        "referencePlaceholder": "e.g. TXN-123456",
+        "notes": "Notes for Teacher",
+        "notesPlaceholder": "Optional details about the transfer...",
+        "cancel": "Cancel",
+        "confirm": "Confirm Payment",
+        "processing": "Processing..."
+      },
+      "cancelModal": {
+        "title": "Cancel Invoice",
+        "warningTitle": "Warning",
+        "warningText": "Cancelling an invoice will revert all earnings to 'Available' state. This action should only be taken for errors.",
+        "reason": "Cancellation Reason",
+        "reasonPlaceholder": "Explain why this invoice is being cancelled...",
+        "reasonHint": "This reason will be visible to the teacher.",
+        "keep": "Keep Invoice",
+        "confirm": "Yes, Cancel",
+        "cancelling": "Cancelling..."
+      },
+      "error": {
+        "title": "Failed to load invoice"
+      }
+    },
+    "settings": {
+      "title": "Payout Settings",
+      "subtitle": "Configure global commission rates and performance tiers.",
+      "backToDashboard": "Back to Dashboard",
+      "notice": {
+        "title": "System Note",
+        "text": "Changes to settings only affect future invoice generation. Existing invoices will not be modified."
+      },
+      "lastUpdated": {
+        "label": "Last Updated:",
+        "by": "by"
+      },
+      "commission": {
+        "title": "Global Commission Split",
+        "subtitle": "Percentage of course price that goes to the teacher.",
+        "fieldLabel": "Teacher Rate (%)",
+        "platformKeeps": "Platform keeps",
+        "example": "Example: 1000 EGP sale → teacher gets",
+        "exampleSuffix": "EGP"
+      },
+      "tiers": {
+        "title": "Performance Tiers",
+        "subtitle": "Bonus amounts for reaching enrollment thresholds within a single month.",
+        "threshold": "Threshold (Enrollments)",
+        "bonus": "Bonus Amount",
+        "thresholdShort": "Threshold",
+        "tier1": "Tier 1 (Silver)",
+        "tier2": "Tier 2 (Gold)",
+        "tier3": "Tier 3 (Platinum)",
+        "currency": "Payout Currency",
+        "addTier": "Add Tier"
+      },
+      "validation": {
+        "title": "Please correct the following errors:"
+      },
+      "actions": {
+        "save": "Save Settings",
+        "saving": "Saving...",
+        "discard": "Discard Changes",
+        "reset": "Reset to Defaults"
+      },
+      "saveSuccess": "Settings saved successfully",
+      "messages": {
+        "success": "Settings saved successfully",
+        "error": "Failed to save settings"
+      },
+      "error": {
+        "retry": "Retry"
+      }
+    }
+  },
+
   "adminDashboard": {
     "title": "Dashboard",
     "subtitle": "Monitor your platform's performance and key metrics at a glance.",
@@ -662,6 +911,7 @@
   "adminStudents": {
     "title": "Student Registry",
     "subtitle": "Manage academic records and enrollment statuses.",
+    "manageMembers": "Manage Members",
     "search": "Search...",
     "totalStudents": "Total Students",
     "active": "Active",
@@ -776,11 +1026,13 @@
     "lessons": "Lessons",
     "viewDetails": "View Details",
     "free": "Free",
-    "addToCart": "Add to cart"
+    "addToCart": "Add to cart",
+    "currency": "EGP"
   },
   "courseDetails": {
     "tuition": "Tuition",
     "free": "Free",
+    "currency": "EGP",
     "enroll": "Enroll Now",
     "about": "About This Course",
     "level": "Level",
@@ -967,7 +1219,13 @@
     "step": "Step 3 of 4",
     "back": "Back",
     "nextPricing": "Next: Pricing",
-    "videoUrlPlaceholder": "https://youtube.com/watch?v=..."
+    "videoUrlPlaceholder": "https://youtube.com/watch?v=...",
+    "openingDrive": "Opening Drive...",
+    "pickVideoFromDrive": "Pick Video from Google Drive",
+    "pickPdfFromDrive": "Pick PDF from Google Drive",
+    "enterUrlManually": "Or enter URL manually",
+    "video": "Video",
+    "pdf": "PDF"
   },
   "login": {
     "welcome": "Welcome back",
@@ -1471,6 +1729,11 @@
     "selectCategory": "Select category",
     "categoryError": "Category is required",
     "level": "Level",
+    "levels": {
+      "Beginner": "Beginner",
+      "Intermediate": "Intermediate",
+      "Advanced": "Advanced"
+    },
     "description": "Description",
     "descriptionPlaceholder": "Describe the journey your students will take...",
     "descriptionError": "Description is required",
@@ -1481,7 +1744,7 @@
     "uploading": "Uploading...",
     "coverUploaded": "✓ Cover uploaded successfully!",
     "pricingStrategy": "Pricing strategy",
-    "priceUsd": "Price (USD)",
+    "priceUsd": "Price (EGP)",
     "courseHealth": "Course health",
     "progress": "Progress",
     "instructorTips": "Instructor tips",
@@ -1526,7 +1789,7 @@
   "pricingStep": {
     "pricingType": "Pricing type",
     "pricingTypeDesc": "Choose how students will access your course.",
-    "coursePriceUsd": "Course price (USD)",
+    "coursePriceUsd": "Course price (EGP)",
     "discountPrice": "Discount price (optional)",
     "earningsBreakdown": "Earnings breakdown",
     "coursePrice": "Course price",
@@ -1538,7 +1801,14 @@
     "publishingChecklist": "Publishing checklist",
     "unpublishAnytime": "You can unpublish anytime from the dashboard",
     "publishing": "Publishing...",
-    "publishCourse": "Publish course"
+    "publishCourse": "Publish course",
+    "publishSuccess": "Course published successfully! 🎉",
+    "currency": "EGP",
+    "types": {
+      "Free": "Free",
+      "Paid": "Paid",
+      "Subscription": "Subscription"
+    }
   },
   "editCourse": {
     "title": "Edit course",
@@ -1823,58 +2093,6 @@
     "done": "Done",
     "noStudents": "No enrolled students yet",
     "noStudentsHint": "Students who enroll in this course will appear here."
-  },
-  "payout": {
-    "dashboard": {
-      "title": "Payout Dashboard",
-      "subtitle": "Overview of instructor earnings and platform revenue",
-      "actions": {
-        "settings": "Settings",
-        "generate": "Generate Payouts",
-        "allInvoices": "All Invoices"
-      },
-      "error": {
-        "title": "Something went wrong",
-        "retry": "Retry"
-      },
-      "kpi": {
-        "pendingPayouts": {
-          "label": "Pending Payouts",
-          "subtitle": "pending invoices"
-        },
-        "teacherEarnings": {
-          "label": "Teacher Earnings",
-          "subtitle": "This month"
-        },
-        "platformRevenue": {
-          "label": "Platform Revenue",
-          "subtitle": "This month"
-        },
-        "lastMonthPaid": {
-          "label": "Last Month Paid",
-          "subtitle": "Paid to teachers"
-        }
-      },
-      "chart": {
-        "title": "Revenue Split",
-        "subtitle": "Teacher earnings vs platform revenue",
-        "empty": "No data available for the selected period"
-      },
-      "export": {
-        "title": "Export Report",
-        "subtitle": "Download Excel report",
-        "description": "Select a date range to export a detailed payout report as an Excel file.",
-        "from": "From",
-        "to": "To",
-        "generating": "Generating...",
-        "download": "Download Report"
-      },
-      "activeTeachers": {
-        "label": "Paid Enrollments This Month",
-        "description": "Total enrollments with completed payments in the current month",
-        "viewAll": "View All Invoices"
-      }
-    }
   },
   "COURSE": {
     "LOADING": "Loading your course…",

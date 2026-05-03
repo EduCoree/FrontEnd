@@ -105,10 +105,10 @@
                 {{ featuredCourse.progressPercentage }}%
               </span>
             </div>
-            <div class="h-2 w-full rounded-full overflow-hidden" style="background: #e2eeea;">
+            <div class="h-2 w-full rounded-full overflow-hidden" style="background: rgba(46,104,88,0.08);">
               <div class="h-full rounded-full transition-all duration-500"
-                   style="background: linear-gradient(90deg, var(--color-primary), #4db6a0);"
-                   [style.width.%]="featuredCourse.progressPercentage"></div>
+                   style="background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light));"
+                   [style.width.%]="featuredCourse.progressPercentage || 0"></div>
             </div>
           </div>
 
@@ -163,10 +163,10 @@
             </p>
           </div>
           <!-- Progress bar -->
-          <div class="h-1.5 w-full rounded-full overflow-hidden" style="background: #e2eeea;">
+          <div class="h-1.5 w-full rounded-full overflow-hidden" style="background: rgba(46,104,88,0.08);">
             <div class="h-full rounded-full transition-all"
                  style="background: var(--color-primary);"
-                 [style.width.%]="course.progressPercentage"></div>
+                 [style.width.%]="course.progressPercentage || 0"></div>
           </div>
           <!-- Resume button -->
           <button class="w-full font-bold py-2.5 px-4 rounded-xl text-sm

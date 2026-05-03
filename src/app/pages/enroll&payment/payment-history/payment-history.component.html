@@ -74,20 +74,20 @@
           <div *ngFor="let payment of payments"
             class="bg-white rounded-2xl overflow-hidden hover:shadow-lg hover:shadow-primary/8
                    hover:-translate-y-1 transition-all duration-300 p-6
-                   border border-outline-variant/15 shadow-sm flex items-center justify-between">
+                   border border-outline-variant/15 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
 
             <!-- Left -->
-            <div class="flex items-center gap-6">
-              <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-500">
-                <span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 1">menu_book</span>
+            <div class="flex items-center gap-4 md:gap-6">
+              <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-500 shrink-0">
+                <span class="material-symbols-outlined text-[20px] md:text-[22px]" style="font-variation-settings:'FILL' 1">menu_book</span>
               </div>
-              <div>
-                <h4 class="font-bold text-lg text-on-surface">{{ payment.courseTitle }}</h4>
-                <p class="text-sm text-on-surface-variant flex items-center gap-2 flex-wrap">
-                  <span class="material-symbols-outlined text-sm">calendar_today</span>
+              <div class="min-w-0">
+                <h4 class="font-bold text-base md:text-lg text-on-surface truncate">{{ payment.courseTitle }}</h4>
+                <p class="text-xs md:text-sm text-on-surface-variant flex items-center gap-2 flex-wrap">
+                  <span class="material-symbols-outlined text-[14px]">calendar_today</span>
                   {{ payment.paidAt ? (payment.paidAt | date:'yyyy-MM-dd') : '—' }}
-                  <span class="opacity-20">|</span>
-                  ID: {{ payment.id }}
+                  <span class="opacity-20 hidden sm:inline">|</span>
+                  <span class="truncate">ID: {{ payment.id }}</span>
                   <span class="opacity-20">|</span>
                   {{ payment.method }}
                 </p>
@@ -95,12 +95,12 @@
             </div>
 
             <!-- Right -->
-            <div class="text-right shrink-0 ml-4">
-              <p class="text-xl font-black text-on-surface">
+            <div class="text-left sm:text-right shrink-0 w-full sm:w-auto pt-4 sm:pt-0 border-t sm:border-t-0 border-outline-variant/10 flex sm:flex-col items-center sm:items-end justify-between sm:justify-start">
+              <p class="text-lg md:text-xl font-black text-on-surface">
                 {{ payment.amount | number:'1.2-2' }} {{ payment.currency }}
               </p>
               <span
-                class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mt-2"
+                class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest sm:mt-2"
                 [class]="getStatusClass(payment.status)">
                 <span class="w-1.5 h-1.5 rounded-full" [class]="getStatusDotClass(payment.status)"></span>
                 {{ payment.status }}

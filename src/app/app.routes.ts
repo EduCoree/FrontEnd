@@ -147,12 +147,14 @@ export const routes: Routes = [
   
   {
     path: 'centers/:id/edit',
+    canActivate: [adminGuard],
     loadComponent: () =>
       import('./pages/centers/center-edit/center-edit/center-edit')
     .then(m => m.CenterEdit)
   },
   {
     path: 'centers/:id/delete',
+    canActivate: [adminGuard],
     loadComponent: () =>
       import('./pages/centers/center-delete/center-delete')
     .then(m => m.CenterDelete)
@@ -160,6 +162,7 @@ export const routes: Routes = [
   
   {
     path: 'centers/:id/logo',
+    canActivate: [adminGuard],
     loadComponent: () =>
       import('./pages/centers/center-logo/center-logo')
     .then(m => m.CenterLogo)
@@ -456,6 +459,7 @@ export const routes: Routes = [
 
 {
   path: 'centers/:centerId/categories',
+  canActivate: [adminGuard],
   loadComponent: () =>
     import('./pages/centers/categories/categories')
       .then(m => m.Categories),

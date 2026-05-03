@@ -46,7 +46,8 @@
         [class.justify-center]="!isOpen()"
       >
         <span
-          class="material-symbols-outlined text-xl flex-shrink-0"
+          class="material-symbols-outlined text-xl flex-shrink-0 transition-all duration-300"
+          [style.font-variation-settings]="rla.isActive ? &quot;'FILL' 1&quot; : &quot;'FILL' 0&quot;"
           [class.text-on-primary]="rla.isActive"
           [class.text-primary]="!rla.isActive"
         >
@@ -85,3 +86,31 @@
   [class.ms-2]="!isOpen()"
   class="transition-all duration-300 lg:block hidden h-0"
 ></div>
+
+<!-- Mobile Bottom Nav -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-outline-variant/20 flex items-center justify-around overflow-x-auto px-2 pb-2 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] lg:hidden">
+  @for (item of navItems; track item.route) {
+    <a
+      [routerLink]="item.route"
+      routerLinkActive
+      #rla="routerLinkActive"
+      [routerLinkActiveOptions]="{ exact: item.exact }"
+      class="flex flex-col items-center gap-1 min-w-[4.5rem] py-3 transition-colors relative"
+      [class.text-primary]="rla.isActive"
+      [class.text-on-surface-variant]="!rla.isActive"
+    >
+      <span class="material-symbols-outlined text-xl transition-all duration-300"
+            [style.font-variation-settings]="rla.isActive ? &quot;'FILL' 1&quot; : &quot;'FILL' 0&quot;"
+            [class.text-primary]="rla.isActive"
+            [class.scale-110]="rla.isActive">
+        {{ item.icon }}
+      </span>
+      <span class="text-[10px] font-bold tracking-wider truncate max-w-full text-center px-1">
+        {{ item.labelKey | translate }}
+      </span>
+      @if (rla.isActive) {
+        <div class="absolute top-0 w-8 h-1 bg-primary rounded-b-full"></div>
+      }
+    </a>
+  }
+</nav>

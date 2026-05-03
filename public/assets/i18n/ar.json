@@ -129,6 +129,7 @@
     "archived": "مؤرشف",
     "quickActions": "إجراءات سريعة",
     "rating": "التقييم",
+    "avgRating": "متوسط التقييم",
     "draftCount": "مسودة"
   },
   "teacherPortal": {
@@ -341,7 +342,12 @@
     "retry": "إعادة المحاولة",
     "viewAll": "عرض الكل",
     "edit": "تعديل",
-    "remove": "حذف"
+    "remove": "إزالة",
+    "video": "فيديو",
+    "pdf": "PDF",
+    "saveSuccess": "تم حفظ التغييرات بنجاح!",
+    "error": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+    "confirmDelete": "هل أنت متأكد أنك تريد حذف هذا؟"
   },
   "home": {
     "badge": "تعلّم متميز",
@@ -639,6 +645,249 @@
     "unpublish": "إلغاء النشر",
     "publish": "نشر"
   },
+  "payout": {
+    "dashboard": {
+      "title": "لوحة المدفوعات",
+      "subtitle": "نظرة عامة مالية وإدارة صرف مستحقات المعلمين",
+      "actions": {
+        "settings": "إعدادات الصرف",
+        "generate": "إنشاء فواتير",
+        "allInvoices": "كل الفواتير"
+      },
+      "kpi": {
+        "pendingPayouts": {
+          "label": "مدفوعات معلقة"
+        },
+        "teacherEarnings": {
+          "label": "أرباح المعلمين"
+        },
+        "platformRevenue": {
+          "label": "أرباح المنصة"
+        },
+        "lastMonthPaid": {
+          "label": "مدفوعات الشهر الماضي"
+        }
+      },
+      "chart": {
+        "title": "توزيع الإيرادات",
+        "subtitle": "تقسيم الشهر الحالي بين المنصة والمعلمين",
+        "empty": "لا توجد بيانات إيرادات لهذا الشهر"
+      },
+      "export": {
+        "title": "التقرير المالي",
+        "subtitle": "تصدير الأرباح إلى ملف Excel",
+        "description": "إنشاء تقرير Excel مفصل لفترة زمنية محددة.",
+        "from": "من تاريخ",
+        "to": "إلى تاريخ",
+        "download": "تحميل Excel",
+        "generating": "جاري التحميل..."
+      },
+      "activeTeachers": {
+        "label": "التسجيلات الشهرية",
+        "description": "إجمالي التسجيلات المدفوعة للفترة الحالية",
+        "viewAll": "عرض قائمة الفواتير"
+      },
+      "error": {
+        "retry": "إعادة المحاولة"
+      }
+    },
+    "invoiceList": {
+      "title": "جميع الفواتير",
+      "backToDashboard": "العودة للوحة التحكم",
+      "subtitle": {
+        "count": "فواتير تم العثور عليها",
+        "empty": "لم يتم إنشاء فواتير بعد"
+      },
+      "filters": {
+        "status": "تصفية حسب الحالة",
+        "teacherId": "رقم المعلم",
+        "teacherIdPlaceholder": "أدخل رقم المعلم...",
+        "fromDate": "من تاريخ",
+        "toDate": "إلى تاريخ",
+        "apply": "تطبيق الفلاتر",
+        "clearAll": "مسح الكل"
+      },
+      "table": {
+        "invoiceNumber": "رقم الفاتورة",
+        "teacher": "المعلم",
+        "period": "الفترة",
+        "enrollments": "التسجيلات",
+        "total": "المبلغ الإجمالي",
+        "status": "الحالة"
+      },
+      "mobile": {
+        "enrollments": "تسجيلات",
+        "total": "المبلغ الإجمالي"
+      },
+      "pagination": {
+        "page": "صفحة",
+        "of": "من",
+        "total": "إجمالي الفواتير"
+      },
+      "emptyState": {
+        "title": "لم يتم العثور على فواتير",
+        "messageWithFilters": "جرب تعديل الفلاتر للعثور على ما تبحث عنه.",
+        "messageNoFilters": "لا توجد فواتير في النظام بعد."
+      },
+      "error": {
+        "retry": "إعادة المحاولة"
+      }
+    },
+    "generate": {
+      "title": "إنشاء الفواتير الشهرية",
+      "subtitle": "معالجة مستحقات جميع المعلمين لشهر محدد.",
+      "backToDashboard": "العودة للوحة التحكم",
+      "infoBanner": {
+        "title": "معلومات هامة",
+        "item1": "تقوم هذه العملية بحساب الأرباح لجميع المعلمين بناءً على التسجيلات المدفوعة.",
+        "item2": "سيتم إنشاء الفواتير بحالة 'صدرت' (Issued).",
+        "item3": "يمكنك إنشاء فواتير لنفس الشهر عدة مرات؛ سيقوم النظام بإنشاء فواتير جديدة فقط للمعلمين الذين لم تصدر لهم فواتير بعد.",
+        "idempotent": "عملية آمنة:",
+        "idempotentText": "إعادة الإنشاء لن تكرر الفواتير الموجودة بالفعل."
+      },
+      "form": {
+        "title": "اختر الفترة",
+        "year": "السنة",
+        "month": "الشهر",
+        "submit": "إنشاء لشهر",
+        "submitting": "جاري المعالجة..."
+      },
+      "result": {
+        "title": "اكتملت العملية",
+        "period": "تمت معالجة فواتير شهر",
+        "stats": {
+          "created": "تم إنشاؤها",
+          "skipped": "تم تخطيها",
+          "skippedHint": "موجودة مسبقاً",
+          "failed": "فشلت",
+          "total": "القيمة الإجمالية"
+        },
+        "failedTeachersTitle": "معلمون فشل معالجتهم",
+        "messagesTitle": "رسائل النظام",
+        "actions": {
+          "generateAnother": "إنشاء شهر آخر",
+          "viewAll": "عرض قائمة الفواتير"
+        }
+      },
+      "error": {
+        "title": "فشل إنشاء الفواتير",
+        "tryAgain": "حاول مرة أخرى"
+      }
+    },
+    "invoiceDetail": {
+      "backToInvoices": "العودة للفواتير",
+      "header": {
+        "invoiceLabel": "تفاصيل الفاتورة"
+      },
+      "actions": {
+        "downloadPdf": "تحميل PDF",
+        "downloading": "جاري التحميل...",
+        "markAsPaid": "تحديد كمكتملة (تم الدفع)",
+        "cancelInvoice": "إلغاء الفاتورة"
+      },
+      "totals": {
+        "enrollments": "التسجيلات",
+        "earnings": "الأرباح",
+        "tierBonus": "مكافأة المستوى",
+        "total": "الإجمالي النهائي"
+      },
+      "paymentInfo": {
+        "title": "معلومات الدفع",
+        "paidOn": "تاريخ الدفع",
+        "method": "طريقة الصرف",
+        "reference": "رقم المرجع",
+        "notes": "ملاحظات الإدارة"
+      },
+      "breakdown": {
+        "title": "تفاصيل الأرباح",
+        "columns": {
+          "number": "#",
+          "course": "اسم الكورس",
+          "date": "تاريخ الربح",
+          "gross": "الإجمالي",
+          "net": "الصافي"
+        }
+      },
+      "payModal": {
+        "title": "تأكيد الدفع",
+        "confirmText": "أنت تقوم بتأكيد دفع مبلغ",
+        "to": "إلى",
+        "method": "طريقة الصرف",
+        "reference": "رقم المرجع / العملية",
+        "referencePlaceholder": "مثال: TXN-123456",
+        "notes": "ملاحظات للمعلم",
+        "notesPlaceholder": "تفاصيل اختيارية حول التحويل...",
+        "cancel": "إلغاء",
+        "confirm": "تأكيد الدفع",
+        "processing": "جاري المعالجة..."
+      },
+      "cancelModal": {
+        "title": "إلغاء الفاتورة",
+        "warningTitle": "تحذير",
+        "warningText": "إلغاء الفاتورة سيعيد جميع الأرباح إلى حالة 'متاح'. يجب اتخاذ هذا الإجراء فقط في حالة وجود أخطاء.",
+        "reason": "سبب الإلغاء",
+        "reasonPlaceholder": "اشرح سبب إلغاء هذه الفاتورة...",
+        "reasonHint": "سيكون هذا السبب مرئياً للمعلم.",
+        "keep": "الإبقاء على الفاتورة",
+        "confirm": "نعم، إلغاء",
+        "cancelling": "جاري الإلغاء..."
+      },
+      "error": {
+        "title": "فشل تحميل الفاتورة"
+      }
+    },
+    "settings": {
+      "title": "إعدادات الصرف",
+      "subtitle": "تكوين نسب العمولات العالمية ومستويات الأداء.",
+      "backToDashboard": "العودة للوحة التحكم",
+      "notice": {
+        "title": "ملحوظة النظام",
+        "text": "التغييرات في الإعدادات تؤثر فقط على الفواتير المستقبلية. لن يتم تعديل الفواتير الموجودة حالياً."
+      },
+      "lastUpdated": {
+        "label": "آخر تحديث:",
+        "by": "بواسطة"
+      },
+      "commission": {
+        "title": "تقسيم العمولة العالمي",
+        "subtitle": "نسبة سعر الكورس التي تذهب للمعلم.",
+        "fieldLabel": "نسبة المعلم (%)",
+        "platformKeeps": "أرباح المنصة",
+        "example": "مثال: مبيع بـ 1000 ج.م ← يحصل المعلم على",
+        "exampleSuffix": "ج.م"
+      },
+      "tiers": {
+        "title": "مستويات الأداء",
+        "subtitle": "مبالغ المكافآت للوصول إلى حدود معينة من التسجيلات خلال شهر واحد.",
+        "threshold": "الحد الأدنى (تسجيلات)",
+        "bonus": "مبلغ المكافأة",
+        "thresholdShort": "الحد",
+        "tier1": "المستوى 1 (فضي)",
+        "tier2": "المستوى 2 (ذهبي)",
+        "tier3": "المستوى 3 (بلاتيني)",
+        "currency": "عملة الصرف",
+        "addTier": "إضافة مستوى"
+      },
+      "validation": {
+        "title": "يرجى تصحيح الأخطاء التالية:"
+      },
+      "actions": {
+        "save": "حفظ الإعدادات",
+        "saving": "جاري الحفظ...",
+        "discard": "تجاهل التغييرات",
+        "reset": "استعادة الافتراضي"
+      },
+      "saveSuccess": "تم حفظ الإعدادات بنجاح",
+      "messages": {
+        "success": "تم حفظ الإعدادات بنجاح",
+        "error": "فشل حفظ الإعدادات"
+      },
+      "error": {
+        "retry": "إعادة المحاولة"
+      }
+    }
+  },
+
   "adminDashboard": {
     "title": "لوحة التحكم",
     "subtitle": "راقب أداء منصتك والمقاييس الرئيسية في لمحة واحدة.",
@@ -822,11 +1071,13 @@
     "lessons": "درس",
     "viewDetails": "عرض التفاصيل",
     "free": "مجاني",
-    "addToCart": "أضف للسلة"
+    "addToCart": "أضف للسلة",
+    "currency": "ج.م"
   },
   "courseDetails": {
     "tuition": "الرسوم",
     "free": "مجاني",
+    "currency": "ج.م",
     "enroll": "سجّل الآن",
     "about": "عن هذا الكورس",
     "level": "المستوى",
@@ -1013,7 +1264,13 @@
     "step": "الخطوة 3 من 4",
     "back": "رجوع",
     "nextPricing": "التالي: التسعير",
-    "videoUrlPlaceholder": "https://youtube.com/watch?v=..."
+    "videoUrlPlaceholder": "https://youtube.com/watch?v=...",
+    "openingDrive": "جارٍ فتح Drive...",
+    "pickVideoFromDrive": "اختر فيديو من Google Drive",
+    "pickPdfFromDrive": "اختر PDF من Google Drive",
+    "enterUrlManually": "أو أدخل الرابط يدوياً",
+    "video": "فيديو",
+    "pdf": "PDF"
   },
   "login": {
     "welcome": "مرحباً بعودتك",
@@ -1464,6 +1721,11 @@
     "selectCategory": "اختر فئة",
     "categoryError": "الفئة مطلوبة",
     "level": "المستوى",
+    "levels": {
+      "Beginner": "مبتدئ",
+      "Intermediate": "متوسط",
+      "Advanced": "متقدم"
+    },
     "description": "الوصف",
     "descriptionPlaceholder": "صف الرحلة التي سيخوضها طلابك...",
     "descriptionError": "الوصف مطلوب",
@@ -1474,7 +1736,7 @@
     "uploading": "جارٍ الرفع...",
     "coverUploaded": "✓ تم رفع الغلاف بنجاح!",
     "pricingStrategy": "استراتيجية التسعير",
-    "priceUsd": "السعر (بالدولار)",
+    "priceUsd": "السعر (ج.م)",
     "courseHealth": "حالة الكورس",
     "progress": "التقدم",
     "instructorTips": "نصائح للمدرس",
@@ -1519,7 +1781,7 @@
   "pricingStep": {
     "pricingType": "نوع التسعير",
     "pricingTypeDesc": "حدد كيف سيصل الطلاب إلى كورسك.",
-    "coursePriceUsd": "سعر الكورس (بالدولار)",
+    "coursePriceUsd": "سعر الكورس (ج.م)",
     "discountPrice": "السعر بعد الخصم (اختياري)",
     "earningsBreakdown": "تفصيل الأرباح",
     "coursePrice": "سعر الكورس",
@@ -1531,7 +1793,14 @@
     "publishingChecklist": "قائمة النشر",
     "unpublishAnytime": "يمكنك إلغاء النشر في أي وقت من لوحة التحكم",
     "publishing": "جارٍ النشر...",
-    "publishCourse": "نشر الكورس"
+    "publishCourse": "نشر الكورس",
+    "publishSuccess": "تم نشر الكورس بنجاح! 🎉",
+    "currency": "ج.م",
+    "types": {
+      "Free": "مجاني",
+      "Paid": "مدفوع",
+      "Subscription": "اشتراك"
+    }
   },
   "editCourse": {
     "title": "تعديل الكورس",
@@ -1813,248 +2082,6 @@
     "pagination": {
       "page": "الصفحة",
       "of": "من"
-    }
-  },
-  "payout": {
-    "dashboard": {
-      "title": "لوحة المدفوعات",
-      "subtitle": "إدارة مدفوعات المعلمين والفواتير ونظرة عامة على الأرباح",
-      "actions": {
-        "settings": "الإعدادات",
-        "generate": "توليد",
-        "allInvoices": "جميع الفواتير"
-      },
-      "error": {
-        "title": "تعذّر تحميل لوحة التحكم",
-        "retry": "إعادة المحاولة"
-      },
-      "kpi": {
-        "pendingPayouts": {
-          "label": "المدفوعات المعلّقة",
-          "subtitle": "فاتورة غير مدفوعة"
-        },
-        "teacherEarnings": {
-          "label": "أرباح المعلمين",
-          "subtitle": "الشهر الحالي"
-        },
-        "platformRevenue": {
-          "label": "إيرادات المنصة",
-          "subtitle": "الشهر الحالي"
-        },
-        "lastMonthPaid": {
-          "label": "مدفوعات الشهر الماضي",
-          "subtitle": "المُحوَّلة للمعلمين"
-        }
-      },
-      "chart": {
-        "title": "توزيع الإيرادات (هذا الشهر)",
-        "subtitle": "كيف تُوزَّع الأرباح بين المعلمين والمنصة",
-        "empty": "لا توجد إيرادات هذا الشهر بعد"
-      },
-      "export": {
-        "title": "التقرير المالي",
-        "subtitle": "تصدير إلى Excel",
-        "description": "ملف Excel متعدد الأوراق يحتوي على الملخص والفواتير والأرباح.",
-        "from": "من",
-        "to": "إلى",
-        "download": "تحميل Excel",
-        "generating": "جارٍ الإنشاء…"
-      },
-      "activeTeachers": {
-        "label": "المعلمون النشطون هذا الشهر",
-        "description": "معلمون لديهم تسجيل مدفوع واحد على الأقل",
-        "viewAll": "عرض جميع الفواتير"
-      }
-    },
-    "invoiceDetail": {
-      "backToInvoices": "العودة إلى جميع الفواتير",
-      "error": {
-        "title": "عذراً!"
-      },
-      "header": {
-        "invoiceLabel": "فاتورة",
-        "periodLabel": "الفترة"
-      },
-      "actions": {
-        "downloadPdf": "تحميل PDF",
-        "downloading": "جارٍ التحميل…",
-        "markAsPaid": "تحديد كمدفوعة",
-        "cancelInvoice": "إلغاء الفاتورة"
-      },
-      "totals": {
-        "enrollments": "التسجيلات",
-        "earnings": "الأرباح",
-        "tierBonus": "مكافأة المستوى",
-        "total": "الإجمالي"
-      },
-      "paymentInfo": {
-        "title": "معلومات الدفع",
-        "paidOn": "تاريخ الدفع",
-        "method": "طريقة الدفع",
-        "reference": "المرجع",
-        "notes": "ملاحظات"
-      },
-      "breakdown": {
-        "title": "تفاصيل الأرباح",
-        "columns": {
-          "number": "#",
-          "course": "الدورة",
-          "date": "التاريخ",
-          "gross": "الإجمالي",
-          "net": "الصافي"
-        }
-      },
-      "payModal": {
-        "title": "تحديد كمدفوعة",
-        "confirmText": "تأكيد دفع",
-        "to": "إلى",
-        "method": "طريقة الدفع",
-        "reference": "المرجع (اختياري)",
-        "referencePlaceholder": "مثال: رقم المعاملة البنكية #12345",
-        "notes": "ملاحظات (اختياري)",
-        "notesPlaceholder": "أي ملاحظات داخلية…",
-        "cancel": "إلغاء",
-        "confirm": "تأكيد الدفع",
-        "processing": "جارٍ المعالجة…"
-      },
-      "cancelModal": {
-        "title": "إلغاء الفاتورة",
-        "warningTitle": "ماذا سيحدث بعد ذلك؟",
-        "warningText": "سيتم إعادة أرباح هذه الفاتورة إلى حالة 'متاح'، بحيث يمكن إعادة فوترتها في الدورة القادمة.",
-        "reason": "السبب",
-        "reasonPlaceholder": "لماذا تقوم بإلغاء هذه الفاتورة؟",
-        "reasonHint": "5 أحرف على الأقل. سيتم حفظ هذا في ملاحظات الفاتورة.",
-        "keep": "الإبقاء على الفاتورة",
-        "confirm": "تأكيد الإلغاء",
-        "cancelling": "جارٍ الإلغاء…"
-      }
-    },
-    "invoiceList": {
-      "backToDashboard": "لوحة التحكم",
-      "title": "جميع الفواتير",
-      "subtitle": {
-        "count": "فاتورة لجميع المعلمين",
-        "empty": "لا توجد فواتير تطابق الفلاتر الحالية"
-      },
-      "filters": {
-        "status": "الحالة",
-        "teacherId": "معرّف المعلم",
-        "teacherIdPlaceholder": "معرّف المعلم (اختياري)",
-        "fromDate": "من تاريخ",
-        "toDate": "إلى تاريخ",
-        "apply": "تطبيق",
-        "clearAll": "مسح الكل"
-      },
-      "error": {
-        "retry": "إعادة المحاولة"
-      },
-      "emptyState": {
-        "title": "لا توجد فواتير",
-        "messageWithFilters": "حاول تعديل الفلاتر أو مسحها.",
-        "messageNoFilters": "ستظهر الفواتير هنا بمجرد إنشائها."
-      },
-      "table": {
-        "invoiceNumber": "رقم الفاتورة",
-        "teacher": "المعلم",
-        "period": "الفترة",
-        "enrollments": "التسجيلات",
-        "total": "الإجمالي",
-        "status": "الحالة"
-      },
-      "mobile": {
-        "enrollments": "تسجيلات",
-        "total": "الإجمالي"
-      },
-      "pagination": {
-        "page": "صفحة",
-        "of": "من",
-        "total": "إجمالي"
-      }
-    },
-    "generate": {
-      "backToDashboard": "لوحة التحكم",
-      "title": "توليد الفواتير",
-      "subtitle": "تشغيل يدوي لتوليد الفواتير لشهر محدد",
-      "infoBanner": {
-        "title": "متى تستخدم هذا؟",
-        "item1": "اختبار النظام دون انتظار المهمة الشهرية المجدولة",
-        "item2": "إنشاء فواتير لشهر فاته النظام التلقائي",
-        "item3": "إعادة التوليد بعد إلغاء بعض الفواتير",
-        "idempotent": "آمن للتكرار:",
-        "idempotentText": "المعلمون الذين لديهم فاتورة بالفعل للفترة المحددة يتم تخطيهم تلقائياً."
-      },
-      "form": {
-        "title": "اختر الفترة",
-        "year": "السنة",
-        "month": "الشهر",
-        "submit": "توليد فواتير",
-        "submitting": "جارٍ التوليد…"
-      },
-      "error": {
-        "title": "فشل التوليد",
-        "tryAgain": "حاول مجدداً"
-      },
-      "result": {
-        "title": "اكتمل التوليد",
-        "period": "الفترة:",
-        "stats": {
-          "created": "تم الإنشاء",
-          "skipped": "تم التخطي",
-          "skippedHint": "لديه فاتورة مسبقاً",
-          "failed": "فشل",
-          "total": "الإجمالي"
-        },
-        "failedTeachersTitle": "المعلمون الذين فشلوا",
-        "messagesTitle": "الرسائل",
-        "actions": {
-          "generateAnother": "توليد شهر آخر",
-          "viewAll": "عرض جميع الفواتير"
-        }
-      }
-    },
-    "settings": {
-      "backToDashboard": "لوحة التحكم",
-      "title": "إعدادات المدفوعات",
-      "subtitle": "ضبط نسبة العمولة ومكافآت مستويات التسجيل",
-      "notice": {
-        "title": "التغييرات تُطبَّق على الأرباح المستقبلية فقط",
-        "text": "تحتفظ الأرباح الموجودة بنسبة العمولة الأصلية كلقطة مالية. فقط المدفوعات الجديدة بعد التغيير ستستخدم النسبة المحدّثة."
-      },
-      "error": {
-        "retry": "إعادة المحاولة"
-      },
-      "lastUpdated": {
-        "label": "آخر تحديث:",
-        "by": "بواسطة"
-      },
-      "saveSuccess": "تم حفظ الإعدادات بنجاح!",
-      "commission": {
-        "title": "نسبة العمولة",
-        "subtitle": "حصة المعلم من كل عملية بيع دورة",
-        "fieldLabel": "حصة المعلم (%)",
-        "platformKeeps": "المنصة تحتفظ بـ:",
-        "example": "مثال: بيع بـ 1,000 جنيه ←",
-        "exampleSuffix": "جنيه للمعلم"
-      },
-      "tiers": {
-        "title": "مكافآت المستويات",
-        "subtitle": "مكافأة المعلمين على تحقيق أهداف التسجيل الشهرية",
-        "threshold": "الحد الأدنى (تسجيلات)",
-        "thresholdShort": "الحد الأدنى",
-        "bonus": "المكافأة",
-        "tier1": "المستوى الأول",
-        "tier2": "المستوى الثاني",
-        "tier3": "المستوى الثالث ⭐",
-        "currency": "العملة"
-      },
-      "validation": {
-        "title": "يرجى تصحيح:"
-      },
-      "actions": {
-        "reset": "إعادة تعيين",
-        "save": "حفظ الإعدادات",
-        "saving": "جارٍ الحفظ…"
-      }
     }
   },
   "COURSE": {
