@@ -15,7 +15,7 @@ import { QuizAiWizard } from "../../quiz-ai-wizard/quiz-ai-wizard";
 @Component({
   selector: 'app-quiz',
   templateUrl: './get-quizzes.html',
-  imports: [CommonModule, CreateQuizComponent, FormsModule, CourseSidebar, RouterLink, EditQuiz, TranslateModule, Sidebar, QuizAiWizard],
+  imports: [CommonModule, CreateQuizComponent, FormsModule, CourseSidebar, RouterLink, EditQuiz, TranslateModule, QuizAiWizard],
 })
 export class QuizComponent implements OnInit {
   courseId!: number;
