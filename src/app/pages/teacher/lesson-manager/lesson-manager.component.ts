@@ -259,4 +259,8 @@ export class LessonManagerComponent implements OnInit {
   goToMedia(): void {
     this.router.navigate(['/teacher/courses', this.courseId, 'media']);
   }
+
+  goToForum(): void {
+    this.router.navigate(['/lessons', this.lessonId, 'forum']);
+  }
 }

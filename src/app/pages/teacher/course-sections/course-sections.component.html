@@ -152,6 +152,11 @@
                   </div>
                 </div>
                 <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button (click)="goToForum(lesson.id)"
+                    class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-secondary-container/40 text-secondary text-xs font-bold hover:bg-secondary-container transition-colors">
+                    <span class="material-symbols-outlined text-sm">forum</span>
+                    Discussion
+                  </button>
                   <button (click)="openLessonManager(lesson.id)"
                     class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-primary-container/40 text-primary text-xs font-bold hover:bg-primary-container transition-colors">
                     <span class="material-symbols-outlined text-sm">edit</span>
