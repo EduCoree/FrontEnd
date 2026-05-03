@@ -3,13 +3,13 @@
   class="fixed top-0 w-full z-[60] bg-[#F8FAFA]/85 backdrop-blur-md border-b border-outline-variant/20 shadow-[0_4px_24px_rgba(46,104,88,0.08)]"
 >
   <div
-    class="flex w-full h-20 justify-between items-center px-8 max-w-7xl mx-auto gap-4 rtl:flex-row-reverse"
+    class="flex w-full h-16 md:h-20 justify-between items-center px-4 md:px-8 max-w-7xl mx-auto gap-3 md:gap-4 rtl:flex-row-reverse"
   >
     <!-- ── LOGO ── -->
-    <div class="flex items-center gap-8 flex-shrink-0">
+    <div class="flex items-center gap-4 flex-shrink-0">
       <a
         routerLink="/"
-        class="text-xl font-black text-primary flex items-center gap-2 font-headline tracking-tight hover:opacity-80 transition-opacity"
+        class="text-xl font-black text-primary flex items-center gap-1 font-headline tracking-tight hover:opacity-80 transition-opacity"
       >
         <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1"
           >school</span
@@ -72,149 +72,151 @@
         />
       </div>
 
-      <!-- ── NOTIFICATIONS ── -->
-      <div class="relative flex items-center">
-        <button
-          (click)="toggleDropdown()"
-          class="relative p-2 text-slate-500 rounded-xl hover:bg-primary/8 hover:text-primary transition-all duration-200"
-        >
-          <span class="material-symbols-outlined text-[24px]">notifications</span>
-          @if ((unreadcount$ | async) ?? 0 > 0) {
-            <span
-              class="absolute top-1 right-1 flex items-center justify-center w-4 h-4 text-[9px] font-bold text-white bg-red-500 rounded-full shadow-sm"
-            >
-              {{ unreadcount$ | async }}
-            </span>
-          }
-        </button>
-
-        @if (isDropdownOpen) {
-          <div
-            class="absolute right-0 z-50 w-80 mt-2 origin-top-right bg-white border border-outline-variant/30 rounded-2xl shadow-[0_8px_32px_rgba(46,104,88,0.15)] top-full overflow-hidden rtl:left-0 rtl:right-auto rtl:origin-top-left"
+      <!-- ── NOTIFICATIONS (desktop only) ── -->
+      @if (auth.currentUser()) {
+        <div class="relative hidden md:flex items-center">
+          <button
+            (click)="toggleDropdown()"
+            class="relative p-2 text-slate-500 rounded-xl hover:bg-primary/8 hover:text-primary transition-all duration-200"
           >
-            <!-- Header -->
+            <span class="material-symbols-outlined text-[24px]">notifications</span>
+            @if ((unreadcount$ | async) ?? 0 > 0) {
+              <span
+                class="absolute top-1 right-1 flex items-center justify-center w-4 h-4 text-[9px] font-bold text-white bg-red-500 rounded-full shadow-sm"
+              >
+                {{ unreadcount$ | async }}
+              </span>
+            }
+          </button>
+
+          @if (isDropdownOpen) {
             <div
-              class="flex items-center justify-between px-4 py-3 border-b border-outline-variant/20 bg-surface-container-low/50"
+              class="absolute right-0 z-50 w-80 mt-2 origin-top-right bg-white border border-outline-variant/30 rounded-2xl shadow-[0_8px_32px_rgba(46,104,88,0.15)] top-full overflow-hidden rtl:left-0 rtl:right-auto rtl:origin-top-left"
             >
-              <div class="flex items-center gap-2">
-                <span
-                  class="material-symbols-outlined text-primary text-[18px]"
-                  style="font-variation-settings: 'FILL' 1"
-                  >notifications</span
-                >
-                <span class="font-bold text-sm text-on-surface">Notifications</span>
-                @if ((unreadcount$ | async) ?? 0 > 0) {
+              <!-- Header -->
+              <div
+                class="flex items-center justify-between px-4 py-3 border-b border-outline-variant/20 bg-surface-container-low/50"
+              >
+                <div class="flex items-center gap-2">
                   <span
-                    class="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded-full"
+                    class="material-symbols-outlined text-primary text-[18px]"
+                    style="font-variation-settings: 'FILL' 1"
+                    >notifications</span
                   >
-                    {{ unreadcount$ | async }}
-                  </span>
+                  <span class="font-bold text-sm text-on-surface">Notifications</span>
+                  @if ((unreadcount$ | async) ?? 0 > 0) {
+                    <span
+                      class="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded-full"
+                    >
+                      {{ unreadcount$ | async }}
+                    </span>
+                  }
+                </div>
+                @if ((unreadcount$ | async) ?? 0 > 0) {
+                  <button
+                    (click)="markAllAsRead($event)"
+                    [disabled]="isMarkingRead"
+                    class="text-[11px] font-semibold text-primary hover:text-primary/70 disabled:opacity-50 transition-colors"
+                  >
+                    {{ isMarkingRead ? 'Marking...' : 'Mark all read' }}
+                  </button>
                 }
               </div>
-              @if ((unreadcount$ | async) ?? 0 > 0) {
-                <button
-                  (click)="markAllAsRead($event)"
-                  [disabled]="isMarkingRead"
-                  class="text-[11px] font-semibold text-primary hover:text-primary/70 disabled:opacity-50 transition-colors"
-                >
-                  {{ isMarkingRead ? 'Marking...' : 'Mark all read' }}
-                </button>
-              }
-            </div>
 
-            @if (errorMessage) {
-              <div class="px-4 py-2 text-xs font-medium text-center text-white bg-red-500">
-                <div class="flex items-center justify-center gap-2">
-                  <span class="material-symbols-outlined text-sm">error</span>
-                  {{ errorMessage }}
-                </div>
-              </div>
-            }
-
-            <!-- List -->
-            <div class="overflow-y-auto max-h-80 overscroll-contain">
-              @for (item of notification.notifications$ | async; track item.id) {
-                <div
-                  (click)="onNotificationClick(item, $event)"
-                  class="px-4 py-3 border-b border-outline-variant/10 hover:bg-surface-container-low/60 cursor-pointer transition-colors duration-150"
-                  [class.bg-primary/4]="!item.isRead"
-                >
-                  <div class="flex items-start gap-3">
-                    <!-- Icon -->
-                    <div
-                      class="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
-                      [class.bg-blue-100]="item.type === 'QuizResult'"
-                      [class.bg-secondary-container]="
-                        item.type === 'Enrollment' || item.type === 'LiveSession'
-                      "
-                      [class.bg-orange-100]="item.type === 'ForumReply'"
-                      [class.bg-purple-100]="item.type === 'Certificate'"
-                      [class.bg-red-100]="item.type === 'SessionCancelled' || item.type === 'PostReported'"
-                      [class.bg-amber-100]="item.type === 'CashPaymentRequest'" 
-                      [class.bg-surface-container]="!item.type"
-                    >
-                      <span
-                        class="material-symbols-outlined text-[16px]"
-                        style="font-variation-settings: 'FILL' 1"
-                        [class.text-blue-600]="item.type === 'QuizResult'"
-                        [class.text-on-secondary-container]="
-                          item.type === 'Enrollment' || item.type == 'LiveSession'
-                        "
-                        [class.text-orange-600]="item.type === 'ForumReply'"
-                        [class.text-purple-600]="item.type === 'Certificate'"
-                        [class.text-red-600]="item.type === 'SessionCancelled' || item.type === 'PostReported'"
-                         [class.text-amber-600]="item.type === 'CashPaymentRequest'" 
-                        [class.text-slate-500]="!item.type"
-                      >
-                        {{ getIconForType(item.type) }}
-                      </span>
-                    </div>
-
-                    <!-- Text -->
-                    <div class="flex-1 min-w-0">
-                      <p
-                        class="text-sm font-semibold text-on-surface truncate"
-                        [class.text-primary]="!item.isRead"
-                      >
-                        {{ item.title }}
-                      </p>
-                      <p
-                        class="mt-0.5 text-xs text-on-surface-variant line-clamp-2 leading-relaxed"
-                      >
-                        {{ item.message }}
-                      </p>
-                      <span class="block mt-1 text-[10px] text-slate-400">
-                        {{ item.createdAt | timeAgoPipe }}
-                      </span>
-                    </div>
-
-                    @if (!item.isRead) {
-                      <div class="w-2 h-2 mt-1.5 bg-primary rounded-full shrink-0"></div>
-                    }
+              @if (errorMessage) {
+                <div class="px-4 py-2 text-xs font-medium text-center text-white bg-red-500">
+                  <div class="flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-sm">error</span>
+                    {{ errorMessage }}
                   </div>
                 </div>
-              } @empty {
-                <div class="flex flex-col items-center justify-center py-10 text-slate-400">
-                  <span class="material-symbols-outlined text-4xl opacity-20 mb-2">
-                    notifications_off
-                  </span>
-                  <p class="text-sm">You're all caught up!</p>
-                </div>
               }
-            </div>
 
-            <!-- Footer -->
-            <div class="p-2 border-t border-outline-variant/20 bg-surface-container-low/50">
-              <button
-                (click)="goToAllNotifications()"
-                class="w-full py-2 text-sm font-semibold text-on-surface-variant rounded-xl hover:bg-surface-container hover:text-primary transition-all duration-200"
-              >
-                View all notifications
-              </button>
+              <!-- List -->
+              <div class="overflow-y-auto max-h-80 overscroll-contain">
+                @for (item of notification.notifications$ | async; track item.id) {
+                  <div
+                    (click)="onNotificationClick(item, $event)"
+                    class="px-4 py-3 border-b border-outline-variant/10 hover:bg-surface-container-low/60 cursor-pointer transition-colors duration-150"
+                    [class.bg-primary/4]="!item.isRead"
+                  >
+                    <div class="flex items-start gap-3">
+                      <!-- Icon -->
+                      <div
+                        class="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
+                        [class.bg-blue-100]="item.type === 'QuizResult'"
+                        [class.bg-secondary-container]="
+                          item.type === 'Enrollment' || item.type === 'LiveSession'
+                        "
+                        [class.bg-orange-100]="item.type === 'ForumReply'"
+                        [class.bg-purple-100]="item.type === 'Certificate'"
+                        [class.bg-red-100]="item.type === 'SessionCancelled' || item.type === 'PostReported'"
+                        [class.bg-amber-100]="item.type === 'CashPaymentRequest'"
+                        [class.bg-surface-container]="!item.type"
+                      >
+                        <span
+                          class="material-symbols-outlined text-[16px]"
+                          style="font-variation-settings: 'FILL' 1"
+                          [class.text-blue-600]="item.type === 'QuizResult'"
+                          [class.text-on-secondary-container]="
+                            item.type === 'Enrollment' || item.type == 'LiveSession'
+                          "
+                          [class.text-orange-600]="item.type === 'ForumReply'"
+                          [class.text-purple-600]="item.type === 'Certificate'"
+                          [class.text-red-600]="item.type === 'SessionCancelled' || item.type === 'PostReported'"
+                          [class.text-amber-600]="item.type === 'CashPaymentRequest'"
+                          [class.text-slate-500]="!item.type"
+                        >
+                          {{ getIconForType(item.type) }}
+                        </span>
+                      </div>
+
+                      <!-- Text -->
+                      <div class="flex-1 min-w-0">
+                        <p
+                          class="text-sm font-semibold text-on-surface truncate"
+                          [class.text-primary]="!item.isRead"
+                        >
+                          {{ item.title }}
+                        </p>
+                        <p
+                          class="mt-0.5 text-xs text-on-surface-variant line-clamp-2 leading-relaxed"
+                        >
+                          {{ item.message }}
+                        </p>
+                        <span class="block mt-1 text-[10px] text-slate-400">
+                          {{ item.createdAt | timeAgoPipe }}
+                        </span>
+                      </div>
+
+                      @if (!item.isRead) {
+                        <div class="w-2 h-2 mt-1.5 bg-primary rounded-full shrink-0"></div>
+                      }
+                    </div>
+                  </div>
+                } @empty {
+                  <div class="flex flex-col items-center justify-center py-10 text-slate-400">
+                    <span class="material-symbols-outlined text-4xl opacity-20 mb-2">
+                      notifications_off
+                    </span>
+                    <p class="text-sm">You're all caught up!</p>
+                  </div>
+                }
+              </div>
+
+              <!-- Footer -->
+              <div class="p-2 border-t border-outline-variant/20 bg-surface-container-low/50">
+                <button
+                  (click)="goToAllNotifications()"
+                  class="w-full py-2 text-sm font-semibold text-on-surface-variant rounded-xl hover:bg-surface-container hover:text-primary transition-all duration-200"
+                >
+                  View all notifications
+                </button>
+              </div>
             </div>
-          </div>
-        }
-      </div>
+          }
+        </div>
+      }
 
       <!-- ── LANGUAGE DROPDOWN ── -->
       <div class="relative group">
@@ -275,7 +277,7 @@
           </a>
           <a
             routerLink="/register"
-            class="px-5 py-2 bg-gradient-to-br from-primary to-secondary text-white text-sm font-bold rounded-xl shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-200"
+            class="hidden md:inline-flex px-5 py-2 bg-gradient-to-br from-primary to-secondary text-white text-sm font-bold rounded-xl shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5 transition-all duration-200"
           >
             {{ 'nav.signup' | translate }}
           </a>
@@ -353,12 +355,12 @@
         </div>
       }
 
-      <!-- Mobile menu toggle -->
+      <!-- ── MOBILE MENU TOGGLE ── -->
       <button
         (click)="mobileMenuOpen.set(!mobileMenuOpen())"
-        class="md:hidden p-2 rounded-xl hover:bg-surface-container-low transition-colors"
+        class="md:hidden w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary/90 transition-colors"
       >
-        <span class="material-symbols-outlined text-on-surface">
+        <span class="material-symbols-outlined text-[20px]">
           {{ mobileMenuOpen() ? 'close' : 'menu' }}
         </span>
       </button>
@@ -408,6 +410,24 @@
         <span class="material-symbols-outlined text-[18px] text-primary">dashboard</span>
         {{ 'nav.dashboard' | translate }}
       </a>
+
+      <!-- ── NOTIFICATIONS IN MOBILE MENU ── -->
+      @if (auth.currentUser()) {
+        <a
+          (click)="goToAllNotifications(); mobileMenuOpen.set(false)"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-on-surface hover:bg-surface-container-low hover:text-primary transition-colors cursor-pointer"
+        >
+          <span class="material-symbols-outlined text-[18px] text-primary">notifications</span>
+          <span>Notifications</span>
+          @if ((unreadcount$ | async) ?? 0 > 0) {
+            <span
+              class="ml-auto flex items-center justify-center min-w-5 h-5 px-1.5 text-[10px] font-bold text-white bg-red-500 rounded-full"
+            >
+              {{ unreadcount$ | async }}
+            </span>
+          }
+        </a>
+      }
 
       <!-- Language in mobile -->
       <div class="flex gap-2 px-3 py-2">

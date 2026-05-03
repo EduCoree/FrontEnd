@@ -74,10 +74,10 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
   revenueMax = signal(0);
 
   enrollmentStatusData = signal<EnrollmentStatusItem[]>([
-    { label: 'Certified',   value: 584, color: '#2e6959' },
+    { label: 'Certified', value: 584, color: '#2e6959' },
     { label: 'In progress', value: 323, color: '#8a6d3b' },
-    { label: 'New',         value: 211, color: '#466370' },
-    { label: 'Dropped',     value: 124, color: '#d0d8d6' },
+    { label: 'New', value: 211, color: '#466370' },
+    { label: 'Dropped', value: 124, color: '#d0d8d6' },
   ]);
 
   activePercent = computed(() => {
@@ -161,7 +161,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
 
     setTimeout(() => {
       if (this.enrollmentTrendReady) this.renderEnrollmentChart();
-      if (this.revenueTrendReady)    this.renderRevenueChart();
+      if (this.revenueTrendReady) this.renderRevenueChart();
       this.renderCourseStatusChart();
       this.renderEnrollmentStatusChart();
     }, 0);
@@ -173,7 +173,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     if (!canvas) return;
     this.enrollmentChart?.destroy();
 
-    const data   = this.enrollmentTrend();
+    const data = this.enrollmentTrend();
     const labels = data.map((d) => this.formatDate(d.date));
     const values = data.map((d) => d.value);
 
@@ -208,7 +208,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     if (!canvas) return;
     this.revenueChart?.destroy();
 
-    const data   = this.revenueTrend();
+    const data = this.revenueTrend();
     const labels = data.map((d) => this.formatDate(d.date));
     const values = data.map((d) => d.value);
 
@@ -288,16 +288,16 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     if (!canvas) return;
     this.courseStatusChart?.destroy();
 
-    const months      = ['Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr'];
-    const activeData   = [35, 38, 35, 33, 37, 55, 55];
-    const inactiveData = [10, 10,  8,  9,  7, 10, 10];
+    const months = ['Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr'];
+    const activeData = [35, 38, 35, 33, 37, 55, 55];
+    const inactiveData = [10, 10, 8, 9, 7, 10, 10];
 
     this.courseStatusChart = new Chart(canvas, {
       type: 'bar',
       data: {
         labels: months,
         datasets: [
-          { label: 'Active',   data: activeData,   backgroundColor: '#2e6959', borderRadius: 4, borderSkipped: false },
+          { label: 'Active', data: activeData, backgroundColor: '#2e6959', borderRadius: 4, borderSkipped: false },
           { label: 'Inactive', data: inactiveData, backgroundColor: '#b2efda', borderRadius: 4, borderSkipped: false },
         ],
       },
