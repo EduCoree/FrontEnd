@@ -1,6 +1,6 @@
 <app-course-sidebar></app-course-sidebar>
 
-<div class="flex-1 p-8 md:py-12 ps-32 space-y-12 max-w-7xl mx-auto">
+<div class="flex-1 p-4 md:p-8 lg:py-12 lg:ps-32 space-y-8 md:space-y-12 max-w-7xl mx-auto">
   <div *ngIf="loading" class="flex items-center justify-center h-64">
     <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
   </div>
@@ -24,11 +24,11 @@
       </h2>
     </div>
 
-    <div class="grid grid-cols-1 xl:grid-cols-12 gap-28 items-start">
+    <div class="grid grid-cols-1 xl:grid-cols-12 gap-8 xl:gap-28 items-start">
       <div class="xl:col-span-8 space-y-8">
         <ng-container *ngFor="let question of paginatedQuestions; let i = index">
-          <div class="group relative bg-surface-container-lowest py-8 px-12 rounded-xl shadow-[0_8px_32px_rgba(125,184,165,0.12)] border border-outline-variant/10">
-            <div class="flex justify-between items-start mb-6">
+          <div class="group relative bg-surface-container-lowest py-6 px-6 md:py-8 md:px-12 rounded-xl shadow-[0_8px_32px_rgba(125,184,165,0.12)] border border-outline-variant/10">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
               <div class="flex gap-4 items-center">
                 <span class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold font-headline">{{ i + 1 }}</span>
                 <div class="flex gap-2">
@@ -47,7 +47,7 @@
                   </ng-container>
                 </div>
               </div>
-              <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div class="flex gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity w-full sm:w-auto justify-end">
                 <ng-container *ngIf="!isEditing(question.id)">
                   <button (click)="startEditing(question)" class="p-2 hover:bg-surface-container-low rounded-lg transition-colors text-primary">
                     <span class="material-symbols-outlined">edit</span>
@@ -222,7 +222,7 @@
                 [placeholder]="'quizBuilder.questionPlaceholder' | translate" rows="3">
               </textarea>
             </div>
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="space-y-1">
                 <label class="text-sm font-semibold text-on-surface-variant">{{ 'quizBuilder.type' | translate }}</label>
                 <select [(ngModel)]="newQuestionType" (ngModelChange)="onQuestionTypeChange($event)"

@@ -13,7 +13,7 @@ import {
   PdfLessonResponse,
 } from '../../../core/models/course';
 import { CourseService } from '../../../core/services/course';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DrivePickerService } from '../../../core/services/drive-picker.service';
 
 interface LessonMediaState extends Omit<LessonDto, 'durationSeconds' | 'isFreePreview'> {
@@ -127,7 +127,8 @@ export class CourseMediaComponent implements OnInit {
     private courseService: CourseService,
     private fb: FormBuilder,
     private sanitizer: DomSanitizer,
-    private drivePicker: DrivePickerService
+    private drivePicker: DrivePickerService,
+    private translate: TranslateService
   ) {
     this.videoForm = this.fb.group({
       videoUrl: ['', [Validators.required, Validators.maxLength(255)]],
@@ -235,24 +236,24 @@ export class CourseMediaComponent implements OnInit {
       next: (v: VideoLessonResponse) => {
         this.videoUrl.set(v.videoUrl);
         this.isSavingVideo.set(false);
-        this.flash('success', 'Video attached successfully!');
+        this.flash('success', this.translate.instant('common.saveSuccess'));
         this.loadLessons();
       },
-      error: () => { this.isSavingVideo.set(false); this.flash('error', 'Failed to attach video. It may already be attached.'); }
+      error: () => { this.isSavingVideo.set(false); this.flash('error', this.translate.instant('common.error')); }
     });
   }
 
   removeVideo(): void {
     if (!this.selectedLesson()) return;
-    if (!confirm('Remove video from this lesson?')) return;
+    if (!confirm(this.translate.instant('common.confirmDelete'))) return;
     this.courseService.removeVideo(this.courseId, this.selectedLesson()!.id).subscribe({
       next: () => {
         this.videoUrl.set('');
         this.videoForm.reset({ videoProvider: 'youtube' });
-        this.flash('success', 'Video removed.');
+        this.flash('success', this.translate.instant('common.saveSuccess'));
         this.loadLessons();
       },
-      error: () => this.flash('error', 'Failed to remove video.')
+      error: () => this.flash('error', this.translate.instant('common.error'))
     });
   }
 
@@ -280,10 +281,10 @@ export class CourseMediaComponent implements OnInit {
       next: (p: PdfLessonResponse) => {
         this.pdfs.set([{ name: 'PDF Material', size: p.fileSizeKb ? `${p.fileSizeKb} KB` : 'Attached', fileUrl: p.fileUrl }]);
         this.isSavingPdf.set(false);
-        this.flash('success', 'PDF attached successfully!');
+        this.flash('success', this.translate.instant('common.saveSuccess'));
         this.loadLessons();
       },
-      error: () => { this.isSavingPdf.set(false); this.flash('error', 'Failed to attach PDF. It may already be attached.'); }
+      error: () => { this.isSavingPdf.set(false); this.flash('error', this.translate.instant('common.error')); }
     });
   }
 
@@ -293,10 +294,10 @@ export class CourseMediaComponent implements OnInit {
       next: () => {
         this.pdfs.update(list => list.filter(p => p !== pdf));
         this.pdfForm.reset();
-        this.flash('success', 'PDF removed.');
+        this.flash('success', this.translate.instant('common.saveSuccess'));
         this.loadLessons();
       },
-      error: () => this.flash('error', 'Failed to remove PDF.')
+      error: () => this.flash('error', this.translate.instant('common.error'))
     });
   }
 
@@ -318,10 +319,10 @@ export class CourseMediaComponent implements OnInit {
           fileSizeKb: file.sizeBytes ? Math.round(file.sizeBytes / 1024) : null,
         });
         this.showPdfForm.set(true);
-        this.flash('success', `"${file.name}" selected from Drive!`);
+        this.flash('success', this.translate.instant('common.saveSuccess'));
       }
     } catch (e: any) {
-      this.drivePickError.set('Could not open Google Drive. Check your API credentials.');
+      this.drivePickError.set(this.translate.instant('common.error'));
     } finally {
       this.isDrivePickingPdf.set(false);
     }
@@ -338,10 +339,10 @@ export class CourseMediaComponent implements OnInit {
           videoUrl: file.url,
           videoProvider: 'self',
         });
-        this.flash('success', `"${file.name}" selected from Drive!`);
+        this.flash('success', this.translate.instant('common.saveSuccess'));
       }
     } catch (e: any) {
-      this.drivePickError.set('Could not open Google Drive. Check your API credentials.');
+      this.drivePickError.set(this.translate.instant('common.error'));
     } finally {
       this.isDrivePickingVideo.set(false);
     }

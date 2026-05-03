@@ -1,6 +1,6 @@
-<div class="bg-background text-on-background min-h-screen font-body">
+<div class="bg-background text-on-background min-h-screen flex flex-col font-body">
   <nav class="sticky top-0 z-40 bg-white border-b border-outline-variant/20">
-    <div class="flex justify-between items-center w-full px-8 h-16">
+    <div class="flex justify-between items-center w-full px-4 md:px-8 h-16">
       <div class="flex items-center gap-8">
       <div>
         <h1 class="text-lg font-black text-on-surface tracking-tight">{{ 'myCourses.title' | translate }}</h1>
@@ -15,7 +15,7 @@
     </div>
   </nav>
 
-  <main class="flex-1 px-8 py-8">
+  <main class="flex-1 px-4 md:px-8 py-4 md:py-8">
     <!-- Loading -->
     <div *ngIf="isLoading()" class="flex justify-center py-20">
       <span class="material-symbols-outlined text-primary text-4xl animate-spin">
@@ -176,10 +176,10 @@
 
   <!-- Footer -->
   <footer
-    class="bg-white border-t border-outline-variant/15 px-8 py-4 flex justify-between items-center"
+    class="bg-white border-t border-outline-variant/15 px-4 md:px-8 py-4 flex justify-between items-center"
   >
-    <span class="text-sm font-black text-primary">EduCore</span>
-    <p class="text-xs text-on-surface-variant">
+    <span class="text-xs md:text-sm font-black text-primary">EduCore</span>
+    <p class="text-[10px] md:text-xs text-on-surface-variant">
       {{ 'teacherPortal.copyright' | translate }}
     </p>
   </footer>

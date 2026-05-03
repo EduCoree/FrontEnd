@@ -54,7 +54,7 @@
       <div class="bg-white rounded-2xl shadow-[0_8px_32px_rgba(125,184,165,0.12)] overflow-hidden">
 
         <!-- Tab Bar -->
-        <div class="flex border-b border-[#E1E3E3]">
+        <div class="flex flex-wrap border-b border-[#E1E3E3]">
           <button (click)="activeTab.set('info')"
             class="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold transition-all"
             [class]="activeTab() === 'info' ? 'text-[#2E6858] border-b-2 border-[#2E6858] bg-[#F2F4F4]' : 'text-[#707975] hover:text-[#2E6858] hover:bg-[#F8FAFA]'">

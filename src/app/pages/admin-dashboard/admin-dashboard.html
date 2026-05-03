@@ -1,7 +1,7 @@
 <div class="flex min-h-screen bg-[#f8faf9] font-headline">
   <app-admin-sidebar />
 
-  <main class="flex-1 min-h-screen flex flex-col overflow-hidden">
+  <main class="flex-1 min-h-screen flex flex-col overflow-hidden pb-20 lg:pb-0">
 
     <!-- TOP NAV -->
     <header class="sticky top-0 z-20 bg-white border-b border-[#eaefee] px-8 h-16 flex items-center justify-between">
@@ -18,8 +18,8 @@
     <div class="p-8 space-y-6">
 
       <!-- WELCOME BANNER -->
-      <div class="relative rounded-2xl overflow-hidden bg-[#2e6959] px-8 py-7 flex items-center justify-between">
-        <div class="absolute right-32 top-1/2 -translate-y-1/2 w-40 h-40 rounded-full border-[24px] border-white/5"></div>
+      <div class="relative rounded-2xl overflow-hidden bg-[#2e6959] px-6 md:px-8 py-7 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div class="hidden md:block absolute right-32 top-1/2 -translate-y-1/2 w-40 h-40 rounded-full border-[24px] border-white/5"></div>
         <div class="absolute right-16 top-1/2 -translate-y-1/2 w-28 h-28 rounded-full border-[16px] border-white/5"></div>
         <div class="absolute right-52 bottom-0 w-20 h-20 rounded-full border-[12px] border-white/5"></div>
         <div>
@@ -49,7 +49,7 @@
       @if (!loading() && kpis()) {
 
         <!-- KPI ROW 1 — 4 cards -->
-        <div class="grid grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
           <!-- Students -->
           <div class="bg-white rounded-2xl p-5 border border-[#eaefee] hover:border-[#b2efda] hover:shadow-sm transition-all group">
@@ -107,7 +107,7 @@
         <!-- ══════════════════════════════════════════
              CHARTS ROW 1 — Enrollment Trend + Revenue Trend (Line Charts)
         ══════════════════════════════════════════ -->
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
           <!-- Enrollment Trend Line Chart -->
           <div class="bg-white rounded-2xl p-6 border border-[#eaefee]">
@@ -158,7 +158,7 @@
         <!-- ══════════════════════════════════════════
              CHARTS ROW 2 — Course Status (Stacked Bar) + Enrollment Status (Donut)
         ══════════════════════════════════════════ -->
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
           <!-- Course Status Overview — Stacked Bar -->
           <div class="bg-white rounded-2xl p-6 border border-[#eaefee]">
@@ -188,7 +188,7 @@
               <p class="text-sm font-extrabold text-[#2d3433]">{{ 'adminDashboard.enrollmentStatus' | translate }}</p>
               <p class="text-[10px] uppercase tracking-widest font-bold text-[#acb3b2] mt-0.5">{{ 'adminDashboard.byCertificateType' | translate }}</p>
             </div>
-            <div class="flex items-center gap-6">
+            <div class="flex flex-col sm:flex-row items-center gap-6">
               <!-- Donut -->
               <div class="relative w-44 h-44 flex-shrink-0">
                 <canvas #enrollmentStatusChartCanvas></canvas>

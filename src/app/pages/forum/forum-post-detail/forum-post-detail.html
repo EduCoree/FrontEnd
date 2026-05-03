@@ -43,7 +43,7 @@
                   </p>
                 </div>
               </div>
-              <div class="flex items-center gap-1">
+              <div class="flex items-center gap-1 md:opacity-0 group-hover:opacity-100 transition-opacity">
                 @if (isPostOwner()) {
                   <button (click)="openEditPost()"
                     class="p-2 rounded-lg text-on-surface-variant hover:text-primary hover:bg-primary/10 transition-all">
@@ -63,7 +63,7 @@
               </div>
             </div>
 
-            <h1 class="text-2xl font-extrabold text-on-surface tracking-tight font-headline mb-4">{{ p.title }}</h1>
+            <h1 class="text-xl md:text-2xl font-extrabold text-on-surface tracking-tight font-headline mb-4">{{ p.title }}</h1>
             <div class="text-on-surface-variant leading-relaxed whitespace-pre-wrap text-sm">{{ p.body }}</div>
 
             <div class="flex items-center gap-4 mt-8 pt-6 border-t border-outline-variant/20">
@@ -105,7 +105,7 @@
                         <span class="text-xs text-on-surface-variant">{{ timeAgo(reply.createdAt) }}</span>
                       </div>
                       @if (isReplyOwner(reply)) {
-                        <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div class="flex items-center gap-1 md:opacity-0 group-hover:opacity-100 transition-opacity">
                           <button (click)="startEditReply(reply)"
                             class="p-1.5 rounded-lg text-on-surface-variant hover:text-primary hover:bg-primary/10 transition-all">
                             <span class="material-symbols-outlined text-[16px]">edit</span>
@@ -177,8 +177,8 @@
 
 <!-- Edit Post Modal -->
 @if (showEditPostModal()) {
-  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-8">
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4 py-6">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-6 md:p-8 max-h-full overflow-y-auto">
       <div class="flex items-center justify-between mb-6">
         <div>
           <h2 class="font-headline text-xl font-bold text-on-surface">{{ 'forum.editPost' | translate }}</h2>

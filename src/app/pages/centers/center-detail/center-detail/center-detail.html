@@ -18,25 +18,27 @@
   <div class="max-w-4xl mx-auto   pt-8 pb-12">
 
    
-    <div class="mb-8 flex justify-end items-center gap-2 flex-wrap">
-      <div class="flex gap-2">
-        <a [routerLink]="['/centers', center()!.id, 'edit']"
-           class="flex items-center gap-2 text-primary bg-surface-container-high px-4 py-2 rounded-lg hover:bg-surface-container transition-colors">
-          <span class="material-symbols-outlined text-lg">person_edit</span>
-          <span class="font-medium text-sm">{{ 'centerDetail.edit' | translate }}</span>
-        </a>
-        <a [routerLink]="['/centers', center()!.id, 'logo']"
-           class="flex items-center gap-2 text-primary bg-surface-container-high px-4 py-2 rounded-lg hover:bg-surface-container transition-colors">
-          <span class="material-symbols-outlined text-lg">upload</span>
-          <span class="font-medium text-sm">{{ 'centerDetail.updateLogo' | translate }}</span>
-        </a>
-        <a [routerLink]="['/centers', center()!.id, 'delete']"
-           class="flex items-center gap-2 text-error bg-error-container/20 px-4 py-2 rounded-lg hover:bg-error-container/30 transition-colors">
-          <span class="material-symbols-outlined text-lg">delete_forever</span>
-          <span class="font-medium text-sm">{{ 'centerDetail.delete' | translate }}</span>
-        </a>
+    @if (isAdmin) {
+      <div class="mb-8 flex justify-end items-center gap-2 flex-wrap">
+        <div class="flex gap-2">
+          <a [routerLink]="['/centers', center()!.id, 'edit']"
+             class="flex items-center gap-2 text-primary bg-surface-container-high px-4 py-2 rounded-lg hover:bg-surface-container transition-colors">
+            <span class="material-symbols-outlined text-lg">person_edit</span>
+            <span class="font-medium text-sm">{{ 'centerDetail.edit' | translate }}</span>
+          </a>
+          <a [routerLink]="['/centers', center()!.id, 'logo']"
+             class="flex items-center gap-2 text-primary bg-surface-container-high px-4 py-2 rounded-lg hover:bg-surface-container transition-colors">
+            <span class="material-symbols-outlined text-lg">upload</span>
+            <span class="font-medium text-sm">{{ 'centerDetail.updateLogo' | translate }}</span>
+          </a>
+          <a (click)="confirmDelete()"
+             class="flex items-center gap-2 text-error bg-error-container/20 px-4 py-2 rounded-lg hover:bg-error-container/30 transition-colors cursor-pointer">
+            <span class="material-symbols-outlined text-lg">delete_forever</span>
+            <span class="font-medium text-sm">{{ 'centerDetail.delete' | translate }}</span>
+          </a>
+        </div>
       </div>
-    </div>
+    }
 
    
     <section class="relative mb-12">

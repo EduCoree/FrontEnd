@@ -1,6 +1,6 @@
 <div class="bg-surface text-on-surface min-h-screen font-body">
 
-  <aside class="fixed start-0 top-0 h-full w-72 bg-surface-container flex-col p-6 gap-8 z-50 hidden md:flex">
+  <aside class="fixed start-0 top-0 h-full p-6 hidden lg:flex flex-col gap-8 bg-surface-container w-72 z-50">
     <div class="flex flex-col gap-1 px-4">
       <span class="text-lg font-black text-primary cursor-pointer" (click)="goToDashboard()">
         {{ 'courseBuilder.brand' | translate }}
@@ -29,9 +29,9 @@
     </nav>
   </aside>
 
-  <main class="md:ms-72 min-h-screen pb-32">
+  <main class="lg:ms-72 min-h-screen pb-40 lg:pb-32">
 
-    <header class="flex justify-between items-center w-full px-8 py-3 bg-surface/90 backdrop-blur-xl sticky top-0 z-40 border-b border-outline-variant/10">
+    <header class="flex justify-between items-center w-full px-4 md:px-8 py-3 bg-surface/90 backdrop-blur-xl sticky top-0 z-40 border-b border-outline-variant/10">
       <div class="flex items-center gap-8">
         <nav class="hidden lg:flex items-center gap-1 bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant/10">
           <div class="flex items-center gap-2 px-3 py-1 text-on-surface-variant/40">
@@ -67,13 +67,13 @@
       </div>
     </header>
 
-    <div class="px-8 pt-4 pb-8 flex flex-col md:flex-row gap-12 max-w-7xl mx-auto w-full">
+    <div class="px-4 md:px-10 py-6 md:py-10 flex flex-col lg:flex-row gap-6 lg:gap-12 max-w-7xl mx-auto w-full">
 
-      <div class="flex-[1.5] space-y-10">
+      <div class="w-full lg:flex-[1.5] space-y-10">
 
         <div *ngIf="successMessage()"
           class="bg-primary-container text-on-primary-container p-4 rounded-xl text-sm font-semibold text-center">
-          ✓ {{ successMessage() }}
+          {{ successMessage() }}
         </div>
 
         <section class="bg-surface-container rounded-xl p-8 space-y-8">
@@ -83,24 +83,24 @@
           </div>
 
           <form [formGroup]="pricingForm" class="space-y-6">
-            <div class="flex p-1 bg-surface-container-high rounded-full w-fit">
+            <div class="flex p-1 bg-surface-container-high rounded-2xl md:rounded-full w-full sm:w-fit flex-wrap">
               <label *ngFor="let type of pricingTypes" class="cursor-pointer">
                 <input type="radio" formControlName="pricingType" [value]="type" class="hidden peer"/>
                 <div class="px-8 py-2 rounded-full text-sm font-bold transition-all peer-checked:bg-primary peer-checked:text-on-primary text-on-surface opacity-50 peer-checked:opacity-100">
-                  {{ type }}
+                  {{ ('pricingStep.types.' + type) | translate }}
                 </div>
               </label>
             </div>
 
-            <div *ngIf="pricingForm.get('pricingType')?.value === 'Paid'" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div *ngIf="pricingForm.get('pricingType')?.value === 'Paid'" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div class="space-y-2">
                 <label class="uppercase tracking-widest text-xs font-bold text-on-surface-variant ms-2">
                   {{ 'pricingStep.coursePriceUsd' | translate }}
                 </label>
                 <div class="relative">
-                  <span class="absolute start-4 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+                  <span class="absolute start-4 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold text-sm whitespace-nowrap">{{ 'pricingStep.currency' | translate }}</span>
                   <input type="number" formControlName="price"
-                    class="w-full bg-white border-none rounded-xl py-4 ps-8 pe-4 text-lg font-bold focus:ring-2 focus:ring-primary/20 outline-none"/>
+                    class="w-full bg-white border-none rounded-xl py-4 ps-14 pe-4 text-lg font-bold focus:ring-2 focus:ring-primary/20 outline-none"/>
                 </div>
               </div>
               <div class="space-y-2">
@@ -108,9 +108,9 @@
                   {{ 'pricingStep.discountPrice' | translate }}
                 </label>
                 <div class="relative">
-                  <span class="absolute start-4 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+                  <span class="absolute start-4 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold text-sm whitespace-nowrap">{{ 'pricingStep.currency' | translate }}</span>
                   <input type="number" formControlName="discountedPrice"
-                    class="w-full bg-white border-none rounded-xl py-4 ps-8 pe-4 text-lg font-bold focus:ring-2 focus:ring-primary/20 outline-none"
+                    class="w-full bg-white border-none rounded-xl py-4 ps-14 pe-4 text-lg font-bold focus:ring-2 focus:ring-primary/20 outline-none"
                     placeholder="0.00"/>
                 </div>
               </div>
@@ -124,28 +124,31 @@
           <div class="space-y-4">
             <div class="flex justify-between items-center py-2">
               <span class="text-on-surface-variant">{{ 'pricingStep.coursePrice' | translate }}</span>
-              <span class="font-bold">${{ pricingForm.get('price')?.value || 0 }}</span>
+              <span class="font-bold">{{ pricingForm.get('price')?.value || 0 }} {{ 'pricingStep.currency' | translate }}</span>
             </div>
             <div class="flex justify-between items-center py-2 text-error">
               <span>{{ 'pricingStep.platformFee' | translate }}</span>
-              <span class="font-bold">-${{ getPlatformFee() }}</span>
+              <span class="font-bold">-{{ getPlatformFee() }} {{ 'pricingStep.currency' | translate }}</span>
             </div>
-            <div class="h-px bg-surface-container"></div>
-            <div class="flex justify-between items-center py-4">
+            <div class="h-px bg-surface-container my-2"></div>
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center py-4 gap-2">
               <div>
-                <p class="text-lg font-bold">{{ 'pricingStep.yourEarnings' | translate }}</p>
-                <p class="text-xs text-on-surface-variant uppercase tracking-widest font-bold">
+                <p class="text-lg font-bold text-on-surface">{{ 'pricingStep.yourEarnings' | translate }}</p>
+                <p class="text-[10px] text-on-surface-variant uppercase tracking-widest font-black">
                   {{ 'pricingStep.perEnrollment' | translate }}
                 </p>
               </div>
-              <span class="text-3xl font-black text-primary">${{ getEarnings() }}</span>
+              <div class="flex items-baseline gap-1">
+                <span class="text-3xl font-black text-primary">{{ getEarnings() }}</span>
+                <span class="text-sm font-bold text-primary/60 uppercase">{{ 'pricingStep.currency' | translate }}</span>
+              </div>
             </div>
           </div>
         </section>
 
       </div>
 
-      <aside class="flex-1 space-y-8">
+      <aside class="w-full lg:w-96 space-y-8">
         <div class="bg-surface-container rounded-xl p-8 space-y-6">
           <div class="flex items-center gap-3">
             <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1">analytics</span>
@@ -154,17 +157,27 @@
             </h4>
           </div>
           <div class="space-y-4">
-            <div class="bg-white p-4 rounded-xl shadow-sm">
-              <p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-1">
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-outline-variant/5">
+              <p class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-2 opacity-60">
                 {{ 'pricingStep.pricingType' | translate }}
               </p>
-              <p class="text-xl font-black text-primary">{{ pricingForm.get('pricingType')?.value }}</p>
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center text-primary">
+                  <span class="material-symbols-outlined text-sm">{{ pricingForm.get('pricingType')?.value === 'Paid' ? 'payments' : 'card_giftcard' }}</span>
+                </div>
+                <p class="text-lg font-black text-on-surface">{{ ('pricingStep.types.' + pricingForm.get('pricingType')?.value) | translate }}</p>
+              </div>
             </div>
-            <div *ngIf="pricingForm.get('pricingType')?.value === 'Paid'" class="bg-white p-4 rounded-xl shadow-sm">
-              <p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-1">
+            <div *ngIf="pricingForm.get('pricingType')?.value === 'Paid'" class="bg-white p-5 rounded-2xl shadow-sm border border-outline-variant/5">
+              <p class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-2 opacity-60">
                 {{ 'pricingStep.earningsPerSale' | translate }}
               </p>
-              <p class="text-2xl font-black text-primary">${{ getEarnings() }}</p>
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-secondary-container flex items-center justify-center text-secondary">
+                  <span class="material-symbols-outlined text-sm">trending_up</span>
+                </div>
+                <p class="text-2xl font-black text-primary">{{ getEarnings() }} <span class="text-xs text-on-surface-variant/40">{{ 'pricingStep.currency' | translate }}</span></p>
+              </div>
             </div>
           </div>
         </div>
@@ -206,8 +219,8 @@
     </div>
   </main>
 
-  <footer class="fixed bottom-0 md:start-72 start-0 end-0 z-40 px-8 pb-6">
-    <div class="bg-white shadow-2xl rounded-full px-8 py-4 flex items-center justify-between border border-primary/10">
+  <footer class="fixed bottom-0 start-0 lg:start-72 end-0 z-40 px-4 md:px-8 pb-6">
+    <div class="bg-white shadow-2xl rounded-2xl md:rounded-full px-6 md:px-8 py-4 flex flex-col md:flex-row items-center justify-between border border-primary/10 gap-4">
       <div class="flex items-center gap-3">
         <div class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></div>
         <div class="flex flex-col">

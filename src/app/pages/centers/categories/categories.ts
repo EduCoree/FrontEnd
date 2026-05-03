@@ -7,6 +7,7 @@ import { Category } from '../../../core/models/category.model';
 import { Sidebar } from "../../../shared/components/ui/sidebar/sidebar";
 import { TranslateModule } from '@ngx-translate/core'; 
 import { LanguageService } from '../../../core/services/language.service';
+import { AuthService } from '../../../core/services/auth';
 
 @Component({
   selector: 'app-categories',
@@ -20,6 +21,7 @@ export class Categories {
   private fb = inject(FormBuilder);
   private platformId = inject(PLATFORM_ID);
   private langService = inject(LanguageService);
+  private auth = inject(AuthService);
 
   centerId = signal<number>(0);
   categories = signal<Category[]>([]);
@@ -41,13 +43,16 @@ export class Categories {
     name: ['', [Validators.required, Validators.maxLength(100)]]
   });
 
+  get isAdmin(): boolean {
+    return this.auth.hasRole('Admin');
+  }
+
   constructor() {
-    
     effect(() => {
       this.langService.currentLang();
       if (this.centerId() > 0) 
         this.loadCategories();
-    });
+    }, { allowSignalWrites: true });
   }
 
   get slugPreview(): string {
@@ -61,13 +66,19 @@ export class Categories {
       return;
     }
 
-    const id = Number(this.route.snapshot.paramMap.get('centerId'));
-    this.centerId.set(id);
-    this.loadCategories(); 
+    // React to route parameter changes
+    this.route.paramMap.subscribe(params => {
+      const id = Number(params.get('centerId'));
+      if (id) {
+        this.centerId.set(id);
+        this.loadCategories();
+      }
+    });
   }
 
   loadCategories() {
     this.loading.set(true);
+    this.error.set(null); // Clear previous error
     this.categoryService.getAll(this.centerId()).subscribe({
       next: (data) => {
         this.categories.set(data);

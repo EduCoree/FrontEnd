@@ -108,6 +108,11 @@ export class AdminPayoutSettingsComponent implements OnInit {
     this.saveSuccess.set(false); // any change clears the "saved" state
   }
 
+  updateTierField(tierNum: number, field: 'Threshold' | 'Bonus', value: number): void {
+    const key = `tier${tierNum}${field}` as keyof UpdatePayoutSettingsDto;
+    this.updateField(key, value);
+  }
+
   /**
    * Validation that mirrors the backend's checks:
    * - thresholds must be strictly increasing

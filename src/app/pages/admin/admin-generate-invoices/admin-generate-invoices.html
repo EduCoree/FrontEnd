@@ -1,205 +1,204 @@
 <div class="flex min-h-screen bg-[#f8faf9] font-headline">
   <app-admin-sidebar />
 
-<div class="min-h-screen bg-surface p-4 md:p-6 lg:p-8">
-  <div class="max-w-3xl mx-auto">
-
+  <main class="flex-1 min-h-screen flex flex-col overflow-hidden">
     <!-- Header -->
-    <header class="mb-6">
-      <a routerLink="/admin/payout/dashboard"
-         class="text-on-surface-variant hover:text-primary text-sm flex items-center gap-1 mb-1">
-        <i class="fa-solid fa-arrow-left"></i> {{ 'payout.generate.backToDashboard' | translate }}
-      </a>
-      <h1 class="text-2xl md:text-3xl font-bold text-on-surface font-headline">
-        {{ 'payout.generate.title' | translate }}
-      </h1>
-      <p class="text-sm text-on-surface-variant mt-1">
-        {{ 'payout.generate.subtitle' | translate }}
-      </p>
+    <header class="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-[#eaefee] px-4 md:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <a routerLink="/admin/payout/dashboard"
+           class="flex items-center justify-center w-9 h-9 rounded-xl hover:bg-[#f0f5f3] text-[#acb3b2] hover:text-[#2e6959] transition-all">
+          <span class="material-symbols-outlined">arrow_back</span>
+        </a>
+        <div class="flex flex-col">
+          <h1 class="text-sm md:text-base font-bold text-[#2d3433] leading-none">
+            {{ 'payout.generate.title' | translate }}
+          </h1>
+          <p class="text-[10px] text-[#acb3b2] font-medium mt-0.5 hidden md:block">
+            {{ 'payout.generate.subtitle' | translate }}
+          </p>
+        </div>
+      </div>
     </header>
 
-    <!-- Info Banner -->
-    <div class="bg-primary-fixed/40 ring-1 ring-primary-container/40 rounded-2xl p-4 mb-6">
-      <div class="flex items-start gap-3">
-        <i class="fa-solid fa-circle-info text-primary text-lg mt-0.5"></i>
-        <div class="text-sm text-on-surface">
-          <p class="font-semibold mb-1">{{ 'payout.generate.infoBanner.title' | translate }}</p>
-          <ul class="text-xs text-on-surface-variant space-y-0.5 list-disc list-inside">
-            <li>{{ 'payout.generate.infoBanner.item1' | translate }}</li>
-            <li>{{ 'payout.generate.infoBanner.item2' | translate }}</li>
-            <li>{{ 'payout.generate.infoBanner.item3' | translate }}</li>
-          </ul>
-          <p class="mt-2 text-xs">
-            <i class="fa-solid fa-shield-halved mr-1"></i>
-            <strong>{{ 'payout.generate.infoBanner.idempotent' | translate }}</strong>
-            {{ 'payout.generate.infoBanner.idempotentText' | translate }}
-          </p>
+    <div class="flex-1 overflow-y-auto p-4 md:p-8 pb-24 md:pb-8 custom-scrollbar">
+      <div class="max-w-3xl">
+
+        <!-- Info Banner -->
+        <div class="bg-[#e8f4fd] border border-[#c9e7f7] rounded-3xl p-5 mb-8 shadow-sm">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-2xl bg-white flex items-center justify-center text-[#466370] shadow-sm">
+              <span class="material-symbols-outlined text-xl">info</span>
+            </div>
+            <div class="flex-1">
+              <p class="text-sm font-black text-[#2d3433] mb-2 uppercase tracking-wide">
+                {{ 'payout.generate.infoBanner.title' | translate }}
+              </p>
+              <ul class="space-y-1.5 mb-4">
+                @for (item of ['item1', 'item2', 'item3']; track item) {
+                  <li class="flex items-center gap-2 text-xs text-[#596060] font-medium">
+                    <span class="w-1 h-1 rounded-full bg-[#466370]"></span>
+                    {{ 'payout.generate.infoBanner.' + item | translate }}
+                  </li>
+                }
+              </ul>
+              <div class="pt-3 border-t border-[#c9e7f7] flex items-center gap-2 text-[10px] text-[#466370] font-bold uppercase tracking-wider">
+                <span class="material-symbols-outlined text-sm">shield_with_heart</span>
+                <strong>{{ 'payout.generate.infoBanner.idempotent' | translate }}</strong>
+                <span class="opacity-70">{{ 'payout.generate.infoBanner.idempotentText' | translate }}</span>
+              </div>
+            </div>
+          </div>
         </div>
+
+        <!-- Form -->
+        @if (!result() && !error()) {
+          <div class="bg-white rounded-3xl p-6 border border-[#eaefee] shadow-sm">
+            <h2 class="text-base font-black text-[#2d3433] tracking-tight mb-6 flex items-center gap-2">
+              <span class="material-symbols-outlined text-lg text-[#2e6959]">calendar_month</span>
+              {{ 'payout.generate.form.title' | translate }}
+            </h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+              <div class="space-y-1.5">
+                <label class="block text-[10px] font-black text-[#acb3b2] uppercase tracking-widest">
+                  {{ 'payout.generate.form.year' | translate }}
+                </label>
+                <select [ngModel]="year()" (ngModelChange)="year.set(+$event)"
+                        class="w-full px-4 py-3 rounded-2xl bg-[#f8faf9] border border-[#eaefee] focus:border-[#b2efda] focus:bg-white text-sm font-bold text-[#2d3433] outline-none transition-all appearance-none cursor-pointer">
+                  @for (y of yearOptions; track y) {
+                    <option [value]="y">{{ y }}</option>
+                  }
+                </select>
+              </div>
+              <div class="space-y-1.5">
+                <label class="block text-[10px] font-black text-[#acb3b2] uppercase tracking-widest">
+                  {{ 'payout.generate.form.month' | translate }}
+                </label>
+                <select [ngModel]="month()" (ngModelChange)="month.set(+$event)"
+                        class="w-full px-4 py-3 rounded-2xl bg-[#f8faf9] border border-[#eaefee] focus:border-[#b2efda] focus:bg-white text-sm font-bold text-[#2d3433] outline-none transition-all appearance-none cursor-pointer">
+                  @for (m of monthOptions; track m.value) {
+                    <option [value]="m.value">{{ m.label }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+
+            <button (click)="generate()" [disabled]="generating()"
+                    class="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-2xl bg-[#2e6959] text-white hover:bg-[#1a3d34] font-black text-sm shadow-lg shadow-[#2e6959]/20 transition-all disabled:opacity-50 disabled:cursor-wait">
+              @if (generating()) {
+                <span class="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>
+                {{ 'payout.generate.form.submitting' | translate }}
+              } @else {
+                <span class="material-symbols-outlined text-[20px]">bolt</span>
+                {{ 'payout.generate.form.submit' | translate }} {{ monthOptions[month() - 1].label }} {{ year() }}
+              }
+            </button>
+          </div>
+        }
+
+        <!-- Error -->
+        @if (error()) {
+          <div class="bg-[#fff0ee] border border-[#f5c5bf] rounded-3xl p-6 text-[#c0392b] shadow-sm mb-8">
+            <div class="flex items-start gap-4">
+              <span class="material-symbols-outlined text-3xl">error</span>
+              <div class="flex-1">
+                <h3 class="font-black text-lg tracking-tight mb-1">{{ 'payout.generate.error.title' | translate }}</h3>
+                <p class="text-sm font-medium opacity-80 leading-relaxed">{{ error() }}</p>
+              </div>
+            </div>
+            <button (click)="reset()"
+                    class="mt-6 px-6 py-2.5 rounded-xl bg-white border border-[#f5c5bf] hover:bg-[#fff0ee] text-sm font-bold transition-all shadow-sm">
+              {{ 'payout.generate.error.tryAgain' | translate }}
+            </button>
+          </div>
+        }
+
+        <!-- Result -->
+        @if (result(); as r) {
+          <!-- Result header -->
+          <div class="bg-[#e4fff4] border border-[#b2efda] rounded-3xl p-6 mb-6 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-2xl bg-white flex items-center justify-center text-[#2e6959] shadow-sm">
+              <span class="material-symbols-outlined text-2xl">check_circle</span>
+            </div>
+            <div>
+              <h3 class="font-black text-lg text-[#2d3433] tracking-tight leading-none mb-1">
+                {{ 'payout.generate.result.title' | translate }}
+              </h3>
+              <p class="text-xs text-[#2e6959] font-bold uppercase tracking-wider">
+                {{ 'payout.generate.result.period' | translate }}
+                <span class="text-[#2d3433]">{{ monthOptions[r.month - 1].label }} {{ r.year }}</span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Stats cards -->
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div class="bg-white rounded-2xl p-5 border border-[#eaefee] shadow-sm">
+              <p class="text-[10px] font-black text-[#acb3b2] uppercase tracking-widest mb-2">
+                {{ 'payout.generate.result.stats.created' | translate }}
+              </p>
+              <div class="text-3xl font-black text-[#2e6959] tracking-tighter">{{ r.invoicesCreated }}</div>
+            </div>
+            <div class="bg-white rounded-2xl p-5 border border-[#eaefee] shadow-sm">
+              <p class="text-[10px] font-black text-[#acb3b2] uppercase tracking-widest mb-2">
+                {{ 'payout.generate.result.stats.skipped' | translate }}
+              </p>
+              <div class="text-3xl font-black text-[#f59e0b] tracking-tighter">{{ r.teachersSkipped }}</div>
+              <p class="text-[8px] text-[#acb3b2] font-black uppercase mt-1">
+                {{ 'payout.generate.result.stats.skippedHint' | translate }}
+              </p>
+            </div>
+            <div class="bg-white rounded-2xl p-5 border border-[#eaefee] shadow-sm">
+              <p class="text-[10px] font-black text-[#acb3b2] uppercase tracking-widest mb-2">
+                {{ 'payout.generate.result.stats.failed' | translate }}
+              </p>
+              <div class="text-3xl font-black tracking-tighter" [class]="r.teachersFailed > 0 ? 'text-[#c0392b]' : 'text-[#acb3b2]'">
+                {{ r.teachersFailed }}
+              </div>
+            </div>
+            <div class="bg-[#2e6959] rounded-2xl p-5 shadow-lg shadow-[#2e6959]/20 relative overflow-hidden">
+              <div class="absolute bottom-0 right-0 w-16 h-16 rounded-full bg-white/5 translate-x-4 translate-y-4"></div>
+              <p class="text-[10px] font-black text-[#b2efda] uppercase tracking-widest mb-2">
+                {{ 'payout.generate.result.stats.total' | translate }}
+              </p>
+              <div class="relative z-10">
+                <app-money-display [amount]="r.totalAmountGenerated" currency="EGP" size="lg" theme="dark" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Failed teachers (if any) -->
+          @if (r.failedTeacherIds.length > 0) {
+            <div class="bg-[#fff0ee] border border-[#f5c5bf] rounded-2xl p-5 mb-6">
+              <h4 class="text-xs font-black text-[#c0392b] uppercase tracking-widest mb-3 flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm">warning</span>
+                {{ 'payout.generate.result.failedTeachersTitle' | translate }} ({{ r.failedTeacherIds.length }})
+              </h4>
+              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+                @for (id of r.failedTeacherIds; track id) {
+                  <div class="px-3 py-1.5 bg-white/50 rounded-lg text-[10px] font-mono text-[#c0392b] border border-[#f5c5bf]">
+                    ID: {{ id }}
+                  </div>
+                }
+              </div>
+            </div>
+          }
+
+          <!-- Actions -->
+          <div class="flex flex-col sm:flex-row gap-3 pt-4">
+            <button (click)="reset()"
+                    class="flex-1 px-6 py-4 rounded-2xl bg-white border border-[#eaefee] hover:bg-[#f8faf9] text-sm font-black text-[#596060] transition-all shadow-sm flex items-center justify-center gap-2">
+              <span class="material-symbols-outlined text-lg">refresh</span>
+              {{ 'payout.generate.result.actions.generateAnother' | translate }}
+            </button>
+            <a routerLink="/admin/payout/invoices"
+               class="flex-1 px-6 py-4 rounded-2xl bg-[#2e6959] text-white hover:bg-[#1a3d34] text-sm font-black text-center shadow-lg shadow-[#2e6959]/20 transition-all flex items-center justify-center gap-2">
+              <span class="material-symbols-outlined text-lg">receipt_long</span>
+              {{ 'payout.generate.result.actions.viewAll' | translate }}
+            </a>
+          </div>
+        }
       </div>
     </div>
-
-    <!-- Form -->
-    @if (!result() && !error()) {
-      <div class="bg-surface-container-lowest rounded-2xl p-5 ring-1 ring-outline-variant/40 mb-6">
-        <h2 class="text-base font-semibold text-on-surface mb-4">
-          {{ 'payout.generate.form.title' | translate }}
-        </h2>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
-          <div>
-            <label class="block text-xs font-semibold text-on-surface-variant uppercase mb-1.5">
-              {{ 'payout.generate.form.year' | translate }}
-            </label>
-            <select [ngModel]="year()" (ngModelChange)="year.set(+$event)"
-                    class="w-full px-3 py-2 rounded-xl bg-surface ring-1 ring-outline-variant focus:ring-2 focus:ring-primary outline-none text-on-surface">
-              @for (y of yearOptions; track y) {
-                <option [value]="y">{{ y }}</option>
-              }
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-on-surface-variant uppercase mb-1.5">
-              {{ 'payout.generate.form.month' | translate }}
-            </label>
-            <select [ngModel]="month()" (ngModelChange)="month.set(+$event)"
-                    class="w-full px-3 py-2 rounded-xl bg-surface ring-1 ring-outline-variant focus:ring-2 focus:ring-primary outline-none text-on-surface">
-              @for (m of monthOptions; track m.value) {
-                <option [value]="m.value">{{ m.label }}</option>
-              }
-            </select>
-          </div>
-        </div>
-
-        <button (click)="generate()" [disabled]="generating()"
-                class="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-primary text-on-primary hover:bg-primary-dim font-semibold shadow-sm disabled:opacity-60 disabled:cursor-wait transition-colors">
-          @if (generating()) {
-            <i class="fa-solid fa-circle-notch fa-spin"></i>
-            {{ 'payout.generate.form.submitting' | translate }}
-          } @else {
-            <i class="fa-solid fa-bolt"></i>
-            {{ 'payout.generate.form.submit' | translate }} {{ monthOptions[month() - 1].label }} {{ year() }}
-          }
-        </button>
-      </div>
-    }
-
-    <!-- Error -->
-    @if (error()) {
-      <div class="bg-error-container text-on-error-container rounded-2xl p-5 ring-1 ring-error/30 mb-6">
-        <div class="flex items-start gap-3">
-          <i class="fa-solid fa-circle-exclamation text-2xl mt-0.5"></i>
-          <div class="flex-1">
-            <h3 class="font-bold mb-1">{{ 'payout.generate.error.title' | translate }}</h3>
-            <p class="text-sm">{{ error() }}</p>
-          </div>
-        </div>
-        <button (click)="reset()"
-                class="mt-3 px-4 py-2 rounded-xl bg-white/30 hover:bg-white/50 text-sm font-medium">
-          {{ 'payout.generate.error.tryAgain' | translate }}
-        </button>
-      </div>
-    }
-
-    <!-- Result -->
-    @if (result(); as r) {
-
-      <!-- Result header -->
-      <div class="bg-emerald-50 ring-1 ring-emerald-200 rounded-2xl p-5 mb-4">
-        <div class="flex items-start gap-3">
-          <i class="fa-solid fa-circle-check text-emerald-600 text-2xl mt-0.5"></i>
-          <div class="flex-1">
-            <h3 class="font-bold text-emerald-900 mb-1">{{ 'payout.generate.result.title' | translate }}</h3>
-            <p class="text-sm text-emerald-800">
-              {{ 'payout.generate.result.period' | translate }}
-              <strong>{{ monthOptions[r.month - 1].label }} {{ r.year }}</strong>
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Stats cards -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-        <div class="bg-surface-container-lowest rounded-2xl p-4 ring-1 ring-outline-variant/40">
-          <div class="text-xs text-on-surface-variant uppercase font-semibold">
-            {{ 'payout.generate.result.stats.created' | translate }}
-          </div>
-          <div class="text-2xl font-bold text-emerald-600 mt-1">{{ r.invoicesCreated }}</div>
-        </div>
-        <div class="bg-surface-container-lowest rounded-2xl p-4 ring-1 ring-outline-variant/40">
-          <div class="text-xs text-on-surface-variant uppercase font-semibold">
-            {{ 'payout.generate.result.stats.skipped' | translate }}
-          </div>
-          <div class="text-2xl font-bold text-amber-600 mt-1">{{ r.teachersSkipped }}</div>
-          <p class="text-[10px] text-on-surface-variant mt-1">
-            {{ 'payout.generate.result.stats.skippedHint' | translate }}
-          </p>
-        </div>
-        <div class="bg-surface-container-lowest rounded-2xl p-4 ring-1 ring-outline-variant/40">
-          <div class="text-xs text-on-surface-variant uppercase font-semibold">
-            {{ 'payout.generate.result.stats.failed' | translate }}
-          </div>
-          <div class="text-2xl font-bold mt-1" [class]="r.teachersFailed > 0 ? 'text-rose-600' : 'text-on-surface-variant'">
-            {{ r.teachersFailed }}
-          </div>
-        </div>
-        <div class="bg-primary-fixed rounded-2xl p-4">
-          <div class="text-xs text-on-primary-fixed-variant uppercase font-semibold">
-            {{ 'payout.generate.result.stats.total' | translate }}
-          </div>
-          <div class="mt-1">
-            <app-money-display [amount]="r.totalAmountGenerated" currency="EGP" size="lg" />
-          </div>
-        </div>
-      </div>
-
-      <!-- Failed teachers (if any) -->
-      @if (r.failedTeacherIds.length > 0) {
-        <div class="bg-rose-50 ring-1 ring-rose-200 rounded-2xl p-4 mb-4">
-          <h4 class="text-sm font-bold text-rose-900 mb-2">
-            <i class="fa-solid fa-triangle-exclamation mr-1"></i>
-            {{ 'payout.generate.result.failedTeachersTitle' | translate }} ({{ r.failedTeacherIds.length }})
-          </h4>
-          <div class="space-y-1 text-xs font-mono text-rose-800 max-h-40 overflow-y-auto">
-            @for (id of r.failedTeacherIds; track id) {
-              <div>{{ id }}</div>
-            }
-          </div>
-        </div>
-      }
-
-      <!-- Messages -->
-      @if (r.messages.length > 0) {
-        <div class="bg-surface-container-lowest rounded-2xl ring-1 ring-outline-variant/40 mb-4 overflow-hidden">
-          <div class="p-4 border-b border-outline-variant/30">
-            <h4 class="text-sm font-bold text-on-surface">
-              {{ 'payout.generate.result.messagesTitle' | translate }}
-            </h4>
-          </div>
-          <ul class="divide-y divide-outline-variant/20 max-h-60 overflow-y-auto">
-            @for (msg of r.messages; track msg) {
-              <li class="p-3 text-xs text-on-surface-variant">
-                <i class="fa-solid fa-info-circle mr-1 text-on-surface-variant"></i>
-                {{ msg }}
-              </li>
-            }
-          </ul>
-        </div>
-      }
-
-      <!-- Actions -->
-      <div class="flex flex-col sm:flex-row gap-2">
-        <button (click)="reset()"
-                class="flex-1 px-4 py-2.5 rounded-xl bg-surface-container ring-1 ring-outline-variant hover:bg-surface-container-high text-sm font-medium text-on-surface">
-          <i class="fa-solid fa-rotate-right mr-1"></i>
-          {{ 'payout.generate.result.actions.generateAnother' | translate }}
-        </button>
-        <a routerLink="/admin/payout/invoices"
-           class="flex-1 px-4 py-2.5 rounded-xl bg-primary text-on-primary hover:bg-primary-dim text-sm font-semibold text-center shadow-sm">
-          <i class="fa-solid fa-list mr-1"></i>
-          {{ 'payout.generate.result.actions.viewAll' | translate }}
-        </a>
-      </div>
-    }
-  </div>
-</div>
+  </main>
 </div>

@@ -1,9 +1,9 @@
 <header
   dir="{{ currentLang() === 'ar' ? 'rtl' : 'ltr' }}"
-  class="fixed top-0 w-full z-[60] bg-[#F8FAFA]/85 backdrop-blur-md py-2 border-b border-outline-variant/20 shadow-[0_4px_24px_rgba(46,104,88,0.08)]"
+  class="fixed top-0 w-full z-[60] bg-[#F8FAFA]/85 backdrop-blur-md border-b border-outline-variant/20 shadow-[0_4px_24px_rgba(46,104,88,0.08)]"
 >
   <div
-    class="flex justify-between items-center px-8 h-18 max-w-7xl mx-auto gap-4 rtl:flex-row-reverse"
+    class="flex w-full h-20 justify-between items-center px-8 max-w-7xl mx-auto gap-4 rtl:flex-row-reverse"
   >
     <!-- ── LOGO ── -->
     <div class="flex items-center gap-8 flex-shrink-0">
@@ -35,7 +35,7 @@
           {{ 'nav.courses' | translate }}
         </a>
         <a
-          routerLink="/centers/11"
+          routerLink="/centers/1"
           routerLinkActive="text-primary font-bold bg-primary/8"
           class="px-3 py-2 rounded-xl text-sm text-slate-600 font-medium hover:text-primary hover:bg-primary/5 transition-all duration-200"
         >

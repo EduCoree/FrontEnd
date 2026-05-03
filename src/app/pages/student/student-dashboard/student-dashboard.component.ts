@@ -1,5 +1,6 @@
 import { TranslateModule } from '@ngx-translate/core';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { environment } from '../../../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { PublicCourseService } from '../../../core/services/public-course.service';
@@ -47,5 +48,11 @@ export class StudentDashboardComponent implements OnInit {
   getCircleDashOffset(): number {
     const circumference = 251.2;
     return circumference - (circumference * this.overallProgress / 100);
+  }
+
+  getImageUrl(path: string | null): string {
+    if (!path) return 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600';
+    if (path.startsWith('http')) return path;
+    return `${environment.apiUrl}/${path}`;
   }
 }

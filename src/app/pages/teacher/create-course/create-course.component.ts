@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { CourseService } from '../../../core/services/course';
 import { CategoryService } from '../../../core/services/category.service';
 import { Category } from '../../../core/models/category.model';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 //import { CategoryDto } from '../../../core/model/courses/course.model';
 
 @Component({
@@ -31,7 +31,13 @@ export class CreateCourseComponent implements OnInit {
   courseIdAfterCreate: number | null = null;
   categories: Category[] = [];
   isCategoriesLoaded = false;
-  constructor(private fb: FormBuilder, private courseService: CourseService, private categoryService: CategoryService,private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private courseService: CourseService,
+    private categoryService: CategoryService,
+    private router: Router,
+    private translate: TranslateService
+  ) {
     this.courseForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
@@ -101,7 +107,7 @@ export class CreateCourseComponent implements OnInit {
       },
       error: (err) => {
         this.isLoading = false;
-        this.errorMessage = err.error?.message || 'An error occurred';
+        this.errorMessage = err.error?.message || this.translate.instant('common.error');
       }
     });
   }

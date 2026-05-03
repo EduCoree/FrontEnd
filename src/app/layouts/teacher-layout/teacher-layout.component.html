@@ -101,6 +101,32 @@
 
   </aside>
 
+  <!-- Mobile Bottom Nav -->
+  <nav *ngIf="!isEditCourseRoute"
+    class="lg:hidden fixed bottom-0 left-0 right-0 bg-surface/90 backdrop-blur-xl border-t border-outline-variant/10 px-6 py-3 flex justify-between items-center z-50"
+  >
+    <a routerLink="/teacher/dashboard" routerLinkActive="text-primary" [routerLinkActiveOptions]="{exact: true}"
+       class="flex flex-col items-center gap-1 text-on-surface-variant">
+      <span class="material-symbols-outlined">dashboard</span>
+      <span class="text-[10px] font-bold uppercase">{{ 'teacherDashboard.title' | translate }}</span>
+    </a>
+    <a routerLink="/teacher/courses" routerLinkActive="text-primary"
+       class="flex flex-col items-center gap-1 text-on-surface-variant">
+      <span class="material-symbols-outlined">school</span>
+      <span class="text-[10px] font-bold uppercase">{{ 'myCourses.title' | translate }}</span>
+    </a>
+    <a routerLink="/teacher/payout/dashboard" routerLinkActive="text-primary"
+       class="flex flex-col items-center gap-1 text-on-surface-variant">
+      <span class="material-symbols-outlined">payments</span>
+      <span class="text-[10px] font-bold uppercase">{{ 'teacherPortal.payoutDashboard' | translate }}</span>
+    </a>
+    <a routerLink="/teacher/reviews" routerLinkActive="text-primary"
+       class="flex flex-col items-center gap-1 text-on-surface-variant">
+      <span class="material-symbols-outlined">rate_review</span>
+      <span class="text-[10px] font-bold uppercase">{{ 'teacherReviews.studentFeedback' | translate }}</span>
+    </a>
+  </nav>
+
   <!-- Spacer -->
   <div *ngIf="!isEditCourseRoute"
        [class.ms-64]="isOpen()"
@@ -109,7 +135,7 @@
   </div>
 
   <!-- Main Content -->
-  <div class="teacher-layout-content flex flex-col min-h-screen transition-all duration-300"
+  <div class="teacher-layout-content flex flex-col min-h-screen transition-all duration-300 pb-20 lg:pb-0"
        [ngClass]="{ 'lg:ms-64': !isEditCourseRoute && isOpen(), 'lg:ms-16': !isEditCourseRoute && !isOpen() }">
     <router-outlet></router-outlet>
   </div>

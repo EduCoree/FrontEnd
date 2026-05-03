@@ -6,6 +6,7 @@ import { Center } from '../../../../core/models/center.model';
 import { Sidebar } from "../../../../shared/components/ui/sidebar/sidebar";
 import { TranslateModule } from '@ngx-translate/core';
 import { LanguageService } from '../../../../core/services/language.service'; 
+import { AuthService } from '../../../../core/services/auth';
 
 @Component({
   selector: 'app-center-detail',
@@ -19,35 +20,48 @@ export class CenterDetail implements OnInit {
   private router = inject(Router);
   private centerService = inject(CenterService);
   private langService = inject(LanguageService); 
+  private auth = inject(AuthService);
 
   center = signal<Center | null>(null);
+  centerId = signal<number | null>(null);
   loading = signal(true);
   error = signal<string | null>(null);
   showDeleteModal = signal(false);
   deleting = signal(false);
 
-  private centerId = Number(this.route.snapshot.paramMap.get('id'));
+  get isAdmin(): boolean {
+    return this.auth.hasRole('Admin');
+  }
 
   constructor() {
-   
     effect(() => {
       this.langService.currentLang(); 
-      this.loadCenter();
-    });
+      const id = this.centerId();
+      if (id) {
+        this.loadCenter(id);
+      }
+    }, { allowSignalWrites: true });
   }
 
   ngOnInit() {
-    
+    this.route.paramMap.subscribe(params => {
+      const id = Number(params.get('id'));
+      if (id && !isNaN(id)) {
+        this.centerId.set(id);
+      }
+    });
   }
 
-  loadCenter() {
+  loadCenter(id: number) {
     this.loading.set(true);
-    this.centerService.getById(this.centerId).subscribe({
+    this.error.set(null); // Clear previous error
+    this.centerService.getById(id).subscribe({
       next: (data) => {
         this.center.set(data);
         this.loading.set(false);
       },
-      error: () => {
+      error: (err) => {
+        console.error('Failed to load center:', err);
         this.error.set('Failed to load center details.');
         this.loading.set(false);
       }
