@@ -149,7 +149,8 @@
                       "
                       [class.bg-orange-100]="item.type === 'ForumReply'"
                       [class.bg-purple-100]="item.type === 'Certificate'"
-                      [class.bg-red-100]="item.type === 'SessionCancelled'"
+                      [class.bg-red-100]="item.type === 'SessionCancelled' || item.type === 'PostReported'"
+                      [class.bg-amber-100]="item.type === 'CashPaymentRequest'" 
                       [class.bg-surface-container]="!item.type"
                     >
                       <span
@@ -161,7 +162,8 @@
                         "
                         [class.text-orange-600]="item.type === 'ForumReply'"
                         [class.text-purple-600]="item.type === 'Certificate'"
-                        [class.text-red-600]="item.type === 'SessionCancelled'"
+                        [class.text-red-600]="item.type === 'SessionCancelled' || item.type === 'PostReported'"
+                         [class.text-amber-600]="item.type === 'CashPaymentRequest'" 
                         [class.text-slate-500]="!item.type"
                       >
                         {{ getIconForType(item.type) }}
