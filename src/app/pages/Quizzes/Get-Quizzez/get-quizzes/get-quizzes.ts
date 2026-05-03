@@ -10,12 +10,13 @@ import { CourseSidebar } from "../../../../shared/components/ui/sidebar/course-s
 import { EditQuiz } from "../../edit-quiz/edit-quiz";
 import { Sidebar } from "../../../../shared/components/ui/sidebar/sidebar";
 import { TranslateModule } from '@ngx-translate/core';
+import { QuizAiWizard } from "../../quiz-ai-wizard/quiz-ai-wizard";
 
 
 @Component({
   selector: 'app-quiz',
   templateUrl: './get-quizzes.html',
-  imports: [CommonModule, CreateQuizComponent, FormsModule, CourseSidebar, RouterLink, EditQuiz,TranslateModule,Sidebar],
+  imports: [CommonModule, CreateQuizComponent, FormsModule, CourseSidebar, RouterLink, EditQuiz, TranslateModule, Sidebar, QuizAiWizard],
 })
 export class QuizComponent implements OnInit {
   courseId!: number;
@@ -23,13 +24,13 @@ export class QuizComponent implements OnInit {
   isLoading = false;
   errorMessage = '';
    searchTerm = '';
-   courseTitle='jndjendije';
   showCreateModal = false;
   showEditModal=false;
   selectedQuizId :number|null=null;
   openMenuId: number | null = null;
    totalPages = signal(1);
   currentPage = signal(1);
+  showAiWizard=signal(false);
  
   constructor(
     private route: ActivatedRoute,
@@ -131,4 +132,12 @@ onDocumentClick(event: MouseEvent): void {
     this.currentPage.set(page);
     this.loadQuizzes();
   }
+
+  onAiQuizSaved(): void {
+  this.showAiWizard.set(false);
+  this.loadQuizzes();
+}
+getcourseTitle(): string {
+  return this.quizzes[0]?.courseTitle ?? '';
+}
 }

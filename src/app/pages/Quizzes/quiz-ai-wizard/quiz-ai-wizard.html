@@ -1,0 +1,397 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4">
+  <div class="absolute inset-0 bg-on-background/40 backdrop-blur-sm" (click)="onCancel()"></div>
+
+  <div class="relative w-full max-w-2xl bg-surface-container-lowest rounded-2xl shadow-[0_32px_64px_rgba(46,104,88,0.2)] overflow-hidden flex flex-col max-h-[80vh] mt-16">
+
+    <!-- Header -->
+    <div class="px-8 py-6 flex items-center justify-between bg-surface-container-low shrink-0">
+      <div class="flex items-center gap-4">
+        <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
+          <span class="material-symbols-outlined text-white">auto_awesome</span>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold font-headline text-on-surface">AI Quiz Generator</h2>
+          <p class="text-xs text-on-surface-variant">Powered by Gemini AI</p>
+        </div>
+      </div>
+
+      <!-- Step Indicator -->
+      @if (step() === 'form' || step() === 'preview') {
+        <div class="flex items-center gap-2 mr-4">
+          <div class="flex items-center gap-1.5">
+            <div class="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold"
+              [ngClass]="step() === 'form' ? 'bg-primary text-white' : 'bg-primary/20 text-primary'">
+              @if (step() === 'preview') {
+                <span class="material-symbols-outlined text-sm" style="font-size:13px">check</span>
+              } @else {
+                1
+              }
+            </div>
+            <span class="text-xs font-medium"
+              [ngClass]="step() === 'form' ? 'text-on-surface' : 'text-on-surface-variant'">Setup</span>
+          </div>
+          <div class="w-6 h-px bg-outline-variant"></div>
+          <div class="flex items-center gap-1.5">
+            <div class="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold"
+              [ngClass]="step() === 'preview' ? 'bg-primary text-white' : 'bg-surface-container-highest text-on-surface-variant'">
+              2
+            </div>
+            <span class="text-xs font-medium"
+              [ngClass]="step() === 'preview' ? 'text-on-surface' : 'text-on-surface-variant'">Review</span>
+          </div>
+        </div>
+      }
+
+      <button (click)="onCancel()" class="p-2 hover:bg-surface-container-high rounded-full transition-colors">
+        <span class="material-symbols-outlined text-on-surface-variant">close</span>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="overflow-y-auto flex-1">
+
+      <!-- Step 1: Form -->
+      @if (step() === 'form') {
+        <div class="px-8 py-8 space-y-8">
+
+          <!-- Quiz Title -->
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-primary font-headline flex items-center gap-1">
+              Quiz Title <span class="text-error">*</span>
+            </label>
+            <input
+              [(ngModel)]="quizTitle"
+              type="text"
+              placeholder="e.g., C# Fundamentals Assessment"
+              class="w-full bg-surface-container-highest border-none focus:ring-2 focus:ring-primary-container rounded-lg px-4 py-4 text-on-surface placeholder:text-on-surface-variant/40 transition-all font-medium"
+            />
+          </div>
+
+          <!-- Divider with label -->
+          <div class="flex items-center gap-3">
+            <div class="flex-1 h-px bg-outline-variant/40"></div>
+            <span class="text-xs font-bold text-on-surface-variant uppercase tracking-widest flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm">auto_awesome</span>
+              AI Settings
+            </span>
+            <div class="flex-1 h-px bg-outline-variant/40"></div>
+          </div>
+
+          <!-- Topic -->
+          <div class="space-y-2">
+            <label class="text-sm font-semibold text-primary font-headline flex items-center gap-1">
+              Topic <span class="text-error">*</span>
+            </label>
+            <textarea
+              [(ngModel)]="request.topic"
+              rows="3"
+              placeholder="e.g., Object-Oriented Programming in C#, Variables and Loops, Interfaces..."
+              class="w-full bg-surface-container-highest border-none focus:ring-2 focus:ring-primary-container rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40 resize-none font-medium">
+            </textarea>
+          </div>
+
+          <!-- AI Grid -->
+          <div class="grid grid-cols-2 gap-6">
+
+            <div class="space-y-2">
+              <label class="text-sm font-semibold text-primary font-headline">Number of Questions</label>
+              <div class="relative">
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant text-xl">format_list_numbered</span>
+                <input
+                  [(ngModel)]="request.questionCount"
+                  type="number" min="1" max="20"
+                  class="w-full bg-surface-container-highest border-none focus:ring-2 focus:ring-primary-container rounded-lg pl-12 pr-4 py-4 font-medium"/>
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label class="text-sm font-semibold text-primary font-headline">Points per Question</label>
+              <div class="relative">
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant text-xl">stars</span>
+                <input
+                  [(ngModel)]="request.pointsPerQuestion"
+                  type="number" min="1" max="100"
+                  class="w-full bg-surface-container-highest border-none focus:ring-2 focus:ring-primary-container rounded-lg pl-12 pr-4 py-4 font-medium"/>
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label class="text-sm font-semibold text-primary font-headline">Question Type</label>
+              <div class="relative">
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant text-xl">quiz</span>
+                <select [(ngModel)]="request.questionType"
+                  class="w-full bg-surface-container-highest border-none focus:ring-2 focus:ring-primary-container rounded-lg pl-12 pr-4 py-4 font-medium appearance-none">
+                  <option value="MCQ">Multiple Choice</option>
+                  <option value="TrueFalse">True / False</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label class="text-sm font-semibold text-primary font-headline">Difficulty</label>
+              <div class="relative">
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant text-xl">signal_cellular_alt</span>
+                <select [(ngModel)]="request.difficulty"
+                  class="w-full bg-surface-container-highest border-none focus:ring-2 focus:ring-primary-container rounded-lg pl-12 pr-4 py-4 font-medium appearance-none">
+                  <option value="Easy">Easy</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Hard">Hard</option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Divider with label -->
+          <div class="flex items-center gap-3">
+            <div class="flex-1 h-px bg-outline-variant/40"></div>
+            <span class="text-xs font-bold text-on-surface-variant uppercase tracking-widest flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm">settings</span>
+              Quiz Settings
+            </span>
+            <div class="flex-1 h-px bg-outline-variant/40"></div>
+          </div>
+
+          <!-- Quiz Settings Grid -->
+          <div class="grid grid-cols-2 gap-6">
+
+            <div class="space-y-2">
+              <label class="text-sm font-semibold text-primary font-headline">Time Limit (mins)</label>
+              <div class="relative">
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant text-xl">timer</span>
+                <input
+                  [(ngModel)]="quizSettings.timeLimitMins"
+                  type="number"
+                  placeholder="No limit"
+                  class="w-full bg-surface-container-highest border-none focus:ring-2 focus:ring-primary-container rounded-lg pl-12 pr-4 py-4 text-on-surface placeholder:text-on-surface-variant/40 transition-all font-medium"
+                />
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label class="text-sm font-semibold text-primary font-headline">Pass Score (%) <span class="text-error">*</span></label>
+              <div class="relative">
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant text-xl">grade</span>
+                <input
+                  [(ngModel)]="quizSettings.passScore"
+                  type="number" min="0" max="100"
+                  class="w-full bg-surface-container-highest border-none focus:ring-2 focus:ring-primary-container rounded-lg pl-12 pr-4 py-4 text-on-surface transition-all font-medium"
+                />
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label class="text-sm font-semibold text-primary font-headline">Max Attempts</label>
+              <div class="relative">
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant text-xl">replay</span>
+                <input
+                  [(ngModel)]="quizSettings.maxAttempts"
+                  type="number" min="1" max="10"
+                  class="w-full bg-surface-container-highest border-none focus:ring-2 focus:ring-primary-container rounded-lg pl-12 pr-4 py-4 text-on-surface placeholder:text-on-surface-variant/40 transition-all font-medium"
+                />
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between p-4 bg-surface-container-low rounded-xl">
+              <div class="space-y-0.5">
+                <div class="text-sm font-bold text-on-surface">Randomized</div>
+                <div class="text-xs text-on-surface-variant">Shuffle question order</div>
+              </div>
+              <button
+                type="button"
+                (click)="toggleRandomized()"
+                class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200"
+                [ngClass]="quizSettings.isRandomized ? 'bg-primary-container/40' : 'bg-[#D1D8D8]'">
+                <span class="sr-only">Toggle Randomization</span>
+                <span
+                  class="inline-block h-4 w-4 transform rounded-full transition-transform duration-200"
+                  [ngClass]="quizSettings.isRandomized ? 'translate-x-6 bg-primary' : 'translate-x-1 bg-[#b4bebe]'">
+                </span>
+              </button>
+            </div>
+
+          </div>
+
+          @if (error()) {
+            <div class="flex items-center gap-2 px-4 py-3 bg-error-container text-on-error-container rounded-lg text-sm">
+              <span class="material-symbols-outlined text-lg">error</span>
+              {{ error() }}
+            </div>
+          }
+
+        </div>
+      }
+
+      <!-- Step 2: Preview -->
+      @if (step() === 'preview' && generated()) {
+        <div class="px-8 py-6 space-y-6">
+
+          <!-- Quiz summary -->
+          <div class="flex items-start justify-between">
+            <div>
+              <p class="text-xs font-bold text-primary uppercase tracking-widest mb-1">Quiz Title</p>
+              <h3 class="text-2xl font-bold text-on-surface">{{ quizTitle }}</h3>
+              <div class="flex items-center gap-3 mt-2">
+                <span class="text-xs text-on-surface-variant flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm">timer</span>
+                  {{ quizSettings.timeLimitMins ? quizSettings.timeLimitMins + ' mins' : 'No limit' }}
+                </span>
+                <span class="text-xs text-on-surface-variant flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm">grade</span>
+                  {{ quizSettings.passScore }}% to pass
+                </span>
+                <span class="text-xs text-on-surface-variant flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm">signal_cellular_alt</span>
+                  {{ request.difficulty }}
+                </span>
+              </div>
+            </div>
+            <span class="px-3 py-1 bg-primary-fixed-dim text-on-primary-container text-xs font-bold rounded-full shrink-0">
+              {{ generated()?.questions?.length }} Questions
+            </span>
+          </div>
+
+          <!-- Review hint -->
+          <div class="flex items-center gap-2 px-4 py-3 bg-primary/5 border border-primary/10 rounded-xl text-sm text-on-surface-variant">
+            <span class="material-symbols-outlined text-primary text-lg">info</span>
+            Review the questions below. Remove any you don't want before saving.
+          </div>
+
+          <!-- Questions -->
+          <div class="space-y-4">
+            @for (question of generated()?.questions; track $index; let i = $index) {
+              <div class="bg-surface-container-low rounded-xl p-5 space-y-3">
+                <div class="flex justify-between items-start">
+                  <div class="flex items-start gap-3">
+                    <span class="w-7 h-7 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold shrink-0">
+                      {{ i + 1 }}
+                    </span>
+                    <p class="font-semibold text-on-surface text-sm leading-relaxed">{{ question.text }}</p>
+                  </div>
+                  <button (click)="removeQuestion(i)"
+                    class="p-1.5 text-slate-400 hover:text-error transition-colors shrink-0 ml-2">
+                    <span class="material-symbols-outlined text-lg">delete</span>
+                  </button>
+                </div>
+
+                <div class="ml-10 space-y-2">
+                  @for (option of question.options; track $index) {
+                    <div class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm"
+                      [class.bg-primary\/10]="option.isCorrect"
+                      [class.border]="option.isCorrect"
+                      [class.border-primary\/20]="option.isCorrect"
+                      [class.bg-surface-container-highest]="!option.isCorrect">
+                      @if (option.isCorrect) {
+                        <span class="material-symbols-outlined text-primary text-sm"
+                          style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                      } @else {
+                        <div class="w-4 h-4 rounded-full border-2 border-outline-variant shrink-0"></div>
+                      }
+                      <span [class.font-medium]="option.isCorrect" [class.text-primary]="option.isCorrect">
+                        {{ option.text }}
+                      </span>
+                    </div>
+                  }
+                </div>
+
+                <div class="ml-10 flex items-center gap-2">
+                  <span class="px-2 py-0.5 bg-surface-container-highest text-on-surface-variant text-[10px] font-bold rounded-full uppercase">
+                    {{ question.type === 'MCQ' ? 'MCQ' : 'True/False' }}
+                  </span>
+                  <span class="px-2 py-0.5 bg-surface-container-highest text-on-surface-variant text-[10px] font-bold rounded-full">
+                    {{ question.points }} pts
+                  </span>
+                </div>
+              </div>
+            }
+          </div>
+
+          @if (error()) {
+            <div class="flex items-center gap-2 px-4 py-3 bg-error-container text-on-error-container rounded-lg text-sm">
+              <span class="material-symbols-outlined text-lg">error</span>
+              {{ error() }}
+            </div>
+          }
+
+        </div>
+      }
+
+      <!-- Step 3: Done -->
+      @if (step() === 'done') {
+        <div class="flex flex-col items-center justify-center py-16 px-8 text-center">
+          <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+            <span class="material-symbols-outlined text-4xl text-primary" style="font-variation-settings:'FILL' 1;">
+              check_circle
+            </span>
+          </div>
+          <h3 class="text-2xl font-bold text-on-surface mb-2">Quiz Created!</h3>
+          <p class="text-on-surface-variant text-sm max-w-xs">
+            Your quiz and AI-generated questions have been saved. Open the builder to review, edit, or add more questions.
+          </p>
+        </div>
+      }
+
+    </div>
+
+    <!-- Footer -->
+    <div class="px-8 py-5 flex justify-end items-center gap-4 bg-surface-container-low border-t border-outline-variant/10 shrink-0">
+
+      @if (step() === 'form') {
+        <button (click)="onCancel()"
+          class="px-6 py-3 rounded-lg font-bold text-primary hover:bg-surface-container-high transition-all active:scale-95">
+          Cancel
+        </button>
+        <button (click)="generate()" [disabled]="generating() || !request.topic || !quizTitle"
+          class="px-8 py-3 bg-gradient-to-br from-primary to-primary-container text-white rounded-lg font-bold shadow-[0_8px_24px_rgba(46,104,88,0.25)] hover:shadow-[0_12px_32px_rgba(46,104,88,0.35)] transition-all active:scale-95 disabled:opacity-50 flex items-center gap-2">
+          @if (generating()) {
+            <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            Generating...
+          } @else {
+            <span class="material-symbols-outlined text-sm">auto_awesome</span>
+            Generate Quiz
+          }
+        </button>
+      }
+
+      @if (step() === 'preview') {
+        <button (click)="regenerate()"
+          class="px-6 py-3 rounded-lg font-bold text-primary hover:bg-surface-container-high transition-all active:scale-95">
+          Back
+        </button>
+         <button (click)="generate()" [disabled]="generating() || !request.topic || !quizTitle"
+          class="px-8 py-3 bg-gradient-to-br from-primary to-primary-container text-white rounded-lg font-bold shadow-[0_8px_24px_rgba(46,104,88,0.25)] hover:shadow-[0_12px_32px_rgba(46,104,88,0.35)] transition-all active:scale-95 disabled:opacity-50 flex items-center gap-2">
+          @if (generating()) {
+            <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            Regenerating...
+          } @else {
+            <span class="material-symbols-outlined text-sm">auto_awesome</span>
+        Regenerate Quiz
+          }
+        </button>
+        <button (click)="save()" [disabled]="saving() || generated()?.questions?.length === 0"
+          class="px-8 py-3 bg-gradient-to-br from-primary to-primary-container text-white rounded-lg font-bold shadow-[0_8px_24px_rgba(46,104,88,0.25)] hover:shadow-[0_12px_32px_rgba(46,104,88,0.35)] transition-all active:scale-95 disabled:opacity-50 flex items-center gap-2">
+          @if (saving()) {
+            <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            Saving...
+          } @else {
+            <span class="material-symbols-outlined text-sm">save</span>
+            Save Quiz
+          }
+        </button>
+      }
+
+      @if (step() === 'done') {
+        <button (click)="onCancel()"
+          class="px-6 py-3 rounded-lg font-bold text-primary hover:bg-surface-container-high transition-all active:scale-95">
+          Close
+        </button>
+        <button (click)="openBuilder()"
+          class="px-8 py-3 bg-gradient-to-br from-primary to-primary-container text-white rounded-lg font-bold shadow-[0_8px_24px_rgba(46,104,88,0.25)] hover:shadow-[0_12px_32px_rgba(46,104,88,0.35)] transition-all active:scale-95 flex items-center gap-2">
+          <span class="material-symbols-outlined text-sm">open_in_new</span>
+          Open Builder
+        </button>
+      }
+
+    </div>
+  </div>
+</div>

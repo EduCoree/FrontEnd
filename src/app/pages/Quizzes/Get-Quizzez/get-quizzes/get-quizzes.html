@@ -16,7 +16,7 @@
         <h1 class="text-4xl font-extrabold text-on-surface tracking-tight mb-1">
           {{ 'teacherQuizzes.pageTitle' | translate }}
         </h1>
-        <p class="text-sm font-bold text-primary uppercase tracking-[0.2em]">{{ courseTitle }}</p>
+        <p class="text-sm font-bold text-primary uppercase tracking-[0.2em]">{{ getcourseTitle() }}</p>
       </div>
       <button (click)="showCreateModal = true"
         class="flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-br from-primary to-primary-container text-white rounded-lg font-bold shadow-[0_8px_32px_rgba(46,104,88,0.2)] hover:opacity-90 transition-all active:scale-95">
@@ -227,7 +227,7 @@
         <span class="material-symbols-outlined text-4xl text-primary mb-4">auto_awesome</span>
         <h3 class="text-xl font-bold mb-3">{{ 'teacherQuizzes.aiGeneratorTitle' | translate }}</h3>
         <p class="text-sm text-on-surface-variant mb-6 leading-relaxed">{{ 'teacherQuizzes.aiGeneratorDesc' | translate }}</p>
-        <button class="w-fit px-5 py-2 bg-white text-primary font-bold rounded-lg text-sm shadow-sm hover:shadow-md transition-all">
+        <button (click)="showAiWizard.set(true)" class="w-fit px-5 py-2 bg-white text-primary font-bold rounded-lg text-sm shadow-sm hover:shadow-md transition-all">
           {{ 'teacherQuizzes.tryAiTools' | translate }}
         </button>
       </div>
@@ -256,7 +256,13 @@
         (cancelled)="showEditModal = false"
       />
     </div>
-  </div>
+  </div>  
 }
-
+  @if (showAiWizard()) {
+  <app-quiz-ai-wizard
+    [courseId]="courseId"
+    (quizCreated)="onAiQuizSaved()"
+    (cancelled)="showAiWizard.set(false)">
+    </app-quiz-ai-wizard>
+  }
 </div>

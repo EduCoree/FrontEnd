@@ -23,6 +23,7 @@ export interface UpdateQuizDto {
 export interface QuizDto {
   id: number;
   courseId: number;
+  courseTitle:string;
   title: string;
   timeLimitMins?: number | null;
   passScore: number;
@@ -64,7 +65,7 @@ export interface AnswerOptionDto {
 export interface QuestionDto {
   id: number;
   text: string;
-  type: string;
+  type: QuestionType;
   points: number;
   answerOptions: AnswerOptionDto[];
 }
@@ -73,17 +74,20 @@ export interface CreateQuestionDto {
   text: string;
   type: string;
   points: number;
+  answerOptions: CreateAnswerOptionDto[];
 }
 
 export interface UpdateQuestionDto {
-  text?: string;
-  type?: string;
-  points?: number;
+  text: string;
+  type: QuestionType;
+  points: number;
+   answerOptions: UpdateAnswerOptionDto[];
 }
 
 export interface QuizDetailsDto {
   id: number;
   courseId: number;
+  courseTitle:string;
   title: string;
   timeLimitMins?: number | null;
   passScore: number;
@@ -98,8 +102,9 @@ export interface CreateAnswerOptionDto {
 }
 
 export interface UpdateAnswerOptionDto {
-  text?: string;
-  isCorrect?: boolean;
+  id: number|null;
+  text: string;
+  isCorrect: boolean;
 }
 export interface QuizAttemptHistoryDto {
   id: number;
@@ -126,7 +131,7 @@ export interface StudentQuestionDto
 {
   id:number;
   text: string;
-  type: string;
+  type: QuestionType;
   points: number;
   answerOptions:StudentAnswerOptionDto[];
 
@@ -181,4 +186,25 @@ export interface PagedResult<T> {
   pageNumber: number;
   pageSize: number;
   totalPages: number;
+}
+export interface GenerateQuizAiRequestDto {
+  topic: string;
+  questionCount: number;
+  questionType: QuestionType
+  pointsPerQuestion: number;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+}
+export interface AiGeneratedOptionDto {
+  text: string;
+  isCorrect: boolean;
+}
+export interface AiGeneratedQuestionDto {
+  text: string;
+  type: QuestionType;
+  points: number;
+  options: AiGeneratedOptionDto[];
+}
+export interface AiGeneratedQuizDto {
+  suggestedTitle: string;
+  questions: AiGeneratedQuestionDto[];
 }

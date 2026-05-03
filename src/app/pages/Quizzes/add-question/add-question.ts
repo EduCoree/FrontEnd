@@ -1,4 +1,4 @@
-import { AnsweroptionService } from './../../../core/services/answeroption.service';
+
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { QuizService } from '../../../core/services/quiz.service';
 import { AnswerOptionDto, ApiResponse, CreateQuestionDto, QuestionDto, QuizDetailsDto, QuizDto } from '../../../core/models/quiz';
@@ -33,7 +33,7 @@ addingQuestion = false;
 
     quizName:string|null=null;
   
-constructor(private quizservice:QuizService, private questionservice:QuestionService,private answeroptionservice: AnsweroptionService ,private cdr:ChangeDetectorRef,private route:ActivatedRoute,private router:Router)
+constructor(private quizservice:QuizService, private questionservice:QuestionService,private cdr:ChangeDetectorRef,private route:ActivatedRoute,private router:Router)
 {
     this.quizId = Number(this.route.snapshot.paramMap.get('quizId'));
 
@@ -97,54 +97,33 @@ constructor(private quizservice:QuizService, private questionservice:QuestionSer
        return;
      }
  
-this.addingQuestion = true;
+      this.addingQuestion = true;
       this.saving = true;
       const questionDto: CreateQuestionDto = {
         text: this.newQuestionText.trim(),
         type: this.newQuestionType,
-        points: this.newQuestionPoints
+        points: this.newQuestionPoints,
+        answerOptions: validOptions.map(opt => ({
+          text: opt.text.trim(),
+          isCorrect: opt.isCorrect
+        }))
       };
   
       this.questionservice.addQuestion(this.quizId, questionDto).subscribe({
         next: (res:ApiResponse<QuestionDto>) => {
-          console.log(res);
-                console.log(res.data.id);
-          const questionId = res.data.id;
-    
-          const optionCalls: Observable<ApiResponse<AnswerOptionDto>>[] = validOptions.map(opt => 
-            this.answeroptionservice.addanswerOption( questionId, {
-              text: opt.text.trim(),
-              isCorrect: opt.isCorrect
-            })
-          );
- 
-          forkJoin(optionCalls).subscribe({   // fork join make all optioncalls success or all failed instead of nested subscription
-            next: () => {
-              this.saving = false;
-              this.addingQuestion = false;
-              this.router.navigate([
-                '/teacher/quizzes', this.quizId, 'builder'
-              ]);
-              this.cdr.detectChanges();
-            },
-error: (err) => {
-              this.saving = false;
-              this.addingQuestion = false;
-    if (err.error?.errors) {
-      this.addingQuestionError = Object.values(err.error.errors)
-        .flat()
-        .join(', ');
-    } else {
-      this.addingQuestionError = 'Failed to add answer options';
-    }
-  
-    console.log('Option error:', err);
-    this.cdr.detectChanges();
-  }
-          });
-       },
-error: (err) => {
-          this.addingQuestionError = err.error?.message || 'Failed to add question';
+          this.saving = false;
+          this.addingQuestion = false;
+          this.router.navigate([
+            '/teacher/quizzes', this.quizId, 'builder'
+          ]);
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          if (err.error?.errors) {
+            this.addingQuestionError = Object.values(err.error.errors).flat().join(', ');
+          } else {
+            this.addingQuestionError = err.error?.message || 'Failed to add question';
+          }
           this.addingQuestion = false;
           this.saving = false;
           this.cdr.detectChanges();

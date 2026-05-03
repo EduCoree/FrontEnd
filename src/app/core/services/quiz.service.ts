@@ -30,8 +30,8 @@ export class QuizService {
   );
   }
  
-createQuiz(courseId: number, dto: CreateQuizDto): Observable<QuizDto> {
-    return this.http.post<QuizDto>(`${this.baseUrl}/courses/${courseId}/quizzes`, dto);
+createQuiz(courseId: number, dto: CreateQuizDto): Observable<ApiResponse<QuizDto>> {
+    return this.http.post<ApiResponse<QuizDto>>(`${this.baseUrl}/courses/${courseId}/quizzes`, dto);
   }
 
   updateQuiz( quizId: number, dto: UpdateQuizDto): Observable<QuizDto> {
