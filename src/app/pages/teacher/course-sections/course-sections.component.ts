@@ -200,6 +200,10 @@ export class CourseSectionsComponent implements OnInit {
     this.router.navigate(['/teacher/courses', this.courseId, 'lessons', lessonId]);
   }
 
+  goToForum(lessonId: number): void {
+    this.router.navigate(['/lessons', lessonId, 'forum']);
+  }
+
   // Navigation
   goBack(): void {
     this.router.navigate(['/teacher/courses/edit', this.courseId, 'info']);
