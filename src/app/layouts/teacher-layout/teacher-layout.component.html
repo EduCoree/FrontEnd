@@ -1,0 +1,116 @@
+<div class="bg-[#f4f7f6] text-on-surface min-h-screen font-body" [attr.dir]="isRtl ? 'rtl' : 'ltr'">
+  <aside
+    *ngIf="!isEditCourseRoute"
+    [class.w-64]="isOpen()"
+    [class.w-16]="!isOpen()"
+    class="hidden lg:flex flex-col fixed start-0 top-20 h-[calc(100vh-5rem)] bg-[#F2F4F4] border-e border-[#d5dbd9] z-50 transition-all duration-300">
+
+    <!-- Header -->
+    <div class="flex items-center gap-3 p-4 border-b border-[#d5dbd9]"
+         [class.justify-between]="isOpen()"
+         [class.justify-center]="!isOpen()">
+      @if (isOpen()) {
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg bg-[#2e6959] flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-[#e4fff4] text-lg">school</span>
+          </div>
+          <div>
+            <p class="text-sm font-bold text-[#2d3433]">EduCore</p>
+            <p class="text-[10px] text-[#596060] uppercase tracking-widest">
+              {{ 'teacherPortal.title' | translate }}
+            </p>
+          </div>
+        </div>
+      }
+      <button (click)="toggle()"
+              class="w-8 h-8 rounded-lg hover:bg-[#d5dbd9] flex items-center justify-center transition-colors flex-shrink-0">
+        <span class="material-symbols-outlined text-[#acb3b2] text-lg">
+          {{ getToggleIcon() }}
+        </span>
+      </button>
+    </div>
+
+    <!-- Nav -->
+    <nav class="flex-1 p-3 space-y-1 overflow-y-auto">
+      @for (item of navItems; track item.route) {
+        <a [routerLink]="item.route"
+           routerLinkActive #rla="routerLinkActive"
+           [routerLinkActiveOptions]="{ exact: !!item.exact }"
+           class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group"
+           [class.bg-[#2e6959]]="rla.isActive"
+           [class.text-[#e4fff4]]="rla.isActive"
+           [class.shadow-sm]="rla.isActive"
+           [class.hover:bg-[#d5dbd9]]="!rla.isActive"
+           [class.text-[#596060]]="!rla.isActive"
+           [class.justify-center]="!isOpen()">
+          <span class="material-symbols-outlined text-xl flex-shrink-0"
+                [class.text-[#e4fff4]]="rla.isActive"
+                [class.text-[#2e6959]]="!rla.isActive">
+            {{ item.icon }}
+          </span>
+          @if (isOpen()) {
+            <span class="uppercase tracking-widest text-[10px] font-bold whitespace-nowrap">
+              {{ item.label | translate }}
+            </span>
+          }
+        </a>
+      }
+    </nav>
+
+    <!-- Footer -->
+    <div class="border-t border-[#d5dbd9]">
+
+      <!-- Logout -->
+      <div class="p-3 space-y-1">
+        <button (click)="logout()"
+                class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[#596060] hover:bg-red-50 hover:text-red-600 transition-colors"
+                [class.justify-center]="!isOpen()">
+          <span class="material-symbols-outlined text-xl flex-shrink-0">logout</span>
+          @if (isOpen()) {
+            <span class="uppercase tracking-widest text-[10px] font-bold whitespace-nowrap">
+              {{ 'teacherPortal.logout' | translate }}
+            </span>
+          }
+        </button>
+      </div>
+
+      <!-- User -->
+      @if (isOpen()) {
+        <div class="p-4 border-t border-[#d5dbd9]">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-[#2e6959] flex items-center justify-center text-[#e4fff4] text-xs font-bold flex-shrink-0">
+              {{ userInitials }}
+            </div>
+            <div class="overflow-hidden">
+              <p class="text-xs font-bold text-[#2d3433] truncate">{{ userName }}</p>
+              <p class="text-[10px] text-[#596060] uppercase tracking-widest">
+                {{ 'teacherPortal.instructor' | translate }}
+              </p>
+            </div>
+          </div>
+        </div>
+      } @else {
+        <div class="p-3 flex justify-center border-t border-[#d5dbd9]">
+          <div class="w-8 h-8 rounded-full bg-[#2e6959] flex items-center justify-center text-[#e4fff4] text-xs font-bold"
+               [title]="userName">
+            {{ userInitials }}
+          </div>
+        </div>
+      }
+    </div>
+
+  </aside>
+
+  <!-- Spacer -->
+  <div *ngIf="!isEditCourseRoute"
+       [class.ms-64]="isOpen()"
+       [class.ms-16]="!isOpen()"
+       class="transition-all duration-300 lg:block hidden h-0">
+  </div>
+
+  <!-- Main Content -->
+  <div class="teacher-layout-content flex flex-col min-h-screen transition-all duration-300"
+       [ngClass]="{ 'lg:ms-64': !isEditCourseRoute && isOpen(), 'lg:ms-16': !isEditCourseRoute && !isOpen() }">
+    <router-outlet></router-outlet>
+  </div>
+</div>

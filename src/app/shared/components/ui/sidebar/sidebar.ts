@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { AuthService } from '../../../../core/services/auth';
 
 @Component({
   selector: 'app-sidebar',
@@ -11,8 +12,13 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 })
 export class Sidebar {
   private translate = inject(TranslateService);
+  private auth = inject(AuthService);
 
   isOpen = signal(true);
+
+  get isAdmin(): boolean {
+    return this.auth.hasRole('Admin');
+  }
 
   toggle() {
     this.isOpen.set(!this.isOpen());
@@ -34,9 +40,10 @@ export class Sidebar {
   }
 
   navItems = [
-    { labelKey: 'sidebar.centers',    icon: 'business',    route: '/centers/11',            exact: true  },
-    { labelKey: 'sidebar.editCenter', icon: 'person_edit', route: '/centers/11/edit',       exact: false },
-    { labelKey: 'sidebar.updateLogo', icon: 'upload',      route: '/centers/11/logo',       exact: false },
-    { labelKey: 'sidebar.categories', icon: 'category',    route: '/centers/11/categories', exact: false },
+    { labelKey: 'sidebar.centers',    icon: 'business',    route: '/centers/11',            exact: true,  requiresAdmin: false },
+    { labelKey: 'sidebar.editCenter', icon: 'person_edit', route: '/centers/11/edit',       exact: false, requiresAdmin: false },
+    { labelKey: 'sidebar.updateLogo', icon: 'upload',      route: '/centers/11/logo',       exact: false, requiresAdmin: false },
+    { labelKey: 'sidebar.categories', icon: 'category',    route: '/centers/11/categories', exact: false, requiresAdmin: false },
+    { labelKey: 'FORUM REPORTS',      icon: 'flag',        route: '/admin/forum/reports',   exact: false, requiresAdmin: true  },
   ];
 }

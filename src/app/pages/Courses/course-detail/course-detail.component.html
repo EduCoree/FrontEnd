@@ -154,19 +154,30 @@
                   <div
                     *ngFor="let lesson of section.lessons"
                     class="flex items-center justify-between py-3 border-t border-surface-container-highest cursor-pointer hover:bg-surface-container-lowest/50 transition-colors rounded-md -mx-2 px-2"
-                    (click)="goToLesson(lesson.id, lesson.type)"
+                    [class.opacity-60]="!lesson.isFreePreview"
+                    (click)="handleLessonClick(lesson)"
                   >
                     <div class="flex items-center gap-3">
                       <span class="material-symbols-outlined text-primary text-xl">
                         {{ getLessonIcon(lesson.type) }}
                       </span>
                       <span class="text-on-surface-variant text-sm group-hover:text-primary transition-colors">{{ lesson.title }}</span>
+                      
+                      <!-- Free Preview badge -->
+                      <span *ngIf="lesson.isFreePreview" class="px-2 py-0.5 rounded text-[10px] font-bold bg-primary/10 text-primary uppercase ml-2">
+                        Preview
+                      </span>
                     </div>
 
-                    <span class="text-xs font-bold text-outline-variant">
-                      {{ lesson.durationSeconds / 60 | number: '1.0-0' }}
-                      {{ 'courseDetails.min' | translate }}
-                    </span>
+                    <div class="flex items-center gap-3">
+                      <span class="text-xs font-bold text-outline-variant">
+                        {{ lesson.durationSeconds / 60 | number: '1.0-0' }}
+                        {{ 'courseDetails.min' | translate }}
+                      </span>
+                      <span *ngIf="!lesson.isFreePreview" class="material-symbols-outlined text-outline-variant text-[16px]">
+                        lock
+                      </span>
+                    </div>
                   </div>
                 </div>
 

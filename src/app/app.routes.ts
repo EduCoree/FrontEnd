@@ -36,6 +36,7 @@ import { AdminStudentDetailComponent } from './pages/admin-student-detail/admin-
 import { CourseDetailComponent } from './pages/Courses/course-detail/course-detail.component';
 import { CoursesListComponent } from './pages/Courses/courses-list/courses-list.component';
 import { StudentLayoutComponent } from './layouts/student-layout/student-layout.component';
+import { TeacherLayoutComponent } from './layouts/teacher-layout/teacher-layout.component';
 import { StudentDashboardComponent } from './pages/student/student-dashboard/student-dashboard.component';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard';
 import { AdminCoursesComponent } from './pages/admin-courses/admin-courses';
@@ -44,6 +45,7 @@ import { roleGuard } from './core/guards/role-guard';
 // import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard';
 import { TeacherDashboardComponent } from './pages/teacher-dashboard/teacher-dashboard';
 import { MyCoursesComponent } from './pages/student/my-courses/my-courses.component';
+import { StudentReviewsComponent } from './pages/student/student-reviews/student-reviews.component';
 import { PaymentFailedComponent } from './pages/enroll&payment/payment-failed/payment-failed.component';
 import { PaymentSuccessComponent } from './pages/enroll&payment/payment-success/payment-success.component';
 // import { EnrollmentPageComponent } from './pages/enroll&payment/enrollment-page/enrollment-page.component';
@@ -54,6 +56,7 @@ import { StudentAgendaComponent } from './pages/student/student-agenda/student-a
 import { MyCertificatesComponent } from './pages/student/my-certificates/my-certificates.component';
 import { PaymentHistoryComponent } from './pages/enroll&payment/payment-history/payment-history.component';
 import { AdminPaymentsComponent } from './pages/enroll&payment/admin-payments/admin-payments.component';
+import { TeacherReviewsComponent } from './pages/reviewsforstudentandteacher/teacher-reviews/teacher-reviews.component';
 
 export const routes: Routes = [
    // ── Public ────────────────────────────────────────────────────────────────
@@ -182,32 +185,119 @@ export const routes: Routes = [
         .then(m => m.CreateQuizComponent)
       },
       {
-  path: 'teacher/dashboard',
+  path: 'teacher',
+  component: TeacherLayoutComponent,
   canActivate: [authGuard, roleGuard('Teacher')],
-  loadComponent: () =>
-    import('./pages/teacher/teacher-dashboard/teacher-dashboard.component')
-  .then(m => m.TeacherDashboardComponent)
-},
-{
-  path: 'teacher/courses',
-  canActivate: [authGuard, roleGuard('Teacher')],
-  loadComponent: () =>
-    import('./pages/teacher/my-courses/my-courses.component')
-  .then(m => m.MyCoursesComponent)
-},
-{
-  path: 'teacher/courses/create',
-  canActivate: [authGuard, roleGuard('Teacher')],
-  loadComponent: () =>
-    import('./pages/teacher/create-course/create-course.component')
+  children: [
+    {
+      path: 'dashboard',
+      loadComponent: () =>
+        import('./pages/teacher/teacher-dashboard/teacher-dashboard.component')
+        .then(m => m.TeacherDashboardComponent)
+    },
+    {
+      path: 'courses',
+      loadComponent: () =>
+        import('./pages/teacher/my-courses/my-courses.component')
+        .then(m => m.MyCoursesComponent)
+    },
+    {
+      path: 'courses/create',
+      loadComponent: () =>
+        import('./pages/teacher/create-course/create-course.component')
         .then(m => m.CreateCourseComponent)
-  },
-  {
-    path: 'teacher/courses/edit/:id',
-    canActivate: [authGuard, roleGuard('Teacher')],
-    loadComponent: () =>
-      import('./pages/teacher/edit-course/edit-course.component')
-    .then(m => m.EditCourseComponent)
+    },
+    {
+      path: 'courses/edit/:id',
+      loadComponent: () =>
+        import('./pages/teacher/edit-course/edit-course.component')
+          .then(m => m.EditCourseComponent),
+      children: [
+        {
+          path: '',
+          redirectTo: 'info',
+          pathMatch: 'full'
+        },
+        {
+          path: 'info',
+          loadComponent: () =>
+            import('./pages/teacher/course-info/course-info.component')
+              .then(m => m.CourseInfoComponent),
+          title: 'Edit Course — EduCore'
+        },
+        {
+          path: 'sessions',
+          loadComponent: () =>
+            import('./pages/teacher/teacher-sessions/teacher-sessions.component')
+              .then(m => m.TeacherSessionsComponent),
+          title: 'Live Sessions — EduCore'
+        },
+        {
+          path: 'progress',
+          loadComponent: () =>
+            import('./pages/teacher/teacher-progress/teacher-progress.component')
+              .then(m => m.TeacherProgressComponent),
+          title: 'Student Progress — EduCore'
+        },
+        {
+          path: 'quizzes',
+          component: QuizComponent,
+          title: 'Course Quizzes — EduCore'
+        }
+      ]
+    },
+    {
+      path: 'courses/:id/sections',
+      loadComponent: () =>
+        import('./pages/teacher/course-sections/course-sections.component')
+        .then(m => m.CourseSectionsComponent)
+    },
+    {
+      path: 'courses/:courseId/lessons/:lessonId',
+      loadComponent: () =>
+        import('./pages/teacher/lesson-manager/lesson-manager.component')
+        .then(m => m.LessonManagerComponent),
+      title: 'Lesson Manager — EduCore',
+    },
+    {
+      path: 'reviews',
+      component: TeacherReviewsComponent,
+      data: { role: 'Teacher' }
+    },
+    {
+      path: 'payout/dashboard',
+      canActivate: [authGuard, roleGuard('Teacher')],
+      loadComponent: () =>
+        import('./pages/teacher/teacher-payout-dashboard/teacher-payout-dashboard')
+          .then(m => m.TeacherPayoutDashboardComponent),
+    },
+    {
+      path: 'payout/earnings',
+      canActivate: [authGuard, roleGuard('Teacher')],
+      loadComponent: () =>
+        import('./pages/teacher/teacher-earnings/teacher-earnings')
+          .then(m => m.TeacherEarningsComponent),
+    },
+    {
+      path: 'payout/invoices',
+      canActivate: [authGuard, roleGuard('Teacher')],
+      loadComponent: () =>
+        import('./pages/teacher/teacher-invoices/teacher-invoices')
+          .then(m => m.TeacherInvoicesComponent),
+    },
+    {
+      path: 'payout/invoices/:id',
+      canActivate: [authGuard, roleGuard('Teacher')],
+      loadComponent: () =>
+        import('./pages/teacher/teacher-invoice-detail/teacher-invoice-detail')
+          .then(m => m.TeacherInvoiceDetailComponent),
+    },
+    {
+      path: '',
+      redirectTo: 'dashboard',
+      pathMatch: 'full'
+    }
+  ]
   },
   {
     path: 'teacher/courses/:id/sections',
@@ -298,40 +388,6 @@ export const routes: Routes = [
 
 
 
-
-// ── Teacher Payouts  ────────────────────────────────────────────
-{
-  path: 'teacher/payout/dashboard',
-  canActivate: [authGuard, roleGuard('Teacher')],
-  loadComponent: () =>
-    import('./pages/teacher/teacher-payout-dashboard/teacher-payout-dashboard')
-      .then(m => m.TeacherPayoutDashboardComponent),
-  title: 'Earnings Dashboard — EduCore',
-},
-{
-  path: 'teacher/payout/earnings',
-  canActivate: [authGuard, roleGuard('Teacher')],
-  loadComponent: () =>
-    import('./pages/teacher/teacher-earnings/teacher-earnings')
-      .then(m => m.TeacherEarningsComponent),
-  title: 'My Earnings — EduCore',
-},
-{
-  path: 'teacher/payout/invoices',
-  canActivate: [authGuard, roleGuard('Teacher')],
-  loadComponent: () =>
-    import('./pages/teacher/teacher-invoices/teacher-invoices')
-      .then(m => m.TeacherInvoicesComponent),
-  title: 'My Invoices — EduCore',
-},
-{
-  path: 'teacher/payout/invoices/:id',
-  canActivate: [authGuard, roleGuard('Teacher')],
-  loadComponent: () =>
-    import('./pages/teacher/teacher-invoice-detail/teacher-invoice-detail')
-      .then(m => m.TeacherInvoiceDetailComponent),
-  title: 'Invoice Detail — EduCore',
-},
 
 // ── Admin Payouts ──────────────────────────────────────────────
 {
@@ -424,7 +480,6 @@ export const routes: Routes = [
 
 
 
-
 //samir
 { path: 'courses', component: CoursesListComponent },
 { path: 'courses/:id', component: CourseDetailComponent },
@@ -435,6 +490,7 @@ export const routes: Routes = [
   children: [
     { path: 'dashboard', component: StudentDashboardComponent },
     { path: 'my-courses', component: MyCoursesComponent },
+    { path: 'reviews', component: StudentReviewsComponent },
     {path:'quizzes',component:AvailableQuizzes},
     {path:'quiz-history',component:QuizHistory},
     { path: 'sessions',component:StudentAgendaComponent,title: 'My Schedule — EduCore'},
@@ -523,7 +579,7 @@ export const routes: Routes = [
 
 // ── Forum ────────────────────────────────────────────────────────────────
 {
-  path: 'courses/:courseId/forum',
+  path: 'lessons/:lessonId/forum',
   canActivate: [authGuard],
   loadComponent: () =>
     import('./pages/forum/forum-posts/forum-posts')
@@ -531,7 +587,7 @@ export const routes: Routes = [
   title: 'Forum — EduCore',
 },
 {
-  path: 'courses/:courseId/forum/:postId',
+  path: 'lessons/:lessonId/forum/:postId',
   canActivate: [authGuard],
   loadComponent: () =>
     import('./pages/forum/forum-post-detail/forum-post-detail')
@@ -547,71 +603,6 @@ export const routes: Routes = [
   title: 'Forum Reports — Admin',
 },
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//obad
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ,
-//   {
-//     path: 'centers/:centerId/categories',
-//     loadComponent: () =>
-//       import('./pages/')
-//         .then(m => m.CategoriesComponent)
-//   }
-
-// Content Delivery: Teacher Live Sessions
-{
-  path: 'teacher/courses/:courseId/sessions',
-  canActivate: [authGuard],
-  loadComponent: () =>
-    import('./pages/teacher/teacher-sessions/teacher-sessions.component')
-      .then(m => m.TeacherSessionsComponent),
-  title: 'Live Sessions — EduCore',
-},
-
-// Content Delivery: Student Session Agenda
-// {
-//   path: 'student/sessions',
-//   canActivate: [authGuard],
-//   loadComponent: () =>
-//     import('./pages/student/student-agenda/student-agenda.component')
-//       .then(m => m.StudentAgendaComponent),
-//   title: 'My Schedule — EduCore',
-// },
-
 // Content Delivery: Student Video Watch (Signed URL)
 {
   path: 'student/courses/:courseId/lessons/:lessonId/watch',
@@ -622,17 +613,9 @@ export const routes: Routes = [
   title: 'Watch Lesson — EduCore',
 },
 
-// Content Delivery: Teacher Progress
+// NOTE: Teacher Sessions and Teacher Progress are now CHILD routes of
+// teacher/courses/edit/:id — see the parent route definition above.
 {
-  path: 'teacher/courses/:courseId/progress',
-  canActivate: [authGuard],
-  loadComponent: () =>
-    import('./pages/teacher/teacher-progress/teacher-progress.component')
-      .then(m => m.TeacherProgressComponent),
-  title: 'Student Progress — EduCore',
-}
-  ,
-  {
     path: 'student/courses/:courseId/lessons/:lessonId/player',
     canActivate: [authGuard],
     loadComponent: () =>

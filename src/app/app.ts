@@ -16,7 +16,7 @@ import { Sidebar } from "./shared/components/ui/sidebar/sidebar";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Navbar, Sidebar, ChatWidgetComponent],
+  imports: [RouterOutlet, Navbar, Sidebar, ChatWidgetComponent, CommonModule],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

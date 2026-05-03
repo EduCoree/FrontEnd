@@ -91,7 +91,6 @@
             >…
           </p>
         </div>
-
         <!-- ── State: Video Error ──────────────────────────────────────── -->
         <div *ngIf="activeLesson() && !isVideoLoading() && videoError()" class="cw-video-error">
           <span class="material-symbols-outlined">{{ isVideoExpired ? 'timer_off' : 'lock' }}</span>
@@ -101,6 +100,21 @@
               <span class="material-symbols-outlined">refresh</span> Refresh
             </button>
             <button class="cw-btn cw-btn--ghost" (click)="closePlayer()">Close</button>
+          </div>
+        </div>
+
+        <!-- ── State: Live Session ─────────────────────────────────────── -->
+        <div *ngIf="activeLesson() && provider() === 'live'" class="cw-video-error" style="background:#0f172a">
+          <span class="material-symbols-outlined" style="font-size: 3rem; color: #6366f1;">videocam</span>
+          <h3 style="margin: 1rem 0 0.5rem 0; font-size: 1.25rem; font-weight: 600; color: #fff;">Live Session</h3>
+          <p style="color: #94a3b8; text-align: center; max-width: 400px; line-height: 1.5; margin-bottom: 1.5rem;">
+            This is a live session. Please check your dashboard to join the meeting.
+            If the session is recorded, the recording will be available here later.
+          </p>
+          <div class="cw-video-error__actions">
+            <button class="cw-btn cw-btn--primary" routerLink="/student/dashboard">
+              Go to Dashboard
+            </button>
           </div>
         </div>
 
@@ -188,6 +202,46 @@
                 [src]="safeUrl()"
                 style="width: 100%; height: 100%; border: none; border-radius: 0 0 12px 12px"
                 allow="autoplay; fullscreen"
+                allowfullscreen
+              >
+              </iframe>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- ── State: PDF Viewer ─────────────────────────────── -->
+        <ng-container
+          *ngIf="
+            activeLesson() &&
+            !isVideoLoading() &&
+            !videoError() &&
+            signedUrl() &&
+            provider() === 'pdf'
+          "
+        >
+          <div
+            class="cw-player-wrap"
+            style="
+              position: absolute;
+              top: 0;
+              right: 0;
+              bottom: 0;
+              left: 0;
+              display: flex;
+              flex-direction: column;
+              background: #f8f9fa;
+            "
+          >
+            <div class="cw-player-bar" style="flex-shrink: 0; z-index: 10;">
+              <p class="cw-player-bar__title">{{ activeLesson()!.title }}</p>
+              <button class="cw-player-bar__close" (click)="closePlayer()">
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <div class="cw-iframe-wrap" style="flex: 1; min-height: 0; overflow: hidden; border-radius: 0 0 12px 12px">
+              <iframe
+                [src]="safeUrl()"
+                style="width: 100%; height: 100%; border: none;"
                 allowfullscreen
               >
               </iframe>
@@ -291,7 +345,6 @@
         <h1 class="cw-title">{{ course()?.title }}</h1>
         <p class="cw-desc">{{ course()?.description }}</p>
       </div>
-
       <!-- Instructor note card -->
       <div class="cw-note-card">
         <span class="cw-note-card__quote">"</span>
@@ -347,8 +400,8 @@
       </div>
     </section>
 
-    <!-- ── RIGHT: Sidebar ────────────────────────────────────────────────── -->
-    <aside class="cw-sidebar">
+    <!-- ── LEFT: Sidebar (Course Content) ────────────────────────────────────────────────── -->
+    <aside class="cw-sidebar cw-sidebar--left">
       <div class="cw-sidebar__inner">
         <div class="cw-sidebar__header">
           <div class="cw-sidebar__header-row">
@@ -367,7 +420,7 @@
         </div>
 
         <nav class="cw-sidebar__nav">
-          <a class="cw-nav-link" [routerLink]="['/courses', courseId(), 'forum']">
+          <a class="cw-nav-link" style="cursor: pointer" (click)="navigateToForum()">
             <span class="material-symbols-outlined">forum</span> Discussion
           </a>
           <a class="cw-nav-link" [routerLink]="['/courses', courseId(), 'reviews']">
@@ -381,7 +434,6 @@
             <span class="material-symbols-outlined">trending_up</span> My Progress
           </a>
         </nav>
-
         <!-- Curriculum -->
         <div class="cw-curriculum">
           <div *ngFor="let section of course()?.sections" class="cw-section">
@@ -442,11 +494,21 @@
         </div>
 
         <div class="cw-sidebar__footer">
-          <button class="cw-forum-btn" [routerLink]="['/courses', courseId(), 'forum']">
+          <button class="cw-forum-btn" (click)="navigateToForum()">
             <span class="material-symbols-outlined">forum</span>
             Join Discussion
           </button>
         </div>
+      </div>
+    </aside>
+
+    <!-- ── RIGHT: Sidebar (AI Tool) ──────────────────────────────────────── -->
+    <aside class="cw-sidebar cw-sidebar--right">
+      <div
+        *ngIf="activeLesson() && !isVideoLoading() && !videoError() && signedUrl()"
+        class="cw-ai-panel-wrap"
+      >
+        <app-lesson-ai-panel [lessonId]="activeLesson()!.id" [courseId]="courseId()" />
       </div>
     </aside>
   </div>

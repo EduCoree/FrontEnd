@@ -2,6 +2,8 @@ import { Component, input, computed, ChangeDetectionStrategy } from '@angular/co
 import { CommonModule } from '@angular/common';
 import { EarningStatus, InvoiceStatus } from '../../../core/models/payout.model';
 
+import { TranslateModule } from '@ngx-translate/core';
+
 type AnyStatus = InvoiceStatus | EarningStatus;
 
 /**
@@ -12,7 +14,7 @@ type AnyStatus = InvoiceStatus | EarningStatus;
 @Component({
   selector: 'app-invoice-status-badge',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <span
@@ -20,7 +22,7 @@ type AnyStatus = InvoiceStatus | EarningStatus;
       [class]="styleClasses()"
     >
       <span class="w-1.5 h-1.5 rounded-full" [class]="dotClass()"></span>
-      {{ label() }}
+      {{ 'earnings.status.' + status() | translate }}
     </span>
   `,
 })
@@ -46,5 +48,4 @@ export class InvoiceStatusBadgeComponent {
 
   styleClasses = computed(() => this.styleMap[this.status()]?.container ?? this.styleMap.Draft.container);
   dotClass     = computed(() => this.styleMap[this.status()]?.dot ?? this.styleMap.Draft.dot);
-  label        = computed(() => this.styleMap[this.status()]?.label ?? this.status());
 }

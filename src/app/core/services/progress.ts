@@ -102,6 +102,6 @@ export class ProgressService {
       .get<any>(
         `${this.base}/teacher/progress/courses/${courseId}/students/${studentId}`
       )
-      .pipe(map((res) => res.data ?? res));
+      .pipe(map((res) => (res.data?.lessons ?? res.lessons ?? res.data ?? res)));
   }
 }

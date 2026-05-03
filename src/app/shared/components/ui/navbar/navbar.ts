@@ -62,6 +62,13 @@ export class Navbar {
     return this.isTeacher() ? '/teacher/dashboard' : '/student/sessions';
   }
 
+  /** Route the "Dashboard" nav link based on the logged-in role */
+  get dashboardRoute(): string {
+    if (this.isAdmin()) return '/admin/dashboard';
+    if (this.isTeacher()) return '/teacher/dashboard';
+    return '/student/dashboard';
+  }
+
   private getRole(): string {
     const token = this.auth.getToken();
     if (!token) return '';

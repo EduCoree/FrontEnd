@@ -1,233 +1,272 @@
 <!-- Backdrop -->
 <div
-  class="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 bg-inverse-surface/40 backdrop-blur-sm overflow-y-auto"
+  class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-sm"
   (click)="close()"
 >
   <!-- Modal -->
   <div
-    class="bg-surface w-full max-w-5xl rounded-xl shadow-2xl overflow-hidden flex flex-col md:flex-row relative m-auto max-h-[90vh]"
+    class="w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl flex flex-col mt-24"
+    style="max-height: 90vh;"
     (click)="$event.stopPropagation()"
   >
-    <!-- Visual Pillar -->
-    <div class="hidden md:block md:w-1/4 relative overflow-hidden flex-shrink-0">
+
+    <!-- ── HERO (ثابت فوق) ────────────────────────────── -->
+    <div class="relative flex-shrink-0 px-7 pt-7 pb-6">
+      <!-- صورة الكورس -->
       <img
-        [src]="
-          course.coverImage || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600'
-        "
+        [src]="course.coverImage || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=700&q=80'"
         [alt]="course.title"
-        class="absolute inset-0 h-full w-full object-cover"
+        class="absolute inset-0 w-full h-full object-cover"
       />
-      <div class="absolute inset-0 bg-primary-dim/40"></div>
-      <div class="absolute bottom-8 left-6 right-6 text-white">
-        <span class="material-symbols-outlined text-4xl mb-4">school</span>
-        <p class="text-xs font-medium tracking-wide uppercase opacity-80">Enrolling in</p>
-        <p class="text-lg font-bold line-clamp-2">{{ course.title }}</p>
+      <!-- overlay -->
+      <div class="absolute inset-0"
+           style="background: linear-gradient(170deg, rgba(4,28,20,0.55) 0%, rgba(4,28,20,0.85) 100%);">
+      </div>
+
+      <!-- المحتوى فوق الصورة -->
+      <div class="relative z-10">
+
+        <!-- Top bar -->
+        <div class="flex items-center justify-between mb-5">
+          <div class="inline-flex items-center gap-1.5 bg-white/10 border border-white/18 backdrop-blur px-3.5 py-1.5 rounded-full">
+            <span class="material-symbols-outlined text-white text-sm">school</span>
+            <span class="text-[11px] font-semibold text-white/80 tracking-wide">
+              {{ 'enrollment.confirmEnrollment' | translate }}
+            </span>
+          </div>
+          <button
+            (click)="close()"
+            class="w-8 h-8 rounded-full border border-white/18 bg-white/08 flex items-center justify-center hover:bg-white/15 transition-colors"
+          >
+            <span class="material-symbols-outlined text-white/65 text-base">close</span>
+          </button>
+        </div>
+
+        <!-- Title -->
+        <p class="text-[9px] font-bold tracking-[3px] uppercase text-white/40 mb-2">
+          {{ 'enrollment.enrollingIn' | translate }}
+        </p>
+        <h2 class="text-2xl md:text-3xl font-black text-white leading-snug mb-4"
+            style="font-family: 'Unbounded', sans-serif; font-size: clamp(20px, 4vw, 28px);">
+          {{ course.title }}
+        </h2>
+
+        <!-- Chips -->
+        <div class="flex flex-wrap gap-1.5">
+          <span class="inline-flex items-center gap-1 bg-white/09 border border-white/12 text-white/60 text-[10px] font-medium px-2.5 py-1 rounded-full">
+            <span class="material-symbols-outlined text-[11px]">signal_cellular_alt</span>
+            {{ course.level }}
+          </span>
+          <span class="inline-flex items-center gap-1 bg-white/09 border border-white/12 text-white/60 text-[10px] font-medium px-2.5 py-1 rounded-full">
+            <span class="material-symbols-outlined text-[11px]">workspace_premium</span>
+            {{ 'enrollment.certificate' | translate }}
+          </span>
+          <span class="inline-flex items-center gap-1 bg-white/09 border border-white/12 text-white/60 text-[10px] font-medium px-2.5 py-1 rounded-full">
+            <span class="material-symbols-outlined text-[11px]">menu_book</span>
+            {{ course.description | slice:0:28 }}...
+          </span>
+        </div>
+
       </div>
     </div>
 
-    <!-- Content -->
-    <div class="flex-1 p-6 md:p-8 space-y-6 flex flex-col overflow-y-auto">
-      <!-- Header -->
-      <div class="flex justify-between items-start flex-shrink-0">
-        <div class="space-y-1">
-          <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-on-surface">
-            Confirm Enrollment
-          </h2>
-          <p class="text-sm text-on-surface-variant font-medium">Select your preferred pathway.</p>
-        </div>
-        <button
-          (click)="close()"
-          class="p-2 hover:bg-surface-container rounded-full transition-colors flex-shrink-0"
-        >
-          <span class="material-symbols-outlined">close</span>
-        </button>
-      </div>
-
-      <!-- Course Summary -->
-      <div class="bg-surface-container-low p-6 rounded-lg space-y-3">
-        <h3 class="text-lg font-bold text-primary leading-tight">{{ course.title }}</h3>
-        <p class="text-sm text-on-surface-variant leading-relaxed line-clamp-2">
-          {{ course.description }}
-        </p>
-        <div
-          class="pt-2 flex flex-wrap gap-4 text-xs font-bold uppercase tracking-widest text-on-surface-variant/60"
-        >
-          <span class="flex items-center gap-1.5">
-            <span class="material-symbols-outlined text-sm">menu_book</span>
-            <!-- {{ course.totalLessons }} Lessons -->
-          </span>
-          <span class="flex items-center gap-1.5">
-            <span class="material-symbols-outlined text-sm">signal_cellular_alt</span>
-            {{ course.level }}
-          </span>
-          <span class="flex items-center gap-1.5">
-            <span class="material-symbols-outlined text-sm">workspace_premium</span>
-            Certificate Included
-          </span>
-        </div>
-      </div>
+    <!-- ── BODY (بيـ scroll) ───────────────────────────── -->
+    <div class="flex-1 overflow-y-auto flex flex-col gap-3 px-6 py-5"
+         style="background: #f1f5f2;">
 
       <!-- Error -->
       <div
         *ngIf="errorMsg"
-        class="flex items-center gap-3 px-5 py-3 bg-error-container/20 border border-error/20 rounded-xl text-error font-semibold text-sm"
+        class="flex items-center gap-2 px-4 py-3 rounded-2xl text-sm font-semibold"
+        style="background: rgba(220,38,38,0.12); border: 1px solid rgba(220,38,38,0.25); color: #dc2626;"
       >
         <span class="material-symbols-outlined text-sm">error</span>
         {{ errorMsg }}
       </div>
 
-      <!-- Paths Grid -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 flex-1">
-        <!-- Free -->
-        <div
-          *ngIf="isFree"
-          class="lg:col-span-3 flex flex-col bg-surface-container-lowest border-2 border-primary/30 rounded-xl p-4 shadow-lg relative"
-        >
-          <span
-            class="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-on-primary text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-widest"
-          >
-            Free Course
-          </span>
-          <div class="mb-4">
-            <span
-              class="text-[10px] font-bold text-on-surface-variant tracking-widest uppercase block mb-1"
-              >Pathway 01</span
-            >
-            <h4 class="text-xl font-bold text-on-surface">Free Enrollment</h4>
-            <p class="text-xs text-on-surface-variant mt-1">
-              Full access to all course materials at no cost.
+      <!-- Section label -->
+      <p class="text-[9px] font-bold tracking-[2.5px] uppercase"
+         style="color: #94a3b8;">
+        {{ 'enrollment.selectPathway' | translate }}
+      </p>
+
+      <!-- ══ FREE ══════════════════════════════════════ -->
+      <div *ngIf="isFree"
+           class="relative rounded-[18px] p-5 overflow-hidden"
+           style="background:#fff; border: 1.5px solid #c6ead9;">
+        <!-- badge -->
+        <span class="absolute top-0 right-0 text-[8px] font-black tracking-[1.5px] uppercase px-4 py-1.5 text-white"
+              style="background:#0F6E56; border-radius: 0 16px 0 12px;">
+          {{ 'enrollment.freeCourse' | translate }}
+        </span>
+        <div class="flex items-center justify-between gap-3 pt-1">
+          <div class="flex-1">
+            <p class="text-[8px] font-bold tracking-[2px] uppercase mb-1.5" style="color:#94a3b8;">
+              {{ 'enrollment.pathway01' | translate }}
+            </p>
+            <p class="text-lg font-black mb-1" style="color:#0d2018; font-family:'Unbounded',sans-serif; font-size:17px;">
+              {{ 'enrollment.freeEnrollment' | translate }}
+            </p>
+            <p class="text-xs leading-relaxed" style="color:#64748b;">
+              {{ 'enrollment.freeDesc' | translate }}
             </p>
           </div>
-          <div class="mt-auto pt-4 border-t border-outline-variant/10 space-y-4">
-            <span class="text-2xl font-bold text-primary">Free</span>
+          <div class="flex flex-col items-end gap-2.5 flex-shrink-0">
+            <p class="font-black" style="font-family:'Unbounded',sans-serif; font-size:26px; color:#0F6E56;">
+              {{ 'enrollment.free' | translate }}
+            </p>
             <button
               (click)="enrollFree()"
               [disabled]="isLoading"
-              class="w-full py-3 px-4 rounded-full bg-primary text-on-primary font-bold text-sm flex items-center justify-center gap-2 hover:bg-primary-dim transition-all active:scale-[0.98] disabled:opacity-50"
+              class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-white text-xs font-bold disabled:opacity-50 transition-all active:scale-95 whitespace-nowrap"
+              style="background:#1D9E75;"
             >
-              <span *ngIf="isLoading" class="material-symbols-outlined animate-spin text-lg"
-                >progress_activity</span
-              >
-              <span *ngIf="!isLoading" class="material-symbols-outlined text-lg">school</span>
-              {{ isLoading ? 'Enrolling...' : 'Enroll for Free' }}
+              <span *ngIf="isLoading" class="material-symbols-outlined animate-spin text-sm">progress_activity</span>
+              <span *ngIf="!isLoading" class="material-symbols-outlined text-sm">school</span>
+              {{ isLoading ? ('enrollment.enrolling' | translate) : ('enrollment.enrollFree' | translate) }}
             </button>
           </div>
         </div>
+      </div>
 
-        <!-- Paid Options -->
-        <ng-container *ngIf="!isFree">
-          <!-- Pay with Card -->
-          <div
-            class="flex flex-col bg-surface-container-lowest border-2 border-primary/30 rounded-xl p-4 shadow-lg relative"
-          >
-            <span
-              class="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-on-primary text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-widest"
-            >
-              Recommended
-            </span>
-            <div class="mb-4">
-              <span
-                class="text-[10px] font-bold text-on-surface-variant tracking-widest uppercase block mb-1"
-                >Pathway 01</span
-              >
-              <h4 class="text-xl font-bold text-on-surface">Digital Access</h4>
-              <p class="text-xs text-on-surface-variant mt-1">
-                Full access including exams and certificate.
+      <!-- ══ PAID ══════════════════════════════════════ -->
+      <ng-container *ngIf="!isFree">
+
+        <!-- Card 1: Digital / Card payment -->
+        <div class="relative rounded-[18px] p-5 overflow-hidden"
+             style="background:#fff; border: 1.5px solid #c6ead9;">
+          <span class="absolute top-0 right-0 text-[8px] font-black tracking-[1.5px] uppercase px-4 py-1.5 text-white"
+                style="background:#0F6E56; border-radius: 0 16px 0 12px;">
+            {{ 'enrollment.recommended' | translate }}
+          </span>
+          <div class="flex items-center justify-between gap-3 pt-1">
+            <div class="flex-1">
+              <p class="text-[8px] font-bold tracking-[2px] uppercase mb-1.5" style="color:#94a3b8;">
+                {{ 'enrollment.pathway01' | translate }}
+              </p>
+              <p class="font-black mb-1" style="color:#0d2018; font-family:'Unbounded',sans-serif; font-size:17px;">
+                {{ 'enrollment.digitalAccess' | translate }}
+              </p>
+              <p class="text-xs leading-relaxed" style="color:#64748b;">
+                {{ 'enrollment.digitalDesc' | translate }}
               </p>
             </div>
-            <div class="mt-auto pt-4 border-t border-outline-variant/10 space-y-4">
-              <span class="text-2xl font-bold text-primary">${{ course.price }}</span>
+            <div class="flex flex-col items-end gap-2.5 flex-shrink-0">
+              <p class="font-black" style="font-family:'Unbounded',sans-serif; font-size:26px; color:#0F6E56;">
+                ${{ course.price }}
+              </p>
               <button
                 type="button"
                 (click)="payWithCard()"
                 [disabled]="isLoading"
-                class="w-full py-3 px-4 rounded-full bg-primary text-on-primary font-bold text-sm flex items-center justify-center gap-2 hover:bg-primary-dim transition-all active:scale-[0.98] disabled:opacity-50"
+                class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-white text-xs font-bold disabled:opacity-50 transition-all active:scale-95 whitespace-nowrap"
+                style="background:#1D9E75;"
               >
-                <span *ngIf="isLoading" class="material-symbols-outlined animate-spin text-lg"
-                  >progress_activity</span
-                >
-                <span *ngIf="!isLoading" class="material-symbols-outlined text-lg"
-                  >credit_card</span
-                >
-                {{ isLoading ? 'Processing...' : 'Pay with Card' }}
+                <span *ngIf="isLoading" class="material-symbols-outlined animate-spin text-sm">progress_activity</span>
+                <span *ngIf="!isLoading" class="material-symbols-outlined text-sm">credit_card</span>
+                {{ isLoading ? ('enrollment.processing' | translate) : ('enrollment.payCard' | translate) }}
               </button>
             </div>
           </div>
-
-<!-- Pay with Cash -->
-<div class="flex flex-col bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-4 transition-all hover:shadow-md">
-  <div class="mb-4">
-    <span class="text-[10px] font-bold text-on-surface-variant tracking-widest uppercase block mb-1">Pathway 02</span>
-    <h4 class="text-xl font-bold text-on-surface">Offline</h4>
-    <p class="text-xs text-on-surface-variant mt-1">Manual enrollment via cash payment.</p>
-  </div>
-  <div class="mt-auto pt-4 border-t border-outline-variant/10 space-y-4">
-    <span class="text-2xl font-bold text-primary">${{ course.price }}</span>
-
-    <ng-container *ngIf="!cashRequestSent">
-      <button
-        (click)="requestCash()"
-        [disabled]="cashRequestLoading"
-        class="w-full py-3 px-4 rounded-full bg-surface-container text-on-surface font-bold text-sm flex items-center justify-center gap-2 hover:bg-surface-container-high transition-all active:scale-[0.98] disabled:opacity-50">
-        <span *ngIf="cashRequestLoading" class="material-symbols-outlined animate-spin text-lg">progress_activity</span>
-        <span *ngIf="!cashRequestLoading" class="material-symbols-outlined text-lg">payments</span>
-        {{ cashRequestLoading ? 'Sending...' : 'Request Cash Payment' }}
-      </button>
-
-      <!-- Contact info -->
-      <button (click)="toggleCashContact()"
-        class="w-full text-xs text-on-surface-variant hover:text-primary transition-colors font-medium">
-        Or contact admin directly
-      </button>
-
-      <div *ngIf="showCashContact"
-        class="bg-primary-container/20 p-4 rounded-xl text-center space-y-3">
-        <div class="flex items-center justify-center gap-3 flex-wrap">
-          <button type="button" (click)="openWhatsApp()"
-            class="flex items-center gap-1 text-primary font-bold text-sm hover:underline">
-            <span class="material-symbols-outlined text-sm">chat</span>
-            WhatsApp
-          </button>
-          <span class="text-outline-variant">|</span>
-          <button type="button" (click)="callAdmin()"
-            class="flex items-center gap-1 text-primary font-bold text-sm hover:underline">
-            <span class="material-symbols-outlined text-sm">call</span>
-            {{ adminPhone }}
-          </button>
         </div>
-      </div>
-    </ng-container>
 
-    <div *ngIf="cashRequestSent"
-      class="bg-primary-container/20 p-4 rounded-xl text-center space-y-2">
-      <span class="material-symbols-outlined text-primary text-3xl">check_circle</span>
-      <p class="text-sm font-bold text-primary">Request Sent!</p>
-      <p class="text-xs text-on-surface-variant">
-        The admin will contact you to confirm your payment.
-      </p>
-    </div>
+        <!-- Card 2: Cash / Offline -->
+        <div class="rounded-[18px] p-5"
+             style="background:#0d2018; border: 1px solid rgba(29,158,117,0.18);">
+          <div class="flex items-center justify-between gap-3">
+            <div class="flex-1">
+              <p class="text-[8px] font-bold tracking-[2px] uppercase mb-1.5"
+                 style="color:rgba(255,255,255,0.25);">
+                {{ 'enrollment.pathway02' | translate }}
+              </p>
+              <p class="font-black mb-1" style="color:#fff; font-family:'Unbounded',sans-serif; font-size:17px;">
+                {{ 'enrollment.offline' | translate }}
+              </p>
+              <p class="text-xs leading-relaxed" style="color:rgba(255,255,255,0.4);">
+                {{ 'enrollment.offlineDesc' | translate }}
+              </p>
+            </div>
+            <div class="flex flex-col items-end gap-2.5 flex-shrink-0">
+              <p class="font-black" style="font-family:'Unbounded',sans-serif; font-size:26px; color:rgba(255,255,255,0.72);">
+                ${{ course.price }}
+              </p>
 
-  </div>
-</div>
+              <!-- Before sent -->
+              <ng-container *ngIf="!cashRequestSent">
+                <button
+                  (click)="requestCash()"
+                  [disabled]="cashRequestLoading"
+                  class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-white text-xs font-bold disabled:opacity-50 transition-all active:scale-95 whitespace-nowrap"
+                  style="background:transparent; border:1px solid rgba(255,255,255,0.22);"
+                >
+                  <span *ngIf="cashRequestLoading" class="material-symbols-outlined animate-spin text-sm">progress_activity</span>
+                  <span *ngIf="!cashRequestLoading" class="material-symbols-outlined text-sm">payments</span>
+                  {{ cashRequestLoading ? ('enrollment.sending' | translate) : ('enrollment.requestCash' | translate) }}
+                </button>
+              </ng-container>
 
-          <div
-            class="hidden lg:flex flex-col bg-surface-container/30 border border-dashed border-outline-variant/20 rounded-xl p-4 items-center justify-center text-center"
-          >
-            <span class="material-symbols-outlined text-4xl text-outline-variant mb-3">lock</span>
-            <p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest">
-              More Options
-            </p>
-            <p class="text-xs text-on-surface-variant/60 mt-1">Coming soon</p>
+              <!-- After sent -->
+              <div *ngIf="cashRequestSent"
+                   class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full"
+                   style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15);">
+                <span class="material-symbols-outlined text-sm"
+                      style="color:#1D9E75; font-variation-settings:'FILL' 1;">check_circle</span>
+                <span class="text-xs font-bold text-white">{{ 'enrollment.requestSent' | translate }}</span>
+              </div>
+            </div>
           </div>
-        </ng-container>
-      </div>
 
-      <!-- Footer Note -->
-      <div class="pt-4 border-t border-outline-variant/10 flex-shrink-0">
-        <p class="text-[10px] text-on-surface-variant/70 italic text-center">
-          By enrolling, you agree to our Terms of Service and Academic Integrity Policy.
-        </p>
-      </div>
+          <!-- Contact toggle -->
+          <ng-container *ngIf="!cashRequestSent">
+            <button
+              (click)="toggleCashContact()"
+              class="mt-4 w-full text-center text-[10px] font-medium transition-colors"
+              style="color:rgba(255,255,255,0.28); border-top:1px solid rgba(255,255,255,0.07); padding-top:12px; background:transparent; border-left:none; border-right:none; border-bottom:none; cursor:pointer;"
+            >
+              {{ 'enrollment.contactAdmin' | translate }}
+            </button>
+
+            <div *ngIf="showCashContact"
+                 class="mt-3 rounded-xl p-4 text-center"
+                 style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08);">
+              <div class="flex items-center justify-center gap-4 flex-wrap">
+                <button type="button" (click)="openWhatsApp()"
+                  class="inline-flex items-center gap-1 text-xs font-bold hover:underline"
+                  style="color:#1D9E75; background:transparent; border:none; cursor:pointer;">
+                  <span class="material-symbols-outlined text-xs">chat</span>
+                  WhatsApp
+                </button>
+                <span style="color:rgba(255,255,255,0.15);">|</span>
+                <button type="button" (click)="callAdmin()"
+                  class="inline-flex items-center gap-1 text-xs font-bold hover:underline"
+                  style="color:#1D9E75; background:transparent; border:none; cursor:pointer;">
+                  <span class="material-symbols-outlined text-xs">call</span>
+                  {{ adminPhone }}
+                </button>
+              </div>
+            </div>
+          </ng-container>
+
+          <p *ngIf="cashRequestSent"
+             class="mt-3 text-center text-[10px]"
+             style="color:rgba(255,255,255,0.35);">
+            {{ 'enrollment.adminWillContact' | translate }}
+          </p>
+        </div>
+
+      </ng-container>
+
+      <!-- Footer -->
+      <p class="text-center text-[9px] italic pt-1" style="color:#94a3b8;">
+        {{ 'enrollment.termsNote' | translate }}
+      </p>
+
     </div>
+    <!-- END body -->
+
   </div>
 </div>
+
+<!-- Unbounded font للعناوين -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&display=swap" rel="stylesheet">

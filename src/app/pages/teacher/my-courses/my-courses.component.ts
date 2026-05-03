@@ -8,7 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-my-courses',
   standalone: true,
-  imports: [CommonModule, RouterLink , TranslateModule],
+  imports: [CommonModule, RouterLink, TranslateModule],
   templateUrl: './my-courses.component.html',
   styleUrl: './my-courses.component.css'
 })
@@ -64,6 +64,13 @@ teacherName = localStorage.getItem('name') || 'Teacher';
     this.loadCourses();
   }
   goToDashboard(): void {
-  this.router.navigate(['/teacher/dashboard']);
-}
+    this.router.navigate(['/teacher/dashboard']);
+  }
+
+  getCourseImage(course: any): string {
+    const img = course.coverImage || course.coverImageUrl;
+    if (!img) return 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800';
+    if (img.startsWith('http')) return img;
+    return `https://edu-coree.runasp.net/${img.startsWith('/') ? img.substring(1) : img}`;
+  }
 }

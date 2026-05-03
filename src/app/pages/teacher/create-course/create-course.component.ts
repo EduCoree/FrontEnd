@@ -29,7 +29,8 @@ export class CreateCourseComponent implements OnInit {
   isUploadingCover = false;
   coverUploadSuccess = false;
   courseIdAfterCreate: number | null = null;
-categories: Category[] = [];
+  categories: Category[] = [];
+  isCategoriesLoaded = false;
   constructor(private fb: FormBuilder, private courseService: CourseService, private categoryService: CategoryService,private router: Router) {
     this.courseForm = this.fb.group({
       title: ['', Validators.required],
@@ -46,14 +47,20 @@ categories: Category[] = [];
       this.loadCategories();
     }
   }
-loadCategories(): void {
-  // const centerId = Number(localStorage.getItem('centerId'));
-  const centerId = 11;
-  this.categoryService.getAll(centerId).subscribe({
-    next: (res) => this.categories = res,
-    error: () => console.error('Failed to load categories')
-  });
-}
+  loadCategories(): void {
+    // const centerId = Number(localStorage.getItem('centerId'));
+    const centerId = 1;
+    this.categoryService.getAll(centerId).subscribe({
+      next: (res: any) => {
+        this.categories = res.data || res || [];
+        this.isCategoriesLoaded = true;
+      },
+      error: () => {
+        console.error('Failed to load categories');
+        this.isCategoriesLoaded = true;
+      }
+    });
+  }
 
   onFileSelected(event: any): void {
     this.selectedFile = event.target.files[0];

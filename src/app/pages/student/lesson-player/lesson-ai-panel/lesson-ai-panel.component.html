@@ -1,0 +1,118 @@
+<div class="ai-panel" [class.ai-panel--expanded]="aiService.isExpanded()">
+
+  <!-- Header -->
+  <div class="ai-panel__header">
+    <div class="flex items-center gap-2.5">
+      <div class="header-icon">
+        <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">psychology</span>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold leading-none" style="color:#fff">EduCore Study Tool</h3>
+        <span class="text-[10px]" style="color:rgba(255,255,255,0.7)">AI-Powered</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-1">
+      <button *ngIf="aiService.hasMessages()"
+        (click)="clearMessages()"
+        class="header-btn"
+        title="Clear conversation">
+        <span class="material-symbols-outlined text-[16px]">delete_sweep</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="ai-panel__actions">
+    <button class="action-btn"
+      (click)="onSummarize()"
+      [disabled]="aiService.isLoading()">
+      <span class="material-symbols-outlined text-[16px]" style="color:#3a7d68">summarize</span>
+      Summarize
+    </button>
+    <button class="action-btn"
+      (click)="onTranslate()"
+      [disabled]="aiService.isLoading()">
+      <span class="material-symbols-outlined text-[16px]" style="color:#3a7d68">translate</span>
+      Translate
+    </button>
+    <button class="action-btn"
+      (click)="onTranscribe()"
+      [disabled]="aiService.isLoading()">
+      <span class="material-symbols-outlined text-[16px]" style="color:#3a7d68">mic</span>
+      Transcribe
+    </button>
+  </div>
+
+  <!-- Messages Area -->
+  <div #scrollContainer class="ai-panel__messages">
+
+    <!-- Empty State -->
+    <div *ngIf="!aiService.hasMessages()" class="empty-state">
+      <div class="es-icon">
+        <span class="material-symbols-outlined text-[36px]" style="font-variation-settings:'FILL' 1">auto_awesome</span>
+      </div>
+      <p class="text-sm font-semibold text-gray-700 mt-3">Study Smarter 🎓</p>
+      <p class="text-xs text-gray-400 mt-1 max-w-[220px] text-center leading-relaxed">
+        Ask questions about this lesson, get summaries, or translate content to Arabic.
+      </p>
+    </div>
+
+    <!-- Messages -->
+    <ng-container *ngFor="let m of aiService.messages(); trackBy: trackById">
+      <!-- User Message -->
+      <div *ngIf="m.role === 'user'" class="msg msg-r">
+        <div class="msg-u">
+          <div class="msg-lbl" *ngIf="m.action">
+            <span class="material-symbols-outlined text-[11px]">
+              {{ m.action === 'ask' ? 'help' : m.action === 'summarize' ? 'summarize' : 'translate' }}
+            </span>
+            {{ m.action === 'ask' ? 'Question' : m.action === 'summarize' ? 'Summarize' : 'Translate' }}
+          </div>
+          <p class="text-sm leading-relaxed whitespace-pre-wrap">{{ m.content }}</p>
+        </div>
+      </div>
+
+      <!-- Assistant Message -->
+      <div *ngIf="m.role === 'assistant'" class="msg">
+        <div class="msg-av">
+          <span class="material-symbols-outlined text-[14px]" style="font-variation-settings:'FILL' 1">psychology</span>
+        </div>
+        <div class="msg-a" [class.msg-e]="m.isError">
+          <p class="text-sm leading-relaxed whitespace-pre-wrap">{{ m.content }}</p>
+          <span class="msg-t">{{ m.createdAt | date:'shortTime' }}</span>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Typing Indicator -->
+    <div *ngIf="aiService.isLoading()" class="msg">
+      <div class="msg-av">
+        <span class="material-symbols-outlined text-[14px]" style="font-variation-settings:'FILL' 1">psychology</span>
+      </div>
+      <div class="typing">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Input Area -->
+  <div class="ai-panel__input">
+    <div class="inp-w">
+      <input type="text"
+        [ngModel]="questionText()"
+        (ngModelChange)="questionText.set($event)"
+        (keydown)="onKeyDown($event)"
+        placeholder="Ask about the lesson..."
+        [disabled]="aiService.isLoading()"
+        class="inp-f"
+        id="lesson-ai-input" />
+      <button (click)="onSendQuestion()"
+        [disabled]="aiService.isLoading() || !questionText().trim()"
+        class="snd"
+        id="lesson-ai-send-btn"
+        title="Send">
+        <span class="material-symbols-outlined text-[18px]" style="font-variation-settings:'FILL' 1">send</span>
+      </button>
+    </div>
+  </div>
+</div>

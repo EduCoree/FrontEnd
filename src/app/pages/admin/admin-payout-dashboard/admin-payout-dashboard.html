@@ -1,205 +1,259 @@
-<div class="min-h-screen bg-surface p-4 md:p-6 lg:p-8">
-  <div class="max-w-7xl mx-auto">
+<div class="flex min-h-screen bg-[#f8faf9] font-headline">
+  <app-admin-sidebar />
 
-    <!-- Header -->
-    <header class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-      <div>
-        <h1 class="text-2xl md:text-3xl font-bold text-on-surface font-headline">
-          {{ 'payout.dashboard.title' | translate }}
-        </h1>
-        <p class="text-sm text-on-surface-variant mt-1">
-          {{ 'payout.dashboard.subtitle' | translate }}
-        </p>
+  <main class="flex-1 min-h-screen flex flex-col overflow-hidden">
+
+    <!-- ══ TOP NAV ══ -->
+    <header class="sticky top-0 z-20 bg-white border-b border-[#eaefee] px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="text-sm font-bold text-[#acb3b2]">Admin</span>
+        <span class="text-[#d0d8d6]">/</span>
+        <span class="text-sm font-bold text-[#2d3433]">{{ 'payout.dashboard.title' | translate }}</span>
       </div>
-      <div class="flex flex-wrap gap-2">
+      <div class="flex items-center gap-3">
         <a routerLink="/admin/payout/settings"
-           class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-surface-container-lowest ring-1 ring-outline-variant hover:bg-surface-container transition-colors text-sm font-medium text-on-surface">
-          <i class="fa-solid fa-gear"></i> {{ 'payout.dashboard.actions.settings' | translate }}
+           class="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#f0f5f3] border border-transparent hover:border-[#b2efda] text-sm font-bold text-[#2d3433] transition-all">
+          <span class="material-symbols-outlined text-[16px]">settings</span>
+          {{ 'payout.dashboard.actions.settings' | translate }}
         </a>
         <a routerLink="/admin/payout/generate"
-           class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-surface-container-lowest ring-1 ring-outline-variant hover:bg-surface-container transition-colors text-sm font-medium text-on-surface">
-          <i class="fa-solid fa-bolt"></i> {{ 'payout.dashboard.actions.generate' | translate }}
+           class="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#f0f5f3] border border-transparent hover:border-[#b2efda] text-sm font-bold text-[#2d3433] transition-all">
+          <span class="material-symbols-outlined text-[16px]">bolt</span>
+          {{ 'payout.dashboard.actions.generate' | translate }}
         </a>
         <a routerLink="/admin/payout/invoices"
-           class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-on-primary hover:bg-primary-dim transition-colors text-sm font-medium shadow-sm">
-          <i class="fa-solid fa-file-invoice-dollar"></i> {{ 'payout.dashboard.actions.allInvoices' | translate }}
+           class="flex items-center gap-2 px-5 py-2 rounded-xl bg-[#2e6959] text-white text-sm font-bold hover:bg-[#1a3d34] transition-colors shadow-sm">
+          <span class="material-symbols-outlined text-[16px]">receipt_long</span>
+          {{ 'payout.dashboard.actions.allInvoices' | translate }}
         </a>
       </div>
     </header>
 
-    <!-- Error -->
-    @if (error()) {
-      <div class="mb-6 p-4 rounded-2xl bg-error-container text-on-error-container ring-1 ring-error/30 flex items-start gap-3">
-        <i class="fa-solid fa-circle-exclamation text-lg mt-0.5"></i>
-        <div class="flex-1">
-          <p class="font-semibold">{{ 'payout.dashboard.error.title' | translate }}</p>
-          <p class="text-sm opacity-90">{{ error() }}</p>
-        </div>
-        <button (click)="loadDashboard()"
-                class="px-3 py-1.5 rounded-lg bg-white/30 hover:bg-white/50 text-sm font-medium">
-          {{ 'payout.dashboard.error.retry' | translate }}
-        </button>
-      </div>
-    }
+    <div class="p-8 space-y-6">
 
-    <!-- Loading -->
-    @if (loading()) {
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        @for (_ of [1,2,3,4]; track $index) {
-          <app-loading-skeleton variant="card" />
-        }
-      </div>
-      <app-loading-skeleton variant="chart" />
-    }
-
-    <!-- Loaded -->
-    @if (!loading() && dashboard(); as d) {
-
-      <!-- KPI Row -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <app-kpi-card
-          [label]="'payout.dashboard.kpi.pendingPayouts.label' | translate"
-          [value]="d.totalPendingPayouts.toLocaleString()"
-          [suffix]="d.currency"
-          [subtitle]="d.pendingInvoicesCount + ' ' + ('payout.dashboard.kpi.pendingPayouts.subtitle' | translate)"
-          icon="fa-solid fa-clock"
-          tone="warning" />
-
-        <app-kpi-card
-          [label]="'payout.dashboard.kpi.teacherEarnings.label' | translate"
-          [value]="d.currentMonthTeacherEarnings.toLocaleString()"
-          [suffix]="d.currency"
-          [subtitle]="'payout.dashboard.kpi.teacherEarnings.subtitle' | translate"
-          icon="fa-solid fa-users"
-          tone="primary" />
-
-        <app-kpi-card
-          [label]="'payout.dashboard.kpi.platformRevenue.label' | translate"
-          [value]="d.currentMonthPlatformRevenue.toLocaleString()"
-          [suffix]="d.currency"
-          [subtitle]="'payout.dashboard.kpi.platformRevenue.subtitle' | translate"
-          icon="fa-solid fa-building-columns"
-          tone="info" />
-
-        <app-kpi-card
-          [label]="'payout.dashboard.kpi.lastMonthPaid.label' | translate"
-          [value]="d.lastMonthPaidToTeachers.toLocaleString()"
-          [suffix]="d.currency"
-          [subtitle]="'payout.dashboard.kpi.lastMonthPaid.subtitle' | translate"
-          icon="fa-solid fa-circle-check"
-          tone="success" />
-      </div>
-
-      <!-- Main grid: Chart + Excel Export -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-
-        <!-- Donut Chart -->
-        <div class="lg:col-span-2 bg-surface-container-lowest rounded-2xl p-5 ring-1 ring-outline-variant/40">
-          <h2 class="text-lg font-semibold text-on-surface font-headline mb-1">
-            {{ 'payout.dashboard.chart.title' | translate }}
-          </h2>
-          <p class="text-xs text-on-surface-variant mb-4">
-            {{ 'payout.dashboard.chart.subtitle' | translate }}
+      <!-- ══ BANNER ══ -->
+      <div class="relative rounded-2xl overflow-hidden bg-[#2e6959] px-8 py-7 flex items-center justify-between">
+        <div class="absolute right-32 top-1/2 -translate-y-1/2 w-40 h-40 rounded-full border-[24px] border-white/5"></div>
+        <div class="absolute right-16 top-1/2 -translate-y-1/2 w-28 h-28 rounded-full border-[16px] border-white/5"></div>
+        <div class="absolute right-52 bottom-0 w-20 h-20 rounded-full border-[12px] border-white/5"></div>
+        <div>
+          <p class="text-[#b2efda] text-sm font-semibold mb-1 flex items-center gap-2">
+            <span class="material-symbols-outlined text-base">payments</span>
+            {{ 'payout.dashboard.subtitle' | translate }}
           </p>
-
-          @if (splitChartOptions(); as opts) {
-            <apx-chart
-              [series]="opts.series!"
-              [chart]="opts.chart!"
-              [labels]="opts.labels!"
-              [colors]="opts.colors!"
-              [legend]="opts.legend!"
-              [plotOptions]="opts.plotOptions!"
-              [dataLabels]="opts.dataLabels!"
-              [tooltip]="opts.tooltip!" />
-          } @else {
-            <div class="h-64 flex flex-col items-center justify-center text-center">
-              <i class="fa-solid fa-chart-pie text-4xl text-on-surface-variant mb-2"></i>
-              <p class="text-on-surface-variant">{{ 'payout.dashboard.chart.empty' | translate }}</p>
-            </div>
-          }
+          <h2 class="text-white text-3xl font-black tracking-tight mb-2">{{ 'payout.dashboard.title' | translate }}</h2>
         </div>
+      </div>
 
-        <!-- Excel Export Card -->
-        <div class="bg-surface-container-lowest rounded-2xl p-5 ring-1 ring-outline-variant/40">
-          <div class="flex items-center gap-2 mb-4">
-            <div class="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center">
-              <i class="fa-solid fa-file-excel text-emerald-700"></i>
-            </div>
-            <div>
-              <h2 class="text-base font-semibold text-on-surface font-headline">
-                {{ 'payout.dashboard.export.title' | translate }}
-              </h2>
-              <p class="text-xs text-on-surface-variant">{{ 'payout.dashboard.export.subtitle' | translate }}</p>
-            </div>
-          </div>
-
-          <p class="text-sm text-on-surface-variant mb-4">
-            {{ 'payout.dashboard.export.description' | translate }}
-          </p>
-
-          <div class="space-y-3 mb-4">
-            <div>
-              <label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wide mb-1">
-                {{ 'payout.dashboard.export.from' | translate }}
-              </label>
-              <input type="date"
-                     [ngModel]="exportFrom()"
-                     (ngModelChange)="exportFrom.set($event)"
-                     class="w-full px-3 py-2 rounded-xl bg-surface ring-1 ring-outline-variant focus:ring-2 focus:ring-primary outline-none text-sm" />
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wide mb-1">
-                {{ 'payout.dashboard.export.to' | translate }}
-              </label>
-              <input type="date"
-                     [ngModel]="exportTo()"
-                     (ngModelChange)="exportTo.set($event)"
-                     class="w-full px-3 py-2 rounded-xl bg-surface ring-1 ring-outline-variant focus:ring-2 focus:ring-primary outline-none text-sm" />
-            </div>
-          </div>
-
-          <button
-            (click)="downloadReport()"
-            [disabled]="exporting()"
-            class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm shadow-sm transition-colors disabled:opacity-60 disabled:cursor-wait">
-            @if (exporting()) {
-              <i class="fa-solid fa-circle-notch fa-spin"></i>
-              {{ 'payout.dashboard.export.generating' | translate }}
-            } @else {
-              <i class="fa-solid fa-download"></i>
-              {{ 'payout.dashboard.export.download' | translate }}
-            }
+      <!-- ══ ERROR ══ -->
+      @if (error()) {
+        <div class="flex items-center gap-3 px-5 py-3 bg-[#fff0ee] border border-[#f5c5bf] rounded-2xl text-[#c0392b] font-semibold text-sm">
+          <span class="material-symbols-outlined text-[18px]">error</span>
+          {{ error() }}
+          <button (click)="loadDashboard()" class="underline font-bold ms-2">
+            {{ 'payout.dashboard.error.retry' | translate }}
           </button>
         </div>
-      </div>
+      }
 
-      <!-- Secondary KPI: Current Month Enrollments -->
-      <div class="bg-surface-container-lowest rounded-2xl p-5 ring-1 ring-outline-variant/40">
-        <div class="flex items-center justify-between flex-wrap gap-4">
-          <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-xl bg-primary-fixed flex items-center justify-center">
-              <i class="fa-solid fa-graduation-cap text-on-primary-fixed-variant text-xl"></i>
-            </div>
-            <div>
-              <div class="text-xs text-on-surface-variant uppercase font-semibold tracking-wide">
-                {{ 'payout.dashboard.activeTeachers.label' | translate }}
-              </div>
-              <div class="text-2xl font-bold text-on-surface font-headline">
-                {{ d.currentMonthPaidEnrollments }}
-              </div>
-              <div class="text-xs text-on-surface-variant">
-                {{ 'payout.dashboard.activeTeachers.description' | translate }}
-              </div>
-            </div>
-          </div>
-          <a routerLink="/admin/payout/invoices"
-             class="text-sm font-medium text-primary hover:text-primary-dim flex items-center gap-1">
-            {{ 'payout.dashboard.activeTeachers.viewAll' | translate }}
-            <i class="fa-solid fa-arrow-right text-xs"></i>
-          </a>
+      <!-- ══ LOADING ══ -->
+      @if (loading()) {
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          @for (_ of [1,2,3,4]; track $index) {
+            <app-loading-skeleton variant="card" />
+          }
         </div>
-      </div>
-    }
-  </div>
+        <app-loading-skeleton variant="chart" />
+      }
+
+      <!-- ══ LOADED ══ -->
+      @if (!loading() && dashboard(); as d) {
+
+        <!-- KPI CARDS -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- Pending Payouts -->
+          <div class="bg-white rounded-2xl p-5 border border-[#eaefee] hover:border-[#b2efda] hover:shadow-sm transition-all group">
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-10 h-10 rounded-xl bg-[#fff8e1] flex items-center justify-center text-[#f59e0b] group-hover:bg-[#fef3c7] transition-colors">
+                <span class="material-symbols-outlined text-xl">schedule</span>
+              </div>
+              <span class="text-[10px] font-black uppercase tracking-widest text-[#f59e0b] bg-[#fff8e1] px-2 py-1 rounded-lg">
+                {{ d.pendingInvoicesCount }}
+              </span>
+            </div>
+            <p class="text-[10px] uppercase tracking-widest font-bold text-[#596060] mb-1">
+              {{ 'payout.dashboard.kpi.pendingPayouts.label' | translate }}
+            </p>
+            <p class="text-3xl font-black text-[#2d3433] tracking-tight">
+              {{ d.totalPendingPayouts.toLocaleString() }}
+              <span class="text-sm font-medium text-[#acb3b2]">{{ d.currency }}</span>
+            </p>
+          </div>
+
+          <!-- Teacher Earnings -->
+          <div class="bg-white rounded-2xl p-5 border border-[#eaefee] hover:border-[#b2efda] hover:shadow-sm transition-all group">
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-10 h-10 rounded-xl bg-[#e4fff4] flex items-center justify-center text-[#2e6959] group-hover:bg-[#b2efda] transition-colors">
+                <span class="material-symbols-outlined text-xl">group</span>
+              </div>
+            </div>
+            <p class="text-[10px] uppercase tracking-widest font-bold text-[#596060] mb-1">
+              {{ 'payout.dashboard.kpi.teacherEarnings.label' | translate }}
+            </p>
+            <p class="text-3xl font-black text-[#2d3433] tracking-tight">
+              {{ d.currentMonthTeacherEarnings.toLocaleString() }}
+              <span class="text-sm font-medium text-[#acb3b2]">{{ d.currency }}</span>
+            </p>
+          </div>
+
+          <!-- Platform Revenue -->
+          <div class="bg-white rounded-2xl p-5 border border-[#eaefee] hover:border-[#c9e7f7] hover:shadow-sm transition-all group">
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-10 h-10 rounded-xl bg-[#e8f4fd] flex items-center justify-center text-[#466370] group-hover:bg-[#c9e7f7] transition-colors">
+                <span class="material-symbols-outlined text-xl">account_balance</span>
+              </div>
+            </div>
+            <p class="text-[10px] uppercase tracking-widest font-bold text-[#596060] mb-1">
+              {{ 'payout.dashboard.kpi.platformRevenue.label' | translate }}
+            </p>
+            <p class="text-3xl font-black text-[#2d3433] tracking-tight">
+              {{ d.currentMonthPlatformRevenue.toLocaleString() }}
+              <span class="text-sm font-medium text-[#acb3b2]">{{ d.currency }}</span>
+            </p>
+          </div>
+
+          <!-- Last Month Paid — accent -->
+          <div class="bg-[#2e6959] rounded-2xl p-5 border border-transparent hover:shadow-md transition-all relative overflow-hidden">
+            <div class="absolute bottom-0 right-0 w-24 h-24 rounded-full bg-white/5 translate-x-8 translate-y-8"></div>
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center text-[#b2efda]">
+                <span class="material-symbols-outlined text-xl">check_circle</span>
+              </div>
+              <span class="text-[10px] font-black uppercase tracking-widest text-[#b2efda]/60 bg-white/10 px-2 py-1 rounded-lg">Paid</span>
+            </div>
+            <p class="text-[10px] uppercase tracking-widest font-bold text-[#b2efda]/70 mb-1">
+              {{ 'payout.dashboard.kpi.lastMonthPaid.label' | translate }}
+            </p>
+            <p class="text-3xl font-black text-white tracking-tight">
+              {{ d.lastMonthPaidToTeachers.toLocaleString() }}
+              <span class="text-sm font-medium text-[#b2efda]/60">{{ d.currency }}</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Main grid: Chart + Excel Export -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+          <!-- Donut Chart -->
+          <div class="lg:col-span-2 bg-white rounded-2xl p-6 border border-[#eaefee]">
+            <h2 class="text-sm font-extrabold text-[#2d3433] mb-1">
+              {{ 'payout.dashboard.chart.title' | translate }}
+            </h2>
+            <p class="text-[10px] uppercase tracking-widest font-bold text-[#acb3b2] mb-4">
+              {{ 'payout.dashboard.chart.subtitle' | translate }}
+            </p>
+
+            @if (splitChartOptions(); as opts) {
+              <apx-chart
+                [series]="opts.series!"
+                [chart]="opts.chart!"
+                [labels]="opts.labels!"
+                [colors]="opts.colors!"
+                [legend]="opts.legend!"
+                [plotOptions]="opts.plotOptions!"
+                [dataLabels]="opts.dataLabels!"
+                [tooltip]="opts.tooltip!" />
+            } @else {
+              <div class="h-64 flex flex-col items-center justify-center text-center">
+                <span class="material-symbols-outlined text-4xl text-[#d0d8d6] mb-2">pie_chart</span>
+                <p class="text-sm font-bold text-[#acb3b2]">{{ 'payout.dashboard.chart.empty' | translate }}</p>
+              </div>
+            }
+          </div>
+
+          <!-- Excel Export Card -->
+          <div class="bg-white rounded-2xl p-6 border border-[#eaefee]">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 rounded-xl bg-[#e4fff4] flex items-center justify-center text-[#2e6959]">
+                <span class="material-symbols-outlined text-xl">download</span>
+              </div>
+              <div>
+                <h2 class="text-sm font-extrabold text-[#2d3433]">
+                  {{ 'payout.dashboard.export.title' | translate }}
+                </h2>
+                <p class="text-[10px] uppercase tracking-widest font-bold text-[#acb3b2]">
+                  {{ 'payout.dashboard.export.subtitle' | translate }}
+                </p>
+              </div>
+            </div>
+
+            <p class="text-sm text-[#596060] mb-4">
+              {{ 'payout.dashboard.export.description' | translate }}
+            </p>
+
+            <div class="space-y-3 mb-4">
+              <div>
+                <label class="block text-[10px] font-black uppercase tracking-widest text-[#acb3b2] mb-1.5">
+                  {{ 'payout.dashboard.export.from' | translate }}
+                </label>
+                <input type="date"
+                       [ngModel]="exportFrom()"
+                       (ngModelChange)="exportFrom.set($event)"
+                       class="w-full px-4 py-2.5 rounded-xl bg-[#f8faf9] border border-[#eaefee] focus:border-[#b2efda] focus:bg-white text-sm text-[#2d3433] outline-none transition-all" />
+              </div>
+              <div>
+                <label class="block text-[10px] font-black uppercase tracking-widest text-[#acb3b2] mb-1.5">
+                  {{ 'payout.dashboard.export.to' | translate }}
+                </label>
+                <input type="date"
+                       [ngModel]="exportTo()"
+                       (ngModelChange)="exportTo.set($event)"
+                       class="w-full px-4 py-2.5 rounded-xl bg-[#f8faf9] border border-[#eaefee] focus:border-[#b2efda] focus:bg-white text-sm text-[#2d3433] outline-none transition-all" />
+              </div>
+            </div>
+
+            <button
+              (click)="downloadReport()"
+              [disabled]="exporting()"
+              class="w-full flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#2e6959] text-white font-bold text-sm hover:bg-[#1a3d34] transition-colors shadow-sm disabled:opacity-50 disabled:cursor-wait">
+              @if (exporting()) {
+                <span class="material-symbols-outlined text-[16px] animate-spin">progress_activity</span>
+                {{ 'payout.dashboard.export.generating' | translate }}
+              } @else {
+                <span class="material-symbols-outlined text-[16px]">download</span>
+                {{ 'payout.dashboard.export.download' | translate }}
+              }
+            </button>
+          </div>
+        </div>
+
+        <!-- Secondary KPI: Current Month Enrollments -->
+        <div class="bg-white rounded-2xl p-6 border border-[#eaefee] hover:border-[#b2efda] hover:shadow-sm transition-all">
+          <div class="flex items-center justify-between flex-wrap gap-4">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 rounded-xl bg-[#e4fff4] flex items-center justify-center text-[#2e6959]">
+                <span class="material-symbols-outlined text-2xl">school</span>
+              </div>
+              <div>
+                <p class="text-[10px] uppercase tracking-widest font-bold text-[#acb3b2]">
+                  {{ 'payout.dashboard.activeTeachers.label' | translate }}
+                </p>
+                <p class="text-2xl font-black text-[#2d3433] tracking-tight">
+                  {{ d.currentMonthPaidEnrollments }}
+                </p>
+                <p class="text-xs text-[#596060]">
+                  {{ 'payout.dashboard.activeTeachers.description' | translate }}
+                </p>
+              </div>
+            </div>
+            <a routerLink="/admin/payout/invoices"
+               class="text-sm font-bold text-[#2e6959] hover:text-[#1a3d34] flex items-center gap-1 transition-colors">
+              {{ 'payout.dashboard.activeTeachers.viewAll' | translate }}
+              <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+            </a>
+          </div>
+        </div>
+      }
+    </div>
+  </main>
 </div>

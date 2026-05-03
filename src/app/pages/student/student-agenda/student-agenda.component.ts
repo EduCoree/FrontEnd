@@ -1,17 +1,16 @@
-// src/app/pages/student/student-agenda/student-agenda.component.ts
-// Branch: feature/student-sessions-video-flow
-
-import { Component, OnInit, OnDestroy, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { LiveSessionResponse, JoinSessionResponse } from '../../../core/models/session';
 import { LiveSessionService } from '../../../core/services/live-session';
 import { TranslateModule } from '@ngx-translate/core';
+import { JitsiPlayerComponent } from '../../../shared/components/jitsi-player/jitsi-player';
+import { AuthService } from '../../../core/services/auth';
 
 @Component({
   selector: 'app-student-agenda',
   standalone: true,
-  imports: [CommonModule , TranslateModule],
+  imports: [CommonModule, TranslateModule, JitsiPlayerComponent],
   templateUrl: './student-agenda.component.html',
 })
 export class StudentAgendaComponent implements OnInit, OnDestroy {
@@ -83,17 +82,19 @@ export class StudentAgendaComponent implements OnInit, OnDestroy {
     }, 30_000); // every 30 seconds
   }
 
+  auth = inject(AuthService);
+  currentUser = this.auth.currentUser;
+
   // ─── Join Session ─────────────────────────────────────────────────────────
 
   joinSession(session: LiveSessionResponse): void {
     this.liveSessionService.joinSession(session.id).subscribe({
       next: (res: JoinSessionResponse) => {
-        // meet.jit.si blocks iframe embedding (X-Frame-Options: SAMEORIGIN),
-        // so all providers — including Jitsi — open in a new tab.
-        const url = res.provider === 'Jitsi'
-          ? `https://meet.jit.si/${res.roomName}`
-          : res.roomName;
-        window.open(url, '_blank');
+        if (res.provider === 'Jitsi') {
+          this.jitsiRoomName.set(res.roomName);
+        } else {
+          window.open(res.roomName, '_blank');
+        }
       },
       error: (err) => {
         if (err?.status === 403) {
@@ -106,13 +107,6 @@ export class StudentAgendaComponent implements OnInit, OnDestroy {
   }
 
   // ─── Jitsi In-App Viewer ──────────────────────────────────────────────────
-
-  /** Returns a sanitized iframe URL for the current Jitsi room. */
-  safeJitsiUrl(): SafeResourceUrl {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(
-      `https://meet.jit.si/${this.jitsiRoomName()}`
-    );
-  }
 
   /** Closes the in-app Jitsi viewer overlay. */
   leaveJitsiSession(): void {
